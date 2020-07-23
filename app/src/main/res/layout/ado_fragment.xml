@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <!--include
+        layout="@layout/search_view"
+        android:id="@+id/searchbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="List of District"
+        android:id="@+id/districtlist"
+        android:textSize="21dp"
+        android:padding="10dp"
+        android:paddingTop="18dp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:fontFamily="@font/arial" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/adolist"
+        android:background="#FFFFFF"
+        android:layout_below="@id/districtlist"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_height="match_parent" />
+
+    <ProgressBar
+        android:id="@+id/ado_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:indeterminateDrawable="@drawable/progress"
+        android:visibility="visible" />
+
+</RelativeLayout>

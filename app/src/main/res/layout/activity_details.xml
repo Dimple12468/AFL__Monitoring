@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF"
+    tools:context=".Admin.detailsActivity">
+
+    <TextView
+        android:id="@+id/nodetail_text"
+        android:visibility="gone"
+        android:textSize="18sp"
+        android:text="NO DETAILS AVAILABLE"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:id="@+id/parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <include
+            layout="@layout/app_bar_admin"
+            android:id="@+id/detail_bar"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rel0"
+            android:layout_below="@id/detail_bar"
+            android:layout_marginTop="9dp">
+
+            <TextView
+                android:id="@+id/addr2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/arial"
+                android:text="default"
+                android:textAllCaps="true"
+                android:textColor="@color/app_color"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/edit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@id/addr2"
+                android:background="#FFFFFF"
+                android:gravity="end"
+                android:src="@drawable/ic_edit_black_24dp"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintVertical_bias="1" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:id="@+id/ado_appointed"
+            android:textSize="20dp"
+            android:layout_marginHorizontal="16dp"
+            android:text="ADO APPOINTED:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rel0"
+            android:textColor="#000000"
+            android:fontFamily="@font/arial"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rel1"
+            android:layout_below="@id/ado_appointed"
+            android:layout_marginTop="9dp">
+
+            <TextView
+                android:id="@+id/textname1"
+                android:text="Name:"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:fontFamily="@font/arial"
+                android:textColor="#000000"/>
+
+            <TextView
+                android:textAllCaps="false"
+                android:gravity="center_vertical"
+                android:text="default"
+                android:id="@+id/adodetail_name2"
+                android:layout_toRightOf="@id/textname1"
+                android:textSize="15dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:textColor="#000000"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rel1"
+            android:id="@+id/rel2"
+            android:layout_marginTop="9dp">
+
+            <TextView
+                android:id="@+id/textname2"
+                android:text="Email:"
+                android:layout_alignParentStart="true"
+                android:layout_marginHorizontal="16dp"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:textSize="15dp"
+                android:textColor="#000000"/>
+
+            <TextView
+                android:textAllCaps="true"
+                android:gravity="center_vertical"
+                android:text="default"
+                android:id="@+id/adodetail_email2"
+                android:layout_toRightOf="@id/textname2"
+                android:textIsSelectable="true"
+                android:textSize="15dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:textColor="#000000"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rel2"
+            android:id="@+id/rel3"
+            android:layout_marginTop="9dp">
+
+            <TextView
+                android:id="@+id/textname3"
+                android:textColor="#000000"
+                android:text="Phone"
+                android:layout_marginHorizontal="16dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:fontFamily="@font/arial"/>
+
+            <TextView
+                android:textAllCaps="true"
+                android:gravity="center_vertical"
+                android:text="default"
+                android:id="@+id/adodetail_phone2"
+                android:layout_toRightOf="@id/textname3"
+                android:textIsSelectable="true"
+                android:layout_marginHorizontal="8dp"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:textSize="15dp"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/ddo_appointed"
+            android:layout_below="@+id/rel3"
+            android:layout_marginTop="30dp"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:layout_marginHorizontal="16dp"
+            android:text="DDA APPOINTED:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:fontFamily="@font/arial"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ddo_appointed"
+            android:id="@+id/rel4"
+            android:layout_marginTop="9dp">
+
+            <TextView
+                android:id="@+id/textname4"
+                android:textColor="#000000"
+                android:text="Name:"
+                android:layout_marginHorizontal="16dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:fontFamily="@font/arial"/>
+
+            <TextView
+                android:textAllCaps="false"
+                android:gravity="center_vertical"
+                android:text="default"
+                android:id="@+id/ddadetail_name2"
+                android:layout_toRightOf="@id/textname4"
+                android:textSize="15dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:textColor="#000000"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rel4"
+            android:layout_marginTop="9dp">
+
+            <TextView
+                android:id="@+id/textname5"
+                android:textColor="#000000"
+                android:text="Email:"
+                android:layout_marginHorizontal="16dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:fontFamily="@font/arial"/>
+
+            <TextView
+                android:textAllCaps="false"
+                android:gravity="center_vertical"
+                android:text="default"
+                android:id="@+id/ddadetail_email2"
+                android:layout_toRightOf="@id/textname5"
+                android:textIsSelectable="true"
+                android:textSize="15dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial"
+                android:textColor="#000000"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rel5"
+            android:id="@+id/rel6"
+            android:layout_marginTop="9dp">
+
+            <TextView
+                android:id="@+id/textname6"
+                android:textColor="#000000"
+                android:text="Phone:"
+                android:layout_marginHorizontal="16dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:fontFamily="@font/arial"/>
+
+            <TextView
+                android:textAllCaps="false"
+                android:gravity="center_vertical"
+                android:text="default"
+                android:id="@+id/ddadetail_phone2"
+                android:layout_toRightOf="@id/textname6"
+                android:textIsSelectable="true"
+                android:layout_marginHorizontal="8dp"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:textSize="15dp"
+                android:fontFamily="@font/arial"
+                android:textColor="#000000"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/rel6"
+            android:src="@drawable/detail_pic"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintVertical_bias="0"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/pending_ado"
+        android:icon="@drawable/ic_pending"
+        android:title="Pending"
+        android:visible="true" />
+
+    <item
+        android:id="@+id/completed_ado"
+        android:icon="@drawable/ic_completed"
+        android:title="Completed"
+        android:visible="true" />
+
+</menu>
