@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -164,10 +165,17 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
         ngoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        //View locationButton = ((View) mView.getView().findViewById(Integer.parseInt("1")).
-        //      getParent()).findViewById(Integer.parseInt("4"));
-        googleMap.getUiSettings().setMapToolbarEnabled(false);
-        //TODO change location of google map toolbar
+        //googleMap.getUiSettings().setMapToolbarEnabled(false);
+        //change location of google map toolbar
+        View toolbar = ((View) mMapView.findViewById(Integer.parseInt("1")).
+                getParent()).findViewById(Integer.parseInt("4"));
+        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
+        // position on right bottom
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+        rlp.setMargins(0, 30, 30, 0);
+
+
         googleMap.addMarker(new MarkerOptions().position(new LatLng(20.5937, 78.9629)).title("India").snippet("My country"));
         CameraPosition India = CameraPosition.builder().target(new LatLng(20.5937, 78.9629)).zoom(10).bearing(0).tilt(45).build();
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(India));

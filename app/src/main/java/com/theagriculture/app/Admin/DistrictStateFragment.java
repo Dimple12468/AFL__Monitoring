@@ -139,6 +139,7 @@ public class DistrictStateFragment extends Fragment {
         spinner = view.findViewById(R.id.graph_loading);
         lineChart = (LineChart)view.findViewById(R.id.lineChart);
         pierecycler = view.findViewById(R.id.pierecycler);
+        pierecycler.setHasFixedSize(true);
 
         //for recycler view
         distlist = new ArrayList<>();
@@ -167,7 +168,7 @@ public class DistrictStateFragment extends Fragment {
         //pierecycler.setAdapter(adapter);
 
         //getData();
-        getGraph(mURL,"All");
+       //getGraph(mURL,"All");
 
         //code for drop-down
         String[] states = { "All", "Pending", "Ongoing", "Completed"};
@@ -300,7 +301,7 @@ public class DistrictStateFragment extends Fragment {
                         completed_total = completed_total + completedCount;
                     }
 
-                    //System.out.println("distlist is:" + distlist);
+                    System.out.println("distlist is:" + distlist);
 
                     totalPendingTextView.setText(String.valueOf(pending_total));
                     totalOngoingTextView.setText(String.valueOf(ongoing_total));
