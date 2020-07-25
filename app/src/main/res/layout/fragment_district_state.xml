@@ -73,12 +73,12 @@
 
     <LinearLayout
         android:id="@+id/textll"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="3dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="10dp"
+        android:paddingTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spinner1">
@@ -89,6 +89,7 @@
             android:text="DISTRICT"
             android:textColor="@color/black"
             android:textSize="15sp"
+            android:layout_marginStart="5dp"
             android:textStyle="bold" />
         <!--android:layout_marginStart="10dp"-->
         <TextView
@@ -124,7 +125,7 @@
 
     <LinearLayout
         android:id="@+id/textll_count"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:gravity="center"
@@ -178,10 +179,10 @@
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:overScrollMode="never"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textll_count"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/textll_count" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline10"

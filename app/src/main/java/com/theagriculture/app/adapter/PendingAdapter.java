@@ -54,33 +54,6 @@ public class PendingAdapter extends RecyclerView.Adapter<PendingAdapter.ViewHold
 
 
 
-   /* private ArrayList<String> set_date(ArrayList<String> mdate) {
-        SimpleDateFormat simpleDate = new SimpleDateFormat("dd MM,yyyy");
-        Date d = simpleDate.parse(mdate);
-
-    }
-   private ArrayList<String> set_date(ArrayList<String> mdate){
-       SimpleDateFormat simpleDate = new SimpleDateFormat("dd MM,yyyy");
-       Date d = simpleDate.parse();
-
-   }*/
-
-    /*public View getView(int position, View convertView, ViewGroup parent) {
-        TextView first_letter = convertView.findViewById(R.id.address);
-        TextView image_letter = convertView.findViewById(R.id.my_letter);
-        convertView = LayoutInflater.from(context).inflate(R.id.my_letter, parent, false);
-        serialNum = convertView.findViewById(R.id.serailNumber);
-        name = convertView.findViewById(R.id.studentName);
-        contactNum = convertView.findViewById(R.id.mobileNum);
-        serialNum.setText(" " + arrayList.get(position).getNum());
-        name.setText(arrayList.get(position).getName());
-        contactNum.setText(arrayList.get(position).getMobileNumber());
-        return convertView;
-        image_letter.setText(String.valueOf(first_letter.getText().toString().charAt(0)));
-        return image_letter;
-
-    }*/
-
     public PendingAdapter(Context mcontext,ArrayList<String> mtextview1, ArrayList<String> mtextview2, ArrayList<String> mtextview3, ArrayList<String> mIds, boolean isOngoing,ArrayList<String> mdate) {
         this.mcontext = mcontext;
         //this.mtextview_letter = mtextview_letter;
@@ -206,7 +179,6 @@ public class PendingAdapter extends RecyclerView.Adapter<PendingAdapter.ViewHold
 
             if(isPending){
                 /*
-
                 Intent intent1 = new Intent(mcontext,detailsActivity.class);
                 intent1.putExtra("ado_name",mtextview1.get(position));
                 intent1.putExtra("dda_name",mtextview2.get(position));
@@ -214,10 +186,9 @@ public class PendingAdapter extends RecyclerView.Adapter<PendingAdapter.ViewHold
                 intent1.putExtra("ado_pk",mpkado.get(position));
                 intent1.putExtra("dda_pk",mpkdda.get(position));
                 mcontext.startActivity(intent1);
-
                  */
                 Bundle bundle = new Bundle();
-               PendingDetailsFragment abc = new PendingDetailsFragment();
+                PendingDetailsFragment abc = new PendingDetailsFragment();
 
                 abc.setArguments(bundle);
                 AppCompatActivity activity = (AppCompatActivity)v.getContext();

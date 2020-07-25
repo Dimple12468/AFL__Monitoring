@@ -40,15 +40,15 @@
     </style>
 
     <style name="noInternetDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-    <item name="android:windowBackground">@drawable/buttons</item>
-    <item name="android:textAlignment">center</item>
-    <item name="android:textColorPrimary">#ffffff</item>
-    <!--item name="android:background">@android:color/transparent</item-->
-    <item name="android:backgroundDimEnabled">false</item>
-    <item name="android:paddingTop">0dp</item>
-    <!--item name="android:paddingLeft">10dp</item>
-    <item name="android:paddingRight">10dp</item--><!--this adds padding to text-->
-    <item name="android:layout_marginTop">0dp</item>
+        <item name="android:windowBackground">@drawable/buttons</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColorPrimary">#ffffff</item>
+        <!--item name="android:background">@android:color/transparent</item-->
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:paddingTop">0dp</item>
+        <!--item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item--><!--this adds padding to text-->
+        <item name="android:layout_marginTop">0dp</item>
     </style>
 
     <style name="AlertDialog" parent="ThemeOverlay.AppCompat.Dialog">
@@ -87,4 +87,11 @@
     </style>
 
     <style name="dist_stat_Theme" parent="Theme.MaterialComponents.Light.NoActionBar"/>
+
+    <style name="MaterialCalendarTheme_RangeFill" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="materialCalendarStyle">@style/MyMaterialCalendar</item>
+    </style>
+    <style name="MyMaterialCalendar"  parent="Widget.MaterialComponents.MaterialCalendar">
+        <!--item name="rangeFillColor">@color/app_color</item-->
+    </style>
 </resources>

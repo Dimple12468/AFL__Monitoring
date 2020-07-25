@@ -89,6 +89,7 @@ public class OnGoingFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /*
     @Override
     public void setUserVisibleHint(boolean isVisibletoUser){
         super.setUserVisibleHint(isVisibletoUser);
@@ -98,10 +99,12 @@ public class OnGoingFragment extends Fragment {
         }
     }
 
+     */
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       view = inflater.inflate(R.layout.fragment_on_going, container, false);
+        view = inflater.inflate(R.layout.fragment_on_going, container, false);
         recyclerView = view.findViewById(R.id.ongoing_recyclerview);
         progressBar = view.findViewById(R.id.locations_loading_ongoing);
         spinner = view.findViewById(R.id.on_going_progress);
@@ -140,7 +143,11 @@ public class OnGoingFragment extends Fragment {
 
 
         ///////////////
-        //getData();
+        getData();
+        recyclerViewAdater = new SectionAdapter(getActivity(),sections);
+        recyclerView.setAdapter(recyclerViewAdater);
+        //spinner.setVisibility(View.GONE);
+        recyclerViewAdater.notifyDataSetChanged();
 
         return view;
     }
@@ -221,10 +228,10 @@ public class OnGoingFragment extends Fragment {
                                 sections.add(new Section(mdate,mDdaName, mAdaName, mAddress,mId,mpkado,mpkdda,false,true,false));
                                 //Toast.makeText(getActivity(),sections.get(0).toString(),Toast.LENGTH_LONG).show();
                             }
-                            recyclerViewAdater = new SectionAdapter(getActivity(),sections);
-                            recyclerView.setAdapter(recyclerViewAdater);
+                            //recyclerViewAdater = new SectionAdapter(getActivity(),sections);
+                            //recyclerView.setAdapter(recyclerViewAdater);
                             spinner.setVisibility(View.GONE);
-                            recyclerViewAdater.notifyDataSetChanged();
+                            //recyclerViewAdater.notifyDataSetChanged();
                             no_of_visits++;
                             /*
                             adapter.mShowShimmer = false;
@@ -348,18 +355,18 @@ public class OnGoingFragment extends Fragment {
 
     private void get_Ongoing() {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        isNextBusy = true;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(next_ongoing_url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            //Toast.makeText(getActivity(),"entered try",Toast.LENGTH_LONG).show();
                             JSONObject jsonObject = new JSONObject(String.valueOf(response));
-                            JSONArray jsonArray = jsonObject.getJSONArray("results");
                             next_ongoing_url = jsonObject.getString("next");
+                            JSONArray jsonArray = jsonObject.getJSONArray("results");
+                            if(jsonArray.length()==0)
+                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
                             for (int i = 0; i < jsonArray.length(); i++) {
-                                //Toast.makeText(getActivity(),"entered i",Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getActivity(),"Enterd i",Toast.LENGTH_LONG).show();
                                 //itemArrayList = new ArrayList<>();
                                 mDdaName = new ArrayList<>();
                                 mAdaName = new ArrayList<>();
@@ -367,18 +374,20 @@ public class OnGoingFragment extends Fragment {
                                 mpkado = new ArrayList<>();
                                 mpkdda = new ArrayList<>();
                                 mId = new ArrayList<>();
-
                                 JSONObject cd = jsonArray.getJSONObject(i);
-                                String date = cd.getString("date");
+                                //Toast.makeText(getActivity(),cd.toString(),Toast.LENGTH_LONG).show();
+                                String mdate = cd.getString("date");
+                                //
                                 JSONArray jsonArray_locations = cd.getJSONArray("locations");
+                                //Toast.makeText(getActivity(),"Got location array",Toast.LENGTH_LONG).show();//could not reach here
                                 for (int j = 0; j < jsonArray_locations.length(); j++) {
-                                    Toast.makeText(getActivity(),"entered j",Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(getActivity(),"Enterd j",Toast.LENGTH_LONG).show();
                                     JSONObject c = jsonArray_locations.getJSONObject(j);
                                     try{
-                                        String aid= c.getString("id");
+                                        aid = c.getString("id");
                                         mId.add(aid);
                                     }
-                                    catch (JSONException e){
+                                    catch(JSONException e){
                                         mId.add("null");
                                     }
                                     try {
@@ -413,43 +422,26 @@ public class OnGoingFragment extends Fragment {
                                     } catch (JSONException e) {
                                         mAdaName.add("Not Assigned");
                                     }
-                                    mAddress.add(villagename.toUpperCase() + ", " + blockname.toUpperCase() + ", " + district.toUpperCase());
-                                    Toast.makeText(getActivity(),"Added mAddress",Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(getActivity(),"cleared all try catch",Toast.LENGTH_LONG).show();
+                                    mAddress.add(villagename.toUpperCase() + ", " +
+                                            blockname.toUpperCase() + ", " + district.toUpperCase());
                                 }
-                                sections.add(new Section("date",mDdaName, mAdaName, mAddress,mId,mpkado,mpkdda,false,true,false));
-                                //isNextBusy=false;
-                                //Toast.makeText(getActivity(),"Added a section",Toast.LENGTH_LONG).show();
+                                sections.add(new Section(mdate,mDdaName, mAdaName, mAddress,mId,mpkado,mpkdda,false,true,false));
+                                //Toast.makeText(getActivity(),sections.get(0).toString(),Toast.LENGTH_LONG).show();
                             }
+                            //recyclerViewAdater = new SectionAdapter(getActivity(),sections);
+                            //recyclerView.setAdapter(recyclerViewAdater);
+                            spinner.setVisibility(View.GONE);
+                            //recyclerViewAdater.notifyDataSetChanged();
+                            no_of_visits++;
                             /*
-                            JSONObject rootObject = new JSONObject(String.valueOf(response));
-                            next_ongoing_url = rootObject.getString("next");
-                            JSONArray resultsArray = rootObject.getJSONArray("results");
-                            for (int i = 0; i < resultsArray.length(); i++) {
-                                JSONObject singleObject = resultsArray.getJSONObject(i);
-                                JSONObject mDdaObject = singleObject.getJSONObject("dda");
-                                String date = singleObject.getString("acq_date");
-                                String ddaName = mDdaObject.getString("name");
-                                mDDaNames.add(ddaName);
-                                mdate.add(date);
-                                String id = singleObject.getString("id");
-                                mIds.add(id);
-                                try {
-                                    JSONObject mAdoObject = singleObject.getJSONObject("ado");
-                                    String adoName = mAdoObject.getString("name");
-                                    mAdoNames.add(adoName);
-                                } catch (JSONException e) {
-                                    mAdoNames.add("Not Assigned");
-                                }
-                                String location = singleObject.getString("village_name").toUpperCase() + ", " +
-                                        singleObject.getString("block_name").toUpperCase() + ", "
-                                        + singleObject.getString("district").toUpperCase();
-                                mAddresses.add(location);
-                                isNextBusy = false;
-                            }
+                            adapter.mShowShimmer = false;
+                            adapter.notifyDataSetChanged();
 
                              */
-
                         } catch (JSONException e) {
+                            spinner.setVisibility(View.GONE);
+                            Toast.makeText(getActivity(),"An exception occured",Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
 
@@ -458,7 +450,9 @@ public class OnGoingFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        if (error instanceof NoConnectionError || error instanceof TimeoutError){
+                        spinner.setVisibility(View.GONE);
+                        if (error instanceof NoConnectionError || error instanceof TimeoutError) {
+                            //Toast.makeText(getActivity(), "Check Your Internt Connection Please!", Toast.LENGTH_SHORT).show();
                             final BottomSheetDialog mBottomDialogNotificationAction = new BottomSheetDialog(getActivity());
                             View sheetView = getActivity().getLayoutInflater().inflate(R.layout.no_internet, null);
                             mBottomDialogNotificationAction.setContentView(sheetView);
@@ -479,7 +473,7 @@ public class OnGoingFragment extends Fragment {
                                 @Override
                                 public void onClick(View v) {
                                     mBottomDialogNotificationAction.dismiss();
-                                    //spinner.setVisibility(View.VISIBLE);
+                                    spinner.setVisibility(View.VISIBLE);
                                     get_Ongoing();
                                 }
                             });
@@ -512,23 +506,8 @@ public class OnGoingFragment extends Fragment {
 
                             });
 
-                        }
-                        else if (error instanceof AuthFailureError) {
-                            // Error indicating that there was an Authentication Failure while performing the request
-                            Toast.makeText(getActivity(), "This error is case2", Toast.LENGTH_LONG).show();
-                        } else if (error instanceof ServerError) {
-                            //Indicates that the server responded with a error response
-                            Toast.makeText(getActivity(), "This error is server error", Toast.LENGTH_LONG).show();
-                        } else if (error instanceof NetworkError) {
-                            //Indicates that there was network error while performing the request
-                            Toast.makeText(getActivity(), "This error is case4", Toast.LENGTH_LONG).show();
-                        } else if (error instanceof ParseError) {
-                            // Indicates that the server response could not be parsed
-                            Toast.makeText(getActivity(), "This error is case5", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(getActivity(), "An unknown error occurred.", Toast.LENGTH_SHORT).show();
-                        }
-                        isNextBusy = false;
+                        }else
+                            Toast.makeText(getActivity(), "An error occured", Toast.LENGTH_SHORT).show();
                     }
                 }) {
             @Override
@@ -539,7 +518,6 @@ public class OnGoingFragment extends Fragment {
             }
         };
         requestQueue.add(jsonObjectRequest);
-        requestFinished(requestQueue);
         jsonObjectRequest.setRetryPolicy(new RetryPolicy() {
             @Override
             public int getCurrentTimeout() {
@@ -556,18 +534,23 @@ public class OnGoingFragment extends Fragment {
 
             }
         });
-    }
-
-
-    private void requestFinished(RequestQueue queue) {
-
-        queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            int totalCount, pastItemCount, visibleItemCount;
 
             @Override
-            public void onRequestFinished(Request<Object> request) {
-                progressBar.setVisibility(View.GONE);
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    totalCount = layoutManager.getItemCount();
+                    pastItemCount = layoutManager.findFirstVisibleItemPosition();
+                    visibleItemCount = layoutManager.getChildCount();
+                    if ((pastItemCount + visibleItemCount) >= totalCount) {
+                        if (!next_ongoing_url.equals("null") && !isNextBusy)
+                            get_Ongoing();
+                    }
+                }
+                //super.onScrolled(recyclerView, dx, dy);
             }
         });
-
     }
 }

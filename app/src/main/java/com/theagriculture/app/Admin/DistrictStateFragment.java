@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -65,6 +66,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -128,7 +131,7 @@ public class DistrictStateFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        getContext().getTheme().applyStyle(R.style.dist_stat_Theme, true);
+        //getContext().getTheme().applyStyle(R.style.dist_stat_Theme, true);
 
         View view = inflater.inflate(R.layout.fragment_district_state, container, false);
         mURL = "http://18.224.202.135/api/countReportBtwDates/?start_date=2019-10-10&end_date=2019-11-20&points=8";
@@ -141,16 +144,6 @@ public class DistrictStateFragment extends Fragment {
         pierecycler = view.findViewById(R.id.pierecycler);
         pierecycler.setHasFixedSize(true);
 
-        //for recycler view
-        distlist = new ArrayList<>();
-        pending = new ArrayList<>();
-        ongoing = new ArrayList<>();
-        completed = new ArrayList<>();
-
-        //for total count
-        pending_total = 0;
-        completed_total = 0;
-        ongoing_total = 0;
 
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         token = preferences.getString("token", "");
@@ -161,14 +154,13 @@ public class DistrictStateFragment extends Fragment {
          String username = preferences.getString("Name","");
 
           */
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+        final LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
         pierecycler.setLayoutManager(linearLayoutManager);
-        pierecycler.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
+        //pierecycler.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
         //adapter=new Count_Adapter(getActivity(),distlist,pending,ongoing,completed);
         //pierecycler.setAdapter(adapter);
 
-        //getData();
-       //getGraph(mURL,"All");
+        //getGraph(mURL,"All");
 
         //code for drop-down
         String[] states = { "All", "Pending", "Ongoing", "Completed"};
@@ -205,6 +197,7 @@ public class DistrictStateFragment extends Fragment {
         //plotting graph
 
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
+        builder.setTheme(R.style.MaterialCalendarTheme_RangeFill);
         final MaterialDatePicker<Pair<Long, Long>> materialDatePicker = builder.build();
 
         btndate.setOnClickListener(new View.OnClickListener() {
@@ -222,13 +215,13 @@ public class DistrictStateFragment extends Fragment {
                 Long e_date = selection.second;
                 Date date1 = new Date(s_date);
                 Date date2 = new Date(e_date);
+                //Toast.makeText(getActivity(),date1.toString()+ date2.toString(),Toast.LENGTH_LONG).show();
                 SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
-                start_date_set = df2.format(date1);
-                end_date_set = df2.format(date2);
+                start_date_set = df2.format(date1).toString();
+                end_date_set = df2.format(date2).toString();
                 System.out.println(start_date_set);
                 System.out.println(end_date_set);
-                points = 8;
-                String btn_url="http://18.224.202.135/api/countReportBtwDates/?start_date=" + start_date_set + "&end_date=" + end_date_set + "&points=" + points;
+                String btn_url="http://18.224.202.135/api/countReportBtwDates/?start_date=" + start_date_set + "&end_date=" + end_date_set + "&points=8";
                 String state = String.valueOf(spin.getSelectedItem());
                 getGraph(btn_url,state);
                 //System.out.println(URL);
@@ -247,6 +240,17 @@ public class DistrictStateFragment extends Fragment {
         final ArrayList<Entry> yAxis1 = new ArrayList<>();//pending entry
         final ArrayList<Entry> yAxis2 = new ArrayList<>();//completed entry
         final ArrayList<Entry> yAxis3 = new ArrayList<>();//ongoing entry
+
+        //for recycler view
+        distlist = new ArrayList<>();
+        pending = new ArrayList<>();
+        ongoing = new ArrayList<>();
+        completed = new ArrayList<>();
+
+        //for total count
+        pending_total = 0;
+        completed_total = 0;
+        ongoing_total = 0;
 
         //get Data
         RequestQueue district_requestQueue = Volley.newRequestQueue(getActivity());
@@ -280,8 +284,9 @@ public class DistrictStateFragment extends Fragment {
                         yAxis3.add(new Entry(i,data));
                     }
 
+                    /*
                     JSONObject resultsObject = response.getJSONObject("results");
-                    //Toast.makeText(getActivity(),resultsObject.toString(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),resultsObject.toString(),Toast.LENGTH_LONG).show();
                     Iterator<String> itr = resultsObject.keys();
                     while(itr.hasNext())
                     {
@@ -301,7 +306,24 @@ public class DistrictStateFragment extends Fragment {
                         completed_total = completed_total + completedCount;
                     }
 
-                    System.out.println("distlist is:" + distlist);
+                     */
+
+                    JSONObject resultsObject = response.getJSONObject("results");
+                    Iterator<String> itr = resultsObject.keys();
+                    while(itr.hasNext())
+                    {
+                        String place = itr.next();
+                        Object districtObject = resultsObject.get(place);
+                        Log.d("Logs", "onResponse: place" + place + "object " + districtObject);
+                        //Toast.makeText(getActivity(),place+" and "+districtObject.toString(),Toast.LENGTH_LONG).show();
+                        int pendingCount = ((JSONObject)districtObject).getInt("pending");
+                        int ongoingCount = ((JSONObject)districtObject).getInt("ongoing");
+                        int completedCount = ((JSONObject)districtObject).getInt("completed");
+                        distlist.add(place);
+                        pending.add(pendingCount);
+                        ongoing.add(ongoingCount);
+                        completed.add(completedCount);
+                    }
 
                     totalPendingTextView.setText(String.valueOf(pending_total));
                     totalOngoingTextView.setText(String.valueOf(ongoing_total));
@@ -432,6 +454,19 @@ public class DistrictStateFragment extends Fragment {
             }
         };
         district_requestQueue.add(jsonObjectRequest);
+        pierecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            int totalCount, pastItemCount, visibleItemCount;
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //Log.d(TAG, "onScrolled: out DX " + dx + " DY " + dy);
+            }
+        });
+
 
     }
 }

@@ -92,6 +92,8 @@ public class pending_fragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
     ProgressBar spinner;
+
+    int count_entry = 0;
     //ProgressDialog pDialog;
 
     public pending_fragment() {
@@ -156,7 +158,10 @@ public class pending_fragment extends Fragment {
          */
 
         /////////////////////////////
-        getData();
+        getData(pendingUrl);
+        recyclerViewAdater = new SectionAdapter(getActivity(),sections);
+        recyclerView.setAdapter(recyclerViewAdater);
+        recyclerViewAdater.notifyDataSetChanged();
         /*
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         final JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, pendingUrl, null, new Response.Listener<JSONObject>() {
@@ -342,11 +347,13 @@ public class pending_fragment extends Fragment {
         return view;
     }
 
-    public void getData(){
+    public void getData(final String url){
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        final JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, pendingUrl, null, new Response.Listener<JSONObject>() {
+        final JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                spinner.setVisibility(View.VISIBLE);
+                //Toast.makeText(getActivity(),"url is "+pendingUrl+response.toString(),Toast.LENGTH_LONG).show();
                 //hidePDialog();
                 // Toast.makeText(getActivity(),response.toString(),Toast.LENGTH_LONG).show();
                 try {
@@ -418,9 +425,9 @@ public class pending_fragment extends Fragment {
                         sections.add(new Section(mdate,mDdaName, mAdaName, mAddress,mId,mpkado,mpkdda,true,false,false));
                         //Toast.makeText(getActivity(),sections.get(0).toString(),Toast.LENGTH_LONG).show();
                     }
-                    recyclerViewAdater = new SectionAdapter(getActivity(),sections);
-                    recyclerView.setAdapter(recyclerViewAdater);
-                    recyclerViewAdater.notifyDataSetChanged();
+                    //recyclerViewAdater = new SectionAdapter(getActivity(),sections);
+                    //recyclerView.setAdapter(recyclerViewAdater);
+                    //recyclerViewAdater.notifyDataSetChanged();
                     spinner.setVisibility(View.GONE);
                     // Toast.makeText(getActivity(),"Section contains "+ sections.toString(),Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
@@ -458,7 +465,7 @@ public class pending_fragment extends Fragment {
                                 public void onClick(View v) {
                                     mBottomDialogNotificationAction.dismiss();
                                     spinner.setVisibility(View.VISIBLE);
-                                    getData();
+                                    getData(url);
                                 }
                             });
 
@@ -551,17 +558,253 @@ public class pending_fragment extends Fragment {
                     //Toast.makeText(getActivity(),"totalCount is "+ totalCount + "pastItemCount is " + pastItemCount + " visibleItemCount" + visibleItemCount,Toast.LENGTH_LONG).show();
                     //if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
                     if (((pastItemCount + visibleItemCount) >= totalCount) && (pastItemCount >= 0) && (totalCount >= PAGE_SIZE)) {
-                        Toast.makeText(getActivity(),"cleared first if",Toast.LENGTH_LONG).show();
+                        count_entry++;
+                        //Toast.makeText(getActivity(),"cleared first if with count "+ count_entry,Toast.LENGTH_LONG).show();
                         //if (!isNextBusy) {
-                        Toast.makeText(getActivity(),"cleared next if",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity(),"cleared next if",Toast.LENGTH_LONG).show();
+                        //pendingUrl.equals(nextPendingUrl);
+                        //getData(nextPendingUrl);
+                        progressBar.setVisibility(View.VISIBLE);
+                        getNextData(nextPendingUrl);
                         //Toast.makeText(getActivity(),"We reached end of page",Toast.LENGTH_LONG).show();
-                        loadNextLocations();
+                        //loadNextLocations();
                         //}
                     }
                 }
             }
         });
 
+    }
+
+    public void getNextData(final String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        final JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //spinner.setVisibility(View.VISIBLE);
+
+                //Toast.makeText(getActivity(),"url is "+url+response.toString(),Toast.LENGTH_LONG).show();
+                //hidePDialog();
+                // Toast.makeText(getActivity(),response.toString(),Toast.LENGTH_LONG).show();
+                try {
+                    //final ArrayList<Section> sections = new ArrayList<>();
+                    //Toast.makeText(getActivity(),"Enterd try",Toast.LENGTH_LONG).show();
+                    JSONObject jsonObject = new JSONObject(String.valueOf(response));
+                    nextPendingUrl = jsonObject.getString("next");
+                    JSONArray jsonArray = jsonObject.getJSONArray("results");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        //Toast.makeText(getActivity(),"Enterd i",Toast.LENGTH_LONG).show();
+                        //itemArrayList = new ArrayList<>();
+                        mDdaName = new ArrayList<>();
+                        mAdaName = new ArrayList<>();
+                        mAddress = new ArrayList<>();
+                        mpkado = new ArrayList<>();
+                        mpkdda = new ArrayList<>();
+                        mId = new ArrayList<>();
+                        JSONObject cd = jsonArray.getJSONObject(i);
+                        String mdate = cd.getString("date");
+                        //
+                        JSONArray jsonArray_locations = cd.getJSONArray("locations");
+                        //Toast.makeText(getActivity(),"Got location array",Toast.LENGTH_LONG).show();//could not reach here
+                        for (int j = 0; j < jsonArray_locations.length(); j++) {
+                            //Toast.makeText(getActivity(),"Enterd j",Toast.LENGTH_LONG).show();
+                            JSONObject c = jsonArray_locations.getJSONObject(j);
+                            try{
+                                aid = c.getString("id");
+                                mId.add(aid);
+                            }
+                            catch(JSONException e){
+                                mId.add("null");
+                            }
+                            try {
+                                JSONObject adoobj = c.getJSONObject("ado");
+                                JSONObject authado = adoobj.getJSONObject("auth_user");
+                                mpkado.add(authado.getString("pk"));
+
+                            } catch (JSONException e) {
+                                mpkado.add("null");
+                            }
+                            try {
+                                JSONObject ddaobj = c.getJSONObject("dda");
+                                JSONObject authddo = ddaobj.getJSONObject("auth_user");
+                                mpkdda.add(authddo.getString("pk"));
+                            } catch (JSONException e) {
+                                mpkdda.add("null");
+                            }
+                            villagename = c.getString("village_name");
+                            blockname = c.getString("block_name");
+                            district = c.getString("district");
+                            try {
+                                JSONObject mDdaObject = c.getJSONObject("dda");
+                                String ddaName = mDdaObject.getString("name");
+                                mDdaName.add(ddaName);
+                            } catch (JSONException e) {
+                                mDdaName.add("Not Assigned");
+                            }
+                            try {
+                                JSONObject mAdoObject = c.getJSONObject("ado");
+                                String adoName = mAdoObject.getString("name");
+                                mAdaName.add(adoName);
+                            } catch (JSONException e) {
+                                mAdaName.add("Not Assigned");
+                            }
+                            //Toast.makeText(getActivity(),"cleared all try catch",Toast.LENGTH_LONG).show();
+                            mAddress.add(villagename.toUpperCase() + ", " +
+                                    blockname.toUpperCase() + ", " + district.toUpperCase());
+                        }
+                        sections.add(new Section(mdate,mDdaName, mAdaName, mAddress,mId,mpkado,mpkdda,true,false,false));
+                        //Toast.makeText(getActivity(),sections.get(0).toString(),Toast.LENGTH_LONG).show();
+                    }
+                    //recyclerViewAdater = new SectionAdapter(getActivity(),sections);
+                    //recyclerView.setAdapter(recyclerViewAdater);
+                    //recyclerViewAdater.notifyDataSetChanged();
+                    //spinner.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
+                    // Toast.makeText(getActivity(),"Section contains "+ sections.toString(),Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    //spinner.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(),"An exception occures",Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        spinner.setVisibility(View.GONE);
+                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                            //This indicates that the reuest has either time out or there is no connection
+                            //Toast.makeText(getActivity(), "This error is case1", Toast.LENGTH_LONG).show();
+                            final BottomSheetDialog mBottomDialogNotificationAction = new BottomSheetDialog(getActivity());
+                            View sheetView = getActivity().getLayoutInflater().inflate(R.layout.no_internet, null);
+                            mBottomDialogNotificationAction.setContentView(sheetView);
+                            mBottomDialogNotificationAction.setCancelable(false);
+                            mBottomDialogNotificationAction.show();
+
+                            // Remove default white color background
+
+                            FrameLayout bottomSheet = (FrameLayout) mBottomDialogNotificationAction.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+                            bottomSheet.setBackground(null);
+
+
+                            TextView close = sheetView.findViewById(R.id.close);
+                            Button retry = sheetView.findViewById(R.id.retry);
+
+                            retry.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mBottomDialogNotificationAction.dismiss();
+                                    spinner.setVisibility(View.VISIBLE);
+                                    getNextData(url);
+                                }
+                            });
+
+                            close.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (!doubleBackToExitPressedOnce) {
+                                        doubleBackToExitPressedOnce = true;
+                                        Toast toast = Toast.makeText(getActivity(),"Tap on Close App again to exit app", Toast.LENGTH_LONG);
+                                        toast.setGravity(Gravity.CENTER, 0, 0);
+                                        toast.show();
+
+
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                doubleBackToExitPressedOnce = false;
+                                            }
+                                        }, 3600);
+                                    } else {
+                                        mBottomDialogNotificationAction.dismiss();
+                                        Intent a = new Intent(Intent.ACTION_MAIN);//will exit app
+                                        a.addCategory(Intent.CATEGORY_HOME);
+                                        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(a);
+                                    }
+                                }
+
+                            });
+
+
+                        } else if (error instanceof AuthFailureError) {
+                            // Error indicating that there was an Authentication Failure while performing the request
+                            Toast.makeText(getActivity(), "This error is case2", Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ServerError) {
+                            //Indicates that the server responded with a error response
+                            Toast.makeText(getActivity(), "This error is server error", Toast.LENGTH_LONG).show();
+                        } else if (error instanceof NetworkError) {
+                            //Indicates that there was network error while performing the request
+                            Toast.makeText(getActivity(), "This error is case4", Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ParseError) {
+                            // Indicates that the server response could not be parsed
+                            Toast.makeText(getActivity(), "This error is case5", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getActivity(), "An unknown error occurred.", Toast.LENGTH_SHORT).show();
+                        }
+                        progressBar.setVisibility(View.GONE);
+                    }
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("Authorization", "Token " + token);
+                return map;
+            }
+        };
+        requestQueue.add(jsonObjectRequest1);
+        jsonObjectRequest1.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            int totalCount, pastItemCount, visibleItemCount;
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Log.d(TAG, "onScrolled: out DX " + dx + " DY " + dy);
+                if (dy > 0) {
+                    //added this
+                    totalCount = layoutManager.getItemCount();
+                    pastItemCount = layoutManager.findFirstVisibleItemPosition();
+                    visibleItemCount = layoutManager.getChildCount();
+                    //Toast.makeText(getActivity(),"totalCount is "+ totalCount + "pastItemCount is " + pastItemCount + " visibleItemCount" + visibleItemCount,Toast.LENGTH_LONG).show();
+                    //if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
+                    if (((pastItemCount + visibleItemCount) >= totalCount) && (pastItemCount >= 0) && (totalCount >= PAGE_SIZE)) {
+                        count_entry++;
+                        //Toast.makeText(getActivity(),"cleared first if with count "+ count_entry,Toast.LENGTH_LONG).show();
+                        //if (!isNextBusy) {
+                        if(!nextPendingUrl.equals("null")){
+                            //Toast.makeText(getActivity(),"cleared next if",Toast.LENGTH_LONG).show();
+                            //pendingUrl.equals(nextPendingUrl);
+                            getNextData(nextPendingUrl);
+                            //Toast.makeText(getActivity(),"We reached end of page",Toast.LENGTH_LONG).show();
+                            //loadNextLocations();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void loadNextLocations() {
@@ -650,7 +893,7 @@ public class pending_fragment extends Fragment {
                         sections.add(new Section("date",mDdaName, mAdaName, mAddress,mId,mpkado,mpkdda,true,false,false));
                         Toast.makeText(getActivity(),"Added a section",Toast.LENGTH_LONG).show();
                     }
-                    } catch (JSONException e) {
+                } catch (JSONException e) {
                     Toast.makeText(getActivity(),"An exception occured",Toast.LENGTH_LONG).show();
                     Log.e(TAG, "onResponse: " + e.getLocalizedMessage());
                     e.printStackTrace();
@@ -664,8 +907,8 @@ public class pending_fragment extends Fragment {
 
 
 
-                    //recyclerViewAdater = new SectionAdapter(getActivity(),sections);
-                    //recyclerView.setAdapter(recyclerViewAdater);
+            //recyclerViewAdater = new SectionAdapter(getActivity(),sections);
+            //recyclerView.setAdapter(recyclerViewAdater);
 
                     /*
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -802,7 +1045,7 @@ public class pending_fragment extends Fragment {
             }
         };
         requestQueue.add(jsonObjectRequest2);
-         requestFinished(requestQueue);//this function is defined below
+        requestFinished(requestQueue);//this function is defined below
         jsonObjectRequest2.setRetryPolicy(new RetryPolicy() {
             @Override
             public int getCurrentTimeout() {

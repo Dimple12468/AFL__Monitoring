@@ -79,6 +79,8 @@ public class completed_fragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     boolean doubleBackToExitPressedOnce = false;
 
+    /*
+
     @Override
     public void setUserVisibleHint(boolean isVisibletoUser){
         super.setUserVisibleHint(isVisibletoUser);
@@ -87,6 +89,8 @@ public class completed_fragment extends Fragment {
             getData();
         }
     }
+
+     */
 
     @Nullable
     @Override
@@ -125,7 +129,9 @@ public class completed_fragment extends Fragment {
 
         SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         token = prefs.getString("token", "");
-        //getData();
+        getData();
+        recyclerViewAdater = new SectionAdapter(getActivity(),sections);
+        recyclerView.setAdapter(recyclerViewAdater);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int totalCount, pastItemCount, visibleItemCount;
 
@@ -221,8 +227,8 @@ public class completed_fragment extends Fragment {
                                 sections.add(new Section(mdate,mDdaName, mAdaName, mAddress,mId,mpkado,mpkdda,false,false,true));
                                 //Toast.makeText(getActivity(),sections.get(0).toString(),Toast.LENGTH_LONG).show();
                             }
-                            recyclerViewAdater = new SectionAdapter(getActivity(),sections);
-                            recyclerView.setAdapter(recyclerViewAdater);
+                            //recyclerViewAdater = new SectionAdapter(getActivity(),sections);
+                            //recyclerView.setAdapter(recyclerViewAdater);
                             spinner.setVisibility(View.GONE);
                             no_of_visits++;
                             /*
@@ -342,7 +348,7 @@ public class completed_fragment extends Fragment {
                         }
                         //Toast.makeText(getActivity(), "Check Your Internt Connection Please!", Toast.LENGTH_SHORT).show();
                     }
-                    }) {
+                }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
