@@ -264,6 +264,7 @@ public class DistrictStateFragment extends Fragment {
                         JSONObject pendingObject = pending_array.getJSONObject(i);
                         String start = pendingObject.getString("start");
                         Integer data = pendingObject.getInt("data");
+                        pending_total = pending_total + data;
                         yAxis1.add(new Entry(i,data));
                         xAxis.add(start);
                     }
@@ -273,6 +274,7 @@ public class DistrictStateFragment extends Fragment {
                         JSONObject completedObject = complete_array.getJSONObject(i);
                         String start = completedObject.getString("start");
                         Integer data = completedObject.getInt("data");
+                        completed_total = completed_total + data;
                         yAxis2.add(new Entry(i,data));
                     }
 
@@ -281,6 +283,7 @@ public class DistrictStateFragment extends Fragment {
                         JSONObject ongoingObject = ongoing_array.getJSONObject(i);
                         String start = ongoingObject.getString("start");
                         Integer data = ongoingObject.getInt("data");
+                        ongoing_total = ongoing_total + data;
                         yAxis3.add(new Entry(i,data));
                     }
 
