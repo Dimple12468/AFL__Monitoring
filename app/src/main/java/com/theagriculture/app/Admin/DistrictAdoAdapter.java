@@ -28,6 +28,7 @@ import com.theagriculture.app.Ado.ReviewTableRecycleAdapter;
 import com.theagriculture.app.R;
 import com.theagriculture.app.adapter.PendingAdapter;
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -36,6 +37,7 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
     ArrayList<String> mtextview1;
     ArrayList<String> mtextview2;
 
+    ArrayList<String> mtextview1_all_ado;
     ArrayList<String> mtextview1_all;
     public boolean mShowShimmer = true;
     Context mcontext;
@@ -59,9 +61,7 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
         this.mDdoNames = mDdoNames;
         this.mDistrictNames = mDistrictNames;
 
-        System.out.println("dimple in constructor 1");
-       // this.mtextview1_all = new ArrayList<>(mtextview1);
-     //   this.mtextview1_all = new ArrayList<>(mDdoNames);
+        //this.mtextview1_all_ado = new ArrayList<>(mtextview1);
     }
 
     public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2,
@@ -73,10 +73,7 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
         this.isDdoFragment = isDdoFragment;
         mPkList = pkList;
 
-        System.out.println("dimple in constructor 2");
         //this.mtextview1_all = new ArrayList<>(mtextview1);
-        this.mtextview1_all = new ArrayList<>(mtextview1);
-        System.out.println("during assigning this is we have" + mtextview1_all);
     }
 
     @NonNull
@@ -114,21 +111,30 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            ArrayList<String> filtered_list_ado = new ArrayList<>();
-            if (isDdoFragment) {
+            ArrayList<String> filtered_list_ado;
+            if (!isDdoFragment) {
+                filtered_list_ado = new ArrayList<>();
+                if (constraint.toString().isEmpty()) {
+                    filtered_list_ado.addAll(mtextview1_all_ado);
+                } else {
+                    for (String address_ddo : mtextview1_all_ado) {
+                        if (address_ddo.toLowerCase().contains(constraint.toString().toLowerCase().trim())) {
+                            filtered_list_ado.add(address_ddo);
+                        }//todo add no reults found
+                    }
+                }
+            }else {
+                filtered_list_ado = new ArrayList<>();
                 if (constraint.toString().isEmpty()) {
                     filtered_list_ado.addAll(mtextview1_all);
                 } else {
                     for (String address_ddo : mtextview1_all) {
-                        if (address_ddo.toLowerCase().contains(constraint.toString().toLowerCase())) {
+                        if (address_ddo.toLowerCase().contains(constraint.toString().toLowerCase().trim())) {
                             filtered_list_ado.add(address_ddo);
                         }
                     }
                 }
             }
-            System.out.println("dimple all: "+ mtextview1_all);
-            System.out.println("dimple not all: "+ mtextview1);
-            System.out.println("dimple ddo names: "+ mDdoNames);
 
             FilterResults filterResults_ddo = new FilterResults();
             filterResults_ddo.count = filtered_list_ado.size();
@@ -140,14 +146,27 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
 
-            //todo ddo fragment
-            if (isDdoFragment) {
+            if (!isDdoFragment) {
+                mtextview1.clear();
+                mtextview1.addAll((Collection<? extends String>) results.values);
+                notifyDataSetChanged();
+            }else {
                 mtextview1.clear();
                 mtextview1.addAll((Collection<? extends String>) results.values);
                 notifyDataSetChanged();
             }
         }
     };
+
+    public void show_suggestions(ArrayList<String> username) {
+
+        if (!isDdoFragment) {
+            this.mtextview1_all_ado = new ArrayList<>(username);
+        }
+        else {
+            this.mtextview1_all = new ArrayList<>(username);
+        }
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView tv1;
@@ -164,6 +183,7 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
             relativeLayout = itemView.findViewById(R.id.relativeLayout2);
             districtTextview = itemView.findViewById(R.id.district_info);
             imageView6 = itemView.findViewById(R.id.dropdown);
+
 
             imageView6.setOnClickListener(new View.OnClickListener() {
                 @Override

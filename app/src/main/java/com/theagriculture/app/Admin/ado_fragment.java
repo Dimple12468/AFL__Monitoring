@@ -79,7 +79,6 @@ public class ado_fragment extends Fragment {
     public ado_fragment() {
     }
 
-    //todo search in ado fragment
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_top_bar,menu);

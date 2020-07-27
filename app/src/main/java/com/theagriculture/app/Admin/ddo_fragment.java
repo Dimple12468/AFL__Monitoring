@@ -98,7 +98,6 @@ public class ddo_fragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 recyclerViewAdater.getFilter().filter(newText);
-                System.out.println("hello dimple i am here at position ddo_fragment");
                 return true;
             }
         });
@@ -140,104 +139,6 @@ public class ddo_fragment extends Fragment {
         Log.d(TAG, "onCreateView: " + token);
         getData();
 
-        /*
-        final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-
-
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mUrl, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONObject rootObject = new JSONObject(String.valueOf(response));
-                    nextUrl = rootObject.getString("next");
-                    Log.d(TAG, "onResponse: nextUrl " + nextUrl);
-                    JSONArray resultsArray = rootObject.getJSONArray("results");
-                    if(resultsArray.length()== 0){
-                        //recyclerViewAdater.mShowShimmer = false;
-                        recyclerViewAdater.notifyDataSetChanged();
-
-                        view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
-                        //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
-                    }
-                    for (int i = 0; i < resultsArray.length(); i++) {
-                        JSONObject singleObject = resultsArray.getJSONObject(i);
-                        username.add(singleObject.getString("name").toUpperCase());
-                        try {
-                            JSONObject districtObject = singleObject.getJSONObject("district");
-                            userinfo.add(districtObject.getString("district").toUpperCase());
-                        } catch (JSONException e) {
-                            userinfo.add("NOT ASSIGNED");
-                        }
-                        JSONObject authObject = singleObject.getJSONObject("auth_user");
-                        String pk = authObject.getString("pk");
-                        mPkList.add(pk);
-                        String id = singleObject.getString("id");
-                        mUserId.add(id);
-                    }
-                    Log.d(TAG, "onResponse: " + username);
-                    //recyclerViewAdater.mShowShimmer = false;
-                    recyclerViewAdater.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    Log.e(TAG, "onResponse: " + e.getLocalizedMessage());
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (error instanceof NoConnectionError)
-                    Toast.makeText(getActivity(), "Check Your Internt Connection Please!", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "onErrorResponse: " + error);
-            }
-        }) {
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("Authorization", "Token " + token);
-                return map;
-            }
-        };
-
-        requestQueue.add(jsonObjectRequest);
-        jsonObjectRequest.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
-        Rview.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                int totalCount, pastItemCount, visibleItemCount;
-                if (dy > 0) {
-                    totalCount = layoutManager.getItemCount();
-                    pastItemCount = layoutManager.findFirstVisibleItemPosition();
-                    visibleItemCount = layoutManager.getChildCount();
-                    if ((pastItemCount + visibleItemCount) >= totalCount) {
-                        Log.d(TAG, "onScrolled: " + nextUrl);
-                        if (!nextUrl.equals("null") && !isNextBusy)
-                            getNextDdos();
-                    }
-                }
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-
-         */
 
         return view;
     }
@@ -252,6 +153,7 @@ public class ddo_fragment extends Fragment {
                     nextUrl = rootObject.getString("next");
                     Log.d(TAG, "onResponse: nextUrl " + nextUrl);
                     JSONArray resultsArray = rootObject.getJSONArray("results");
+                    //recyclerViewAdater = new DistrictAdoAdapter(getActivity(), username, userinfo, mUserId, true, mPkList);
                     if(resultsArray.length()== 0){
                         //recyclerViewAdater.mShowShimmer = false;
                         recyclerViewAdater.notifyDataSetChanged();
@@ -277,7 +179,9 @@ public class ddo_fragment extends Fragment {
                     Log.d(TAG, "onResponse: " + username);
                     //recyclerViewAdater.mShowShimmer = false;
                     recyclerViewAdater.notifyDataSetChanged();
+                    recyclerViewAdater.show_suggestions(username);
                     spinner.setVisibility(View.GONE);
+
                 } catch (JSONException e) {
                     Toast.makeText(getActivity(),"An exception occured",Toast.LENGTH_LONG).show();
                     spinner.setVisibility(View.GONE);
