@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,14 +20,19 @@ import com.theagriculture.app.R;
 import com.theagriculture.app.RegistrationActivity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
-public class RecyclerViewAdapter_district extends RecyclerView.Adapter<RecyclerViewAdapter_district.DistrictCustomViewHolder> {
+public class RecyclerViewAdapter_district extends RecyclerView.Adapter<RecyclerViewAdapter_district.DistrictCustomViewHolder> implements Filterable {
     private Context mContext;
     private ArrayList<String> mDistrictNames;
+
+    private ArrayList<String> mDistrictNames_all;
 
     public RecyclerViewAdapter_district(Context mContext, ArrayList<String> mDistrictNames) {
         this.mContext = mContext;
         this.mDistrictNames = mDistrictNames;
+
+        this.mDistrictNames_all = new ArrayList<>(mDistrictNames);
     }
 
     @NonNull
@@ -51,7 +58,7 @@ public class RecyclerViewAdapter_district extends RecyclerView.Adapter<RecyclerV
     @Override
     public void onBindViewHolder(@NonNull final DistrictCustomViewHolder holder, int position) {
         if(position%2==0)
-            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.light_grey));
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.recycler_color));
             //holder.itemView.setBackgroundResource(R.color.district_background);
         else
             holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
@@ -69,6 +76,46 @@ public class RecyclerViewAdapter_district extends RecyclerView.Adapter<RecyclerV
         return position;
     }
 
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            String query = constraint.toString();
+
+            ArrayList<String> filtered_list_ado = new ArrayList<>();
+            if (constraint.toString().isEmpty()) {
+                filtered_list_ado.addAll(mDistrictNames_all);
+            } else {
+                for (String address_ado : mDistrictNames_all) {
+                    if (address_ado.toLowerCase().contains(constraint.toString().toLowerCase())){
+                        filtered_list_ado.add(address_ado);
+                    }
+                }
+            }
+            FilterResults filterResults_ado = new FilterResults();
+            filterResults_ado.count = filtered_list_ado.size();
+            filterResults_ado.values = filtered_list_ado;
+
+            return filterResults_ado;
+
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            mDistrictNames.clear();
+            mDistrictNames.addAll((Collection<? extends String>) results.values);
+            notifyDataSetChanged();
+
+        }
+
+    };
+
+
     public class DistrictCustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView textView;
         RelativeLayout itemLayout;
@@ -77,6 +124,8 @@ public class RecyclerViewAdapter_district extends RecyclerView.Adapter<RecyclerV
             itemView.setOnClickListener(this);//function to make onClick() valid
             textView = itemView.findViewById(R.id.dist);
             itemLayout = itemView.findViewById(R.id.dist_item);
+
+
         }
 
         @Override

@@ -5,9 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.theagriculture.app.R;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> /*implements Filterable*/ {
     /*
     List<String> items;
     public ItemAdapter(List<String> items) {
@@ -31,6 +34,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     ArrayList<String> mtextview1;
     ArrayList<String> mtextview2;
     ArrayList<String> mtextview3;
+    ArrayList<String> mtextview3_address;
     private ArrayList<String> mIds;
     private ArrayList<String> mpkado;
     private ArrayList<String> mpkdda;
@@ -51,6 +55,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         mpkado = ado_pk;
         mpkdda = dda_pk;
         this.mIds = mIds;
+
+        this.mtextview3_address = new ArrayList<>(mtextview3);
     }
 
 
@@ -85,6 +91,42 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         //return items.size();
         return  mtextview1.size();
     }
+
+    /*@Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            ArrayList<String> filtered_list = new ArrayList<>();
+            if (constraint.toString().isEmpty()){
+                filtered_list.addAll(mtextview3_address);
+            } else {
+                for (String list_address : mtextview3_address){
+                     if (list_address.toLowerCase().contains(constraint.toString().toLowerCase())){
+                         //todo here for search suggestions
+                         filtered_list.add(list_address);
+                     }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filtered_list;
+
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults filterResults) {
+            //todo
+            mtextview3.clear();
+            mtextview3.addAll((Collection<? extends String>) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };*/
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         //private TextView itemName;

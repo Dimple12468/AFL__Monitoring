@@ -3,11 +3,14 @@ package com.theagriculture.app.Admin.AdoDdoActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -28,11 +31,18 @@ public class AdoDdoActivityFragment extends Fragment {
     }
 
 
+   /* @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_top_bar,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }*/
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_ado_ddo_activity, container, false);
+        setHasOptionsMenu(true);
 
         Bundle bundle = this.getArguments();
         String id = bundle.get("Id").toString();

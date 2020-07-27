@@ -9,6 +9,9 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -75,6 +79,34 @@ public class ado_fragment extends Fragment {
     public ado_fragment() {
     }
 
+    //todo search in ado fragment
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_top_bar,menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search_in_title);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Search something");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // perform query here
+                //customadapter.getFilter().filter(query);
+                searchView.clearFocus();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                customadapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -92,89 +124,13 @@ public class ado_fragment extends Fragment {
         mDistrictNames = new ArrayList<>();
         mdistrictlist = new ArrayList<>();
 
+        setHasOptionsMenu(true);
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         token = preferences.getString("token", "");
 
         gridlayout = new GridLayoutManager(getActivity(), 1);
         adolist.setLayoutManager(gridlayout);
         getData();
-
-        /*
-        RequestQueue district_requestQueue = Volley.newRequestQueue(getActivity());
-
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, district_list_url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                if(response.length()==0)
-                    view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
-
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject singleObject = response.getJSONObject(i);
-                        if (singleObject.getString("district").equalsIgnoreCase("gurugram"))
-                            continue;
-                        mdistrictlist.add(singleObject.getString("district"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                Collections.sort(mdistrictlist);
-
-                customadapter = new RecyclerViewAdapter_district(getActivity(), mdistrictlist);
-                adolist.setAdapter(customadapter);
-                spinner.setVisibility(View.GONE);
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                spinner.setVisibility(View.GONE);
-                //Toast.makeText(getActivity(), "something went wrong", Toast.LENGTH_LONG).show();
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    //This indicates that the reuest has either time out or there is no connection
-                    //Toast.makeText(getActivity(), "This error is case1", Toast.LENGTH_LONG).show();
-                    final BottomSheetDialog mBottomDialogNotificationAction = new BottomSheetDialog(getActivity());
-                    View sheetView = getActivity().getLayoutInflater().inflate(R.layout.no_internet, null);
-                    mBottomDialogNotificationAction.setContentView(sheetView);
-                    mBottomDialogNotificationAction.show();
-
-                    // Remove default white color background
-                    FrameLayout bottomSheet = (FrameLayout) mBottomDialogNotificationAction.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                    //bottomSheet.setBackground(null);
-
-                    //TextView close = sheetView.findViewById(R.id.close);
-                    //for_location = (LinearLayout) sheetView.findViewById(R.id.for_location);
-
-                } else if (error instanceof AuthFailureError) {
-                    // Error indicating that there was an Authentication Failure while performing the request
-                    Toast.makeText(getActivity(), "This error is case2", Toast.LENGTH_LONG).show();
-                } else if (error instanceof ServerError) {
-                    //Indicates that the server responded with a error response
-                    Toast.makeText(getActivity(), "This error is case3", Toast.LENGTH_LONG).show();
-                } else if (error instanceof NetworkError) {
-                    //Indicates that there was network error while performing the request
-                    Toast.makeText(getActivity(), "This error is case4", Toast.LENGTH_LONG).show();
-                } else if (error instanceof ParseError) {
-                    // Indicates that the server response could not be parsed
-                    Toast.makeText(getActivity(), "This error is case5", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getActivity(), "An unknown error occurred.", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("Authorization", "Token " + token);
-                return map;
-            }
-        };
-
-        district_requestQueue.add(jsonArrayRequest);
-
-         */
 
         return view;
     }

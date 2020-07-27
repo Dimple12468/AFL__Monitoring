@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,11 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.theagriculture.app.R;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
-public class Count_Adapter extends RecyclerView.Adapter<Count_Adapter.MyviewHolder> {
+public class Count_Adapter extends RecyclerView.Adapter<Count_Adapter.MyviewHolder> implements Filterable {
 
     Context context;
     ArrayList<String> distlist;
+
+
+    ArrayList<String> distlist_all;
     ArrayList<Integer> pending;
     ArrayList<Integer> ongoing;
     ArrayList<Integer> completed;
@@ -30,7 +36,7 @@ public class Count_Adapter extends RecyclerView.Adapter<Count_Adapter.MyviewHold
         this.completed=completed;
         this.ongoing=ongoing;
 
-
+        this.distlist_all=new ArrayList<>(distlist);
     }
     @NonNull
     @Override
@@ -61,6 +67,41 @@ public class Count_Adapter extends RecyclerView.Adapter<Count_Adapter.MyviewHold
     public int getItemCount() {
         return distlist.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            ArrayList<String> filtered_list_distlist = new ArrayList<>();
+            if (constraint.toString().isEmpty()){
+                filtered_list_distlist.addAll(distlist_all);
+            } else {
+                for (String list_stat : distlist_all){
+                    if (list_stat.toLowerCase().contains(constraint.toString().toLowerCase())){
+                        filtered_list_distlist.add(list_stat);
+                    }
+                }
+            }
+
+            FilterResults filterResults_distlist = new FilterResults();
+            filterResults_distlist.count = filtered_list_distlist.size();
+            filterResults_distlist.values = filtered_list_distlist;
+            return filterResults_distlist;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            distlist.clear();
+            distlist.addAll((Collection<? extends String>) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public class MyviewHolder extends RecyclerView.ViewHolder {
 

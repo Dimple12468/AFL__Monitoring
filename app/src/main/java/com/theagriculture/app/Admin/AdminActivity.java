@@ -87,6 +87,8 @@ public class AdminActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
     private NavigationView nvDrawer;
 
+    private int fragment_id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,6 +210,7 @@ public class AdminActivity extends AppCompatActivity {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                    //fragment_id = item.getItemId();
                     switch (item.getItemId()) {
                         case R.id.adminshome:
                             InitializeFragment(mapFragmnt);
@@ -363,7 +366,7 @@ public class AdminActivity extends AppCompatActivity {
         return alert;
     }
     //function for top drop down menu
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_top_bar , menu);
@@ -384,6 +387,9 @@ public class AdminActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                System.out.println("dimple this is search place here");
+                //if (fragment_id==R.id.adminsado)
+
                 return false;
             }
         });
@@ -391,7 +397,7 @@ public class AdminActivity extends AppCompatActivity {
         //MenuItem action_done = menu.findItem(R.id.ic_file_upload);
         //menuIconColor(action_done, R.drawable.tab_color);
         return super.onCreateOptionsMenu(menu);
-    }
+    }*/
 
     /*public void menuIconColor(MenuItem menuItem, int color) {
         color = R.drawable.tab_color_new;

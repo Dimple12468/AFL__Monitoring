@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -27,11 +29,14 @@ import com.theagriculture.app.R;
 import com.theagriculture.app.adapter.PendingAdapter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
-public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder>  {
+public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> implements Filterable {
 
     ArrayList<String> mtextview1;
     ArrayList<String> mtextview2;
+
+    ArrayList<String> mtextview1_all;
     public boolean mShowShimmer = true;
     Context mcontext;
     private boolean isDdoFragment;
@@ -43,7 +48,8 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
     private String TAG = "RecyclerViewAdapter";
     private ImageButton imageView6;
 
-    public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2, ArrayList<String> mUserId, boolean isDdoFragment, ArrayList<String> mPkList, ArrayList<String> mDdoNames, ArrayList<String> mDistrictNames) {
+    public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2,
+                              ArrayList<String> mUserId, boolean isDdoFragment, ArrayList<String> mPkList, ArrayList<String> mDdoNames, ArrayList<String> mDistrictNames) {
         this.mtextview1 = mtextview1;
         this.mtextview2 = mtextview2;
         this.mcontext = mcontext;
@@ -52,6 +58,10 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
         this.mPkList = mPkList;
         this.mDdoNames = mDdoNames;
         this.mDistrictNames = mDistrictNames;
+
+        System.out.println("dimple in constructor 1");
+       // this.mtextview1_all = new ArrayList<>(mtextview1);
+     //   this.mtextview1_all = new ArrayList<>(mDdoNames);
     }
 
     public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2,
@@ -62,6 +72,11 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
         this.mcontext = mcontext;
         this.isDdoFragment = isDdoFragment;
         mPkList = pkList;
+
+        System.out.println("dimple in constructor 2");
+        //this.mtextview1_all = new ArrayList<>(mtextview1);
+        this.mtextview1_all = new ArrayList<>(mtextview1);
+        System.out.println("during assigning this is we have" + mtextview1_all);
     }
 
     @NonNull
@@ -89,6 +104,50 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
     public int getItemCount() {
         return  mtextview1.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            ArrayList<String> filtered_list_ado = new ArrayList<>();
+            if (isDdoFragment) {
+                if (constraint.toString().isEmpty()) {
+                    filtered_list_ado.addAll(mtextview1_all);
+                } else {
+                    for (String address_ddo : mtextview1_all) {
+                        if (address_ddo.toLowerCase().contains(constraint.toString().toLowerCase())) {
+                            filtered_list_ado.add(address_ddo);
+                        }
+                    }
+                }
+            }
+            System.out.println("dimple all: "+ mtextview1_all);
+            System.out.println("dimple not all: "+ mtextview1);
+            System.out.println("dimple ddo names: "+ mDdoNames);
+
+            FilterResults filterResults_ddo = new FilterResults();
+            filterResults_ddo.count = filtered_list_ado.size();
+            filterResults_ddo.values = filtered_list_ado;
+
+            return filterResults_ddo;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            //todo ddo fragment
+            if (isDdoFragment) {
+                mtextview1.clear();
+                mtextview1.addAll((Collection<? extends String>) results.values);
+                notifyDataSetChanged();
+            }
+        }
+    };
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView tv1;
