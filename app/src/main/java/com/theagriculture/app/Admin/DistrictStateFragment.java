@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -47,6 +48,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -71,6 +74,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -96,8 +100,8 @@ public class DistrictStateFragment extends Fragment {
     private String start_date;
     private String end_date;
 
-    private String start_date_set ="2019-01-01";
-    private String end_date_set = "2019-06-01";
+    private String start_date_set ;
+    private String end_date_set ;
     private int points;
     ProgressBar spinner;
 
@@ -131,6 +135,12 @@ public class DistrictStateFragment extends Fragment {
     String mURL;
 
     Spinner spin;
+    Legend legend;
+
+    int Color_arr[] = {Color.argb(1,31, 120, 180),
+            Color.argb(1,123, 38, 198),
+            Color.argb(1,178, 223, 138)};
+    String[] legend_name = {"Pending" , "Ongoing" ,"Completed"};
 
     public DistrictStateFragment() {
         // Required empty public constructor
@@ -154,6 +164,10 @@ public class DistrictStateFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (newText.equals("")) {
+                    //searchView.setQuery("", false);
+                    newText = newText.trim();
+                }
                 adapter.getFilter().filter(newText);
                 return true;
             }
@@ -181,7 +195,35 @@ public class DistrictStateFragment extends Fragment {
         lineChart = (LineChart)view.findViewById(R.id.lineChart);
         pierecycler = view.findViewById(R.id.pierecycler);
         pierecycler.setHasFixedSize(true);
+        lineChart.getDescription().setEnabled(false);
+        legend = lineChart.getLegend();
+        legend.setEnabled(true);
+        legend.setTextColor(Color.BLACK);
+        legend.setForm(Legend.LegendForm.SQUARE);
+        legend.setFormSize(15f);
 
+        LegendEntry[] legendEntry = new LegendEntry[3];
+        for (int i=0;i<legendEntry.length;i++)
+        {
+            LegendEntry entry = new LegendEntry();
+            entry.formColor = Color_arr[i];
+            entry.label = String.valueOf(legend_name[i]);
+            legendEntry[i] = entry;
+        }
+        legend.setCustom(legendEntry);
+
+        Calendar c = Calendar.getInstance();
+
+        final int day = c.get(Calendar.DAY_OF_MONTH);
+        final int month = c.get(Calendar.MONTH);
+        final int year = c.get(Calendar.YEAR);
+
+        final int day1 = c.get(Calendar.DAY_OF_MONTH);
+        final int month1 = c.get(Calendar.MONTH);
+        final int year1 = c.get(Calendar.YEAR);
+
+        start_date_set = year + "-" + (month ) + "-" + (day);
+        end_date_set = year1 + "-" + (month1 + 1) + "-" + (day1);
 
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         token = preferences.getString("token", "");
@@ -255,17 +297,22 @@ public class DistrictStateFragment extends Fragment {
 
         //plotting graph
 
-        MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
-        builder.setTheme(R.style.dist_stat_Theme);
-        final MaterialDatePicker<Pair<Long, Long>> materialDatePicker = builder.build();
-
+        // Setting date
         btndate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                materialDatePicker.show(getFragmentManager(), "date picker");
+                dateResolver();
             }
         });
 
+        return view;
+    }
+    public void dateResolver(){
+        // Material date picker
+        MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
+        builder.setTheme(R.style.dist_stat_Theme);
+        final MaterialDatePicker materialDatePicker = builder.build();
+        materialDatePicker.show(getFragmentManager(), "date picker");
         materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>() {
             @Override
             public void onPositiveButtonClick(Pair<Long, Long> selection) {
@@ -289,10 +336,7 @@ public class DistrictStateFragment extends Fragment {
             }
         });
 
-
-        return view;
     }
-
     public void getGraph(final String url, final String state){
         spinner.setVisibility(View.VISIBLE);
         final ArrayList<String> xAxis = new ArrayList<>();//for x-label
@@ -440,21 +484,35 @@ public class DistrictStateFragment extends Fragment {
 
                     LineDataSet lineDataSet1 = new LineDataSet(yAxis1,"Pending");
                     lineDataSet1.setDrawCircles(false);
-                    lineDataSet1.setColor(R.color.pending_color);
+
+                    //lineDataSet1.setColor(R.color.pending_color);
+                    lineDataSet1.setColor(Color.argb(1,31, 120, 180));
                     lineDataSet1.setDrawFilled(true);
-                    lineDataSet1.setFillColor(R.color.pending_color);
+                    //lineDataSet1.setFillColor(R.color.pending_color);
+                    lineDataSet1.setFillColor(Color.argb(1,31, 120, 180));
+                    //rgba(31, 120, 180, 1)
 
                     LineDataSet lineDataSet2 = new LineDataSet(yAxis2,"Completed");
                     lineDataSet2.setDrawCircles(false);
-                    lineDataSet2.setColor(R.color.completed_color);
+//                    lineDataSet2.setColor(R.color.completed_color);
+                    lineDataSet2.setColor(Color.argb(1,178, 223, 138));
                     lineDataSet2.setDrawFilled(true);
-                    lineDataSet2.setFillColor(R.color.completed_color);
+                   // lineDataSet2.setFillColor(R.color.completed_color);
+                    lineDataSet2.setFillColor(Color.argb(1,178, 223, 138));
+                    //lineDataSet1.setFillColor(Color.BLACK);
+//rgba(123, 38, 198, 1)
 
                     LineDataSet lineDataSet3 = new LineDataSet(yAxis3,"Ongoing");
                     lineDataSet3.setDrawCircles(false);
-                    lineDataSet3.setColor(R.color.ongoing_color);
+                   // lineDataSet3.setColor(R.color.ongoing_color);
+                    lineDataSet3.setColor(Color.argb(1,123, 38, 198));
                     lineDataSet3.setDrawFilled(true);
-                    lineDataSet3.setFillColor(R.color.ongoing_color);
+                    //lineDataSet3.setFillColor(R.color.ongoing_color);
+                    lineDataSet3.setFillColor(Color.argb(1,123, 38, 198));
+
+//rgba(178, 223, 138, 1)
+                    //set2.setHighLightColor(Color.rgb(244, 117, 117));
+
 
 
 

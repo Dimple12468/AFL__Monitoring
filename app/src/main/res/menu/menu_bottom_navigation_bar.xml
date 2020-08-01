@@ -27,7 +27,7 @@
 
     <item
         android:id="@+id/adminsdistrict_state"
-        android:title="District Stats"
+        android:title="Stats"
         android:orderInCategory="5"
         android:icon="@drawable/ic_show_chart_black_24dp"
         />

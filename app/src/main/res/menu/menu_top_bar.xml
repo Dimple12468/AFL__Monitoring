@@ -8,7 +8,14 @@
         android:visible="true"
         android:title="search"
         app:showAsAction="always|collapseActionView"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
+    <item
+        android:id="@+id/filter"
+        android:title="search filter"
+        android:icon="@drawable/search_filter"
+        android:visible="false"
+        app:showAsAction="always|collapseActionView" />
 
 </menu>
 

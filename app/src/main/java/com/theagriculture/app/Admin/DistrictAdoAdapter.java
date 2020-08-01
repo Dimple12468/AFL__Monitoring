@@ -49,6 +49,7 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
     private boolean isBusy = false;
     private String TAG = "RecyclerViewAdapter";
     private ImageButton imageView6;
+    private TextView tv3;
 
     public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2,
                               ArrayList<String> mUserId, boolean isDdoFragment, ArrayList<String> mPkList, ArrayList<String> mDdoNames, ArrayList<String> mDistrictNames) {
@@ -120,7 +121,7 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
                     for (String address_ddo : mtextview1_all_ado) {
                         if (address_ddo.toLowerCase().contains(constraint.toString().toLowerCase().trim())) {
                             filtered_list_ado.add(address_ddo);
-                        }//todo add no reults found
+                        }//todo add message for no reults found
                     }
                 }
             }else {
@@ -174,6 +175,7 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
         RelativeLayout relativeLayout;
         TextView districtTextview;
         ImageButton imageView6;
+       // tv3 = itemView.findViewById(R.id.search_notfound);
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -183,6 +185,7 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
             relativeLayout = itemView.findViewById(R.id.relativeLayout2);
             districtTextview = itemView.findViewById(R.id.district_info);
             imageView6 = itemView.findViewById(R.id.dropdown);
+            //tv3 = itemView.findViewById(R.id.search_notfound);
 
 
             imageView6.setOnClickListener(new View.OnClickListener() {

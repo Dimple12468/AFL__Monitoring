@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Admin.Filter_search"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp">
+
+        <LinearLayout
+            android:id="@+id/ll_Status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/status_filter"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:textSize="15sp"
+                android:textColor="#707070"
+                android:text="Status"
+                android:fontFamily="@font/inter" />
+
+            <Spinner
+                android:id="@+id/status_filter_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+                <!--android:prompt="Any"
+                android:entries="@array/status"-->
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_below="@+id/ll_Status"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:id="@+id/date_filter"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:textSize="15sp"
+                android:textColor="#707070"
+                android:text="Date"
+                android:fontFamily="@font/inter" />
+
+            <Spinner
+                android:id="@+id/date_filter_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <!--android:entries="@array/date"-->
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_below="@+id/ll_date"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:id="@+id/state_filter"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:textSize="15sp"
+                android:textColor="#707070"
+                android:text="State"
+                android:fontFamily="@font/inter" />
+
+            <Spinner
+                android:id="@+id/state_filter_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_district"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_below="@+id/ll_state"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:id="@+id/district_filter"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:textSize="15sp"
+                android:textColor="#707070"
+                android:text="District"
+                android:fontFamily="@font/inter" />
+
+            <Spinner
+                android:id="@+id/district_filter_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_village"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_below="@+id/ll_district"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:id="@+id/village_filter"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:textSize="15sp"
+                android:textColor="#707070"
+                android:text="Village"
+                android:fontFamily="@font/inter"/>
+
+            <Spinner
+                android:id="@+id/village_filter_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

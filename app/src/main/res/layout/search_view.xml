@@ -25,7 +25,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:queryBackground="@color/transparent"
         app:queryHint="Search..."
-        tools:layout_editor_absoluteX="0dp" >
+        tools:layout_editor_absoluteX="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <!--ImageButton
             android:id="@+id/imageButton2"
@@ -34,6 +36,15 @@
             android:layout_marginTop="60dp"
             app:srcCompat="@drawable/sort_search" /-->
     </androidx.appcompat.widget.SearchView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/state_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_view"/>
 
     <!--/RelativeLayout-->
 

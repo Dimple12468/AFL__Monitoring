@@ -96,6 +96,10 @@ public class PendingDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pending_details, container, false);
+        //AppCompatActivity appCompatActivity = new AppCompatActivity();
+        //appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        //setHasOptionsMenu(true);
+
 
         Bundle bundle = this.getArguments();
         if(bundle!=null) {

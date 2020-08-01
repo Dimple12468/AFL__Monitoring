@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -90,6 +91,7 @@ public class AdoDdoCompleted extends Fragment {
         super.setUserVisibleHint(isVisibletoUser);
         if(isVisibletoUser && no_of_visits==0) {
             isVisible = true;
+            System.out.println("DIMPLE IN OVERRIDING FUNCTION OF ADODDOCOMPLETED"+mUrl);
             getData(mUrl);
             //adapter.notifyDataSetChanged();
         }
@@ -170,7 +172,12 @@ public class AdoDdoCompleted extends Fragment {
                             if(resultsArray.length()== 0){
                                 //adapter.mshowshimmer = false;
                                 adapter.notifyDataSetChanged();
-                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
+                                System.out.println("DIMPLE NOTHING TO SHOW IN ADODDOCOMPLETED"+url);
+                                System.out.println("dimple in adoddocompleted"+url);
+                                //todo image here
+                                view.findViewById(R.id.for_hide).setVisibility(View.GONE);
+                                view.findViewById(R.id.for_show).setVisibility(View.VISIBLE);
+                                //view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
                                 //work  view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
                                 //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                             }
@@ -185,6 +192,8 @@ public class AdoDdoCompleted extends Fragment {
                                         mAdoNames.add("Not Assigned");
                                     }
                                 }
+                                System.out.println("DIMPLE SOMETHING TO SHOW IN ADODDOCOMPLETED"+url);
+
                                 String id = singleObject.getString("id");
                                 mIds.add(id);
                                 String locName = singleObject.getString("village_name");
@@ -312,8 +321,9 @@ public class AdoDdoCompleted extends Fragment {
                                 if(resultsArray.length()== 0){
                                     //adapter.mshowshimmer = false;
                                     adapter.notifyDataSetChanged();
-
-                                    view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
+                                    Log.d("yo men im here " , url);
+                                    System.out.println("DIMPLE WE ARE IN LOADNEXTLOCATIONS SHOW IN ADODDOCOMPLETED"+url);
+                                    view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_group_217));
                                     //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                                 }
                                 for (int i = 0; i < resultsArray.length(); i++) {
@@ -327,6 +337,8 @@ public class AdoDdoCompleted extends Fragment {
                                             mAdoNames.add("Not Assigned");
                                         }
                                     }
+                                    System.out.println("DIMPLE WE ARE IN LOADNEXTLOCATIONS AND SOMETHING TO SHOW IN ADODDOCOMPLETED"+url);
+
                                     String id = singleObject.getString("id");
                                     mIds.add(id);
                                     String locName = singleObject.getString("village_name");

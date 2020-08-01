@@ -168,7 +168,7 @@ public class AdoDdoOngoing extends Fragment {
                                 //adapter.mshowshimmer = false;
                                 adapter.notifyDataSetChanged();
                                 Log.d(TAG, "onResponse: yo men im here " + view);
-                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
+                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_group_217));
                             }
                             for (int i = 0; i < resultsArray.length(); i++) {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
@@ -292,7 +292,7 @@ public class AdoDdoOngoing extends Fragment {
         queue.add(jsonObjectRequest);
     }
 
-    private void loadNextLocations(String url) {
+    private void loadNextLocations(final String url) {
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         if (!url.isEmpty()) {
             progressBar.setVisibility(View.VISIBLE);
@@ -307,7 +307,9 @@ public class AdoDdoOngoing extends Fragment {
                                     //adapter.mshowshimmer = false;
                                     adapter.notifyDataSetChanged();
 
-                                    view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
+                                    System.out.println("dimple in adoddoongoing"+url);
+                                    //todo image here
+                                    //view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
                                     //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                                 }
                                 for (int i = 0; i < resultsArray.length(); i++) {

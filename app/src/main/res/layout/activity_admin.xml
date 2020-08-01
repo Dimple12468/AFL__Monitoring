@@ -26,7 +26,7 @@
 
         <include
             layout="@layout/app_bar_admin"
-            android:id="@+id/app__bar"/>
+            android:id="@+id/app__bar" />
 
         <FrameLayout
             android:id="@+id/frameLayout"

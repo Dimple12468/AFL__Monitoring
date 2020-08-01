@@ -13,7 +13,8 @@
         android:text="Yamunagar"
         android:textAllCaps="false"
         android:textColor="#000000"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:paddingLeft="5dp"/>
     <TextView
         android:layout_width="70sp"
         android:layout_height="22sp"

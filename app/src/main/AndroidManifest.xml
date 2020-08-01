@@ -27,7 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Admin.no_internet"></activity>
+        <activity android:name=".Admin.Filter_search"></activity>
+        <activity android:name=".Admin.no_internet" />
         <activity android:name=".Admin.adoListofDistrict" />
         <activity android:name=".Admin.DownloadReportActivity" />
         <activity android:name=".ForgetPasswordActivity" />

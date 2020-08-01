@@ -137,6 +137,7 @@ public class AdoDdoPending extends Fragment {
             role = "ado";
             String mUrlPending = "http://18.224.202.135/api/admin/" + role + "/" + mDdoId + "/pending";
             Log.d("url", "onCreateView: pending" + mUrlPending);
+            System.out.println("DIMPLE IN ADODDOPENDING"+mUrlPending);
             getData(mUrlPending); //just passed true and Set it accordingly in the function called
             //mUrl = mUrlPending;
             //mUrl.equals(mUrlPending);
@@ -165,8 +166,9 @@ public class AdoDdoPending extends Fragment {
                             if (!isDdo && resultsArray.length() == 0) {
                                // adapter.mshowshimmer = false;
                                 adapter.notifyDataSetChanged();
-                                Log.d(TAG, "onResponse: yo men im here " + view);
-                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
+                                Log.d(TAG, "onResponse: see here.... " + view);
+
+                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_group_217));
                             }
                             for (int i = 0; i < resultsArray.length(); i++) {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
@@ -321,7 +323,9 @@ public class AdoDdoPending extends Fragment {
                                 //adapter.mshowshimmer = false;
                                 adapter.notifyDataSetChanged();
 
-                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
+                                System.out.println("dimple in adoddopending"+url);
+                                //todo image here
+                                //view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
                                 //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                             }
                             Log.d(TAG, "onResponse: "+resultsArray.length());

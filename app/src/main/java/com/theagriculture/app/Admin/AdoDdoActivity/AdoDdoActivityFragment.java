@@ -71,6 +71,7 @@ public class AdoDdoActivityFragment extends Fragment {
 
         //adapter = new AdoDdoActivityPagerAdapter(getActivity().getSupportFragmentManager(), tabCount);
         adapter = new AdoDdoActivityPagerAdapter(getChildFragmentManager(), tabCount);
+        System.out.println("dimple_in_adoddoactivityfragment"+ id + isDdo);
         adapter.addFragment(new AdoDdoPending(id, isDdo));
         if (isDdo)
             adapter.addFragment(new AdoDdoOngoing(id, isDdo));

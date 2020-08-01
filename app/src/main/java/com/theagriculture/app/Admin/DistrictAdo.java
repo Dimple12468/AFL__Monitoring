@@ -109,6 +109,11 @@ public class DistrictAdo extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (newText.equals("")) {
+                    //searchView.setQuery("", false);
+                    newText = newText.trim();
+
+                }
                 recyclerViewAdater.getFilter().filter(newText);
                 return true;
             }
@@ -345,7 +350,9 @@ public class DistrictAdo extends Fragment {
                     if(resultsArray.length()== 0){
                         //recyclerViewAdater.mShowShimmer = false;
                         recyclerViewAdater.notifyDataSetChanged();
-                        relativeLayout.setBackground(getResources().getDrawable(R.drawable.nothing_clipboard));
+                        //todo add image
+                        System.out.println("dimple in districtado nothing "+ ado_list);
+                        //relativeLayout.setBackground(getResources().getDrawable(R.drawable.nothing_clipboard));
                         //relativeLayout.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                     }
                     for (int i = 0; i < resultsArray.length(); i++) {

@@ -82,6 +82,7 @@ public class AdminActivity extends AppCompatActivity {
     private count_fragment countFragment;
     private DistrictStateFragment districtStateFragment;
     private PrivacyPolicy privacyPolicy;
+    TextView title_top;
 
     //for drawer layout
     private DrawerLayout mDrawer;
@@ -97,6 +98,7 @@ public class AdminActivity extends AppCompatActivity {
 
         navigation = findViewById(R.id.navigation);
         frameLayout = findViewById(R.id.frameLayout);
+        title_top = findViewById(R.id.app_name);
 
         mapFragmnt = new map_fragemnt();
         locationFragment = new location_fragment();
@@ -213,21 +215,27 @@ public class AdminActivity extends AppCompatActivity {
                     //fragment_id = item.getItemId();
                     switch (item.getItemId()) {
                         case R.id.adminshome:
+                            title_top.setText("AFL Monitoring");
                             InitializeFragment(mapFragmnt);
                             return true;
                         case R.id.adminslocation:
+                            title_top.setText("Locations");
                             InitializeFragment(locationFragment);
                             return true;
                         case R.id.adminsado:
+                            title_top.setText("ADO");
                             InitializeFragment(adoFragment);
                             return true;
                         case R.id.adminsdda:
+                            title_top.setText("DDA");
                             InitializeFragment(ddoFragment);
                             return true;
                         case R.id.adminsdistrict_state:
+                            title_top.setText("District Stats");
                             InitializeFragment(districtStateFragment);
                             return true;
                         default:
+                            title_top.setText("AFL Monitoring");
                             return false;
                     }
                 }

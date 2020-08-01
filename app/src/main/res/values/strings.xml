@@ -45,4 +45,20 @@
     <string name="signup_ado"><u>Sign Up as ADO</u></string>
     <string name="signup_dda"><u>Sign Up as DDA</u></string>
     <string name="log_in">Log In</string>
+    
+    <string-array name="status">
+        <item>Active</item>
+        <item>Inactive</item>
+    </string-array>
+
+    <string-array name="date">
+        <item>Any</item>
+        <item>Last Hour</item>
+        <item>Today</item>
+        <item>This Week</item>
+        <item>Last Week</item>
+        <item>This Month</item>
+        <item>Custom</item>
+    </string-array>
+
 </resources>

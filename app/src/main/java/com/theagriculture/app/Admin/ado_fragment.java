@@ -2,6 +2,7 @@ package com.theagriculture.app.Admin;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,15 +15,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AlertDialogLayout;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +47,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.snackbar.Snackbar;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -51,7 +59,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ado_fragment extends Fragment {
+public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelectedListener*/{
     private ArrayList<String> username;
     private ArrayList<String> userinfo;
     private ArrayList<String> mUserId;
@@ -75,6 +83,9 @@ public class ado_fragment extends Fragment {
     private RecyclerViewAdapter_district customadapter;
     ProgressBar spinner;
 
+    MenuItem searchItem;
+    MenuItem searchItem_filter;
+
 
     public ado_fragment() {
     }
@@ -83,9 +94,24 @@ public class ado_fragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_top_bar,menu);
 
-        MenuItem searchItem = menu.findItem(R.id.search_in_title);
+        searchItem = menu.findItem(R.id.search_in_title);
+        searchItem_filter = menu.findItem(R.id.filter);
         final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Search something");
+
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                searchItem_filter.setVisible(true);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                searchItem_filter.setVisible(false);
+                return true;
+            }
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -98,13 +124,204 @@ public class ado_fragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (newText.equals("")) {
+                    //searchView.setQuery("", false);
+                    newText = newText.trim();
+
+                }
                 customadapter.getFilter().filter(newText);
                 return true;
             }
         });
+        searchItem_filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                alert_filter_dialog();
+                return true;
+            }
+
+
+        });
+
+
+       // MenuItemCompat.setOn
+        /*searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                //searchItem_filter.setVisible(false);
+               // if (getSupportActionBar().setDisplayHomeAsUpEnabled(true))
+
+
+                searchItem_filter.setVisible(false);
+                dialog.invalidateOptionsMenu();
+                return false;
+            }
+        });*/
 
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+    private void alert_filter_dialog() {
+        LayoutInflater li = LayoutInflater.from(getActivity());
+        final View promptsView = li.inflate(R.layout.activity_filter_search, null);
+
+        //Create views for spinners here
+        Spinner sp1 = promptsView.findViewById(R.id.status_filter_spinner);
+        Spinner sp2 = promptsView.findViewById(R.id.date_filter_spinner);
+        Spinner sp3 = promptsView.findViewById(R.id.state_filter_spinner);
+        Spinner sp4 = promptsView.findViewById(R.id.district_filter_spinner);
+        Spinner sp5 = promptsView.findViewById(R.id.village_filter_spinner);
+
+        String[] status = getResources().getStringArray(R.array.status);
+        String[] date = getResources().getStringArray(R.array.date);
+        String[] state = { "Any" };
+        String[] district = { "Any" };
+        String[] village = { "Any" };
+
+        ArrayAdapter<String> status_adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,status);
+        status_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp1.setAdapter(status_adapter);
+        //sp1.setOnItemSelectedListener(this);
+
+        sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                /*String state = null;
+                if(position==0)
+                    state = "list1";
+                if(position==1)
+                    state = "list2 dimple";
+                Snackbar.make(promptsView,state,Snackbar.LENGTH_SHORT).show();
+                System.out.println("Dimple I am here see here");*/
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ArrayAdapter<String> date_adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,date);
+        date_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp2.setAdapter(date_adapter);
+        sp2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ArrayAdapter<String> state_adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,state);
+        state_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp3.setAdapter(state_adapter);
+        sp3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Intent intent = new Intent(this,ddo_fragment.class);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ArrayAdapter<String> district_adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,district);
+        district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp4.setAdapter(district_adapter);
+        sp4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if (R.id.parent == R.id.district_filter_spinner) {
+                    LayoutInflater li_dist = LayoutInflater.from(getActivity());
+                    final View dist = li_dist.inflate(R.layout.search_view, null);
+                    final android.app.AlertDialog.Builder alertDialogBuilder_dist = new android.app.AlertDialog.Builder(getActivity());
+                    alertDialogBuilder_dist.setTitle("Filter Search");
+                    alertDialogBuilder_dist.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,
+                                            int which) {
+                            Toast.makeText(getActivity(), "Select is clicked", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    alertDialogBuilder_dist.setNegativeButton("Reset", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(getActivity(), "Reset is clicked", Toast.LENGTH_LONG).show();
+                            //alertDialogBuilder.setCancelable(true);
+                        }
+                    });
+                    alertDialogBuilder_dist.setView(dist);
+                    alertDialogBuilder_dist.setCancelable(true);
+                    AlertDialog alertDialog_dist = alertDialogBuilder_dist.create();
+                    alertDialog_dist.show();
+
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ArrayAdapter<String> village_adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,village);
+        village_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp5.setAdapter(village_adapter);
+        sp5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+        final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setTitle("Filter Search");
+        alertDialogBuilder.setPositiveButton("Apply",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,
+                                int which) {
+                Toast.makeText(getActivity(), "Apply is clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+               // Toast.makeText(getActivity(),"cancel is clicked",Toast.LENGTH_LONG).show();
+                alertDialogBuilder.setCancelable(true);
+            }
+        });
+        alertDialogBuilder.setView(promptsView);
+        alertDialogBuilder.setCancelable(true);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.black));
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.black));
+
+    }
+
+   /* @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (item.getItemId()){
+            case R.id.search_in_title:
+                searchItem_filter.setVisible(true);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }*/
+
 
     @Nullable
     @Override
@@ -124,6 +341,7 @@ public class ado_fragment extends Fragment {
         mdistrictlist = new ArrayList<>();
 
         setHasOptionsMenu(true);
+
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         token = preferences.getString("token", "");
 
@@ -134,6 +352,7 @@ public class ado_fragment extends Fragment {
         return view;
     }
 
+
     public void getData(){
         RequestQueue district_requestQueue = Volley.newRequestQueue(getActivity());
 
@@ -141,7 +360,9 @@ public class ado_fragment extends Fragment {
             @Override
             public void onResponse(JSONArray response) {
                 if(response.length()==0)
-                    view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
+                    //todo add image
+                    System.out.println("dimple in ado_fragment nothing "+ district_list_url);
+                // view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
 
                 for (int i = 0; i < response.length(); i++) {
                     try {
@@ -255,5 +476,32 @@ public class ado_fragment extends Fragment {
 
     }
 
+   /* @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Spinner spinner1 = (Spinner)parent;
+        Spinner spinner2 = (Spinner)parent;
+        int spinner_id = parent.getId();
+       /* switch (spinner_id)
+        {
+            case R.id.status_filter_spinner:
+                Toast.makeText(getActivity(), "hello in status", Toast.LENGTH_SHORT).show();
+            case R.id.date_filter_spinner:
+                Toast.makeText(getActivity(), "hello in date", Toast.LENGTH_SHORT).show();
+            case R.id.state_filter_spinner:
+                Toast.makeText(getActivity(), "hello in state", Toast.LENGTH_SHORT).show();
+            case R.id.district_filter_spinner:
+                Toast.makeText(getActivity(), "hello in district", Toast.LENGTH_SHORT).show();
+            case R.id.village_filter_spinner:
+                Toast.makeText(getActivity(), "hello in village", Toast.LENGTH_SHORT).show();
+        }
+       if (spinner1.getId() == R.id.district_filter_spinner){
+
+       }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }*/
 }
 

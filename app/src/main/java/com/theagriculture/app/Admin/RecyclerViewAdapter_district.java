@@ -91,7 +91,7 @@ public class RecyclerViewAdapter_district extends RecyclerView.Adapter<RecyclerV
                 filtered_list_ado.addAll(mDistrictNames_all);
             } else {
                 for (String address_ado : mDistrictNames_all) {
-                    if (address_ado.toLowerCase().contains(constraint.toString().toLowerCase())){
+                    if (address_ado.toLowerCase().contains(constraint.toString().toLowerCase().trim())){
                         filtered_list_ado.add(address_ado);
                     }//todo add no reults found
                 }

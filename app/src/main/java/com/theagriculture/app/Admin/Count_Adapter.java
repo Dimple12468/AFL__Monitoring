@@ -82,7 +82,7 @@ public class Count_Adapter extends RecyclerView.Adapter<Count_Adapter.MyviewHold
                 filtered_list_distlist.addAll(distlist_all);
             } else {
                 for (String list_stat : distlist_all){
-                    if (list_stat.toLowerCase().contains(constraint.toString().toLowerCase())){
+                    if (list_stat.toLowerCase().contains(constraint.toString().toLowerCase().trim())){
                         filtered_list_distlist.add(list_stat);
                     }
                 }
