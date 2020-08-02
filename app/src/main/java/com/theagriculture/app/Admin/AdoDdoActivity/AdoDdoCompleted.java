@@ -4,6 +4,9 @@ package com.theagriculture.app.Admin.AdoDdoActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -175,9 +179,18 @@ public class AdoDdoCompleted extends Fragment {
                                 System.out.println("DIMPLE NOTHING TO SHOW IN ADODDOCOMPLETED"+url);
                                 System.out.println("dimple in adoddocompleted"+url);
                                 //todo image here
-                                view.findViewById(R.id.for_hide).setVisibility(View.GONE);
-                                view.findViewById(R.id.for_show).setVisibility(View.VISIBLE);
-                                //view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
+                                //view.findViewById(R.id.refreshpull5).setVisibility(View.GONE);
+                                //view.findViewById(R.id.for_show).setVisibility(View.VISIBLE);
+                                //view.setMinimumHeight(40);
+                                //view.setMinimumWidth(40);
+                                /*ImageView mainImage = (ImageView) view.findViewById(R.id.dimple);
+                                mainImage.setImageResource(R.drawable.nothing_toshow);
+                                mainImage.setVisibility(View.VISIBLE);
+                                mainImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);*/
+                                //Drawable im = getResources().getDrawable(R.drawable.nothing_toshow);
+                                //Drawable im_nothing = resize(im);
+                                //view.setBackground();
+                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_toshow));
                                 //work  view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
                                 //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                             }
@@ -433,5 +446,11 @@ public class AdoDdoCompleted extends Fragment {
             }
         });
 
+    }
+
+    private Drawable resize(Drawable image) {
+        Bitmap b = ((BitmapDrawable)image).getBitmap();
+        Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 50, 50, false);
+        return new BitmapDrawable(getResources(), bitmapResized);
     }
 }

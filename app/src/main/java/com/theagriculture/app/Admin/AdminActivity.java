@@ -232,6 +232,7 @@ public class AdminActivity extends AppCompatActivity {
                             return true;
                         case R.id.adminsdistrict_state:
                             title_top.setText("District Stats");
+
                             InitializeFragment(districtStateFragment);
                             return true;
                         default:
@@ -249,6 +250,7 @@ public class AdminActivity extends AppCompatActivity {
     //function to change fragment
 
     public void InitializeFragment(Fragment fragment) {
+
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         //fragmentTransaction.addToBackStack(null);//adds to stack but doesnot update bottom navigation

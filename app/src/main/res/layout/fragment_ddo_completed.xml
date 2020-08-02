@@ -42,15 +42,26 @@
         android:layout_height="match_parent"
         android:id="@+id/for_show"
         android:gravity="center"
+        android:layout_margin="150dp"
+        android:background="@color/white"
         android:visibility="gone">
-        <ImageView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_group_217"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
+            android:layout_margin="100dp">
+
+            <ImageView
+                android:id="@+id/dimple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                app:srcCompat="@drawable/for_nothing_data"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"/>
+
+        </LinearLayout>
+
     </RelativeLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

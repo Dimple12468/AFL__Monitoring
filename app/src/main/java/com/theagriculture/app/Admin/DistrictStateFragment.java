@@ -137,6 +137,9 @@ public class DistrictStateFragment extends Fragment {
     Spinner spin;
     Legend legend;
 
+    /*int Color_arr[] = {Color.argb(1,31, 120, 180),
+            Color.argb(1,123, 38, 198),
+            Color.argb(1,178, 223, 138)};*/
     int Color_arr[] = {Color.argb(1,31, 120, 180),
             Color.argb(1,123, 38, 198),
             Color.argb(1,178, 223, 138)};
@@ -175,13 +178,17 @@ public class DistrictStateFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+       // MyFragment myFragment = (MyFragment)getFragmentManager().findFragmentByTag("MY_FRAGMENT");
 
-        //getContext().getTheme().applyStyle(R.style.dist_stat_Theme, true);
+
+        //getContext().getTheme().applyStyle(R.style.calendar_theme, true);
         View view = inflater.inflate(R.layout.fragment_district_state, container, false);
         setHasOptionsMenu(true);
 
@@ -196,11 +203,13 @@ public class DistrictStateFragment extends Fragment {
         pierecycler = view.findViewById(R.id.pierecycler);
         pierecycler.setHasFixedSize(true);
         lineChart.getDescription().setEnabled(false);
+
         legend = lineChart.getLegend();
         legend.setEnabled(true);
         legend.setTextColor(Color.BLACK);
         legend.setForm(Legend.LegendForm.SQUARE);
-        legend.setFormSize(15f);
+        legend.setFormSize(10);
+        lineChart.invalidate();
 
         LegendEntry[] legendEntry = new LegendEntry[3];
         for (int i=0;i<legendEntry.length;i++)
@@ -312,6 +321,8 @@ public class DistrictStateFragment extends Fragment {
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
         builder.setTheme(R.style.dist_stat_Theme);
         final MaterialDatePicker materialDatePicker = builder.build();
+        //builder.setTheme(R.style.calendar_theme);
+        //final MaterialDatePicker<Pair<Long, Long>> materialDatePicker = builder.build();
         materialDatePicker.show(getFragmentManager(), "date picker");
         materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>() {
             @Override
@@ -387,29 +398,6 @@ public class DistrictStateFragment extends Fragment {
                         yAxis3.add(new Entry(i,data));
                     }
 
-                    /*
-                    JSONObject resultsObject = response.getJSONObject("results");
-                    Toast.makeText(getActivity(),resultsObject.toString(),Toast.LENGTH_LONG).show();
-                    Iterator<String> itr = resultsObject.keys();
-                    while(itr.hasNext())
-                    {
-                        String place = itr.next();
-                        Object districtObject = resultsObject.get(place);
-                        Log.d("Logs", "onResponse: place" + place + "object " + districtObject);
-                        int pendingCount = ((JSONObject)districtObject).getInt("pending");
-                        int ongoingCount = ((JSONObject)districtObject).getInt("ongoing");
-                        int completedCount = ((JSONObject)districtObject).getInt("completed");
-                        distlist.add(place);
-                        pending.add(pendingCount);
-                        ongoing.add(ongoingCount);
-                        completed.add(completedCount);
-
-                        pending_total = pending_total + pendingCount;
-                        ongoing_total = ongoing_total + ongoingCount;
-                        completed_total = completed_total + completedCount;
-                    }
-
-                     */
 
                     JSONObject resultsObject = response.getJSONObject("results");
                     Iterator<String> itr = resultsObject.keys();

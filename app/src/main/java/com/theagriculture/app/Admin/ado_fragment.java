@@ -362,7 +362,7 @@ public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelect
                 if(response.length()==0)
                     //todo add image
                     System.out.println("dimple in ado_fragment nothing "+ district_list_url);
-                // view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
+                 view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_toshow));
 
                 for (int i = 0; i < response.length(); i++) {
                     try {

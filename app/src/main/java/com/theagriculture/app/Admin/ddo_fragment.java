@@ -328,7 +328,7 @@ public class ddo_fragment extends Fragment {
 
                         System.out.println("dimple in ddo_fragment " + mUrl);
                         //todo image here
-                        //view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
+                        view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_toshow));
                         //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                     }
                     for (int i = 0; i < resultsArray.length(); i++) {

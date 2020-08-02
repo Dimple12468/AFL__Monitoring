@@ -88,6 +88,8 @@
 
     <style name="dist_stat_Theme" parent="Theme.MaterialComponents.Light.NoActionBar"/>
 
+    <style name="calendar_theme" parent="Theme.MaterialComponents.Light.NoActionBar"/>
+
     <style name="MaterialCalendarTheme_RangeFill" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="materialCalendarStyle">@style/MyMaterialCalendar</item>
     </style>

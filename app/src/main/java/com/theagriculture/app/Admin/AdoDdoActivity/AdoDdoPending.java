@@ -94,6 +94,7 @@ public class AdoDdoPending extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_ddo_pending, container, false);
         //defined later
+        setHasOptionsMenu(true);
         spinner = (ProgressBar)view.findViewById(R.id.Ddo_pending_loading_json);
         spinner.setVisibility(View.VISIBLE);
         progressBar = view.findViewById(R.id.Ddo_pending_loading);
@@ -325,7 +326,7 @@ public class AdoDdoPending extends Fragment {
 
                                 System.out.println("dimple in adoddopending"+url);
                                 //todo image here
-                                //view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
+                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_toshow));
                                 //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                             }
                             Log.d(TAG, "onResponse: "+resultsArray.length());

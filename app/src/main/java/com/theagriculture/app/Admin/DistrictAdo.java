@@ -352,7 +352,7 @@ public class DistrictAdo extends Fragment {
                         recyclerViewAdater.notifyDataSetChanged();
                         //todo add image
                         System.out.println("dimple in districtado nothing "+ ado_list);
-                        //relativeLayout.setBackground(getResources().getDrawable(R.drawable.nothing_clipboard));
+                        relativeLayout.setBackground(getResources().getDrawable(R.drawable.nothing_toshow));
                         //relativeLayout.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                     }
                     for (int i = 0; i < resultsArray.length(); i++) {
