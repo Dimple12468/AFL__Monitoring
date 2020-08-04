@@ -326,7 +326,7 @@ public class AdoDdoPending extends Fragment {
 
                                 System.out.println("dimple in adoddopending"+url);
                                 //todo image here
-                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_toshow));
+                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
                                 //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                             }
                             Log.d(TAG, "onResponse: "+resultsArray.length());

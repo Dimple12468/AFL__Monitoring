@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF">
 
     <!--include
@@ -9,6 +10,14 @@
         android:id="@+id/searchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/-->
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/app_bar_admin"
+        android:id="@+id/app__bar_ado"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -20,7 +29,9 @@
         android:paddingTop="18dp"
         android:textStyle="bold"
         android:textColor="#000000"
-        android:fontFamily="@font/arial" />
+        android:fontFamily="@font/arial"
+        android:background="@color/white"
+        android:layout_below="@+id/app__bar_ado"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/adolist"
@@ -28,7 +39,22 @@
         android:layout_below="@id/districtlist"
         android:layout_width="match_parent"
         android:padding="10dp"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
+    <!--android:layout_above="@id/bottom_nav_for_ado"-->
+
+    <!--com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav_for_ado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:background="#FFFFFF"
+        android:isScrollContainer="true"
+        app:itemIconTint="@drawable/tab_color"
+        app:itemTextColor="@drawable/tab_color"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/menu_bottom_navigation_bar" /-->
 
     <ProgressBar
         android:id="@+id/ado_progress"

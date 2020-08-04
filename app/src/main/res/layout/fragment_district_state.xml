@@ -7,26 +7,14 @@
     android:background="@color/white"
     tools:context=".Admin.DistrictStateFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <!--TextView
-        android:id="@+id/response"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <include
+        layout="@layout/app_bar_admin"
+        android:id="@+id/app__bar_stat"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" /-->
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!--com.jjoe64.graphview.GraphView
-        android:id="@+id/graph"
-        android:layout_width="match_parent"
-        android:layout_height="200dip"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" /-->
-
+    <!-- linechart for the data-->
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
@@ -34,7 +22,7 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/app__bar_stat" />
 
     <ProgressBar
         android:id="@+id/graph_loading"
@@ -49,6 +37,7 @@
         app:layout_constraintStart_toStartOf="@id/lineChart"
         app:layout_constraintTop_toTopOf="@id/lineChart" />
 
+    <!--binds date button and spinner-->
     <RelativeLayout
         android:id="@+id/rl1"
         android:layout_width="match_parent"
@@ -59,20 +48,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline10">
 
+        <!--button to set date from daterangepicker calendar-->
         <Button
             android:id="@+id/show_btn"
             android:layout_width="wrap_content"
             android:layout_height="34dp"
             android:layout_marginTop="5dp"
             android:layout_marginStart="24dp"
-            android:layout_alignParentStart="true"
             android:background="@drawable/districtbg"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_alignParentStart="true"
             android:text="1jan-1jul"
             app:layout_constraintStart_toStartOf="parent"
             android:paddingLeft="5dp"
-            android:paddingRight="5dp"/>
-            <!--app:layout_constraintTop_toBottomOf="@id/guideline10"-->
+            android:textSize="13sp"
+            android:paddingRight="5dp"
+            android:elevation="0dp"/>
 
+        <!--binds spinner and dropdown icon-->
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="34dp"
@@ -82,20 +75,23 @@
             android:layout_marginBottom="2dp"
             android:layout_marginEnd="20dp">
 
+            <!--for selecting pending,ongoing,completed-->
+
             <!--ImageView
+                android:id="@+id/spin_highlight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/for_pending"
-                android:layout_alignParentStart="true"
-                android:padding="10dp"/-->
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"/-->
             <Spinner
                 android:id="@+id/spinner1"
                 android:layout_width="wrap_content"
                 android:layout_height="34dp"
-                app:layout_constraintHorizontal_bias="0.1"
-                />
+                app:layout_constraintHorizontal_bias="0.1"/>
         </RelativeLayout>
-
         <!--android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             app:layout_constraintStart_toEndOf="@+id/show_btn"
@@ -104,7 +100,8 @@
 
     </RelativeLayout>
 
-
+    <!--horizontally binds the (headings)textviews
+            district,pending,completed,ongoing-->
     <LinearLayout
         android:id="@+id/textll"
         android:layout_width="match_parent"
@@ -163,6 +160,8 @@
 
     </LinearLayout>
 
+    <!--horizontally binds the title and total count of all 3 states
+            (pending,ongoing,completed)-->
     <LinearLayout
         android:id="@+id/textll_count"
         android:layout_width="match_parent"
@@ -170,10 +169,13 @@
         android:layout_marginTop="3dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/textll"
+        app:layout_constraintStart_toStartOf="@id/textll"
         app:layout_constraintTop_toBottomOf="@id/textll">
+        <!--app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"-->
 
+        <!--show title-->
         <TextView
             android:layout_width="115dp"
             android:layout_height="22dp"
@@ -184,6 +186,7 @@
             android:paddingLeft="5dp"/>
         <!--android:layout_marginStart="10dp"-->
 
+        <!--showing total count for pending-->
         <TextView
             android:id="@+id/total_pending"
             android:layout_width="70dp"
@@ -193,6 +196,7 @@
             android:textColor="@color/black"
             android:textSize="15sp" />
 
+        <!--showing total count for ongoing-->
         <TextView
             android:id="@+id/total_ongoing"
             android:layout_width="70dp"
@@ -202,6 +206,7 @@
             android:textColor="@color/black"
             android:textSize="15sp" />
 
+        <!--showing total count for completed-->
         <TextView
             android:id="@+id/total_completed"
             android:layout_width="91dp"
@@ -213,6 +218,8 @@
 
     </LinearLayout>
 
+    <!--showing list of various district states with their values for pending,
+            ongoing,completed-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pierecycler"
         android:layout_width="wrap_content"
@@ -222,9 +229,11 @@
         android:overScrollMode="never"
         android:layout_marginStart="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/textll_count"
+        app:layout_constraintStart_toStartOf="@id/textll_count"
         app:layout_constraintTop_toBottomOf="@id/textll_count" />
+    <!--app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"-->
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline10"

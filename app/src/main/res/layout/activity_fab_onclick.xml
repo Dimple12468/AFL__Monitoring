@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".fab_onclick">
 
+    <!--layout binds the bottom bottom sheet dialog excepts cancel button-->
     <LinearLayout
         android:id="@+id/LL1"
         android:layout_width="match_parent"
@@ -17,15 +18,16 @@
         <!--android:layout_centerHorizontal="true"
         android:layout_marginLeft="37dp"-->
 
+        <!--layout for bg and textview  -->
         <LinearLayout
             android:id="@+id/for_upload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
             android:orientation="vertical"
             android:padding="15dp">
 
+            <!--Textview for heading uploadCSV-->
             <TextView
                 android:id="@+id/upload"
                 android:layout_width="wrap_content"
@@ -39,6 +41,7 @@
 
         </LinearLayout>
 
+        <!--Divider line after uploadcsv-->
         <View
             android:layout_width="match_parent"
             android:layout_height="0.2px"
@@ -46,6 +49,7 @@
             android:background="#707070" />
 
 
+        <!--Textview for location -->
         <LinearLayout
             android:id="@+id/for_location"
             android:layout_width="match_parent"
@@ -67,14 +71,14 @@
 
         </LinearLayout>
 
-
+        <!--Divider line after location-->
         <View
             android:layout_width="match_parent"
             android:layout_height="0.2px"
             android:layout_gravity="center_horizontal"
             android:background="#707070"/>
 
-
+        <!--Textview for Email notification -->
         <LinearLayout
             android:id="@+id/for_email"
             android:layout_width="match_parent"
@@ -98,6 +102,7 @@
 
     </LinearLayout>
 
+    <!--layout binds clickable textview Cancel -->
     <LinearLayout
         android:id="@+id/for_cancel"
         android:layout_width="match_parent"

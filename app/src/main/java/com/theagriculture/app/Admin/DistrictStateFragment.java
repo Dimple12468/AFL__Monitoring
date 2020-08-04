@@ -8,7 +8,9 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -29,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -105,6 +108,7 @@ public class DistrictStateFragment extends Fragment {
     private int points;
     ProgressBar spinner;
 
+    private ImageView image_in_spinner;
     private TextView totalPendingTextView;
     private TextView totalOngoingTextView;
     private TextView totalCompletedTextView;
@@ -136,13 +140,12 @@ public class DistrictStateFragment extends Fragment {
 
     Spinner spin;
     Legend legend;
+    ImageView iv1,iv2;
 
+    int Color_arr[] = {Color.parseColor("#1F78B4"),Color.parseColor("#7B26C6"),Color.parseColor("#B2DF8A")};
     /*int Color_arr[] = {Color.argb(1,31, 120, 180),
             Color.argb(1,123, 38, 198),
             Color.argb(1,178, 223, 138)};*/
-    int Color_arr[] = {Color.argb(1,31, 120, 180),
-            Color.argb(1,123, 38, 198),
-            Color.argb(1,178, 223, 138)};
     String[] legend_name = {"Pending" , "Ongoing" ,"Completed"};
 
     public DistrictStateFragment() {
@@ -150,10 +153,11 @@ public class DistrictStateFragment extends Fragment {
     }
 
 
-    @Override
+   /* @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_top_bar,menu);
         MenuItem searchItem = menu.findItem(R.id.search_in_title);
+        searchItem.setVisible(Invi)
         final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Search something");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -176,7 +180,7 @@ public class DistrictStateFragment extends Fragment {
             }
         });
         super.onCreateOptionsMenu(menu, inflater);
-    }
+    }*/
 
 
 
@@ -184,13 +188,31 @@ public class DistrictStateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getContext().getTheme().applyStyle(R.style.calendar_theme, true);
+
 
        // MyFragment myFragment = (MyFragment)getFragmentManager().findFragmentByTag("MY_FRAGMENT");
-
-
-        //getContext().getTheme().applyStyle(R.style.calendar_theme, true);
+       // Context ctx = new ContextThemeWrapper(getActivity(), R.style.calendar_theme);
+        //LayoutInflater li = inflater.cloneInContext(ctx);
+        //ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(),R.style.calendar_theme);
+        //LayoutInflater li =   getActivity().getLayoutInflater().cloneInContext(contextThemeWrapper);
         View view = inflater.inflate(R.layout.fragment_district_state, container, false);
-        setHasOptionsMenu(true);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_stat);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //setHasOptionsMenu(true);
+
+     //   iv1 = view.findViewById(R.id.ham);
+        //iv2 = view.findViewById(R.id.se1);
+       // iv1.setVisibility(View.GONE);
+        //iv2.setVisibility(View.GONE);*/
+        TextView title_top = view.findViewById(R.id.app_name);
+        if (view.isEnabled()){
+            title_top.setText("Stats");
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
 
 
         mURL = "http://18.224.202.135/api/countReportBtwDates/?start_date=2019-10-10&end_date=2019-11-20&points=8";
@@ -199,6 +221,7 @@ public class DistrictStateFragment extends Fragment {
         totalCompletedTextView = view.findViewById(R.id.total_completed);
         btndate = view.findViewById(R.id.show_btn);
         spinner = view.findViewById(R.id.graph_loading);
+        //image_in_spinner = view.findViewById(R.id.spin_highlight);
         lineChart = (LineChart)view.findViewById(R.id.lineChart);
         pierecycler = view.findViewById(R.id.pierecycler);
         pierecycler.setHasFixedSize(true);
@@ -220,6 +243,7 @@ public class DistrictStateFragment extends Fragment {
             legendEntry[i] = entry;
         }
         legend.setCustom(legendEntry);
+
 
         Calendar c = Calendar.getInstance();
 
@@ -257,21 +281,26 @@ public class DistrictStateFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, states);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin.setAdapter(adapter);
+        spinner.setVisibility(View.VISIBLE);
         spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(getActivity(),"position is "+ position + "date is "+ start_date_set.toString()+end_date_set.toString(),Toast.LENGTH_LONG).show();
                 String spin_url = "http://18.224.202.135/api/countReportBtwDates/?start_date="+start_date_set.toString()+"&end_date="+ end_date_set.toString()+"&points=8";
                 String state = null;
-                if(position==0)
+                if(position==0) {
                     state = "All";
-                if(position==1)
+                    //image_in_spinner.setImageResource(R.drawable.for_pending);
+                }if(position==1) {
                     state = "Pending";
-                if(position==2)
+                    //image_in_spinner.setImageResource(R.drawable.for_pending);
+                }if(position==2) {
                     state = "Ongoing";
-                if(position==3)
+                    //image_in_spinner.setImageResource(R.drawable.for_ongoing);
+                }if(position==3) {
                     state = "Completed";
-
+                   // image_in_spinner.setImageResource(R.drawable.for_completed);
+                }
                 String currDateFormat = "yyyy-MM-dd";
                 String currdatestart = start_date_set;
                 String currdateend = end_date_set;
@@ -319,7 +348,7 @@ public class DistrictStateFragment extends Fragment {
     public void dateResolver(){
         // Material date picker
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
-        builder.setTheme(R.style.dist_stat_Theme);
+       // builder.setTheme(R.style.dist_stat_Theme);
         final MaterialDatePicker materialDatePicker = builder.build();
         //builder.setTheme(R.style.calendar_theme);
         //final MaterialDatePicker<Pair<Long, Long>> materialDatePicker = builder.build();
@@ -349,7 +378,6 @@ public class DistrictStateFragment extends Fragment {
 
     }
     public void getGraph(final String url, final String state){
-        spinner.setVisibility(View.VISIBLE);
         final ArrayList<String> xAxis = new ArrayList<>();//for x-label
         final ArrayList<Entry> yAxis1 = new ArrayList<>();//pending entry
         final ArrayList<Entry> yAxis2 = new ArrayList<>();//completed entry

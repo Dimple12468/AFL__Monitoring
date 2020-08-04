@@ -1,65 +1,36 @@
 package com.theagriculture.app.Admin;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SubMenu;
-import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 //import android.widget.Toolbar;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-import com.theagriculture.app.PrivacyPolicy;
 import com.theagriculture.app.R;
-import com.theagriculture.app.RegistrationActivity;
-import com.theagriculture.app.login_activity;
-import com.theagriculture.app.nav_drawer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
-import static android.content.res.ColorStateList.*;
-
-public class AdminActivity extends AppCompatActivity {
+public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/ {
 
     //all permissions declared
 
@@ -81,15 +52,19 @@ public class AdminActivity extends AppCompatActivity {
     private ddo_fragment ddoFragment;
     private count_fragment countFragment;
     private DistrictStateFragment districtStateFragment;
-    private PrivacyPolicy privacyPolicy;
+    private DistrictAdo districtAdo;
+    bottom_nav bottom_nav;
+    //private PrivacyPolicy privacyPolicy;
     TextView title_top;
+    int id;
 
     //for drawer layout
-    private DrawerLayout mDrawer;
-    private NavigationView nvDrawer;
+    //private DrawerLayout mDrawer;
+    //private NavigationView nvDrawer;
 
     private int fragment_id;
-
+    Fragment fragment1;
+    Fragment fragment2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +73,8 @@ public class AdminActivity extends AppCompatActivity {
 
         navigation = findViewById(R.id.navigation);
         frameLayout = findViewById(R.id.frameLayout);
-        title_top = findViewById(R.id.app_name);
+        //title_top = findViewById(R.id.app_name);
+        //id = R.id.app_name;
 
         mapFragmnt = new map_fragemnt();
         locationFragment = new location_fragment();
@@ -106,20 +82,31 @@ public class AdminActivity extends AppCompatActivity {
         ddoFragment = new ddo_fragment();
         countFragment = new count_fragment();
         districtStateFragment= new DistrictStateFragment();
-        privacyPolicy = new PrivacyPolicy();
+ //       privacyPolicy = new PrivacyPolicy();
+        districtAdo = new DistrictAdo();
+        bottom_nav = new bottom_nav();
+
+        //for toolbar text
+        /*if (districtAdo.isVisible()){
+            System.out.println("Dimple in admin for ambal wala text");
+            title_top.setText(districtAdo.for_title_top());
+        }else {
+            System.out.println("Dimple in else else for ambal wala text");
+            title_top.setText("AFL Monitoring");
+        }*/
+       // districtAdo.for_title_top(title_top,R.id.app_name);
 
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app__bar);
-        setSupportActionBar(toolbar);
+        // toolbar for admin activity
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.app__bar);
+//        setSupportActionBar(toolbar);
 
-
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final ActionBar actionBar = getSupportActionBar();
+/*        final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_artboard_1);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_artboard_1);*/
 
-        mDrawer = findViewById(R.id.drawer_view);
+/*        mDrawer = findViewById(R.id.drawer_view);
         nvDrawer = findViewById(R.id.navigation_view);
 
         View header = nvDrawer.getHeaderView(0);
@@ -129,17 +116,18 @@ public class AdminActivity extends AppCompatActivity {
         String typeofuser = preferences.getString("typeOfUser","");
         String username = preferences.getString("Name","");
         textUsername.setText(username);
-        textUser.setText(typeofuser);
+        textUser.setText(typeofuser);*/
         // Toast.makeText(AdminActivity.this,textUsername.getText().toString().trim(),Toast.LENGTH_LONG).show();
 
-        nvDrawer.setBackgroundColor(getResources().getColor(R.color.white));
+        //navigation items listerner in navigation drawer
+/*        nvDrawer.setBackgroundColor(getResources().getColor(R.color.white));
         nvDrawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 switch (item.getItemId()){
 
-                    case R.id.logout_now:
+                    case R.id.logout_now:                                                                                */
                         //item.setChecked(true);
                         //mDrawer.closeDrawers();
                         /*
@@ -150,7 +138,7 @@ public class AdminActivity extends AppCompatActivity {
 
                          */
 
-                        SharedPreferences.Editor editor = getSharedPreferences("tokenFile", MODE_PRIVATE).edit();
+/*                        SharedPreferences.Editor editor = getSharedPreferences("tokenFile", MODE_PRIVATE).edit();
                         editor.clear();
                         editor.commit();
                         mDrawer.closeDrawers();
@@ -189,54 +177,55 @@ public class AdminActivity extends AppCompatActivity {
                 }
                 return false;
             }
-        });
-
-
-        // Menu m = navigationView.getMenu(R.menu.admin_drawer);
-
-        //MenuItem nav = navigationView.getMenu().findItem(R.id.nav_close_app);
-        //nav.setActionView(R.layout.item_navigationdrawer_close_app);
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
         });*/
 
 
+        // ask for permissions and intializes fragment according to
+        // items in bottom navigation clicked
         if(getPermission()) {
             InitializeFragment(mapFragmnt);
+            //bottom_nav.bottom_navigation_admin();
             navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                    //todo style for fab
                     //fragment_id = item.getItemId();
+                   /* if (item.getItemId() == R.id.adminsdistrict_state){
+                        //setTheme(R.style.calendar_theme);
+                        getTheme().applyStyle(R.style.calendar_theme,true);
+                    }
+                    if (item.getItemId() == R.id.adminshome){
+                       // getTheme().applyStyle(R.style.original,true);
+                        getTheme().applyStyle(R.style.AppTheme,true);
+                        //setTheme(R.style.AppTheme);
+                    }*/
                     switch (item.getItemId()) {
                         case R.id.adminshome:
-                            title_top.setText("AFL Monitoring");
+                           // ((DrawerLocker) mapFragmnt).setDrawerEnabled(true);
+                           // title_top.setText("AFL Monitoring");
                             InitializeFragment(mapFragmnt);
                             return true;
                         case R.id.adminslocation:
-                            title_top.setText("Locations");
+                            //((DrawerLocker) locationFragment).setDrawerEnabled(true);
+                            //title_top.setText("Locations");
                             InitializeFragment(locationFragment);
                             return true;
                         case R.id.adminsado:
-                            title_top.setText("ADO");
+                           // ((DrawerLocker) adoFragment).setDrawerEnabled(false);
+                            //title_top.setText("ADO");
                             InitializeFragment(adoFragment);
                             return true;
                         case R.id.adminsdda:
-                            title_top.setText("DDA");
+                           // title_top.setText("DDA");
                             InitializeFragment(ddoFragment);
                             return true;
                         case R.id.adminsdistrict_state:
-                            title_top.setText("District Stats");
-
+                           // title_top.setText("District Stats");
                             InitializeFragment(districtStateFragment);
                             return true;
                         default:
-                            title_top.setText("AFL Monitoring");
+                           // title_top.setText("AFL Monitoring");
                             return false;
                     }
                 }
@@ -247,22 +236,61 @@ public class AdminActivity extends AppCompatActivity {
     }
     //end of onCreate
 
+
     //function to change fragment
-
     public void InitializeFragment(Fragment fragment) {
+        FragmentManager fragmentManager1 = getSupportFragmentManager();
+        FragmentManager fragmentManager2 = getSupportFragmentManager();
 
+        /*if (fragment == adoFragment) {
+            switch (fragmentManager1.getBackStackEntryCount()) {
+                case 0:
+                    fragment1 = new DistrictAdo();
+                    break;
+                case 1:
+                    fragment1 = new AdoDdoActivityFragment();
+                    break;
+                case 2:
+                    fragment1 = new AdoDdoPending();
+                    break;
+                default:
+                    fragment1 = new ado_fragment();
+                    break;
+            }
+        } else if (fragment == locationFragment){
+            switch (fragmentManager2.getBackStackEntryCount()) {
+                case 0:
+                    fragment2 = new PendingDetailsFragment();
+                    break;
+                case 1:
+                    fragment2 = new ongoingDetailsFragment();
+                    break;
+                case 2:
+                    fragment2 = new CompleteDetailsFragment();
+                    break;
+                default:
+                    fragment2 = new location_fragment();
+                    break;
+            }
+        }*/
 
+       // fragment = fragmentManager.findFragmentById(R.id.frameLayout);
+        //if (fragment instanceof AdminActivity)
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        //fragmentTransaction.addToBackStack(null);//adds to stack but doesnot update bottom navigation
         fragmentTransaction.replace(R.id.frameLayout,fragment);
+        //fragmentTransaction.addToBackStack(null);//adds to stack but doesnot update bottom navigation
         fragmentTransaction.commit();
 
+        /*if (fragment == districtAdo){
+            System.out.println("Dimple in initialize fragment for ambal wala text");
+            title_top.setText(districtAdo.for_title_top());
+        }*/
     }
 
 
 
     //function to get permissions
-    private boolean getPermission() {
+    public boolean getPermission() {
         List<String> Permission = new ArrayList<>();
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(), ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -419,10 +447,29 @@ public class AdminActivity extends AppCompatActivity {
     }*/
 
     @Override
+    protected void onStart() {
+       // mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        super.onStart();
+    }
+
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
+        /*boolean disabled;
+        if(!disabled)
+        {
+            if (item.getItemId() == android.R.id.home) {
+
+                if (mDrawer.isDrawerOpen(mDrawer)) {
+                    mDrawer.closeDrawer();
+                } else {
+                    mDrawerLayout.openDrawer(mDrawerLinearLayout);
+                }
+            }
+        }**
         switch (item.getItemId()){
             case android.R.id.home:
                 //Toast.makeText(this, "this is for hamburger menu", Toast.LENGTH_SHORT).show();
@@ -430,7 +477,7 @@ public class AdminActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     //        int id = item.getItemId();
     //noinspection SimplifiableIfStatement
@@ -497,4 +544,13 @@ public class AdminActivity extends AppCompatActivity {
         //}
     }
 
+   /* @Override
+    public void setDrawerEnabled(boolean enabled) {
+        int lockMode = enabled ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
+        mDrawer.setDrawerLockMode(lockMode);
+        //nvDrawer.setDrawerLockMode(lockMode);
+
+        //ActionBarDrawerToggle toggle;
+        //toggle.setDrawerIndicatorEnabled(enabled);
+    }*/
 }

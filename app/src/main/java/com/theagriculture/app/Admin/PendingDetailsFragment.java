@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -100,6 +101,10 @@ public class PendingDetailsFragment extends Fragment {
         //appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //setHasOptionsMenu(true);
 
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_pending);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Bundle bundle = this.getArguments();
         if(bundle!=null) {

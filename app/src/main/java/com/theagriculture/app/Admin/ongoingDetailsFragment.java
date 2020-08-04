@@ -139,6 +139,10 @@ public class ongoingDetailsFragment extends Fragment {
         //return inflater.inflate(R.layout.fragment_ongoing_details, container, false);
         View view = inflater.inflate(R.layout.fragment_ongoing_details, container, false);
 
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_ongoing);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Bundle bundle = this.getArguments();
             id = bundle.get("id").toString();

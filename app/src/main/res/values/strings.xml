@@ -45,7 +45,7 @@
     <string name="signup_ado"><u>Sign Up as ADO</u></string>
     <string name="signup_dda"><u>Sign Up as DDA</u></string>
     <string name="log_in">Log In</string>
-    
+
     <string-array name="status">
         <item>Active</item>
         <item>Inactive</item>

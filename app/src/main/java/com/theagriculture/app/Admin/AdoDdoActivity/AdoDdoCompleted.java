@@ -190,7 +190,7 @@ public class AdoDdoCompleted extends Fragment {
                                 //Drawable im = getResources().getDrawable(R.drawable.nothing_toshow);
                                 //Drawable im_nothing = resize(im);
                                 //view.setBackground();
-                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_toshow));
+                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
                                 //work  view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
                                 //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                             }

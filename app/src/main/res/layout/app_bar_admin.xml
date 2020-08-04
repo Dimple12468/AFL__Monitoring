@@ -8,20 +8,55 @@
     android:id="@+id/toolbar_show">
 
 
+        <!--ImageView
+            android:id="@+id/ham"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_artboard_1"
+            android:visibility="invisible"/-->
         <TextView
             android:id="@+id/app_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
             android:gravity="center"
             android:textColor="#000000"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:layout_marginRight="24dp"/>
-
-
+            android:layout_gravity="center"/>
+        <!--ImageView
+            android:id="@+id/se1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/search"
+            android:layout_gravity="end"
+            android:visibility="invisible"
+            android:layout_marginRight="10dp"/-->
 
 </androidx.appcompat.widget.Toolbar>
+
+
+        <!--RelativeLayout
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"-->
+        <!--LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"-->
+
+
+
+        <!--/LinearLayout-->
+
+
+        <!--/RelativeLayout-->
+
+
+
+
 
 
 

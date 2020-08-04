@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -39,6 +41,7 @@ public class location_fragment extends Fragment {
     TabPageAdapter mpageAdapter;
     ViewPager pager;
     TextView first_letter,image_letter;
+    TextView title_top;
 
     MenuItem searchItem;
     MenuItem searchItem_filter;
@@ -227,9 +230,21 @@ public class location_fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.location_fragment,container,false);
+
+        androidx.appcompat.widget.Toolbar toolbar = (androidx.appcompat.widget.Toolbar) view.findViewById(R.id.app__bar_location);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
+        /*ImageView iv = view.findViewById(R.id.ham);
+        iv.setVisibility(View.INVISIBLE);*/
 
-
+        title_top = view.findViewById(R.id.app_name);
+        if (view.isEnabled()){
+            title_top.setText("Locations");
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
         mtablayout = view.findViewById(R.id.tabLayout);
         pending = view.findViewById(R.id.pending);
         completed = view.findViewById(R.id.completed);

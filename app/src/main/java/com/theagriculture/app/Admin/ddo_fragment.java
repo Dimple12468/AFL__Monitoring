@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -26,7 +27,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -277,7 +280,22 @@ public class ddo_fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: check1check");
         view = inflater.inflate(R.layout.ddo_fragment, container, false);
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_ddo);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
+       /* ImageView iv = view.findViewById(R.id.ham);
+        iv.setVisibility(View.INVISIBLE);*/
+
+        TextView title_top = view.findViewById(R.id.app_name);
+        if (view.isEnabled()){
+            title_top.setText("DDA");
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
+
         isRefresh = false;
         spinner = view.findViewById(R.id.ddo_progressbar);
         spinner.setVisibility(View.VISIBLE);
@@ -328,7 +346,7 @@ public class ddo_fragment extends Fragment {
 
                         System.out.println("dimple in ddo_fragment " + mUrl);
                         //todo image here
-                        view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_toshow));
+                        view.setBackground(getActivity().getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
                         //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                     }
                     for (int i = 0; i < resultsArray.length(); i++) {

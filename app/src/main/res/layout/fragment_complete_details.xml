@@ -7,6 +7,15 @@
     android:background="#FFFFFF"
     tools:context=".Admin.ongoingDetailsFragment">
 
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/app_bar_admin"
+        android:id="@+id/app__bar_completed"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
+
     <TextView
         android:id="@+id/review_address_top"
         android:layout_width="wrap_content"
@@ -20,7 +29,7 @@
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/app__bar_completed" />
 
     <LinearLayout
         android:id="@+id/view1"

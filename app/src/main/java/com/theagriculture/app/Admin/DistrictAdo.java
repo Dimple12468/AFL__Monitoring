@@ -7,7 +7,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -86,6 +88,11 @@ public class DistrictAdo extends Fragment {
     private ProgressBar spinner;
     boolean doubleBackToExitPressedOnce = false;
 
+    //TextView title_top;
+    String text;
+    AdminActivity a;
+    DistrictAdo d;
+
     public DistrictAdo() {
         // Required empty public constructor
     }
@@ -127,7 +134,13 @@ public class DistrictAdo extends Fragment {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_district_ado, container, false);
         View view = inflater.inflate(R.layout.fragment_district_ado, container, false);
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_district_ado);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
+
         ado_list="";
         district_list_url ="http://18.224.202.135/api/district/";
         username = new ArrayList<>();
@@ -136,19 +149,27 @@ public class DistrictAdo extends Fragment {
         mPkList = new ArrayList<>();
         mDdoNames = new ArrayList<>();
         mDistrictNames = new ArrayList<>();
+        a = new AdminActivity();
+        d = new DistrictAdo();
 
         Bundle bundle = this.getArguments();
         curr_dist = bundle.getString("district");
 
-        title = view.findViewById(R.id.district_name);
+       // title = view.findViewById(R.id.district_name);
         String low_title = curr_dist.toLowerCase();;
         int len=low_title.length();
         char one = curr_dist.charAt(0);
         String rest = low_title.substring(1,len);
         String whole= one + rest;
-        title.setText(whole+"'s ADO");
+        //title.setText(whole+"'s ADO");
+        text = whole+"'s ADO";
        // Char[] chars = low_title.toCharArray();
-
+        TextView title_top = view.findViewById(R.id.app_name);
+        if (view.isEnabled()){
+            title_top.setText(text);
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
 
         //title.setText(curr_dist+"'s ADO");
 
@@ -351,8 +372,7 @@ public class DistrictAdo extends Fragment {
                         //recyclerViewAdater.mShowShimmer = false;
                         recyclerViewAdater.notifyDataSetChanged();
                         //todo add image
-                        System.out.println("dimple in districtado nothing "+ ado_list);
-                        relativeLayout.setBackground(getResources().getDrawable(R.drawable.nothing_toshow));
+                        relativeLayout.setBackground(getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
                         //relativeLayout.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                     }
                     for (int i = 0; i < resultsArray.length(); i++) {
@@ -639,5 +659,18 @@ public class DistrictAdo extends Fragment {
         });
 
     }
+
+    public String for_title_top(/*TextView top_heading,int id*/){
+        /*if (d.isVisible()) {
+            System.out.println("Dimple districtddo ambal wala text");
+            top_heading.setText(text);
+            //return text;
+        }else{
+            top_heading.setText("AFL Monitoring");
+        }*/
+        System.out.println("Dimple districtddo ambal wala text");
+        return text;
+    }
+
 
 }

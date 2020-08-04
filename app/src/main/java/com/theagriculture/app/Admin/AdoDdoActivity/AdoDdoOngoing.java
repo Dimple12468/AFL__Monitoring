@@ -309,7 +309,7 @@ public class AdoDdoOngoing extends Fragment {
 
                                     System.out.println("dimple in adoddoongoing"+url);
                                     //todo image here
-                                    view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_toshow));
+                                    view.setBackground(getActivity().getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
                                     //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                                 }
                                 for (int i = 0; i < resultsArray.length(); i++) {

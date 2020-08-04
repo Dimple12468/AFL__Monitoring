@@ -3,18 +3,24 @@ package com.theagriculture.app.Admin;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,8 +28,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -39,11 +47,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.navigation.NavigationView;
 import com.obsez.android.lib.filechooser.ChooserDialog;
+import com.theagriculture.app.PrivacyPolicy;
 import com.theagriculture.app.R;
+import com.theagriculture.app.login_activity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,6 +80,18 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
     private NotificationManagerCompat manager;
     private String token;
 
+    private PrivacyPolicy privacyPolicy;
+    private DrawerLayout mDrawer_map;
+    private NavigationView nvDrawer_map;
+//    BottomNavigationView b_nav_map;
+    private map_fragemnt mapFragmnt;
+    private location_fragment locationFragment;
+    private ado_fragment adoFragment;
+    private ddo_fragment ddoFragment;
+    private DistrictStateFragment districtStateFragment;
+
+    //bottom_nav bottom_nav_map;
+
     public map_fragemnt() {
         // Required empty public constructor
     }
@@ -78,7 +101,6 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
         super.onViewCreated(view, savedInstanceState);
 
         //  fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
         mMapView = (MapView) mView.findViewById(R.id.map);
         if (mMapView != null) {
             mMapView.onCreate(null);
@@ -93,7 +115,8 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_top_bar,menu);
         MenuItem searchItem = menu.findItem(R.id.search_in_title);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchItem.setVisible(false);
+        /*final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Search something");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -106,28 +129,179 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                /*if (newText.equals("")) {
+                **if (newText.equals("")) {
                     //searchView.setQuery("", false);
                     newText = newText.trim();
                 }
-                adapter.getFilter().filter(newText);*/
+                adapter.getFilter().filter(newText);**
                 return true;
             }
-        });
+        });*/
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                //Snackbar.make(mView,"Hamburger icon clicked",Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), "Hamburger icon clicked", Toast.LENGTH_SHORT).show();
+                mDrawer_map.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+   /* @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                Snackbar.make(mView,"Hamburger icon clicked",Snackbar.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Hamburger icon clicked", Toast.LENGTH_SHORT).show();
+                System.out.println("dimple looking for hamburger icon");
+                //mDrawer_map.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_map_admin, container, false);
+        //getContext().getTheme().applyStyle(R.style.AppTheme, true);
+
         //setHasOptionsMenu(true);
+
+        //ImageView iv = mView.findViewById(R.id.ham);
+        //iv.setVisibility(View.GONE);
+        /*ImageView iv2 = mView.findViewById(R.id.se1);
+        iv2.setVisibility(View.INVISIBLE);*/
+        mDrawer_map = mView.findViewById(R.id.drawer_map);
+        nvDrawer_map = mView.findViewById(R.id.navigation_view_map);
+        privacyPolicy = new PrivacyPolicy();
+//        b_nav_map = mView.findViewById(R.id.bottom_nav_for_map);
+        mapFragmnt = new map_fragemnt();
+        locationFragment = new location_fragment();
+        adoFragment = new ado_fragment();
+        ddoFragment = new ddo_fragment();
+        districtStateFragment= new DistrictStateFragment();
+        //bottom_nav_map = new bottom_nav();
+        //bottom_nav_map.bottom_navigation_admin();
+
+        Toolbar toolbar = (Toolbar) mView.findViewById(R.id.app__bar_map);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        appCompatActivity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_artboard_1);
+        setHasOptionsMenu(true);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
+        // Android
+
+        //Drawable d = getResources().getDrawable(R.drawable.ic_artboard_1);
+
+ //       ActionBarDrawerToggle actionBarDrawerToggle = ;
+
+        /*b_nav_map.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.adminshome:
+                        InitializeFragment(mapFragmnt);
+                        return true;
+                    case R.id.adminslocation:
+                        //((DrawerLocker) locationFragment).setDrawerEnabled(true);
+                        //title_top.setText("Locations");
+                        // InitializeFragment(locationFragment);
+                        Toast.makeText(getActivity(), "locations clicked", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.adminsado:
+                        // ((DrawerLocker) adoFragment).setDrawerEnabled(false);
+                        //title_top.setText("ADO");
+                        InitializeFragment(adoFragment);
+                        return true;
+                    case R.id.adminsdda:
+                        // title_top.setText("DDA");
+                        //InitializeFragment(ddoFragment);
+                        Toast.makeText(getActivity(), "dda clicked", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.adminsdistrict_state:
+                        // title_top.setText("District Stats");
+                        // InitializeFragment(districtStateFragment);
+                        Toast.makeText(getActivity(), "stats clicked", Toast.LENGTH_SHORT).show();
+                        return true;
+                    default:
+                        // title_top.setText("AFL Monitoring");
+                        return false;
+                }
+            }
+        });*/
 
         SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         token = prefs.getString("token", "");
 
+        View header = nvDrawer_map.getHeaderView(0);
+        TextView textUsername = header.findViewById(R.id.name);
+        TextView textUser = header.findViewById(R.id.type_of_user);
+        String typeofuser = prefs.getString("typeOfUser","");
+        String username = prefs.getString("Name","");
+        textUsername.setText(username);
+        textUser.setText(typeofuser);
+
+        nvDrawer_map.setBackgroundColor(getResources().getColor(R.color.white));
+        nvDrawer_map.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()){
+
+                    case R.id.logout_now:
+                        SharedPreferences.Editor editor = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE).edit();
+                        editor.clear();
+                        editor.commit();
+                        mDrawer_map.closeDrawers();
+                        Intent intent = new Intent(getActivity(), login_activity.class);
+                        //Intent intent = new Intent(getApplicationContext(), login_activity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                        return true;
+
+                    case R.id.privacy:
+                        mDrawer_map.closeDrawers();
+                        InitializeFragment(privacyPolicy);
+                        return true;
+
+                    case R.id.terms:
+                        item.setChecked(true);
+                        Toast.makeText(getActivity(), "terms clicked", Toast.LENGTH_SHORT).show();
+                        mDrawer_map.closeDrawers();
+                        return true;
+
+                    case R.id.help:
+                        item.setChecked(true);
+                        Toast.makeText(getActivity(), "help clicked", Toast.LENGTH_SHORT).show();
+                        mDrawer_map.closeDrawers();
+                        return true;
+
+                    case R.id.advance_settings:
+                        item.setChecked(true);
+                        Toast.makeText(getActivity(), "settings clicked", Toast.LENGTH_SHORT).show();
+                        mDrawer_map.closeDrawers();
+                        return true;
+
+
+                }
+                return false;
+            }
+        });
+
+
+
         FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.fab);
+        //todo fab
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,15 +325,15 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
                 final String url_location = "http://18.224.202.135/api/upload/locations/";
                 final String url_bulk = "http://18.224.202.135/api/upload/mail/";
 
-                /*
-                for_upload.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Snackbar.make(mView,"Upload here",Snackbar.LENGTH_LONG).show();
-                    }
-                });
 
-                 */
+                //for_upload.setOnClickListener(new View.OnClickListener() {
+                  //  @Override
+                   // public void onClick(View v) {
+                     //   Snackbar.make(mView,"Upload here",Snackbar.LENGTH_LONG).show();
+                    //}
+                //});
+
+
 
                 for_location.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -302,5 +476,12 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
                 });
     }
 
+    public void InitializeFragment(Fragment fragment) {
 
+
+        AppCompatActivity activity = (AppCompatActivity) fragment.getContext();
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).addToBackStack(null).commit();
+
+
+    }
 }

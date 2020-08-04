@@ -11,6 +11,14 @@
         android:layout_height="match_parent"
         android:background="#FFFFFF">
 
+        <include
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            layout="@layout/app_bar_admin"
+            android:id="@+id/app__bar_ddo"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"/>
 
         <ProgressBar
             android:id="@+id/ddo_list_progressbar"
@@ -31,7 +39,8 @@
             android:paddingTop="18dp"
             android:textStyle="bold"
             android:textColor="#000000"
-            android:fontFamily="@font/arial" />
+            android:fontFamily="@font/arial"
+            android:layout_below="@id/app__bar_ddo"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewddo"

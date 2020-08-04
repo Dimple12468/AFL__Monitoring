@@ -31,7 +31,7 @@
                 android:textSize="15sp"
                 android:textColor="#707070"
                 android:text="Status"
-                android:fontFamily="@font/inter" />
+                android:fontFamily="@font/arial" />
 
             <Spinner
                 android:id="@+id/status_filter_spinner"
@@ -60,7 +60,7 @@
                 android:textSize="15sp"
                 android:textColor="#707070"
                 android:text="Date"
-                android:fontFamily="@font/inter" />
+                android:fontFamily="@font/arial" />
 
             <Spinner
                 android:id="@+id/date_filter_spinner"
@@ -88,7 +88,7 @@
                 android:textSize="15sp"
                 android:textColor="#707070"
                 android:text="State"
-                android:fontFamily="@font/inter" />
+                android:fontFamily="@font/arial" />
 
             <Spinner
                 android:id="@+id/state_filter_spinner"
@@ -115,7 +115,7 @@
                 android:textSize="15sp"
                 android:textColor="#707070"
                 android:text="District"
-                android:fontFamily="@font/inter" />
+                android:fontFamily="@font/arial" />
 
             <Spinner
                 android:id="@+id/district_filter_spinner"
@@ -142,13 +142,13 @@
                 android:textSize="15sp"
                 android:textColor="#707070"
                 android:text="Village"
-                android:fontFamily="@font/inter"/>
+                android:fontFamily="@font/arial"/>
 
             <Spinner
                 android:id="@+id/village_filter_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
         </LinearLayout>
 
     </RelativeLayout>

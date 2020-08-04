@@ -10,6 +10,15 @@
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/-->
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/app_bar_admin"
+        android:id="@+id/app__bar_location"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
+
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
@@ -18,7 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabSelectedTextColor="#DC5C58"
-        android:fontFamily="@font/arial">
+        android:fontFamily="@font/arial"
+        android:layout_below="@id/app__bar_location">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/pending"

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -132,6 +133,10 @@ public class CompleteDetailsFragment extends Fragment {
         //return inflater.inflate(R.layout.fragment_ongoing_details, container, false);
         View view = inflater.inflate(R.layout.fragment_complete_details, container, false);
 
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_completed);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Bundle bundle = this.getArguments();
         id = bundle.get("id").toString();

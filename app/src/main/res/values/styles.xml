@@ -88,6 +88,10 @@
 
     <style name="dist_stat_Theme" parent="Theme.MaterialComponents.Light.NoActionBar"/>
 
+    <style name="original" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="bottomSheetStyle">@style/AppTheme</item>
+    </style>
+
     <style name="calendar_theme" parent="Theme.MaterialComponents.Light.NoActionBar"/>
 
     <style name="MaterialCalendarTheme_RangeFill" parent="Theme.MaterialComponents.Light.NoActionBar">
