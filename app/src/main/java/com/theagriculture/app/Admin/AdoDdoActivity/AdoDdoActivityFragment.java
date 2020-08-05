@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -78,7 +79,7 @@ public class AdoDdoActivityFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_ado_ddo_activity, container, false);
 
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_ddo);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_in_dda);
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -90,6 +91,12 @@ public class AdoDdoActivityFragment extends Fragment {
         String title = bundle.get("name").toString();
 
         //Toast.makeText(getActivity(),"Received id "+id + isDdo,Toast.LENGTH_LONG).show();
+        TextView title_top = view.findViewById(R.id.app_name);
+        if (view.isEnabled()){
+            title_top.setText(title);
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
 
         Log.d("ddoId", "onCreate: " + id);
 

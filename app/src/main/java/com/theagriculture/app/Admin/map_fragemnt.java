@@ -90,6 +90,7 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
     private ddo_fragment ddoFragment;
     private DistrictStateFragment districtStateFragment;
 
+
     //bottom_nav bottom_nav_map;
 
     public map_fragemnt() {
@@ -197,6 +198,9 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
         appCompatActivity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_artboard_1);
         setHasOptionsMenu(true);
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //Bottom_nav_adapter adapt = new Bottom_nav_adapter(getContext(),mapFragmnt,R.id.adminshome);
+
 
 
         // Android

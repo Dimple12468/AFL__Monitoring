@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -73,7 +74,7 @@ public class PendingDetailsFragment extends Fragment {
     private TextView aname;
     private TextView aemail;
     private TextView anumber;
-    private TextView aaddress;
+//    private TextView aaddress;
 
     private TextView bname;
     private TextView bemail;
@@ -129,8 +130,20 @@ public class PendingDetailsFragment extends Fragment {
         aemail = view.findViewById(R.id.adodetail_email2);
         anumber = view.findViewById(R.id.adodetail_phone2);
 
-        aaddress = view.findViewById(R.id.addr2);
-        aaddress.setText(address_top);
+//        aaddress = view.findViewById(R.id.addr2);
+//        aaddress.setText(address_top);
+        TextView title_top = view.findViewById(R.id.app_name);
+        if (view.isEnabled()){
+            title_top.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            title_top.setHorizontallyScrolling(true);
+            title_top.setMinLines(1);
+            title_top.setSingleLine(true);
+          //  title_top.setMarqueeRepeatLimit(-1);
+            title_top.setSelected(true);
+            title_top.setText(address_top);
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
 
         bname = view.findViewById(R.id.ddadetail_name2);
         bemail = view.findViewById(R.id.ddadetail_email2);

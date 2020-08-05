@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -55,7 +56,7 @@ import static java.lang.String.valueOf;
 public class CompleteDetailsFragment extends Fragment {
     private ImageButton back_button;
 
-    private TextView review_address_top;
+//    private TextView review_address_top;
 
     private TextView villCodeLeft;
     private TextView villCodeRight;
@@ -144,7 +145,7 @@ public class CompleteDetailsFragment extends Fragment {
         //Toast.makeText(getActivity(),"Got id="+id + "address="+ review_address_big,Toast.LENGTH_LONG).show();
 
 
-        review_address_top = view.findViewById(R.id.review_address_top);
+//        review_address_top = view.findViewById(R.id.review_address_top);
 
         villCodeRight = view.findViewById(R.id.villCodeRight);
         villCodeLeft = view.findViewById(R.id.villCodeLeft);
@@ -220,7 +221,18 @@ public class CompleteDetailsFragment extends Fragment {
         });
 
 
-        review_address_top.setText(review_address_big);
+//        review_address_top.setText(review_address_big);
+
+        TextView title_top = view.findViewById(R.id.app_name);
+        if (view.isEnabled()){
+            title_top.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            title_top.setHorizontallyScrolling(true);
+            title_top.setMinLines(1);
+          //  title_top.setMarqueeRepeatLimit(1);
+            title_top.setText(review_address_big);
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
 
         mUrl = "http://18.224.202.135/api/report-ado/" + id + "/";
         //Log.d("click","reached herw"+id);

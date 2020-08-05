@@ -353,6 +353,7 @@ public class DistrictAdo extends Fragment {
     }
 
     public void getData(){
+        spinner.setVisibility(View.GONE);
         final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, ado_list, null, new Response.Listener<JSONObject>() {
             @Override
@@ -648,6 +649,18 @@ public class DistrictAdo extends Fragment {
 
     }
 
+    @Override
+    public void onPause() {
+        spinner.setVisibility(View.GONE);
+        super.onPause();
+    }
+
+   /* @Override
+    public void onResume() {
+        spinner.setVisibility(View.GONE);
+        super.onResume();
+    }*/
+
     private void requestFinished(RequestQueue queue) {
 
         queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
@@ -668,7 +681,6 @@ public class DistrictAdo extends Fragment {
         }else{
             top_heading.setText("AFL Monitoring");
         }*/
-        System.out.println("Dimple districtddo ambal wala text");
         return text;
     }
 

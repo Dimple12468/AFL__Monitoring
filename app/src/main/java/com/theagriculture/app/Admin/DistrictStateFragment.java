@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -278,9 +279,19 @@ public class DistrictStateFragment extends Fragment {
         //code for drop-down
         String[] states = { "All", "Pending", "Ongoing", "Completed"};
         spin = (Spinner) view.findViewById(R.id.spinner1);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, states);
+        int[] images = {R.drawable.for_pending, R.drawable.for_pending,
+                R.drawable.for_ongoing,R.drawable.for_completed};
+
+        Drawable[] drawable = {getResources().getDrawable(R.drawable.for_pending),
+                getResources().getDrawable(R.drawable.for_pending),
+                getResources().getDrawable(R.drawable.for_ongoing),
+                getResources().getDrawable(R.drawable.for_completed)};
+        CustomSpinnerAdapter adapt = new CustomSpinnerAdapter(getActivity(),states,images,drawable);
+        adapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spin.setAdapter(adapt);
+       /* ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, states);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin.setAdapter(adapter);
+        spin.setAdapter(adapter);*/
         spinner.setVisibility(View.VISIBLE);
         spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -491,7 +502,6 @@ public class DistrictStateFragment extends Fragment {
                     xAxes = lineChart.getXAxis();
                     xAxes.setPosition(XAxis.XAxisPosition.BOTTOM);
 
-
                     yAxisRight = lineChart.getAxisRight();
                     yAxisRight.setEnabled(false);
                     xAxes.setValueFormatter(new IndexAxisValueFormatter(xaxis));
@@ -500,38 +510,21 @@ public class DistrictStateFragment extends Fragment {
 
                     LineDataSet lineDataSet1 = new LineDataSet(yAxis1,"Pending");
                     lineDataSet1.setDrawCircles(false);
-
-                    //lineDataSet1.setColor(R.color.pending_color);
                     lineDataSet1.setColor(Color.argb(1,31, 120, 180));
                     lineDataSet1.setDrawFilled(true);
-                    //lineDataSet1.setFillColor(R.color.pending_color);
                     lineDataSet1.setFillColor(Color.argb(1,31, 120, 180));
-                    //rgba(31, 120, 180, 1)
 
                     LineDataSet lineDataSet2 = new LineDataSet(yAxis2,"Completed");
                     lineDataSet2.setDrawCircles(false);
-//                    lineDataSet2.setColor(R.color.completed_color);
                     lineDataSet2.setColor(Color.argb(1,178, 223, 138));
                     lineDataSet2.setDrawFilled(true);
-                   // lineDataSet2.setFillColor(R.color.completed_color);
                     lineDataSet2.setFillColor(Color.argb(1,178, 223, 138));
-                    //lineDataSet1.setFillColor(Color.BLACK);
-//rgba(123, 38, 198, 1)
 
                     LineDataSet lineDataSet3 = new LineDataSet(yAxis3,"Ongoing");
                     lineDataSet3.setDrawCircles(false);
-                   // lineDataSet3.setColor(R.color.ongoing_color);
                     lineDataSet3.setColor(Color.argb(1,123, 38, 198));
                     lineDataSet3.setDrawFilled(true);
-                    //lineDataSet3.setFillColor(R.color.ongoing_color);
                     lineDataSet3.setFillColor(Color.argb(1,123, 38, 198));
-
-//rgba(178, 223, 138, 1)
-                    //set2.setHighLightColor(Color.rgb(244, 117, 117));
-
-
-
-
 
                     if(state.equals("All") || state.equals("Pending"))
                         lineDataSets.add(lineDataSet1);

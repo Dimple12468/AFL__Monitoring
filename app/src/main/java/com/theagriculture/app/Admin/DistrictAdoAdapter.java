@@ -48,7 +48,7 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
     private ArrayList<String> mDistrictNames;
     private boolean isBusy = false;
     private String TAG = "RecyclerViewAdapter";
-    private ImageButton imageView6;
+//    private ImageButton imageView6;
     private TextView tv3;
 
     public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2,
@@ -91,7 +91,7 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
         holder.tv1.setText(mtextview1.get(position));
         holder.tv2.setText(mtextview2.get(position));
         if (!isDdoFragment) {
-            holder.districtTextview.setText("DDA : " + mDdoNames.get(position).toUpperCase() + " (" + mDistrictNames.get(position) + ")");
+            holder.districtTextview.setText("DDA : " + mDdoNames.get(position).toUpperCase());/* + " (" + mDistrictNames.get(position) + ")");*/
             holder.districtTextview.setBackground(null);
         } else
             holder.districtTextview.setVisibility(View.GONE);
@@ -174,7 +174,7 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
         TextView tv2;
         RelativeLayout relativeLayout;
         TextView districtTextview;
-        ImageButton imageView6;
+    //    ImageButton imageView6;
        // tv3 = itemView.findViewById(R.id.search_notfound);
 
         public ViewHolder(@NonNull View itemView) {
@@ -184,11 +184,11 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
             tv2= itemView.findViewById(R.id.tvinfo);
             relativeLayout = itemView.findViewById(R.id.relativeLayout2);
             districtTextview = itemView.findViewById(R.id.district_info);
-            imageView6 = itemView.findViewById(R.id.dropdown);
+           // imageView6 = itemView.findViewById(R.id.dropdown);
             //tv3 = itemView.findViewById(R.id.search_notfound);
 
 
-            imageView6.setOnClickListener(new View.OnClickListener() {
+           /* imageView6.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //Toast.makeText(mcontext,"you clicked",Toast.LENGTH_LONG).show();
@@ -206,7 +206,7 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
                     popup.show();
 
                 }
-            });
+            });*/
 
         }
         @Override
