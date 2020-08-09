@@ -5,13 +5,15 @@
     android:layout_height="match_parent"
     android:id="@+id/refreshpull1">
 
+    <!--binds whole layout-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/relativeLayout1"
         android:background="#FFFFFF">
 
-        <!--TextView
+        <!--heading text
+        <TextView
             android:id="@+id/district_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,6 +25,7 @@
             android:textSize="20dp"
             android:textStyle="bold" /-->
 
+        <!--toolbar-->
         <include
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,47 +47,97 @@
             android:elevation="15dp"
             android:visibility="gone" />
 
-        <!--LinearLayout
-            android:id="@+id/for_edit"
+        <!--binds layout for edit-->
+        <LinearLayout
+            android:id="@+id/for_edit_ado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:orientation="horizontal"
             android:layout_below="@+id/app__bar_district_ado"
-            android:padding="6dp">
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:padding="12dp">
 
             <TextView
+                android:id="@+id/tv_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="edit"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:paddingLeft="20dp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/arial"
                 android:textSize="20sp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="8dp"/>
+                android:layout_marginEnd="10dp"/>
+            <!--android:layout_marginStart="20dp"-->
 
             <View
-                android:layout_width="250dp"
+                android:id="@+id/view_edit"
+                android:layout_width="220dp"
                 android:layout_height="0.2px"
                 android:layout_gravity="center_vertical"
                 android:background="#707070"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"/>
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:visibility="visible"/>
 
             <ImageButton
+                android:id="@+id/ib_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/search"
-                android:paddingRight="20dp"
-                android:layout_marginLeft="8dp"
-                android:layout_gravity="center_vertical"/>
+                app:srcCompat="@drawable/ic_settings_outline"
+                android:background="@color/white"
+                android:layout_marginStart="10dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="visible"/>
 
-        </LinearLayout-->
-        <RelativeLayout
+            <View
+                android:id="@+id/vd1"
+                android:layout_width="160dp"
+                android:layout_height="0.2px"
+                android:layout_gravity="center_vertical"
+                android:background="#707070"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="gone"/>
+
+            <ImageButton
+                android:id="@+id/ib1_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_icon_material_edit"
+                android:background="@color/white"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"/>
+            <ImageButton
+                android:id="@+id/ib2_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_icon_material_delete"
+                android:background="@color/white"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"/>
+            <ImageButton
+                android:id="@+id/ib3_settings_fill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_settings_fill"
+                android:background="@color/white"
+                android:layout_marginStart="10dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+        <!--binds edit layout with relative layout-->
+        <!--RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/for_edit"
@@ -92,7 +145,6 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:padding="8dp">
-
             <TextView
                 android:id="@+id/ed"
                 android:layout_width="wrap_content"
@@ -104,38 +156,89 @@
                 android:layout_marginStart="18dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"/>
-
             <View
                 android:id="@+id/vd"
-                android:layout_width="270dp"
-                android:layout_height="0.2px"
+                android:layout_width="250dp"
+                android:layout_height="0.2dp"
                 android:background="#707070"
                 android:layout_toEndOf="@id/ed"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"/>
-
             <ImageButton
                 android:id="@+id/ib"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="18dp"
+                android:layout_marginEnd="20dp"
                 android:layout_toEndOf="@id/vd"
-                app:srcCompat="@drawable/search" />
+                app:srcCompat="@drawable/ic_settings_outline"
+                android:background="@color/white"/>
+            <-view
+                android:id="@+id/vd1"
+                android:layout_width="180dp"
+                android:layout_height="0.2px"
+                android:background="#707070"
+                android:layout_toEndOf="@id/ed"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="gone"/>
+            <ImageButton
+                android:id="@+id/ib1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_icon_material_edit"
+                android:layout_toEndOf="@id/vd1"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="7dp"
+                android:layout_centerVertical="true"
+                android:background="@color/white"
+                android:visibility="gone"/>
+            <ImageButton
+                android:id="@+id/ib2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="7dp"
+                app:srcCompat="@drawable/ic_icon_material_delete"
+                android:layout_toEndOf="@id/ib1"
+                android:background="@color/white"
+                android:visibility="gone"/>
+            <ImageButton
+                android:id="@+id/ib3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="7dp"
+                app:srcCompat="@drawable/ic_settings_fill"
+                android:layout_toEndOf="@id/ib2"
+                android:background="@color/white"
+                android:visibility="gone"/>
+        </RelativeLayout-->
 
-        </RelativeLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewado1"
+        <FrameLayout
+            android:id="@+id/nodata_dist_ado"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/for_edit"/>
-        <!--android:layout_below="@+id/district_name"
-            android:layout_alignParentTop="true"
-            android:layout_below="@id/app__bar_district_ado"-->
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/for_edit_ado">
 
+            <!--Recyclerview for ado->click district -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewado1"
+                android:layout_width="match_parent"
+                android:scrollbars="vertical"
+                android:layout_height="match_parent"/>
+            <!--android:layout_below="@id/for_edit_ado"
+                android:layout_below="@+id/district_name"
+                android:layout_alignParentTop="true"
+                android:layout_below="@id/app__bar_district_ado"-->
+        </FrameLayout>
         <ProgressBar
             android:id="@+id/ado_progressbar"
             android:layout_width="wrap_content"
@@ -144,5 +247,8 @@
             android:layout_centerHorizontal="true"
             android:indeterminateDrawable="@drawable/progress"
             android:visibility="visible" />
+
     </RelativeLayout>
+
+
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

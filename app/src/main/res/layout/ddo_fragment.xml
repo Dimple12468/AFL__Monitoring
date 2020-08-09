@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/refreshpull2">
 
 
@@ -29,7 +29,7 @@
             android:layout_marginBottom="8dp"
             android:indeterminateDrawable="@drawable/progress"
             android:visibility="gone" />
-        <TextView
+        <!--TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="List of DDA's"
@@ -40,13 +40,102 @@
             android:textStyle="bold"
             android:textColor="#000000"
             android:fontFamily="@font/arial"
-            android:layout_below="@id/app__bar_ddo"/>
+            android:layout_below="@id/app__bar_ddo"/-->
+
+        <LinearLayout
+            android:id="@+id/for_edit_dda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal"
+            android:layout_below="@+id/app__bar_ddo"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tv_edit_dda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="edit"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:fontFamily="@font/arial"
+                android:textSize="20sp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="10dp"/>
+            <!--android:layout_marginStart="18dp"-->
+
+            <View
+                android:id="@+id/view_edit_dda"
+                android:layout_width="220dp"
+                android:layout_height="0.2px"
+                android:layout_gravity="center_vertical"
+                android:background="#707070"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:visibility="visible"/>
+
+            <ImageButton
+                android:id="@+id/ib_edit_dda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_settings_outline"
+                android:background="@color/white"
+                android:layout_marginStart="10dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="visible"/>
+
+            <View
+                android:id="@+id/vd1_dda"
+                android:layout_width="160dp"
+                android:layout_height="0.2px"
+                android:layout_gravity="center_vertical"
+                android:background="#707070"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="gone"/>
+
+            <ImageButton
+                android:id="@+id/ib1_edit_dda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_icon_material_edit"
+                android:background="@color/white"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"/>
+            <ImageButton
+                android:id="@+id/ib2_delete_dda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_icon_material_delete"
+                android:background="@color/white"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"/>
+            <ImageButton
+                android:id="@+id/ib3_settings_fill_dda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_settings_fill"
+                android:background="@color/white"
+                android:layout_marginStart="10dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"/>
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewddo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/ddalist"/>
+            android:layout_below="@+id/for_edit_dda"/>
+        <!--android:layout_below="@+id/ddalist"-->
 
         <ProgressBar
             android:id="@+id/ddo_progressbar"

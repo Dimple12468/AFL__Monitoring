@@ -491,7 +491,6 @@ public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelect
             public void onResponse(JSONArray response) {
                 if(response.length()==0)
                     //todo add image
-                    System.out.println("dimple in ado_fragment nothing "+ district_list_url);
                  view.setBackground(getActivity().getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
 
                 for (int i = 0; i < response.length(); i++) {

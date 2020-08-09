@@ -13,12 +13,14 @@ import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -34,6 +36,7 @@ import java.util.Collection;
 
 public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> implements Filterable {
 
+   // View view1;
     ArrayList<String> mtextview1;
     ArrayList<String> mtextview2;
 
@@ -50,9 +53,10 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
     private String TAG = "RecyclerViewAdapter";
 //    private ImageButton imageView6;
     private TextView tv3;
+    private boolean is_settings_clicked = false;
 
     public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2,
-                              ArrayList<String> mUserId, boolean isDdoFragment, ArrayList<String> mPkList, ArrayList<String> mDdoNames, ArrayList<String> mDistrictNames) {
+                              ArrayList<String> mUserId, boolean isDdoFragment, ArrayList<String> mPkList, ArrayList<String> mDdoNames, ArrayList<String> mDistrictNames){// boolean is_settings_clicked) {
         this.mtextview1 = mtextview1;
         this.mtextview2 = mtextview2;
         this.mcontext = mcontext;
@@ -73,8 +77,40 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
         this.mcontext = mcontext;
         this.isDdoFragment = isDdoFragment;
         mPkList = pkList;
+        //this.is_settings_clicked = is_settings_clicked;
 
         //this.mtextview1_all = new ArrayList<>(mtextview1);
+    }
+
+    public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2,
+                              ArrayList<String> mUserId, boolean isDdoFragment, ArrayList<String> pkList,boolean is_settings_clicked) {
+        this.mtextview1 = mtextview1;
+        this.mtextview2 = mtextview2;
+        this.mUserId = mUserId;
+        this.mcontext = mcontext;
+        this.isDdoFragment = isDdoFragment;
+        mPkList = pkList;
+        this.is_settings_clicked = is_settings_clicked;
+
+        //this.mtextview1_all = new ArrayList<>(mtextview1);
+    }
+
+    //constructor for radio button
+    public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2,
+                              ArrayList<String> mUserId, boolean isDdoFragment, ArrayList<String> mPkList, ArrayList<String> mDdoNames, ArrayList<String> mDistrictNames,Boolean is_settings_clicked) {
+        this.mcontext = mcontext;
+        this.mtextview1 = mtextview1;
+        this.mtextview2 = mtextview2;
+        this.isDdoFragment = isDdoFragment;
+        this.mUserId = mUserId;
+        this.mPkList = mPkList;
+        this.mDdoNames = mDdoNames;
+        this.mDistrictNames = mDistrictNames;
+        this.is_settings_clicked = is_settings_clicked;
+      /*  if (is_settings_clicked){
+            radioButton.setVisibility(View.VISIBLE);
+        }*/
+
     }
 
     @NonNull
@@ -90,11 +126,17 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
         holder.tv2.setBackground(null);
         holder.tv1.setText(mtextview1.get(position));
         holder.tv2.setText(mtextview2.get(position));
+       // holder.selection.setVisibility(View.GONE);
+       /* if (is_settings_clicked){
+            holder.radioButton.setVisibility(View.VISIBLE);
+        }*/
         if (!isDdoFragment) {
             holder.districtTextview.setText("DDA : " + mDdoNames.get(position).toUpperCase());/* + " (" + mDistrictNames.get(position) + ")");*/
             holder.districtTextview.setBackground(null);
         } else
             holder.districtTextview.setVisibility(View.GONE);
+
+
 
     }
 
@@ -103,6 +145,7 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
         return  mtextview1.size();
     }
 
+    //search filter in toolbar
     @Override
     public Filter getFilter() {
         return filter;
@@ -168,12 +211,15 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
             this.mtextview1_all = new ArrayList<>(username);
         }
     }
+    //end of search suggestions filter
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView tv1;
         TextView tv2;
         RelativeLayout relativeLayout;
         TextView districtTextview;
+        RadioButton radioButton;
+        //  RadioButton selection;
     //    ImageButton imageView6;
        // tv3 = itemView.findViewById(R.id.search_notfound);
 
@@ -184,10 +230,14 @@ public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.
             tv2= itemView.findViewById(R.id.tvinfo);
             relativeLayout = itemView.findViewById(R.id.relativeLayout2);
             districtTextview = itemView.findViewById(R.id.district_info);
+            radioButton = itemView.findViewById(R.id.offer_select);
+     //       selection = itemView.findViewById(R.id.offer_select);
            // imageView6 = itemView.findViewById(R.id.dropdown);
             //tv3 = itemView.findViewById(R.id.search_notfound);
 
-
+            if (is_settings_clicked){
+                radioButton.setVisibility(View.VISIBLE);
+            }
            /* imageView6.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

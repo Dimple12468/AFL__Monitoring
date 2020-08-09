@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,6 +38,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.theagriculture.app.Admin.AdoDdoActivity.nothing_toshow_fragment;
 import com.theagriculture.app.R;
 import com.theagriculture.app.adapter.PendingAdapter;
 
@@ -142,7 +144,6 @@ public class OnGoingFragment extends Fragment {
         token = preferences.getString("token", "");
 
 
-        ///////////////
         getData();
         recyclerViewAdater = new SectionAdapter(getActivity(),sections);
         recyclerView.setAdapter(recyclerViewAdater);
@@ -162,8 +163,12 @@ public class OnGoingFragment extends Fragment {
                             JSONObject jsonObject = new JSONObject(String.valueOf(response));
                             next_ongoing_url = jsonObject.getString("next");
                             JSONArray jsonArray = jsonObject.getJSONArray("results");
-                            if(jsonArray.length()==0)
-                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
+                            if(jsonArray.length()==0) {
+                              //  nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+                              //  AppCompatActivity activity = (AppCompatActivity) getActivity();
+                              //  activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_when_nodata, no_data).addToBackStack(null).commit();
+                                 view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_emptyartboard_1));//todo image bg
+                            }
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 //Toast.makeText(getActivity(),"Enterd i",Toast.LENGTH_LONG).show();
                                 //itemArrayList = new ArrayList<>();
@@ -306,7 +311,7 @@ public class OnGoingFragment extends Fragment {
                             });
 
                         }else
-                            Toast.makeText(getActivity(), "An error occured", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "An error occurred", Toast.LENGTH_SHORT).show();
                     }
                 }) {
             @Override
@@ -441,7 +446,7 @@ public class OnGoingFragment extends Fragment {
                              */
                         } catch (JSONException e) {
                             spinner.setVisibility(View.GONE);
-                            Toast.makeText(getActivity(),"An exception occured",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(),"An exception occurred",Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
 

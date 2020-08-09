@@ -183,6 +183,7 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
         nvDrawer_map = mView.findViewById(R.id.navigation_view_map);
         privacyPolicy = new PrivacyPolicy();
 //        b_nav_map = mView.findViewById(R.id.bottom_nav_for_map);
+
         mapFragmnt = new map_fragemnt();
         locationFragment = new location_fragment();
         adoFragment = new ado_fragment();
@@ -202,14 +203,7 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
         //Bottom_nav_adapter adapt = new Bottom_nav_adapter(getContext(),mapFragmnt,R.id.adminshome);
 
 
-
-        // Android
-
-        //Drawable d = getResources().getDrawable(R.drawable.ic_artboard_1);
-
- //       ActionBarDrawerToggle actionBarDrawerToggle = ;
-
-        /*b_nav_map.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+/*        b_nav_map.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
@@ -217,23 +211,18 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
                         InitializeFragment(mapFragmnt);
                         return true;
                     case R.id.adminslocation:
-                        //((DrawerLocker) locationFragment).setDrawerEnabled(true);
-                        //title_top.setText("Locations");
                         // InitializeFragment(locationFragment);
                         Toast.makeText(getActivity(), "locations clicked", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.adminsado:
-                        // ((DrawerLocker) adoFragment).setDrawerEnabled(false);
-                        //title_top.setText("ADO");
-                        InitializeFragment(adoFragment);
+                        Toast.makeText(getActivity(), "ado clicked", Toast.LENGTH_SHORT).show();
+                        //InitializeFragment(adoFragment);
                         return true;
                     case R.id.adminsdda:
-                        // title_top.setText("DDA");
                         //InitializeFragment(ddoFragment);
                         Toast.makeText(getActivity(), "dda clicked", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.adminsdistrict_state:
-                        // title_top.setText("District Stats");
                         // InitializeFragment(districtStateFragment);
                         Toast.makeText(getActivity(), "stats clicked", Toast.LENGTH_SHORT).show();
                         return true;

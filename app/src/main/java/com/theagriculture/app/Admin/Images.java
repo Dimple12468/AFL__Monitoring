@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,6 +67,18 @@ public class Images extends Fragment {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_images, container, false);
         View view = inflater.inflate(R.layout.fragment_images, container, false);
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_images);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        TextView title_top = view.findViewById(R.id.app_name);
+        if (view.isEnabled()){
+            title_top.setText("Images");
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
 
         Bundle bundle = this.getArguments();
         id = bundle.get("id").toString();
@@ -143,8 +157,6 @@ public class Images extends Fragment {
                                         Toast toast = Toast.makeText(getActivity(),"Tap on Close App again to exit app", Toast.LENGTH_LONG);
                                         toast.setGravity(Gravity.CENTER, 0, 0);
                                         toast.show();
-
-
 
                                         new Handler().postDelayed(new Runnable() {
                                             @Override

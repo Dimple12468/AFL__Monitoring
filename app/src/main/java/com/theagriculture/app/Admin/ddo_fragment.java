@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -50,6 +51,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.theagriculture.app.Admin.AdoDdoActivity.nothing_toshow_fragment;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -85,6 +87,11 @@ public class ddo_fragment extends Fragment {
 
     MenuItem searchItem;
     MenuItem searchItem_filter;
+
+    ImageButton Ib,Ib1,Ib2,Ib3;
+    TextView tv_edit;
+    View v1,v2;
+    Boolean is_settings_clicked = false;
 
     public ddo_fragment() {
 
@@ -296,6 +303,62 @@ public class ddo_fragment extends Fragment {
             title_top.setText("AFL Monitoring");
         }
 
+        tv_edit = view.findViewById(R.id.tv_edit_dda);
+        Ib = view.findViewById(R.id.ib_edit_dda);
+        Ib1 = view.findViewById(R.id.ib1_edit_dda);
+        Ib2 = view.findViewById(R.id.ib2_delete_dda);
+        Ib3 = view.findViewById(R.id.ib3_settings_fill_dda);
+        v1 = view.findViewById(R.id.view_edit_dda);
+        v2 = view.findViewById(R.id.vd1_dda);
+
+        Ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v1.setVisibility(View.GONE);
+                Ib.setVisibility(View.GONE);
+
+                Ib1.setVisibility(View.VISIBLE);
+                Ib2.setVisibility(View.VISIBLE);
+                Ib3.setVisibility(View.VISIBLE);
+                v2.setVisibility(View.VISIBLE);
+                is_settings_clicked = true;
+                DistrictAdoAdapter adapt = new DistrictAdoAdapter(getActivity(), username, userinfo, mUserId, true, mPkList,is_settings_clicked);
+                Rview.setAdapter(adapt);
+            }
+        });
+
+        Ib1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Edit clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Ib2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Delete clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Ib3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v1.setVisibility(View.VISIBLE);
+                Ib.setVisibility(View.VISIBLE);
+
+                Ib1.setVisibility(View.GONE);
+                Ib2.setVisibility(View.GONE);
+                Ib3.setVisibility(View.GONE);
+                v2.setVisibility(View.GONE);
+                is_settings_clicked = false;
+
+               DistrictAdoAdapter adapt = new DistrictAdoAdapter(getActivity(), username, userinfo, mUserId, true, mPkList,is_settings_clicked);
+               Rview.setAdapter(adapt);
+            }
+        });
+
+
         isRefresh = false;
         spinner = view.findViewById(R.id.ddo_progressbar);
         spinner.setVisibility(View.VISIBLE);
@@ -313,7 +376,7 @@ public class ddo_fragment extends Fragment {
         mPkList = new ArrayList<>();
         progressBar = view.findViewById(R.id.ddo_list_progressbar);
         //recyclerViewAdater = new RecyclerViewAdater(getActivity(), username, userinfo, mUserId, true, mPkList);
-        recyclerViewAdater = new DistrictAdoAdapter(getActivity(), username, userinfo, mUserId, true, mPkList);
+        recyclerViewAdater = new DistrictAdoAdapter(getActivity(), username, userinfo, mUserId, true, mPkList);    //,is_settings_clicked);
         Rview = view.findViewById(R.id.recyclerViewddo);
         Rview.setAdapter(recyclerViewAdater);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -344,8 +407,10 @@ public class ddo_fragment extends Fragment {
                         //recyclerViewAdater.mShowShimmer = false;
                         recyclerViewAdater.notifyDataSetChanged();
 
-                        System.out.println("dimple in ddo_fragment " + mUrl);
                         //todo image here
+                       // nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+                       // AppCompatActivity activity = (AppCompatActivity)getActivity();
+                       // activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_when_nodata, no_data).addToBackStack(null).commit();
                         view.setBackground(getActivity().getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
                         //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                     }

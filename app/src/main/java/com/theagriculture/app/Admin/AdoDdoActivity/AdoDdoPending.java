@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -138,7 +139,6 @@ public class AdoDdoPending extends Fragment {
             role = "ado";
             String mUrlPending = "http://18.224.202.135/api/admin/" + role + "/" + mDdoId + "/pending";
             Log.d("url", "onCreateView: pending" + mUrlPending);
-            System.out.println("DIMPLE IN ADODDOPENDING"+mUrlPending);
             getData(mUrlPending); //just passed true and Set it accordingly in the function called
             //mUrl = mUrlPending;
             //mUrl.equals(mUrlPending);
@@ -168,8 +168,10 @@ public class AdoDdoPending extends Fragment {
                                // adapter.mshowshimmer = false;
                                 adapter.notifyDataSetChanged();
                                 Log.d(TAG, "onResponse: see here.... " + view);
-
-                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_group_217));
+                                nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+                                AppCompatActivity activity = (AppCompatActivity)getContext();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_nodata_pending, no_data).addToBackStack(null).commit();
+                                //view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_group_217));
                             }
                             for (int i = 0; i < resultsArray.length(); i++) {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
@@ -324,8 +326,10 @@ public class AdoDdoPending extends Fragment {
                                 //adapter.mshowshimmer = false;
                                 adapter.notifyDataSetChanged();
 
-                                System.out.println("dimple in adoddopending"+url);
                                 //todo image here
+                                nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+                                AppCompatActivity activity = (AppCompatActivity)getContext();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_nodata_pending, no_data).addToBackStack(null).commit();
                                 view.setBackground(getActivity().getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
                                 //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                             }

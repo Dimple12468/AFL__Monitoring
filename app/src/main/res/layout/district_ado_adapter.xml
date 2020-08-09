@@ -15,16 +15,32 @@
         android:id="@+id/relativeLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+        <!--app:layout_constraintEnd_toStartOf="@+id/dropdown"-->
+
+        <RadioButton
+            android:id="@+id/offer_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="18dp"
+            android:buttonTint="@color/app_color"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
+        <!--app:layout_constraintHorizontal_bias="0.864"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp" -->
 
         <ImageView
             android:id="@+id/imageuser"
             android:layout_width="60dp"
             android:layout_height="58dp"
             android:layout_marginTop="8dp"
-            android:src="@drawable/user_image" />
+            android:src="@drawable/user_image"
+            android:layout_toEndOf="@id/offer_select"/>
 
         <TextView
             android:id="@+id/tvuser"

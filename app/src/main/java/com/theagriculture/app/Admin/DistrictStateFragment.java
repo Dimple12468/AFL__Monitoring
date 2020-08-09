@@ -190,13 +190,12 @@ public class DistrictStateFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         getContext().getTheme().applyStyle(R.style.calendar_theme, true);
-
-
+        //final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.calendar_theme);
+        //LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+        //View view = localInflater.inflate(R.layout.fragment_district_state, container, false);
        // MyFragment myFragment = (MyFragment)getFragmentManager().findFragmentByTag("MY_FRAGMENT");
-       // Context ctx = new ContextThemeWrapper(getActivity(), R.style.calendar_theme);
-        //LayoutInflater li = inflater.cloneInContext(ctx);
-        //ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(),R.style.calendar_theme);
-        //LayoutInflater li =   getActivity().getLayoutInflater().cloneInContext(contextThemeWrapper);
+
+
         View view = inflater.inflate(R.layout.fragment_district_state, container, false);
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_stat);
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
@@ -204,10 +203,7 @@ public class DistrictStateFragment extends Fragment {
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         //setHasOptionsMenu(true);
 
-     //   iv1 = view.findViewById(R.id.ham);
-        //iv2 = view.findViewById(R.id.se1);
-       // iv1.setVisibility(View.GONE);
-        //iv2.setVisibility(View.GONE);*/
+        //for title heading
         TextView title_top = view.findViewById(R.id.app_name);
         if (view.isEnabled()){
             title_top.setText("Stats");
@@ -246,6 +242,7 @@ public class DistrictStateFragment extends Fragment {
         legend.setCustom(legendEntry);
 
 
+        //calendar--->date range
         Calendar c = Calendar.getInstance();
 
         final int day = c.get(Calendar.DAY_OF_MONTH);
@@ -273,10 +270,9 @@ public class DistrictStateFragment extends Fragment {
         //pierecycler.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
         //adapter=new Count_Adapter(getActivity(),distlist,pending,ongoing,completed);
         //pierecycler.setAdapter(adapter);
-
         //getGraph(mURL,"All");
 
-        //code for drop-down
+        //code for (drop-down) custom spinner
         String[] states = { "All", "Pending", "Ongoing", "Completed"};
         spin = (Spinner) view.findViewById(R.id.spinner1);
         int[] images = {R.drawable.for_pending, R.drawable.for_pending,
@@ -345,7 +341,6 @@ public class DistrictStateFragment extends Fragment {
         });
 
         //plotting graph
-
         // Setting date
         btndate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -356,13 +351,14 @@ public class DistrictStateFragment extends Fragment {
 
         return view;
     }
+
+    //material date range picker
     public void dateResolver(){
         // Material date picker
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
-       // builder.setTheme(R.style.dist_stat_Theme);
-        final MaterialDatePicker materialDatePicker = builder.build();
+        final MaterialDatePicker<Pair<Long, Long>> materialDatePicker = builder.build();
         //builder.setTheme(R.style.calendar_theme);
-        //final MaterialDatePicker<Pair<Long, Long>> materialDatePicker = builder.build();
+        //final MaterialDatePicker materialDatePicker = builder.build();
         materialDatePicker.show(getFragmentManager(), "date picker");
         materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>() {
             @Override
@@ -372,7 +368,6 @@ public class DistrictStateFragment extends Fragment {
                 Long e_date = selection.second;
                 Date date1 = new Date(s_date);
                 Date date2 = new Date(e_date);
-                //Toast.makeText(getActivity(),date1.toString()+ date2.toString(),Toast.LENGTH_LONG).show();
                 SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
                 start_date_set = df2.format(date1).toString();
                 end_date_set = df2.format(date2).toString();
@@ -381,13 +376,13 @@ public class DistrictStateFragment extends Fragment {
                 String btn_url="http://18.224.202.135/api/countReportBtwDates/?start_date=" + start_date_set + "&end_date=" + end_date_set + "&points=8";
                 String state = String.valueOf(spin.getSelectedItem());
                 getGraph(btn_url,state);
-                //System.out.println(URL);
-                //Toast.makeText(getActivity(),"You clicked "+ start_date_set+ "and "+ end_date_set + "spin has "+ String.valueOf(spin.getSelectedItem()),Toast.LENGTH_LONG).show();
                 //getData(URL,start_date_set,end_date_set);
             }
         });
 
     }
+
+    //function for graph
     public void getGraph(final String url, final String state){
         final ArrayList<String> xAxis = new ArrayList<>();//for x-label
         final ArrayList<Entry> yAxis1 = new ArrayList<>();//pending entry
@@ -473,10 +468,6 @@ public class DistrictStateFragment extends Fragment {
                     adapter.notifyDataSetChanged();
 
 
-
-
-
-
                     final String[] xaxis = new String[xAxis.size()];
                     for(int i=0;i<xAxis.size();i++) {
                         //xaxis[i] = xAxis.get(i);
@@ -529,7 +520,6 @@ public class DistrictStateFragment extends Fragment {
                     if(state.equals("All") || state.equals("Pending"))
                         lineDataSets.add(lineDataSet1);
 
-
                     if(state.equals("All") || state.equals("Ongoing"))
                         lineDataSets.add(lineDataSet3);
 
@@ -567,7 +557,6 @@ public class DistrictStateFragment extends Fragment {
                     FrameLayout bottomSheet = (FrameLayout) mBottomDialogNotificationAction.findViewById(com.google.android.material.R.id.design_bottom_sheet);
                     bottomSheet.setBackground(null);
 
-
                     TextView close = sheetView.findViewById(R.id.close);
                     Button retry = sheetView.findViewById(R.id.retry);
 
@@ -588,7 +577,6 @@ public class DistrictStateFragment extends Fragment {
                                 Toast toast = Toast.makeText(getActivity(),"Tap on Close App again to exit app", Toast.LENGTH_LONG);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-
 
 
                                 new Handler().postDelayed(new Runnable() {

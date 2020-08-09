@@ -27,7 +27,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +49,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.theagriculture.app.Admin.AdoDdoActivity.nothing_toshow_fragment;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -87,6 +91,12 @@ public class DistrictAdo extends Fragment {
     private TextView title;
     private ProgressBar spinner;
     boolean doubleBackToExitPressedOnce = false;
+
+    ImageButton Ib,Ib1,Ib2,Ib3;
+    TextView tv_edit;
+    View v1,v2;
+    Boolean is_settings_clicked = false;
+    LinearLayout ll;
 
     //TextView title_top;
     String text;
@@ -133,7 +143,7 @@ public class DistrictAdo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_district_ado, container, false);
-        View view = inflater.inflate(R.layout.fragment_district_ado, container, false);
+        final View view = inflater.inflate(R.layout.fragment_district_ado, container, false);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_district_ado);
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
@@ -141,6 +151,7 @@ public class DistrictAdo extends Fragment {
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
 
+        ll = view.findViewById(R.id.for_edit_ado);
         ado_list="";
         district_list_url ="http://18.224.202.135/api/district/";
         username = new ArrayList<>();
@@ -151,6 +162,63 @@ public class DistrictAdo extends Fragment {
         mDistrictNames = new ArrayList<>();
         a = new AdminActivity();
         d = new DistrictAdo();
+
+        tv_edit = view.findViewById(R.id.tv_edit);
+        Ib = view.findViewById(R.id.ib_edit);
+        Ib1 = view.findViewById(R.id.ib1_edit);
+        Ib2 = view.findViewById(R.id.ib2_delete);
+        Ib3 = view.findViewById(R.id.ib3_settings_fill);
+        v1 = view.findViewById(R.id.view_edit);
+        v2 = view.findViewById(R.id.vd1);
+
+        Ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v1.setVisibility(View.GONE);
+                Ib.setVisibility(View.GONE);
+
+                Ib1.setVisibility(View.VISIBLE);
+                Ib2.setVisibility(View.VISIBLE);
+                Ib3.setVisibility(View.VISIBLE);
+                v2.setVisibility(View.VISIBLE);
+                is_settings_clicked = true;
+                DistrictAdoAdapter adapt = new DistrictAdoAdapter(getActivity(), username, userinfo, mUserId, false, mPkList, mDdoNames, mDistrictNames,is_settings_clicked);
+                Rview.setAdapter(adapt);
+                //RadioButton radioButton = view.findViewById(R.id.offer_select);
+                //radioButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+        Ib1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Edit clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Ib2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Delete clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Ib3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v1.setVisibility(View.VISIBLE);
+                Ib.setVisibility(View.VISIBLE);
+
+                Ib1.setVisibility(View.GONE);
+                Ib2.setVisibility(View.GONE);
+                Ib3.setVisibility(View.GONE);
+                v2.setVisibility(View.GONE);
+                is_settings_clicked = false;
+
+                DistrictAdoAdapter adapt = new DistrictAdoAdapter(getActivity(), username, userinfo, mUserId, false, mPkList, mDdoNames, mDistrictNames,is_settings_clicked);
+                Rview.setAdapter(adapt);
+            }
+        });
 
         Bundle bundle = this.getArguments();
         curr_dist = bundle.getString("district");
@@ -179,7 +247,7 @@ public class DistrictAdo extends Fragment {
         progressBar = view.findViewById(R.id.ado_list_progressbar1);
         relativeLayout = view.findViewById(R.id.relativeLayout1);
         //recyclerViewAdater = new RecyclerViewAdater(getActivity(), username, userinfo, mUserId, false, mPkList, mDdoNames, mDistrictNames);
-        recyclerViewAdater = new DistrictAdoAdapter(getActivity(), username, userinfo, mUserId, false, mPkList, mDdoNames, mDistrictNames);
+        recyclerViewAdater = new DistrictAdoAdapter(getActivity(), username, userinfo, mUserId, false, mPkList, mDdoNames, mDistrictNames);//is_settings_clicked);
         Rview = view.findViewById(R.id.recyclerViewado1);
         Rview.setAdapter(recyclerViewAdater);
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
@@ -371,9 +439,13 @@ public class DistrictAdo extends Fragment {
 
                     if(resultsArray.length()== 0){
                         //recyclerViewAdater.mShowShimmer = false;
+                        ll.setVisibility(View.GONE);
                         recyclerViewAdater.notifyDataSetChanged();
                         //todo add image
-                        relativeLayout.setBackground(getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
+                        nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+                        AppCompatActivity activity = (AppCompatActivity)getActivity();
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.nodata_dist_ado, no_data).addToBackStack(null).commit();
+                        //relativeLayout.setBackground(getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
                         //relativeLayout.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                     }
                     for (int i = 0; i < resultsArray.length(); i++) {

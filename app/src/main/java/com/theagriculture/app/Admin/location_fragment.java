@@ -109,6 +109,7 @@ public class location_fragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }*/
 
+   //for spinner filter dialog in menu
     private void alert_filter_dialog() {
         LayoutInflater li = LayoutInflater.from(getActivity());
         View promptsView = li.inflate(R.layout.activity_filter_search, null);
@@ -236,8 +237,6 @@ public class location_fragment extends Fragment {
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
-        /*ImageView iv = view.findViewById(R.id.ham);
-        iv.setVisibility(View.INVISIBLE);*/
 
         title_top = view.findViewById(R.id.app_name);
         if (view.isEnabled()){

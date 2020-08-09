@@ -74,7 +74,7 @@ public class PendingDetailsFragment extends Fragment {
     private TextView aname;
     private TextView aemail;
     private TextView anumber;
-//    private TextView aaddress;
+    private TextView aaddress;
 
     private TextView bname;
     private TextView bemail;
@@ -98,14 +98,14 @@ public class PendingDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pending_details, container, false);
-        //AppCompatActivity appCompatActivity = new AppCompatActivity();
-        //appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        //setHasOptionsMenu(true);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_pending);
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        appCompatActivity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //appCompatActivity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.go_back);
 
         Bundle bundle = this.getArguments();
         if(bundle!=null) {
@@ -130,17 +130,18 @@ public class PendingDetailsFragment extends Fragment {
         aemail = view.findViewById(R.id.adodetail_email2);
         anumber = view.findViewById(R.id.adodetail_phone2);
 
-//        aaddress = view.findViewById(R.id.addr2);
-//        aaddress.setText(address_top);
+        aaddress = view.findViewById(R.id.addr2);
+        aaddress.setText(address_top);
         TextView title_top = view.findViewById(R.id.app_name);
         if (view.isEnabled()){
-            title_top.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            title_top.setText("Location Details");
+            /* title_top.setEllipsize(TextUtils.TruncateAt.MARQUEE);
             title_top.setHorizontallyScrolling(true);
             title_top.setMinLines(1);
             title_top.setSingleLine(true);
           //  title_top.setMarqueeRepeatLimit(-1);
             title_top.setSelected(true);
-            title_top.setText(address_top);
+            title_top.setText(address_top);*/
         }else {
             title_top.setText("AFL Monitoring");
         }

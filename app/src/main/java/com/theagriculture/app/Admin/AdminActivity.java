@@ -182,8 +182,9 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
 
         // ask for permissions and intializes fragment according to
         // items in bottom navigation clicked
-        if(getPermission()) {
-            InitializeFragment(mapFragmnt);
+       if(getPermission()) {
+           InitializeFragment(mapFragmnt);
+
             //bottom_nav.bottom_navigation_admin();
             navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -200,7 +201,7 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
                         getTheme().applyStyle(R.style.AppTheme,true);
                         //setTheme(R.style.AppTheme);
                     }*/
-                    switch (item.getItemId()) {
+                   switch (item.getItemId()) {
                         case R.id.adminshome:
                            // ((DrawerLocker) mapFragmnt).setDrawerEnabled(true);
                            // title_top.setText("AFL Monitoring");

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.theagriculture.app.Admin.CompleteDetailsFragment;
@@ -78,6 +79,16 @@ public class AdoDdoListAdapter extends RecyclerView.Adapter<AdoDdoListAdapter.Ad
         this.mcontext = mcontext;
         idList = mIds;
         this.isDdoTabNo = isDdoTabNo;
+    }
+
+    /*public AdoDdoListAdapter(FragmentActivity activity, nothing_toshow_fragment no_data) {
+        this.mcontext = activity;
+        change_fragemnt(no_data);
+    }*/
+
+    private void change_fragemnt(nothing_toshow_fragment no_data) {
+        AppCompatActivity activity = (AppCompatActivity) no_data.getContext();
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, no_data).addToBackStack(null).commit();
     }
 
     @NonNull

@@ -28,8 +28,8 @@
             android:id="@+id/map"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app__bar_map" />
         <!--app:layout_constraintBottom_toTopOf="@id/bottom_nav_for_map"-->
@@ -43,8 +43,8 @@
             app:backgroundTint="#E03B3B"
             app:elevation="6dp"
             app:fabSize="normal"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/fab_icon" />
 <!--app:layout_constraintBottom_toTopOf="@id/bottom_nav_for_map"-->
 

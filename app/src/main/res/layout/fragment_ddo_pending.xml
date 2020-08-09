@@ -5,33 +5,40 @@
     android:layout_width="match_parent"
     android:id="@+id/refreshpull7">
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/change_nodata_pending">
 
-
-        <ProgressBar
-            android:id="@+id/Ddo_pending_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:indeterminateDrawable="@drawable/progress"
-            android:visibility="gone" />
-
-        <androidx.recyclerview.widget.RecyclerView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/Ddo_pending_recyclerview" />
+            android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/Ddo_pending_loading_json"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:indeterminateDrawable="@drawable/progress"
-            android:visibility="visible" />
-    </RelativeLayout>
+
+            <ProgressBar
+                android:id="@+id/Ddo_pending_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:indeterminateDrawable="@drawable/progress"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/Ddo_pending_recyclerview" />
+
+            <ProgressBar
+                android:id="@+id/Ddo_pending_loading_json"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:indeterminateDrawable="@drawable/progress"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+    </FrameLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

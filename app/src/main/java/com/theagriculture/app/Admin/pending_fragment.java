@@ -60,7 +60,7 @@ import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
 
 public class pending_fragment extends Fragment {
 
-    //vars
+    //variables
     private ArrayList<String> mDdaName;
     private ArrayList<String> mAdaName;
     private ArrayList<String> mAddress;
@@ -74,20 +74,13 @@ public class pending_fragment extends Fragment {
     private String aid;
     boolean doubleBackToExitPressedOnce = false;
     //private List<String> itemArrayList;
-
-
-
     //tags
     private static final String TAG = "pending_fragment";
     //private String pendingUrl = "http://18.224.202.135/api/locations/pending";
     private String pendingUrl = "http://18.224.202.135/api/locationsDatewise/pending";
     final ArrayList<Section> sections = new ArrayList<>();
-
-
     private String nextPendingUrl = "null";
     private LinearLayoutManager layoutManager;
-
-
 
     //private AdminLocationAdapter recyclerViewAdater;
     //public PendingAdapter recyclerViewAdater;
@@ -104,8 +97,9 @@ public class pending_fragment extends Fragment {
     int count_entry = 0;
     //ProgressDialog pDialog;
 
+    // Required empty public constructor
     public pending_fragment() {
-        // Required empty public constructor
+
     }
 
     @Nullable
@@ -125,28 +119,7 @@ public class pending_fragment extends Fragment {
             }
         });
 
-        //final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        //recyclerView.setLayoutManager(linearLayoutManager);
-        //checking this does not work
-        //DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
-        //recyclerView.addItemDecoration(divider);
 
-        /*
-        //recyclerViewAdater = new AdminLocationAdapter(getActivity(), mDdaName, mAdaName,true, mAddress, null,mpkado,mpkdda,mdate);
-        recyclerViewAdater = new PendingAdapter(getActivity(), mDdaName, mAdaName,true, mAddress, null,mpkado,mpkdda,mdate);//data passed to pendingAdapter constructor
-
-        recyclerView.setAdapter(recyclerViewAdater);
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
-        recyclerView.addItemDecoration(divider);
-
-         */
-        //recyclerViewAdater = new SectionAdapter(getActivity(),sections);
-        //recyclerViewAdater = new PendingAdapter(getActivity(), mDdaName, mAdaName,true, mAddress, null,mpkado,mpkdda,mdate);//data passed to pendingAdapter constructor
-        //recyclerView.setAdapter(recyclerViewAdater);
-        //recyclerViewAdater = new SectionAdapter(getActivity(),sections);
-        //recyclerView.setAdapter(recyclerViewAdater);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
@@ -156,248 +129,29 @@ public class pending_fragment extends Fragment {
         token = preferences.getString("token", "");
         Log.d(TAG, "onCreateView: " + token);
         Log.d(TAG, "onCreateView: inflated fragment_ongoing");
-        /*
-
-        pDialog = new ProgressDialog(getActivity());
-        // Showing progress dialog before making http request
+        /*pDialog = new ProgressDialog(getActivity());
+        Showing progress dialog before making http request
         pDialog.setMessage("Loading...");
-        pDialog.show();
+        pDialog.show(); */
 
-         */
-
-        /////////////////////////////
+       // spinner.setVisibility(View.VISIBLE);
         getData(pendingUrl);
         recyclerViewAdater = new SectionAdapter(getActivity(),sections);
         recyclerView.setAdapter(recyclerViewAdater);
         recyclerViewAdater.notifyDataSetChanged();
-        /*
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        final JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, pendingUrl, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                //hidePDialog();
-               // Toast.makeText(getActivity(),response.toString(),Toast.LENGTH_LONG).show();
-                try {
-                    //final ArrayList<Section> sections = new ArrayList<>();
-                    //Toast.makeText(getActivity(),"Enterd try",Toast.LENGTH_LONG).show();
-                    JSONObject jsonObject = new JSONObject(String.valueOf(response));
-                    nextPendingUrl = jsonObject.getString("next");
-                    JSONArray jsonArray = jsonObject.getJSONArray("results");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        //Toast.makeText(getActivity(),"Enterd i",Toast.LENGTH_LONG).show();
-                        //itemArrayList = new ArrayList<>();
-                        mDdaName = new ArrayList<>();
-                        mAdaName = new ArrayList<>();
-                        mAddress = new ArrayList<>();
-                        mpkado = new ArrayList<>();
-                        mpkdda = new ArrayList<>();
-                        mId = new ArrayList<>();
-                        JSONObject cd = jsonArray.getJSONObject(i);
-                        String mdate = cd.getString("date");
-                        //
-                        JSONArray jsonArray_locations = cd.getJSONArray("locations");
-                        //Toast.makeText(getActivity(),"Got location array",Toast.LENGTH_LONG).show();//could not reach here
-                        for (int j = 0; j < jsonArray_locations.length(); j++) {
-                            //Toast.makeText(getActivity(),"Enterd j",Toast.LENGTH_LONG).show();
-                            JSONObject c = jsonArray_locations.getJSONObject(j);
-                            try{
-                                aid = c.getString("id");
-                                mId.add(aid);
-                            }
-                            catch(JSONException e){
-                                mId.add("null");
-                            }
-                            try {
-                                JSONObject adoobj = c.getJSONObject("ado");
-                                JSONObject authado = adoobj.getJSONObject("auth_user");
-                                mpkado.add(authado.getString("pk"));
-
-                            } catch (JSONException e) {
-                                mpkado.add("null");
-                            }
-                            try {
-                                JSONObject ddaobj = c.getJSONObject("dda");
-                                JSONObject authddo = ddaobj.getJSONObject("auth_user");
-                                mpkdda.add(authddo.getString("pk"));
-                            } catch (JSONException e) {
-                                mpkdda.add("null");
-                            }
-                            villagename = c.getString("village_name");
-                            blockname = c.getString("block_name");
-                            district = c.getString("district");
-                            try {
-                                JSONObject mDdaObject = c.getJSONObject("dda");
-                                String ddaName = mDdaObject.getString("name");
-                                mDdaName.add(ddaName);
-                            } catch (JSONException e) {
-                                mDdaName.add("Not Assigned");
-                            }
-                            try {
-                                JSONObject mAdoObject = c.getJSONObject("ado");
-                                String adoName = mAdoObject.getString("name");
-                                mAdaName.add(adoName);
-                            } catch (JSONException e) {
-                                mAdaName.add("Not Assigned");
-                            }
-                            //Toast.makeText(getActivity(),"cleared all try catch",Toast.LENGTH_LONG).show();
-                            mAddress.add(villagename.toUpperCase() + ", " +
-                                    blockname.toUpperCase() + ", " + district.toUpperCase());
-                        }
-                        sections.add(new Section(mdate,mDdaName, mAdaName, mAddress,mId,mpkado,mpkdda,true,false,false));
-                        //Toast.makeText(getActivity(),sections.get(0).toString(),Toast.LENGTH_LONG).show();
-                    }
-                    recyclerViewAdater = new SectionAdapter(getActivity(),sections);
-                    recyclerView.setAdapter(recyclerViewAdater);
-                    spinner.setVisibility(View.GONE);
-                   // Toast.makeText(getActivity(),"Section contains "+ sections.toString(),Toast.LENGTH_LONG).show();
-                } catch (JSONException e) {
-                    spinner.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(),"An exception occures",Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }
-
-            }
-        },
-        new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                spinner.setVisibility(View.GONE);
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    //This indicates that the reuest has either time out or there is no connection
-                    Toast.makeText(getActivity(), "This error is case1", Toast.LENGTH_LONG).show();
-
-                } else if (error instanceof AuthFailureError) {
-                    // Error indicating that there was an Authentication Failure while performing the request
-                    Toast.makeText(getActivity(), "This error is case2", Toast.LENGTH_LONG).show();
-                } else if (error instanceof ServerError) {
-                    //Indicates that the server responded with a error response
-                    Toast.makeText(getActivity(), "This error is case3", Toast.LENGTH_LONG).show();
-                } else if (error instanceof NetworkError) {
-                    //Indicates that there was network error while performing the request
-                    Toast.makeText(getActivity(), "This error is case4", Toast.LENGTH_LONG).show();
-                } else if (error instanceof ParseError) {
-                    // Indicates that the server response could not be parsed
-                    Toast.makeText(getActivity(), "This error is case5", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getActivity(), "An unknown error occurred.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        })
-        {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("Authorization", "Token " + token);
-                return map;
-            }
-        };
-        requestQueue.add(jsonObjectRequest1);
-        jsonObjectRequest1.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            int totalCount, pastItemCount, visibleItemCount;
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                Log.d(TAG, "onScrolled: out DX " + dx + " DY " + dy);
-                if (dy > 0) {
-                    //added this
-                    totalCount = layoutManager.getItemCount();
-                    pastItemCount = layoutManager.findFirstVisibleItemPosition();
-                    visibleItemCount = layoutManager.getChildCount();
-                    //Toast.makeText(getActivity(),"totalCount is "+ totalCount + "pastItemCount is " + pastItemCount + " visibleItemCount" + visibleItemCount,Toast.LENGTH_LONG).show();
-                    //if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
-                    if (((pastItemCount + visibleItemCount) >= totalCount) && (pastItemCount >= 0) && (totalCount >= PAGE_SIZE)) {
-                        Toast.makeText(getActivity(),"cleared first if",Toast.LENGTH_LONG).show();
-                        //if (!isNextBusy) {
-                            Toast.makeText(getActivity(),"cleared next if",Toast.LENGTH_LONG).show();
-                            //Toast.makeText(getActivity(),"We reached end of page",Toast.LENGTH_LONG).show();
-                            loadNextLocations();
-                        //}
-                    }
-                }
-            }
-        });
-
-         */
-        ////////////////////////
-
-        /*
-        notificationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),NotificationActivity.class);
-                startActivity(intent);
-
-
-            }
-        });*/
-        //recyclerViewAdater = new SectionAdapter(getActivity(),sections);
-        //recyclerView.setAdapter(recyclerViewAdater);
         return view;
     }
-//todo
-   /* @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_top_bar,menu);
-        MenuItem searchItem = menu.findItem(R.id.search_in_title);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setQueryHint("Search something");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // perform query here
-
-                searchView.clearFocus();
-
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-               // recyclerViewAdater.getFilter().filter(newText);
-                return false;
-            }
-        });
-        super.onCreateOptionsMenu(menu, inflater);
-    }*/
-
 
     public void getData(final String url){
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         final JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                spinner.setVisibility(View.VISIBLE);
-                //Toast.makeText(getActivity(),"url is "+pendingUrl+response.toString(),Toast.LENGTH_LONG).show();
-                //hidePDialog();
-                // Toast.makeText(getActivity(),response.toString(),Toast.LENGTH_LONG).show();
                 try {
-                    //final ArrayList<Section> sections = new ArrayList<>();
-                    //Toast.makeText(getActivity(),"Enterd try",Toast.LENGTH_LONG).show();
                     JSONObject jsonObject = new JSONObject(String.valueOf(response));
                     nextPendingUrl = jsonObject.getString("next");
                     JSONArray jsonArray = jsonObject.getJSONArray("results");
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        //Toast.makeText(getActivity(),"Enterd i",Toast.LENGTH_LONG).show();
                         //itemArrayList = new ArrayList<>();
                         mDdaName = new ArrayList<>();
                         mAdaName = new ArrayList<>();
@@ -407,7 +161,6 @@ public class pending_fragment extends Fragment {
                         mId = new ArrayList<>();
                         JSONObject cd = jsonArray.getJSONObject(i);
                         String mdate = cd.getString("date");
-                        //
                         JSONArray jsonArray_locations = cd.getJSONArray("locations");
                         //Toast.makeText(getActivity(),"Got location array",Toast.LENGTH_LONG).show();//could not reach here
                         for (int j = 0; j < jsonArray_locations.length(); j++) {
@@ -466,7 +219,7 @@ public class pending_fragment extends Fragment {
                     // Toast.makeText(getActivity(),"Section contains "+ sections.toString(),Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     spinner.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(),"An exception occures",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"An exception occurred",Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
 
@@ -598,7 +351,7 @@ public class pending_fragment extends Fragment {
                         //Toast.makeText(getActivity(),"cleared next if",Toast.LENGTH_LONG).show();
                         //pendingUrl.equals(nextPendingUrl);
                         //getData(nextPendingUrl);
-                        progressBar.setVisibility(View.VISIBLE);
+                       // progressBar.setVisibility(View.VISIBLE);
                         getNextData(nextPendingUrl);
                         //Toast.makeText(getActivity(),"We reached end of page",Toast.LENGTH_LONG).show();
                         //loadNextLocations();

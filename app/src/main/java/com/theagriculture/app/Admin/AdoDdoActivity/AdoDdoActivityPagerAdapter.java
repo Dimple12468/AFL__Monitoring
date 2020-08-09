@@ -1,5 +1,7 @@
 package com.theagriculture.app.Admin.AdoDdoActivity;
 
+import android.content.Context;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,11 +14,13 @@ public class AdoDdoActivityPagerAdapter extends FragmentPagerAdapter {
     private int tabCount;
     long baseId = 0;
 
+
     public AdoDdoActivityPagerAdapter(FragmentManager fm, int tabCount) {
         super(fm);
         fragments = new ArrayList<>();
         this.tabCount = tabCount;
     }
+
 
     @Override
     public Fragment getItem(int position) {

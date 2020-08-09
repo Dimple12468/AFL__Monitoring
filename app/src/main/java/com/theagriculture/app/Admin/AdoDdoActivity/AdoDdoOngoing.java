@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -167,8 +168,10 @@ public class AdoDdoOngoing extends Fragment {
                             if (resultsArray.length() == 0) {
                                 //adapter.mshowshimmer = false;
                                 adapter.notifyDataSetChanged();
-                                Log.d(TAG, "onResponse: yo men im here " + view);
-                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_group_217));
+                                nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+                                AppCompatActivity activity = (AppCompatActivity)getContext();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_nodata_completed, no_data).addToBackStack(null).commit();
+                                //view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_group_217));
                             }
                             for (int i = 0; i < resultsArray.length(); i++) {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
@@ -307,8 +310,10 @@ public class AdoDdoOngoing extends Fragment {
                                     //adapter.mshowshimmer = false;
                                     adapter.notifyDataSetChanged();
 
-                                    System.out.println("dimple in adoddoongoing"+url);
                                     //todo image here
+                                //    nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+                                 //   AppCompatActivity activity = (AppCompatActivity)getActivity();
+                                 //   activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_when_nodata, no_data).addToBackStack(null).commit();
                                     view.setBackground(getActivity().getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
                                     //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                                 }
