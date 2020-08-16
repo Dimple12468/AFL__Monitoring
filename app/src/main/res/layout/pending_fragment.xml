@@ -17,7 +17,7 @@
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="290dp" />
 
-        <ProgressBar
+        <!--ProgressBar
             android:id="@+id/locations_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/recyclerViewpending"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline8" />
+            app:layout_constraintTop_toTopOf="@+id/guideline8" /-->
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline8"

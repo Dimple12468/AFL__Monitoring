@@ -104,10 +104,10 @@ public class login_activity extends AppCompatActivity {
         init();
 /*
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+           Window w = getWindow();
+           w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+       }
 */
 
         final SharedPreferences sp = getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
@@ -187,7 +187,7 @@ public class login_activity extends AppCompatActivity {
                 } else if (mEmail.isEmpty() && !mPass.isEmpty()) {
                     displayDialog("Please insert Email");
                 } else {
-                   displayDialog("Please insert Email and password");
+                    displayDialog("Please insert Email and password");
                 }
             }
         });
@@ -221,7 +221,7 @@ public class login_activity extends AppCompatActivity {
         editEmail.addTextChangedListener(loginTextWatcher);//loginTextWatcher function is defined at last
         editPassword.addTextChangedListener(loginTextWatcher);
 
-     //end of onCreate function
+        //end of onCreate function
     }
 
     private void Login(final String email, final String password) {
@@ -451,3 +451,4 @@ public class login_activity extends AppCompatActivity {
 
 
 }
+

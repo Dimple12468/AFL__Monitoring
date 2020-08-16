@@ -9,7 +9,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="AppTheme.NoActionBar" >
+        <!--parent="Theme.MaterialComponents.Light.NoActionBar.Bridge" -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowTranslucentStatus">true</item>
@@ -93,12 +94,30 @@
         <item name="bottomSheetStyle">@style/AppTheme</item>
     </style>
 
-    <style name="calendar_theme" parent="Theme.MaterialComponents.Light.NoActionBar"/>
+    <style name="calendar_theme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!--Theme.MaterialComponents.Light.NoActionBar.Bridge
+        ThemeOverlay.MaterialComponents.MaterialCalendar-->
+        <!--item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
+        <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen</item>
+        <item name="materialCalendarTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar</item-->
+    </style>
 
     <style name="MaterialCalendarTheme_RangeFill" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="materialCalendarStyle">@style/MyMaterialCalendar</item>
     </style>
     <style name="MyMaterialCalendar"  parent="Widget.MaterialComponents.MaterialCalendar">
         <!--item name="rangeFillColor">@color/app_color</item-->
+    </style>
+
+    <style name="HintTextStyle" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="outlined_box" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    </style>
+
+    <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <!--item name="hintTextAppearance">@style/HintText</item-->
+        <item name="android:paddingBottom">8dp</item>
     </style>
 </resources>

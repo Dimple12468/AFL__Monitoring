@@ -170,7 +170,7 @@ public class AdoDdoPending extends Fragment {
                                 Log.d(TAG, "onResponse: see here.... " + view);
                                 nothing_toshow_fragment no_data = new nothing_toshow_fragment();
                                 AppCompatActivity activity = (AppCompatActivity)getContext();
-                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_nodata_pending, no_data).addToBackStack(null).commit();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_nodata_pending, no_data).commit();
                                 //view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_group_217));
                             }
                             for (int i = 0; i < resultsArray.length(); i++) {
@@ -329,8 +329,8 @@ public class AdoDdoPending extends Fragment {
                                 //todo image here
                                 nothing_toshow_fragment no_data = new nothing_toshow_fragment();
                                 AppCompatActivity activity = (AppCompatActivity)getContext();
-                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_nodata_pending, no_data).addToBackStack(null).commit();
-                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_nodata_pending, no_data).commit();
+                                //view.setBackground(getActivity().getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
                                 //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                             }
                             Log.d(TAG, "onResponse: "+resultsArray.length());

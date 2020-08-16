@@ -41,6 +41,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="32dp"
             app:backgroundTint="#E03B3B"
+            android:tint="@color/white"
             app:elevation="6dp"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -61,4 +61,23 @@
         <item>Custom</item>
     </string-array>
 
+    <string-array name="district">
+        <item>District</item>
+        <item>Ambala</item>
+        <item>Mohali</item>
+    </string-array>
+
+    <string-array name="fire_status">
+        <item>Fire Status</item>
+        <item>No fire</item>
+        <item>Fire Present</item>
+    </string-array>
+
+    <string-array name="land_use">
+        <item>Land Use</item>
+        <item>Commercial</item>
+        <item>Residential</item>
+        <item>Agricultural</item>
+    </string-array>
+
 </resources>

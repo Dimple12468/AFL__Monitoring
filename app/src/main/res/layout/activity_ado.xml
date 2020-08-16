@@ -40,9 +40,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
+        <!--include
             layout="@layout/app_bar_admin"
-            android:id="@+id/app__bar_ado"/>
+            android:id="@+id/app__bar_ado"/-->
 
         <FrameLayout
             android:id="@+id/frameLayout_ado"
@@ -51,7 +51,7 @@
             app:layout_constraintBottom_toTopOf="@+id/navigation_ado"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app__bar_ado">
+            app:layout_constraintTop_toTopOf="parent">
             <!--app:layout_constraintTop_toTopOf="parent"-->
 
 
@@ -76,13 +76,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <com.google.android.material.navigation.NavigationView
+    <!--com.google.android.material.navigation.NavigationView
     android:id="@+id/navigation_view_ado"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_gravity="start"
     app:menu="@menu/admin_drawer"
     app:headerLayout="@layout/header_layout"
-    app:itemTextColor="@color/black"/>
+    app:itemTextColor="@color/black"/-->
 
 </androidx.drawerlayout.widget.DrawerLayout>

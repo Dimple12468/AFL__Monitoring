@@ -182,7 +182,7 @@ public class AdoDdoCompleted extends Fragment {
                                // AdoDdoListAdapter adapt = new AdoDdoListAdapter(getActivity(),no_data);
                                // recyclerView.setAdapter(adapt);
                                 AppCompatActivity activity = (AppCompatActivity)getContext();
-                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_when_nodata, no_data).addToBackStack(null).commit();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_when_nodata, no_data).commit();
                                 //view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_emptyartboard_1));
                                 //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                             }
@@ -212,7 +212,7 @@ public class AdoDdoCompleted extends Fragment {
                             spinner.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             spinner.setVisibility(View.GONE);
-                            Toast.makeText(getActivity(),"An exception occued",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(),"An exception occurred",Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
 
@@ -326,7 +326,10 @@ public class AdoDdoCompleted extends Fragment {
                                     //adapter.mshowshimmer = false;
                                     adapter.notifyDataSetChanged();
                                     Log.d("yo men im here " , url);
-                                    view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_group_217));
+                                    nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+                                    AppCompatActivity activity = (AppCompatActivity)getContext();
+                                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_when_nodata, no_data).commit();
+                                    // view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_group_217));
                                     //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                                 }
                                 for (int i = 0; i < resultsArray.length(); i++) {

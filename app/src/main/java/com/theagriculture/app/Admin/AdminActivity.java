@@ -283,7 +283,6 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
         fragmentTransaction.commit();
 
         /*if (fragment == districtAdo){
-            System.out.println("Dimple in initialize fragment for ambal wala text");
             title_top.setText(districtAdo.for_title_top());
         }*/
     }

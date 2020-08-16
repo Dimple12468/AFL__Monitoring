@@ -171,14 +171,8 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_map_admin, container, false);
-        //getContext().getTheme().applyStyle(R.style.AppTheme, true);
+       // getContext().getTheme().applyStyle(R.style.AppTheme, true);
 
-        //setHasOptionsMenu(true);
-
-        //ImageView iv = mView.findViewById(R.id.ham);
-        //iv.setVisibility(View.GONE);
-        /*ImageView iv2 = mView.findViewById(R.id.se1);
-        iv2.setVisibility(View.INVISIBLE);*/
         mDrawer_map = mView.findViewById(R.id.drawer_map);
         nvDrawer_map = mView.findViewById(R.id.navigation_view_map);
         privacyPolicy = new PrivacyPolicy();

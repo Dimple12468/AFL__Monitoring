@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -42,6 +43,7 @@ public class location_fragment extends Fragment {
     ViewPager pager;
     TextView first_letter,image_letter;
     TextView title_top;
+    private final String TAG = "location_fragment";
 
     MenuItem searchItem;
     MenuItem searchItem_filter;
@@ -227,37 +229,39 @@ public class location_fragment extends Fragment {
 
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: ");
         View view = inflater.inflate(R.layout.location_fragment,container,false);
-
+        mtablayout = view.findViewById(R.id.tabLayout);
+        pending = view.findViewById(R.id.pending);
+        completed = view.findViewById(R.id.completed);
+        pager = view.findViewById(R.id.viewPager);
+        //toolbar
         androidx.appcompat.widget.Toolbar toolbar = (androidx.appcompat.widget.Toolbar) view.findViewById(R.id.app__bar_location);
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
 
+        //toolbar title
         title_top = view.findViewById(R.id.app_name);
         if (view.isEnabled()){
             title_top.setText("Locations");
         }else {
             title_top.setText("AFL Monitoring");
         }
-        mtablayout = view.findViewById(R.id.tabLayout);
-        pending = view.findViewById(R.id.pending);
-        completed = view.findViewById(R.id.completed);
-        pager = view.findViewById(R.id.viewPager);
+
         mpageAdapter = new TabPageAdapter(getChildFragmentManager(),mtablayout.getTabCount());
         pager.setAdapter(mpageAdapter);
-
-        //first_letter = view.findViewById(R.id.address);
-        //image_letter = view.findViewById(R.id.my_letter);
-        //image_letter.setText(String.valueOf(first_letter.getText().toString().charAt(0)));
-
-        //SearchView searchView ;
-        //SearchView search = (SearchView) item.getActionView();
-        //search.setLayoutParams(new ActionBar.LayoutParams(Gravity.RIGHT));
 
         mtablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -282,10 +286,21 @@ public class location_fragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG,"onStart: ");
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
     }
 
 }

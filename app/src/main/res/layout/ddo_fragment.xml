@@ -29,6 +29,7 @@
             android:layout_marginBottom="8dp"
             android:indeterminateDrawable="@drawable/progress"
             android:visibility="gone" />
+
         <!--TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -163,3 +164,4 @@
     </RelativeLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+

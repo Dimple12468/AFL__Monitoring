@@ -170,7 +170,8 @@ public class AdoDdoOngoing extends Fragment {
                                 adapter.notifyDataSetChanged();
                                 nothing_toshow_fragment no_data = new nothing_toshow_fragment();
                                 AppCompatActivity activity = (AppCompatActivity)getContext();
-                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_nodata_completed, no_data).addToBackStack(null).commit();
+                                //getFragmentManager().beginTransaction().detach(AdoDdoOngoing.this).attach(nothing_toshow_fragment).addToBackStack(null).commit();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_nodata_completed, no_data).commit();
                                 //view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_group_217));
                             }
                             for (int i = 0; i < resultsArray.length(); i++) {
@@ -199,7 +200,7 @@ public class AdoDdoOngoing extends Fragment {
                             no_of_visits++;
                         } catch (JSONException e) {
                             spinner.setVisibility(View.GONE);
-                            Toast.makeText(getActivity(),"An exception occured",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(),"An exception occurred",Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
 
@@ -297,6 +298,7 @@ public class AdoDdoOngoing extends Fragment {
 
     private void loadNextLocations(final String url) {
         RequestQueue queue = Volley.newRequestQueue(getActivity());
+        Log.d(TAG, "getNextlocations: inside");
         if (!url.isEmpty()) {
             progressBar.setVisibility(View.VISIBLE);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -311,10 +313,10 @@ public class AdoDdoOngoing extends Fragment {
                                     adapter.notifyDataSetChanged();
 
                                     //todo image here
-                                //    nothing_toshow_fragment no_data = new nothing_toshow_fragment();
-                                 //   AppCompatActivity activity = (AppCompatActivity)getActivity();
-                                 //   activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_when_nodata, no_data).addToBackStack(null).commit();
-                                    view.setBackground(getActivity().getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
+                                    nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+                                    AppCompatActivity activity = (AppCompatActivity)getContext();
+                                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_nodata_completed, no_data).commit();
+                                    //view.setBackground(getActivity().getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
                                     //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                                 }
                                 for (int i = 0; i < resultsArray.length(); i++) {

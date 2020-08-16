@@ -444,7 +444,7 @@ public class DistrictAdo extends Fragment {
                         //todo add image
                         nothing_toshow_fragment no_data = new nothing_toshow_fragment();
                         AppCompatActivity activity = (AppCompatActivity)getActivity();
-                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.nodata_dist_ado, no_data).addToBackStack(null).commit();
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.nodata_dist_ado, no_data).commit();
                         //relativeLayout.setBackground(getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
                         //relativeLayout.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                     }
@@ -687,7 +687,7 @@ public class DistrictAdo extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (error instanceof NoConnectionError)
-                    Toast.makeText(getActivity(), "Check Your Internt Connection Please!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Check Your Internet Connection Please!", Toast.LENGTH_SHORT).show();
                 isNextBusy = false;
             }
         }) {

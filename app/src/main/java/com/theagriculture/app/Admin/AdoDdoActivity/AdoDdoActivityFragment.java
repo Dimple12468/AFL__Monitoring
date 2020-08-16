@@ -79,6 +79,7 @@ public class AdoDdoActivityFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_ado_ddo_activity, container, false);
 
+        //for toolbar
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_in_dda);
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
@@ -90,7 +91,7 @@ public class AdoDdoActivityFragment extends Fragment {
         isDdo = bundle.getBoolean("isDdo");
         String title = bundle.get("name").toString();
 
-        //Toast.makeText(getActivity(),"Received id "+id + isDdo,Toast.LENGTH_LONG).show();
+        //toolbar's title
         TextView title_top = view.findViewById(R.id.app_name);
         if (view.isEnabled()){
             title_top.setText(title);
@@ -109,7 +110,6 @@ public class AdoDdoActivityFragment extends Fragment {
         ViewPager viewPager = view.findViewById(R.id.ddo_activity_viewpager);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //getSupportActionBar().setTitle(title);
         int tabCount;
         if (isDdo)
             tabCount = 3;

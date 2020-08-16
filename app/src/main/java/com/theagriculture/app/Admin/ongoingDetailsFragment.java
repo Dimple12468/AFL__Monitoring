@@ -195,6 +195,9 @@ public class ongoingDetailsFragment extends Fragment {
         images = view.findViewById(R.id.images);
         editButton = view.findViewById(R.id.edits_button);
 
+        if(!isAdmin)
+            images.setVisibility(View.GONE);
+
         forfeitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

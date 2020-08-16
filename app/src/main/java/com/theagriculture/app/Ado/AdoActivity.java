@@ -38,6 +38,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.theagriculture.app.Admin.AdminActivity;
 import com.theagriculture.app.Admin.EditActivity;
+import com.theagriculture.app.Admin.map_fragemnt;
 import com.theagriculture.app.R;
 import com.theagriculture.app.login_activity;
 
@@ -60,33 +61,49 @@ public class AdoActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private BottomNavigationView navigation;
     FrameLayout frameLayout;
-    private DrawerLayout mDrawer;
-    private NavigationView nvDrawer;
+    //private DrawerLayout mDrawer;
+    //private NavigationView nvDrawer;
 
     private ado_pending_fragment ado_pending_fragment;
+    //map_fragemnt map_fragemnt;
     private ado_complete_fragment ado_complete_fragment;
+    private ado_map_fragment ado_map_fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ado);
-        navigationView = findViewById(R.id.navigation_view_ado);
+        //navigationView = findViewById(R.id.navigation_view_ado);
         frameLayout = findViewById(R.id.frameLayout_ado);
         navigation = findViewById(R.id.navigation_ado);
         // for Drawer layout
-        mDrawer = findViewById(R.id.drawer_view_ado);
-        nvDrawer = findViewById(R.id.navigation_view_ado);
+        //mDrawer = findViewById(R.id.drawer_view_ado);
+        //nvDrawer = findViewById(R.id.navigation_view_ado);
+
+
+
+        /*
 
         //Define toolbar that displays the app name
         Toolbar toolbar = (Toolbar) findViewById(R.id.app__bar_ado);
         setSupportActionBar(toolbar);
 
-        //define the action bar with hamburger icon
+         */
+
+
+
+        /*
+        //display the action bar with hamburger icon
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.hamb);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_artboard_1);
+
+         */
+
 
         //define the fragments
+        ado_map_fragment = new ado_map_fragment();
+        //map_fragemnt = new map_fragemnt();
         ado_pending_fragment = new ado_pending_fragment();
         ado_complete_fragment = new ado_complete_fragment();
 
@@ -95,6 +112,7 @@ public class AdoActivity extends AppCompatActivity {
         String typeofuser = preferences.getString("typeOfUser","");
         String username = preferences.getString("Name","");
 
+        /*
         //Defining the drawer layout
         //get the header of drawer layout and set user name and type
         View header = nvDrawer.getHeaderView(0);
@@ -148,15 +166,21 @@ public class AdoActivity extends AppCompatActivity {
                 return false;
             }
         });
+        */
 
         //if all permissions granted then initilize pending fragment and set navigation items
         if(getPermission()) {
-            InitializeFragment(ado_pending_fragment);
+            //InitializeFragment(map_fragemnt);
+            InitializeFragment(ado_map_fragment);
             navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                     switch (item.getItemId()) {
+                        case R.id.home_ado:
+                            //InitializeFragment(map_fragemnt);
+                            InitializeFragment(ado_map_fragment);
+                            return true;
                         case R.id.pending_ado:
                             InitializeFragment(ado_pending_fragment);
                             return true;
@@ -176,8 +200,8 @@ public class AdoActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-                super.onBackPressed();
-        }
+        super.onBackPressed();
+    }
 
     public void InitializeFragment(Fragment fragment) {
 
@@ -305,6 +329,7 @@ public class AdoActivity extends AppCompatActivity {
     }
 
     //function for top drop down menu
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -335,6 +360,8 @@ public class AdoActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -348,5 +375,7 @@ public class AdoActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+     */
 
 }
