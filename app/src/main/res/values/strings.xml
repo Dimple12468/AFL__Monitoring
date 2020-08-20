@@ -9,7 +9,7 @@
     <string name="eye_image">Eye image</string>
     <string name="forget_password"><u>Forgot Password?</u></string>
 
-    //navigation activity
+    <!--navigation activity-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -23,11 +23,11 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
 
-    //google map key
+    <!--google map key-->
     <string name="google_map_key">AIzaSyAUKi9N7ZNLUj3QjYK9Zn-7PxVMw85koOY</string>
 
 
-    //menu items
+    <!--menu items-->
     <string name="menu_upload">UPLOAD</string>
     <string name="menu_ddo">DDA</string>
     <string name="menu_ado">ADO</string>
@@ -37,7 +37,7 @@
     <string name="pending">PENDING</string>
     <string name="rooturl">http://13.235.100.235:8000/api-token-auth/</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_refresh">menu_refresh</string>
     <string name="no_data_available">No data available</string>
@@ -45,6 +45,11 @@
     <string name="signup_ado"><u>Sign Up as ADO</u></string>
     <string name="signup_dda"><u>Sign Up as DDA</u></string>
     <string name="log_in">Log In</string>
+
+    <!--URL's for pending tab of loactions in admin
+        former is pending url and later is to send sms notification-->
+    <string name="pendingUrl">http://18.224.202.135/api/locationsDatewise/pending</string>
+    <string name="send_sms">http://18.224.202.135/api/trigger/sms/pending</string>
 
     <string-array name="status">
         <item>Active</item>

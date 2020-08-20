@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +79,9 @@ public class completed_fragment extends Fragment {
     private View view;
     private SwipeRefreshLayout swipeRefreshLayout;
     boolean doubleBackToExitPressedOnce = false;
+    private final String TAG = "completed_fragment";
+    private boolean isRefresh;
+
 
     /*
 
@@ -92,6 +96,13 @@ public class completed_fragment extends Fragment {
 
      */
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
+        isRefresh = false;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -101,6 +112,25 @@ public class completed_fragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.refreshpull1);
         spinner = view.findViewById(R.id.completed_progress);
         spinner.setVisibility(View.VISIBLE);
+
+        //for complete scroll for recycler view (from bottom to up(top))
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int topRowVerticalPosition =
+                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+                //swipeRefreshLayout.setRefreshing(false);
+
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
+        isRefresh = false;
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -129,9 +159,10 @@ public class completed_fragment extends Fragment {
 
         SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         token = prefs.getString("token", "");
-        getData();
+//        getData();
         recyclerViewAdater = new SectionAdapter(getActivity(),sections);
         recyclerView.setAdapter(recyclerViewAdater);
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int totalCount, pastItemCount, visibleItemCount;
 
@@ -592,5 +623,34 @@ public class completed_fragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG,"onStart: ");
+//        spinner = view.findViewById(R.id.ddo_progressbar);
+//        spinner.setVisibility(View.VISIBLE);
+        getData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        //spinner.setVisibility(View.GONE);
+//        if (isRefresh) {
+//            getFragmentManager().beginTransaction().detach(OnGoingFragment.this)
+//                    .attach(OnGoingFragment.this).commit();
+//            Log.d(TAG, "onResume: REFRESH");
+//            isRefresh = false;
+//        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+//        isRefresh = true;
     }
 }

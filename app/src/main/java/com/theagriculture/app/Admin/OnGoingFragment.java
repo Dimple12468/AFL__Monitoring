@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -50,6 +52,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,7 +79,8 @@ public class OnGoingFragment extends Fragment {
     ProgressBar spinner;
     int no_of_visits = 0;
     boolean doubleBackToExitPressedOnce=false;
-
+    private final String TAG = "ongoing_fragment";
+    private boolean isRefresh;
 
     //private AdminLocationAdapter adapter;
     //private PendingAdapter adapter;
@@ -104,8 +109,16 @@ public class OnGoingFragment extends Fragment {
      */
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
+        isRefresh = false;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: ");
         view = inflater.inflate(R.layout.fragment_on_going, container, false);
         recyclerView = view.findViewById(R.id.ongoing_recyclerview);
         progressBar = view.findViewById(R.id.locations_loading_ongoing);
@@ -115,6 +128,25 @@ public class OnGoingFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         */
+
+        //for complete scroll for recycler view (from bottom to up(top))
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int topRowVerticalPosition =
+                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+                //swipeRefreshLayout.setRefreshing(false);
+
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
+        isRefresh = false;
         swipeRefreshLayout = view.findViewById(R.id.refreshpull3);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -144,19 +176,19 @@ public class OnGoingFragment extends Fragment {
         token = preferences.getString("token", "");
 
 
-        getData();
+//        getData();
         recyclerViewAdater = new SectionAdapter(getActivity(),sections);
         recyclerView.setAdapter(recyclerViewAdater);
         //spinner.setVisibility(View.GONE);
         recyclerViewAdater.notifyDataSetChanged();
+        Log.d(TAG, "onCreateView: " + token);
 
         return view;
     }
 
     public void getData(){
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(ongoingUrl, null,
-                new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, ongoingUrl, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
@@ -226,12 +258,10 @@ public class OnGoingFragment extends Fragment {
                                     } catch (JSONException e) {
                                         mAdaName.add("Not Assigned");
                                     }
-                                    //Toast.makeText(getActivity(),"cleared all try catch",Toast.LENGTH_LONG).show();
                                     mAddress.add(villagename.toUpperCase() + ", " +
                                             blockname.toUpperCase() + ", " + district.toUpperCase());
                                 }
                                 sections.add(new Section(mdate,mDdaName, mAdaName, mAddress,mId,mpkado,mpkdda,false,true,false));
-                                //Toast.makeText(getActivity(),sections.get(0).toString(),Toast.LENGTH_LONG).show();
                             }
                             //recyclerViewAdater = new SectionAdapter(getActivity(),sections);
                             //recyclerView.setAdapter(recyclerViewAdater);
@@ -245,7 +275,7 @@ public class OnGoingFragment extends Fragment {
                              */
                         } catch (JSONException e) {
                             spinner.setVisibility(View.GONE);
-                            Toast.makeText(getActivity(),"An exception occured",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(),"An exception occurred",Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
 
@@ -338,8 +368,14 @@ public class OnGoingFragment extends Fragment {
 
             }
         });
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int totalCount, pastItemCount, visibleItemCount;
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -348,8 +384,8 @@ public class OnGoingFragment extends Fragment {
                     totalCount = layoutManager.getItemCount();
                     pastItemCount = layoutManager.findFirstVisibleItemPosition();
                     visibleItemCount = layoutManager.getChildCount();
-                    if ((pastItemCount + visibleItemCount) >= totalCount) {
-                        if (!next_ongoing_url.equals("null") && !isNextBusy)
+                    if ((pastItemCount + visibleItemCount) >= totalCount && (pastItemCount >= 0) && (totalCount >= PAGE_SIZE)) {
+                        if (!next_ongoing_url.equals("null") /*&& !isNextBusy*/)
                             get_Ongoing();
                     }
                 }
@@ -360,7 +396,7 @@ public class OnGoingFragment extends Fragment {
 
     private void get_Ongoing() {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(next_ongoing_url, null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, next_ongoing_url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -543,19 +579,53 @@ public class OnGoingFragment extends Fragment {
             int totalCount, pastItemCount, visibleItemCount;
 
             @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0) {
                     totalCount = layoutManager.getItemCount();
                     pastItemCount = layoutManager.findFirstVisibleItemPosition();
                     visibleItemCount = layoutManager.getChildCount();
-                    if ((pastItemCount + visibleItemCount) >= totalCount) {
-                        if (!next_ongoing_url.equals("null") && !isNextBusy)
+                    if ((pastItemCount + visibleItemCount) >= totalCount && (pastItemCount >= 0) && (totalCount >= PAGE_SIZE)) {
+                        if (!next_ongoing_url.equals("null") /*&& !isNextBusy*/)
                             get_Ongoing();
                     }
                 }
                 //super.onScrolled(recyclerView, dx, dy);
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG,"onStart: ");
+//        spinner = view.findViewById(R.id.ddo_progressbar);
+//        spinner.setVisibility(View.VISIBLE);
+        getData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        //spinner.setVisibility(View.GONE);
+//        if (isRefresh) {
+//            getFragmentManager().beginTransaction().detach(OnGoingFragment.this)
+//                    .attach(OnGoingFragment.this).commit();
+//            Log.d(TAG, "onResume: REFRESH");
+//            isRefresh = false;
+//        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+//        isRefresh = true;
     }
 }

@@ -124,6 +124,23 @@ public class pending_fragment extends Fragment {
 //        spinner.setVisibility(View.VISIBLE);
 
 
+        //for complete scroll for recycler view (from bottom to up(top))
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int topRowVerticalPosition =
+                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+                //swipeRefreshLayout.setRefreshing(false);
+
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
         isRefresh = false;
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -225,7 +242,7 @@ public class pending_fragment extends Fragment {
                         }
                         sections.add(new Section(mdate, mDdaName, mAdaName, mAddress, mId, mpkado, mpkdda, true, false, false));
                     }
-                     spinner.setVisibility(View.GONE);
+                    spinner.setVisibility(View.GONE);
                 } catch (Exception e) {
                     spinner.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "An exception occurred", Toast.LENGTH_LONG).show();
@@ -328,9 +345,9 @@ public class pending_fragment extends Fragment {
 
             }
         });
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int totalCount, pastItemCount, visibleItemCount;
-
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -569,7 +586,7 @@ public class pending_fragment extends Fragment {
     private void getNextPendingLocations() {
         Log.d(TAG, "getNextPendingLocations: inside");
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-     //   progressBar.setVisibility(View.VISIBLE);
+        //   progressBar.setVisibility(View.VISIBLE);
         isNextBusy = true;
         final JsonObjectRequest jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, nextPendingUrl, null, new Response.Listener<JSONObject>() {
             @Override
@@ -581,7 +598,7 @@ public class pending_fragment extends Fragment {
                     JSONArray jsonArray = jsonObject.getJSONArray("results");
                     nextPendingUrl = jsonObject.getString("next");
                     for (int i = 0; i < jsonArray.length(); i++) {
-                       // Toast.makeText(getActivity(), "entered i", Toast.LENGTH_LONG).show();
+                        // Toast.makeText(getActivity(), "entered i", Toast.LENGTH_LONG).show();
 
                         //itemArrayList = new ArrayList<>();
                         mDdaName = new ArrayList<>();
@@ -595,7 +612,7 @@ public class pending_fragment extends Fragment {
                         String date = cd.getString("date");
                         JSONArray jsonArray_locations = cd.getJSONArray("locations");
                         for (int j = 0; j < jsonArray_locations.length(); j++) {
-                          //  Toast.makeText(getActivity(), "entered j", Toast.LENGTH_LONG).show();
+                            //  Toast.makeText(getActivity(), "entered j", Toast.LENGTH_LONG).show();
                             JSONObject c = jsonArray_locations.getJSONObject(j);
                             try {
                                 String aid = c.getString("id");
@@ -763,7 +780,7 @@ public class pending_fragment extends Fragment {
 
             @Override
             public void onRequestFinished(Request<Object> request) {
-            //    progressBar.setVisibility(View.GONE);
+                //    progressBar.setVisibility(View.GONE);
             }
         });
 
@@ -840,19 +857,18 @@ public class pending_fragment extends Fragment {
         super.onResume();
         Log.d(TAG, "onResume: ");
         //spinner.setVisibility(View.GONE);
-        if (isRefresh) {
-            getFragmentManager().beginTransaction().detach(pending_fragment.this)
-                    .attach(pending_fragment.this).commit();
-            Log.d(TAG, "onResume: REFRESH");
-            isRefresh = false;
-        }
+//        if (isRefresh) {
+//            getFragmentManager().beginTransaction().detach(pending_fragment.this)
+//                    .attach(pending_fragment.this).commit();
+//            Log.d(TAG, "onResume: REFRESH");
+//            isRefresh = false;
+//        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
         Log.d(TAG, "onPause: ");
-        isRefresh = true;
+//        isRefresh = true;
     }
 }
-

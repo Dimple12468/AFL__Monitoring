@@ -25,14 +25,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="18dp"
             android:buttonTint="@color/app_color"
+            android:layout_marginTop="14dp"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
             android:visibility="gone"/>
         <!--app:layout_constraintHorizontal_bias="0.864"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="4dp" -->
+            android:layout_marginEnd="4dp"
+            android:layout_marginTop="18dp"
+             android:layout_centerVertical="true"-->
 
         <ImageView
             android:id="@+id/imageuser"
