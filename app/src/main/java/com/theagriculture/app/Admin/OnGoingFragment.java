@@ -41,6 +41,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.theagriculture.app.Admin.AdoDdoActivity.nothing_toshow_fragment;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 import com.theagriculture.app.adapter.PendingAdapter;
 
@@ -58,10 +59,11 @@ import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OnGoingFragment extends Fragment {
+public class
+OnGoingFragment extends Fragment {
 
     //private String ongoingUrl = "http://18.224.202.135/api/locations/ongoing";
-    private String ongoingUrl = "http://18.224.202.135/api/locationsDatewise/ongoing";
+    private String ongoingUrl = Globals.ongoingList;                //"http://18.224.202.135/api/locationsDatewise/ongoing";
 
     private ArrayList<String> mDdaName;
     private ArrayList<String> mAdaName;
@@ -176,7 +178,7 @@ public class OnGoingFragment extends Fragment {
         token = preferences.getString("token", "");
 
 
-//        getData();
+        getData();
         recyclerViewAdater = new SectionAdapter(getActivity(),sections);
         recyclerView.setAdapter(recyclerViewAdater);
         //spinner.setVisibility(View.GONE);
@@ -186,7 +188,97 @@ public class OnGoingFragment extends Fragment {
         return view;
     }
 
+    /*public void getDataOngoing(){
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, ongoingUrl, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(String.valueOf(response));
+                    next_ongoing_url = jsonObject.getString("next");
+                    JSONArray jsonArray = jsonObject.getJSONArray("results");
+                    if(jsonArray.length()==0) {
+                        // todo image bg
+                        recyclerViewAdater.notifyDataSetChanged();
+                        Log.d(TAG, "onResponse: see here.... " + view);
+                        nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+                        AppCompatActivity activity = (AppCompatActivity)getContext();
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.locOngoing, no_data).commit();
+                    }
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        mDdaName = new ArrayList<>();
+                        mAdaName = new ArrayList<>();
+                        mAddress = new ArrayList<>();
+                        mpkado = new ArrayList<>();
+                        mpkdda = new ArrayList<>();
+                        mId = new ArrayList<>();
+                        JSONObject cd = jsonArray.getJSONObject(i);
+                        String mdate = cd.getString("date");
+                        JSONArray jsonArray_locations = cd.getJSONArray("locations");
+                        for (int j = 0; j < jsonArray_locations.length(); j++) {
+                            //Toast.makeText(getActivity(),"Enterd j",Toast.LENGTH_LONG).show();
+                            JSONObject c = jsonArray_locations.getJSONObject(j);
+                            try{
+                                aid = c.getString("id");
+                                mId.add(aid);
+                            }
+                            catch(JSONException e){
+                                mId.add("null");
+                            }
+                            try {
+                                JSONObject adoobj = c.getJSONObject("ado");
+                                JSONObject authado = adoobj.getJSONObject("auth_user");
+                                mpkado.add(authado.getString("pk"));
+
+                            } catch (JSONException e) {
+                                mpkado.add("null");
+                            }
+                            try {
+                                JSONObject ddaobj = c.getJSONObject("dda");
+                                JSONObject authddo = ddaobj.getJSONObject("auth_user");
+                                mpkdda.add(authddo.getString("pk"));
+                            } catch (JSONException e) {
+                                mpkdda.add("null");
+                            }
+                            villagename = c.getString("village_name");
+                            blockname = c.getString("block_name");
+                            district = c.getString("district");
+                            try {
+                                JSONObject mDdaObject = c.getJSONObject("dda");
+                                String ddaName = mDdaObject.getString("name");
+                                mDdaName.add(ddaName);
+                            } catch (JSONException e) {
+                                mDdaName.add("Not Assigned");
+                            }
+                            try {
+                                JSONObject mAdoObject = c.getJSONObject("ado");
+                                String adoName = mAdoObject.getString("name");
+                                mAdaName.add(adoName);
+                            } catch (JSONException e) {
+                                mAdaName.add("Not Assigned");
+                            }
+                            mAddress.add(villagename.toUpperCase() + ", " +
+                                    blockname.toUpperCase() + ", " + district.toUpperCase());
+                        }
+                        sections.add(new Section(mdate,mDdaName, mAdaName, mAddress,mId,mpkado,mpkdda,false,true,false));
+                    }
+                    spinner.setVisibility(View.GONE);
+                    no_of_visits++;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+    }*/
+
+
     public void getData(){
+        sections.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, ongoingUrl, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -199,7 +291,14 @@ public class OnGoingFragment extends Fragment {
                               //  nothing_toshow_fragment no_data = new nothing_toshow_fragment();
                               //  AppCompatActivity activity = (AppCompatActivity) getActivity();
                               //  activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_when_nodata, no_data).addToBackStack(null).commit();
-                                 view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_emptyartboard_1));//todo image bg
+                                // view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_emptyartboard_1));
+                                // todo image bg
+                                recyclerViewAdater.notifyDataSetChanged();
+                                Log.d(TAG, "onResponse: see here.... " + view);
+                                nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+                                AppCompatActivity activity = (AppCompatActivity)getContext();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.locOngoing, no_data).commit();
+
                             }
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 //Toast.makeText(getActivity(),"Enterd i",Toast.LENGTH_LONG).show();
@@ -213,7 +312,6 @@ public class OnGoingFragment extends Fragment {
                                 JSONObject cd = jsonArray.getJSONObject(i);
                                 //Toast.makeText(getActivity(),cd.toString(),Toast.LENGTH_LONG).show();
                                 String mdate = cd.getString("date");
-                                //
                                 JSONArray jsonArray_locations = cd.getJSONArray("locations");
                                 //Toast.makeText(getActivity(),"Got location array",Toast.LENGTH_LONG).show();//could not reach here
                                 for (int j = 0; j < jsonArray_locations.length(); j++) {
@@ -264,9 +362,9 @@ public class OnGoingFragment extends Fragment {
                                 sections.add(new Section(mdate,mDdaName, mAdaName, mAddress,mId,mpkado,mpkdda,false,true,false));
                             }
                             //recyclerViewAdater = new SectionAdapter(getActivity(),sections);
-                            //recyclerView.setAdapter(recyclerViewAdater);
+//                            recyclerView.setAdapter(recyclerViewAdater);
                             spinner.setVisibility(View.GONE);
-                            //recyclerViewAdater.notifyDataSetChanged();
+//                            recyclerViewAdater.notifyDataSetChanged();
                             no_of_visits++;
                             /*
                             adapter.mShowShimmer = false;
@@ -395,6 +493,7 @@ public class OnGoingFragment extends Fragment {
     }
 
     private void get_Ongoing() {
+//        sections.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, next_ongoing_url, null,
                 new Response.Listener<JSONObject>() {
@@ -404,8 +503,15 @@ public class OnGoingFragment extends Fragment {
                             JSONObject jsonObject = new JSONObject(String.valueOf(response));
                             next_ongoing_url = jsonObject.getString("next");
                             JSONArray jsonArray = jsonObject.getJSONArray("results");
-                            if(jsonArray.length()==0)
-                                view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
+                            if(jsonArray.length()==0) {
+                                // view.setBackground(getActivity().getResources().getDrawable(R.drawable.nothing_clipboard));
+                                recyclerViewAdater.notifyDataSetChanged();
+                                Log.d(TAG, "onResponse: see here.... " + view);
+                                nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+                                AppCompatActivity activity = (AppCompatActivity)getContext();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.locOngoing, no_data).commit();
+
+                            }
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 //Toast.makeText(getActivity(),"Enterd i",Toast.LENGTH_LONG).show();
                                 //itemArrayList = new ArrayList<>();
@@ -471,9 +577,9 @@ public class OnGoingFragment extends Fragment {
                                 //Toast.makeText(getActivity(),sections.get(0).toString(),Toast.LENGTH_LONG).show();
                             }
                             //recyclerViewAdater = new SectionAdapter(getActivity(),sections);
-                            //recyclerView.setAdapter(recyclerViewAdater);
+//                            recyclerView.setAdapter(recyclerViewAdater);
                             spinner.setVisibility(View.GONE);
-                            //recyclerViewAdater.notifyDataSetChanged();
+//                            recyclerViewAdater.notifyDataSetChanged();
                             no_of_visits++;
                             /*
                             adapter.mShowShimmer = false;
@@ -548,7 +654,7 @@ public class OnGoingFragment extends Fragment {
                             });
 
                         }else
-                            Toast.makeText(getActivity(), "An error occured", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "An error occurred", Toast.LENGTH_SHORT).show();
                     }
                 }) {
             @Override
@@ -593,6 +699,7 @@ public class OnGoingFragment extends Fragment {
                     if ((pastItemCount + visibleItemCount) >= totalCount && (pastItemCount >= 0) && (totalCount >= PAGE_SIZE)) {
                         if (!next_ongoing_url.equals("null") /*&& !isNextBusy*/)
                             get_Ongoing();
+
                     }
                 }
                 //super.onScrolled(recyclerView, dx, dy);
@@ -606,7 +713,7 @@ public class OnGoingFragment extends Fragment {
         Log.d(TAG,"onStart: ");
 //        spinner = view.findViewById(R.id.ddo_progressbar);
 //        spinner.setVisibility(View.VISIBLE);
-        getData();
+
     }
 
     @Override

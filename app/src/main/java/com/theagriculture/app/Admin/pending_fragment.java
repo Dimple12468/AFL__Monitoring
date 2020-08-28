@@ -43,6 +43,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 import com.theagriculture.app.adapter.PendingAdapter;
 
@@ -77,7 +78,7 @@ public class pending_fragment extends Fragment {
     //tags
     private static final String TAG = "pending_fragment";
     //private String pendingUrl = "http://18.224.202.135/api/locations/pending";
-    private String pendingUrl = "http://18.224.202.135/api/locationsDatewise/pending";
+    private String pendingUrl = Globals.pendingList;     //"http://api.theagriculture.tk/api/locationsDatewise/pending";              //= "http://18.224.202.135/api/locationsDatewise/pending";
     final ArrayList<Section> sections = new ArrayList<>();
     private String nextPendingUrl = "null";
     private LinearLayoutManager layoutManager;
@@ -86,7 +87,7 @@ public class pending_fragment extends Fragment {
     //public PendingAdapter recyclerViewAdater;
     private ItemAdapter item_adapter;
     private SectionAdapter recyclerViewAdater;
-    // private ProgressBar progressBar;
+    private ProgressBar progressBar;
     private boolean isNextBusy = false;
     private boolean isSendingNotifications = false;
     private View view;
@@ -116,10 +117,11 @@ public class pending_fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
         view = inflater.inflate(R.layout.pending_fragment, container, false);
+        Log.d(TAG,pendingUrl);
 
         swipeRefreshLayout = view.findViewById(R.id.refreshpull4);
         recyclerView = view.findViewById(R.id.recyclerViewpending);
-//        progressBar = view.findViewById(R.id.locations_loading);
+        progressBar = view.findViewById(R.id.locations_loading);
         spinner = view.findViewById(R.id.pending_progress);
 //        spinner.setVisibility(View.VISIBLE);
 
@@ -172,6 +174,7 @@ public class pending_fragment extends Fragment {
     }
 
     private void getData(final String url) {
+        sections.clear();
         final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         final JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -371,7 +374,7 @@ public class pending_fragment extends Fragment {
                         //Toast.makeText(getActivity(),"cleared next if",Toast.LENGTH_LONG).show();
                         //pendingUrl.equals(nextPendingUrl);
                         //getData(nextPendingUrl);
-                        // progressBar.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.VISIBLE);
                         getNextData(nextPendingUrl);
                         //Toast.makeText(getActivity(),"We reached end of page",Toast.LENGTH_LONG).show();
                         //loadNextLocations();
@@ -448,9 +451,9 @@ public class pending_fragment extends Fragment {
                         sections.add(new Section(mdate, mDdaName, mAdaName, mAddress, mId, mpkado, mpkdda, true, false, false));
                     }
                     spinner.setVisibility(View.GONE);
-                    // progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                 } catch (Exception e) {
-                    //  progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "An exception occurred", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
@@ -521,7 +524,7 @@ public class pending_fragment extends Fragment {
                 } else {
                     Toast.makeText(getActivity(), "An unknown error occurred.", Toast.LENGTH_SHORT).show();
                 }
-                // progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
             }
         }) {
             @Override
@@ -780,7 +783,7 @@ public class pending_fragment extends Fragment {
 
             @Override
             public void onRequestFinished(Request<Object> request) {
-                //    progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
             }
         });
 
@@ -788,7 +791,7 @@ public class pending_fragment extends Fragment {
 
     private void sendNotifications() {
         isSendingNotifications = true;
-        String url = "http://18.224.202.135/api/trigger/sms/pending";
+        String url = Globals.smsPending;              //"http://18.224.202.135/api/trigger/sms/pending";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override

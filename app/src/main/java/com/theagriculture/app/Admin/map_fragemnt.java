@@ -21,6 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,6 +35,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -44,32 +54,42 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.maps.android.clustering.ClusterManager;
 import com.obsez.android.lib.filechooser.ChooserDialog;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.PrivacyPolicy;
 import com.theagriculture.app.R;
 import com.theagriculture.app.login_activity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
 
+import static androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
+import static androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_UNLOCKED;
 import static com.theagriculture.app.AppNotificationChannels.CHANNEL_2_ID;
 
 /**
  * A simple {@link Fragment} subclass.
  *
  */
-public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMapReady() function gives a call back to this OnMap ReadyCallback
+public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//OnMapReady() function gives a call back to this OnMap ReadyCallback
 
     GoogleMap ngoogleMap;
     MapView mMapView;
@@ -79,6 +99,7 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
     private LinearLayout for_upload,for_location,for_email,for_cancel;
     private NotificationManagerCompat manager;
     private String token;
+    private SupportMapFragment mapFragment_admin;
 
     private PrivacyPolicy privacyPolicy;
     private DrawerLayout mDrawer_map;
@@ -89,7 +110,25 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
     private ado_fragment adoFragment;
     private ddo_fragment ddoFragment;
     private DistrictStateFragment districtStateFragment;
+    private final String TAG = "map_fragment admin";
 
+    private ArrayList<Double> latitude;
+    private ArrayList<Double> longitude;
+    private ArrayList<String> villname;
+
+    private String url_unassigned;          //="http://api.theagriculture.tk/api/locations/unassigned";
+    private String url_assigned;            //="http://api.theagriculture.tk/api/locations/assigned";
+    private String url_count;               //="http://api.theagriculture.tk/api/count-reports/";
+    private String next;
+    public GoogleMap map = null;
+    private AlertDialog dialog;
+    private RequestQueue requestQueue;
+    private int count = 0 ;
+    private ClusterManager<MyItem> mClusterManager;
+
+    private TextView pendingView;
+    private TextView ongoingView;
+    private TextView completedView;
 
     //bottom_nav bottom_nav_map;
 
@@ -97,19 +136,19 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
         // Required empty public constructor
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        //  fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        mMapView = (MapView) mView.findViewById(R.id.map);
-        if (mMapView != null) {
-            mMapView.onCreate(null);
-            mMapView.onResume();
-            mMapView.getMapAsync(this);
-
-        }
-    }
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//
+//        //  fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+//        mMapView = (MapView) mView.findViewById(R.id.map);
+//        if (mMapView != null) {
+//            mMapView.onCreate(null);
+//            mMapView.onResume();
+//            mMapView.getMapAsync(this);
+//
+//        }
+//    }
 
 
     @Override
@@ -117,27 +156,6 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
         inflater.inflate(R.menu.menu_top_bar,menu);
         MenuItem searchItem = menu.findItem(R.id.search_in_title);
         searchItem.setVisible(false);
-        /*final SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setQueryHint("Search something");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // perform query here
-                searchView.clearFocus();
-
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                **if (newText.equals("")) {
-                    //searchView.setQuery("", false);
-                    newText = newText.trim();
-                }
-                adapter.getFilter().filter(newText);**
-                return true;
-            }
-        });*/
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -145,37 +163,61 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                //Snackbar.make(mView,"Hamburger icon clicked",Snackbar.LENGTH_LONG).show();
-                //Toast.makeText(getActivity(), "Hamburger icon clicked", Toast.LENGTH_SHORT).show();
                 mDrawer_map.openDrawer(GravityCompat.START);
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-   /* @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                Snackbar.make(mView,"Hamburger icon clicked",Snackbar.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), "Hamburger icon clicked", Toast.LENGTH_SHORT).show();
-                System.out.println("dimple looking for hamburger icon");
-                //mDrawer_map.openDrawer(GravityCompat.START);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
-
+    //on createView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d(TAG, "onCreateView: ");
         mView = inflater.inflate(R.layout.fragment_map_admin, container, false);
+        mapFragment_admin = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_admin));
+        setHasOptionsMenu(true);
        // getContext().getTheme().applyStyle(R.style.AppTheme, true);
 
-        mDrawer_map = mView.findViewById(R.id.drawer_map);
-        nvDrawer_map = mView.findViewById(R.id.navigation_view_map);
+        url_unassigned = Globals.map_Unassigned_Admin;
+        url_assigned = Globals.map_Assigned_Admin;
+        url_count = Globals.map_Count_Admin;
+        Log.d(TAG,url_unassigned);
+        Log.d(TAG,url_assigned);
+        Log.d(TAG,url_count);
+
+
+        mDrawer_map = getActivity().findViewById(R.id.drawer_view);                         //mView.findViewById(R.id.drawer_map);
+        nvDrawer_map = getActivity().findViewById(R.id.navigation_view);                    //mView.findViewById(R.id.navigation_view_map);
+        mDrawer_map.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED);
+
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
+                getActivity(),mDrawer_map,R.string.navigation_drawer_open,R.string.navigation_drawer_close)
+        {
+            @Override
+            public void onDrawerClosed(View drawerView)
+            {
+                //Toast.makeText(getActivity(),"Drwaer closed",Toast.LENGTH_SHORT).show();
+                //super.onDrawerClosed(drawerView);
+                mDrawer_map.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView)
+            {
+                //Toast.makeText(getActivity(),"Drawer open",Toast.LENGTH_SHORT).show();
+                //super.onDrawerOpened(drawerView);
+                mDrawer_map.setDrawerLockMode(LOCK_MODE_UNLOCKED);
+            }
+        };
+        mDrawer_map.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
+
         privacyPolicy = new PrivacyPolicy();
+        pendingView = mView.findViewById(R.id.pending_count_admin);
+        ongoingView = mView.findViewById(R.id.ongoing_count_admin);
+        completedView = mView.findViewById(R.id.completed_count_admin);
 //        b_nav_map = mView.findViewById(R.id.bottom_nav_for_map);
 
         mapFragmnt = new map_fragemnt();
@@ -227,8 +269,19 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
             }
         });*/
 
-        SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
+
+
+        final SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         token = prefs.getString("token", "");
+        latitude = new ArrayList<>();
+        longitude = new ArrayList<>();
+        villname = new ArrayList<>();
+
+        dialog = new SpotsDialog.Builder().setContext(getActivity()).setMessage("Loading locations...")
+                .setTheme(R.style.CustomDialog)
+                .setCancelable(false).build();
+        dialog.show();
+        next = url_assigned;
 
         View header = nvDrawer_map.getHeaderView(0);
         TextView textUsername = header.findViewById(R.id.name);
@@ -258,7 +311,7 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
 
                     case R.id.privacy:
                         mDrawer_map.closeDrawers();
-                        InitializeFragment(privacyPolicy);
+                        Toast.makeText(getActivity(), "privacy clicked", Toast.LENGTH_SHORT).show();
                         return true;
 
                     case R.id.terms:
@@ -285,7 +338,63 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
             }
         });
 
+        mapFragment_admin.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                map = googleMap;
+                Log.d(TAG, "onMapReady:value if map is : " + map);
 
+                LatLng one = new LatLng(7.798000, 68.14712);
+                LatLng two = new LatLng(37.090000, 97.34466);
+
+                LatLng shimala = new LatLng(31.104815,77.173401);
+                LatLng jaipur = new LatLng(26.912434,75.787270);
+
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                LatLngBounds.Builder builder1 = new LatLngBounds.Builder();
+
+                //add them to builder
+                builder.include(one);
+                builder.include(two);
+
+                builder1.include(shimala);
+                builder1.include(jaipur);
+
+                LatLngBounds bounds = builder.build();
+                LatLngBounds bounds1 = builder1.build();
+
+                //get width and height to current display screen
+                int width = getResources().getDisplayMetrics().widthPixels;
+                int height = getResources().getDisplayMetrics().heightPixels;
+
+                // 20% padding
+                int padding = (int) (width * 0.20);
+
+                //set latlong bounds
+                map.setLatLngBoundsForCameraTarget(bounds);
+
+                //move camera to fill the bound to screen
+                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds1, width, height, padding));
+
+                //set zoom to level to current so that you won't be able to zoom out viz. move outside bounds
+                map.setMinZoomPreference(map.getCameraPosition().zoom);
+
+               // mMapView = (MapView) mView.findViewById(R.id.map_admin);
+                View toolbar = ((View) mapFragment_admin.getView().findViewById(Integer.parseInt("1")).
+                        getParent()).findViewById(Integer.parseInt("4"));
+                RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
+                // position on right bottom
+                rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+                rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+                rlp.setMargins(0, 30, 30, 0);
+
+            }
+        });
+
+        Log.d(TAG, "onCreateView: look me here " + mapFragment_admin);
+
+        getCount(url_count);
+        getMarkers(next);
 
         FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.fab);
         //todo fab
@@ -309,8 +418,8 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
                 for_email = (LinearLayout) sheetView.findViewById(R.id.for_email);
                 for_cancel = (LinearLayout) sheetView.findViewById(R.id.for_cancel);
 
-                final String url_location = "http://18.224.202.135/api/upload/locations/";
-                final String url_bulk = "http://18.224.202.135/api/upload/mail/";
+                final String url_location = Globals.url_Location_Admin;         //="http://api.theagriculture.tk/api/upload/locations/";
+                final String url_bulk = Globals.url_Bulk_Admin;                 //="http://api.theagriculture.tk/api/upload/mail/";
 
 
                 //for_upload.setOnClickListener(new View.OnClickListener() {
@@ -326,7 +435,6 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
                     @Override
                     public void onClick(View v) {
                         openCsvPicker(url_location);
-                        //Snackbar.make(mView,"for location",Snackbar.LENGTH_LONG).show();
                     }
                 });
 
@@ -334,7 +442,6 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
                     @Override
                     public void onClick(View v) {
                         openCsvPicker(url_bulk);
-                        //Snackbar.make(mView,"email here",Snackbar.LENGTH_LONG).show();
                     }
                 });
                 manager = NotificationManagerCompat.from(getActivity());
@@ -342,7 +449,6 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
                 for_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Snackbar.make(mView,"Cancel here",Snackbar.LENGTH_LONG).show();
                         mBottomDialogNotificationAction.dismiss();
                     }
                 });
@@ -353,27 +459,211 @@ public class map_fragemnt extends Fragment implements OnMapReadyCallback {//OnMa
         return mView;
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        MapsInitializer.initialize(getContext());
-        ngoogleMap = googleMap;
-        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+    void getCount(String urlcount){
 
-        //googleMap.getUiSettings().setMapToolbarEnabled(false);
-        //change location of google map toolbar
-        View toolbar = ((View) mMapView.findViewById(Integer.parseInt("1")).
-                getParent()).findViewById(Integer.parseInt("4"));
-        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
-        // position on right bottom
-        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
-        rlp.setMargins(0, 30, 30, 0);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        final JsonObjectRequest jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, urlcount, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    pendingView.setText(response.getString("pending_count"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    ongoingView.setText(response.getString("ongoing_count"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    completedView.setText(response.getString("completed_count"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "onErrorResponse: " + error);
+//                pbar.setVisibility(View.GONE);
+                dialog.dismiss();
+                if(error instanceof NoConnectionError){
+                    Toast.makeText(getActivity(), "Check your internet connection", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(getActivity(),"something went wrong",Toast.LENGTH_LONG).show();
+                }
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError{
+                HashMap<String, String> map = new HashMap<>();
+                map.put("Authorization", "Token " + token);
+                return map;
+            }
+        };
+        jsonObjectRequest2.setTag("MAP REQUEEST");
+        requestQueue.add(jsonObjectRequest2);
+        jsonObjectRequest2.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
 
 
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(20.5937, 78.9629)).title("India").snippet("My country"));
-        CameraPosition India = CameraPosition.builder().target(new LatLng(20.5937, 78.9629)).zoom(10).bearing(0).tilt(45).build();
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(India));
     }
+
+    void getMarkers(String url) {
+        requestQueue = Volley.newRequestQueue(getContext());
+        final JsonObjectRequest jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(String.valueOf(response));
+                    JSONArray jsonArray = jsonObject.getJSONArray("results");
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject c = jsonArray.getJSONObject(i);
+                        Double lat = Double.valueOf(c.getString("latitude"));
+                        Double lon = Double.valueOf(c.getString("longitude"));
+                        String vill = c.getString("village_name");
+                        latitude.add(lat);
+                        longitude.add(lon);
+                        villname.add(vill);
+                    }
+
+                } catch (JSONException e) {
+                    Log.e(TAG, "onResponse: " + e.getLocalizedMessage());
+                    e.printStackTrace();
+                    dialog.dismiss();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "onErrorResponse: " + error);
+//                pbar.setVisibility(View.GONE);
+                dialog.dismiss();
+                if(error instanceof NoConnectionError){
+                    Toast.makeText(getActivity(), "Check your internet connection", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(getActivity(),"something went wrong",Toast.LENGTH_LONG).show();
+                }
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("Authorization", "Token " + token);
+                return map;
+            }
+        };
+        jsonObjectRequest2.setTag("MAP REQUEST");
+        requestQueue.add(jsonObjectRequest2);
+        jsonObjectRequest2.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        requestFinished(requestQueue);
+    }
+
+    private void requestFinished(RequestQueue queue) {
+
+        queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                Log.d(TAG, "onRequestFinished: here too");
+                if(count == 0)nextRequest();
+                else if(count == 1) marklocation();
+
+            }
+        });
+
+    }
+
+    void nextRequest(){
+        count = 1;
+        next= url_unassigned;
+        getMarkers(next);
+
+
+    }
+
+    private void marklocation() {
+        Log.d(TAG, "marklocation: SIZE" + latitude.size());
+        mClusterManager = new ClusterManager<MyItem>(getActivity(), map);
+        addmarkers();
+        map.setOnCameraIdleListener(mClusterManager);
+        map.setOnMarkerClickListener(mClusterManager);
+        dialog.dismiss();
+    }
+
+    private void addmarkers() {
+
+        for(int i = 0 ;i<latitude.size();i++){
+            double lat = latitude.get(i);
+            double lon = longitude.get(i);
+            String title = villname.get(i);
+            MyItem item = new MyItem(lat,lon,title);
+            mClusterManager.addItem(item);
+        }
+        mClusterManager.cluster();
+        Log.d(TAG, "addmarkers: CLUSTER SIZE" + mClusterManager.getRenderer());
+
+    }
+
+//    @Override
+//    public void onMapReady(GoogleMap googleMap) {
+//        MapsInitializer.initialize(getContext());
+//        ngoogleMap = googleMap;
+//        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+//
+//        //googleMap.getUiSettings().setMapToolbarEnabled(false);
+//        //change location of google map toolbar
+//        View toolbar = ((View) mMapView.findViewById(Integer.parseInt("1")).
+//                getParent()).findViewById(Integer.parseInt("4"));
+//        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
+//        // position on right bottom
+//        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+//        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+//        rlp.setMargins(0, 30, 30, 0);
+//
+//
+//        googleMap.addMarker(new MarkerOptions().position(new LatLng(20.5937, 78.9629)).title("India").snippet("My country"));
+//        CameraPosition India = CameraPosition.builder().target(new LatLng(20.5937, 78.9629)).zoom(10).bearing(0).tilt(45).build();
+//        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(India));
+//    }
 
     private void openCsvPicker(final String url) {
         File file = Environment.getExternalStorageDirectory();

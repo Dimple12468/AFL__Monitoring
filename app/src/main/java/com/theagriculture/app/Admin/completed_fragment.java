@@ -38,6 +38,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 import com.theagriculture.app.adapter.PendingAdapter;
 
@@ -72,7 +73,7 @@ public class completed_fragment extends Fragment {
 
     private LinearLayoutManager layoutManager;
     //private String completedUrl = "http://18.224.202.135/api/locations/completed";
-    private String completedUrl = "http://18.224.202.135/api/locationsDatewise/completed";
+    private String completedUrl = Globals.completedList;                //"http://18.224.202.135/api/locationsDatewise/completed";
     private String nextUrl = "null";
     private ProgressBar progressBar;
     private boolean isNextBusy;
@@ -185,6 +186,13 @@ public class completed_fragment extends Fragment {
     }
 
     private void getData() {
+        sections.clear();
+//        mDdaName = new ArrayList<>();
+//        mAdaName = new ArrayList<>();
+//        mAddress = new ArrayList<>();
+//        mpkado = new ArrayList<>();
+//        mpkdda = new ArrayList<>();
+//        mId = new ArrayList<>();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(completedUrl, null,
                 new Response.Listener<JSONObject>() {
@@ -407,6 +415,7 @@ public class completed_fragment extends Fragment {
     }
 
     private void getNextLocations() {
+//        sections.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         isNextBusy = true;
         progressBar.setVisibility(View.VISIBLE);

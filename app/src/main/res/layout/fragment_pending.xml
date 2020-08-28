@@ -4,23 +4,39 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <include
+        layout="@layout/app_bar_admin"
+        android:id="@+id/pending_dda_toolbar"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab"
-        app:tabIndicatorColor="@color/colorPrimaryDark"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:tabSelectedTextColor="#DC5C58"
+        app:tabIndicatorColor="#DC5C58"
+        app:tabTextColor="#9A9696"
+        android:background="@color/white"
+        android:layout_below="@id/pending_dda_toolbar"
+        android:fontFamily="@font/arial">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/assigned"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ASSIGNED" />
+            android:text="ASSIGNED"
+            android:background="@color/white"/>
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/notassigned"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NOT ASSIGNED" />
+            android:text="NOT ASSIGNED"
+            android:background="@color/white"/>
 
     </com.google.android.material.tabs.TabLayout>
 
@@ -28,7 +44,8 @@
         android:layout_below="@id/tab"
         android:id="@+id/viewPage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
     </androidx.viewpager.widget.ViewPager>
 

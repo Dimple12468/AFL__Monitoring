@@ -78,8 +78,10 @@ public class login_activity extends AppCompatActivity {
     private EditText editEmail, editPassword;
     private TextView signUpAdo, signUpDda,tvForgot,tvReg;
 
-    private String urlget = "http://18.224.202.135/api/get-user/";
-    private String urlpost = "http://18.224.202.135/api-token-auth/";
+    private String urlget;          // = "http://api.theagriculture.tk/api/get-user/";
+    private String urlpost;         // = "http://api.theagriculture.tk/api-token-auth/";
+//    private String urlget ;
+//    private String urlpost;
 
     private AlertDialog dialog;
     private CheckBox checkBox;
@@ -92,6 +94,12 @@ public class login_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login_activity);
+
+        urlget = Globals.userTypeURL;
+        urlpost = Globals.urlPost_user;
+
+        Log.d(TAG,urlget);
+        Log.d(TAG,urlpost);
 
         //to handle soft keys on some phones
         if(Build.VERSION.SDK_INT>=21){
@@ -329,6 +337,7 @@ public class login_activity extends AppCompatActivity {
                 HashMap<String, String> headers = new HashMap<>();
                 Log.d(TAG, "getHeaders: ");
                 headers.put("Authorization", "Token " + token);
+                Log.d(TAG,token);
                 return headers;
             }
         };
