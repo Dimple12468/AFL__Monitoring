@@ -44,6 +44,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.theagriculture.app.Ado.AdoListAdapter;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -122,7 +123,7 @@ public class AdoDdoCompleted extends Fragment {
             role = "dda";
         else
             role = "ado";
-        mUrl = "http://18.224.202.135/api/admin/" + role + "/" + mDdoId + "/completed";
+        mUrl = Globals.admin + role + "/" + mDdoId + "/completed";              //"http://18.224.202.135/api/admin/" + role + "/" + mDdoId + "/completed";
         Log.d("url", "onCreateView: completed" + mUrl);
         progressBar = view.findViewById(R.id.Ddo_completed_loading);
         recyclerView = view.findViewById(R.id.Ddo_completed_recyclerview);

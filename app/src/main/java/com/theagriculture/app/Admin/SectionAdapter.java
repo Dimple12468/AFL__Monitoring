@@ -27,10 +27,21 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
     public ArrayList<Section> sectionListall;
     private Context context;
     private ItemAdapter itemAdapter;
+    private ItemAdapter itemAdapter_DDA;
+    private Boolean is_DDA_User = false;
 
     public SectionAdapter(Context context, ArrayList<Section> sections) {
         sectionList = sections;
         this.context = context;
+
+        this.sectionListall = new ArrayList<>(sections);
+    }
+
+    public SectionAdapter(Context context, ArrayList<Section> sections,boolean is_DDA_User) {
+        System.out.println("Dimple in section adapter constructor for dda");
+        sectionList = sections;
+        this.context = context;
+        this.is_DDA_User=is_DDA_User;
 
         this.sectionListall = new ArrayList<>(sections);
     }
@@ -96,6 +107,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView sectionName;
         private RecyclerView itemRecyclerView;
+        private String fromdate;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -105,7 +117,11 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
 
         public void bind(Section section) {
             String fromDateFormat = "yyyy-MM-dd";
-            String fromdate = section.getSectionTitle();
+//            if (section.isIs_DDA_user()){
+//                fromdate = section.getSectionTitle_DDA();
+//            }else{
+            fromdate = section.getSectionTitle();
+//            }
             String CheckFormat = "dd MMM yyyy";
             String dateStringFrom;
             DateFormat FromDF = new SimpleDateFormat(fromDateFormat);
@@ -119,14 +135,33 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
             dateStringFrom = new SimpleDateFormat(CheckFormat).format(FromDate);
             String xy = dateStringFrom.toString();
             sectionName.setText(xy);
+
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+            itemRecyclerView.setLayoutManager(linearLayoutManager);
+            itemAdapter = new ItemAdapter(context, section.getDda(), section.getAda(), section.getAddress(), section.getId(), section.getAdapk(), section.getDdapk(), section.getPendingstatus(), section.getOngoingstatus(), section.getCompletedstatus());
+            itemRecyclerView.setAdapter(itemAdapter);
+
             //sectionName.setText(section.getSectionTitle());
             //Toast.makeText(context, "Section name set", Toast.LENGTH_LONG).show();
             // RecyclerView for items
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-            itemRecyclerView.setLayoutManager(linearLayoutManager);
-            itemAdapter = new ItemAdapter(context,section.getDda(), section.getAda(), section.getAddress(), section.getId(), section.getAdapk(), section.getDdapk(), section.getPendingstatus(),section.getOngoingstatus(),section.getCompletedstatus());
-            itemRecyclerView.setAdapter(itemAdapter);
-            //itemAdapter.getFilter();
+//            if (is_DDA_User) {
+//                boolean is_DDAuser = section.isIs_DDA_user();
+//                System.out.println("Dimple before condition" + is_DDAuser);
+//                if (is_DDAuser) {
+//                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+//                    itemRecyclerView.setLayoutManager(linearLayoutManager);
+//                    System.out.println("Dimple in condition" + section.isIs_DDA_user());
+//                    itemAdapter_DDA = new ItemAdapter(context, section.getSectionTitle(), section.getVillagename_DDA(), section.getBlockname_DDA(), section.getDistrict_DDA(), section.getState_DDA(),
+//                            section.getId_DDA(), section.getAddress_DDA(), section.getName_DDA(), section.getmAdoIds_DDA(), is_DDA_User);
+//                    itemRecyclerView.setAdapter(itemAdapter_DDA);
+//                } else {
+//                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+//                    itemRecyclerView.setLayoutManager(linearLayoutManager);
+//                    itemAdapter = new ItemAdapter(context, section.getDda(), section.getAda(), section.getAddress(), section.getId(), section.getAdapk(), section.getDdapk(), section.getPendingstatus(), section.getOngoingstatus(), section.getCompletedstatus());
+//                    itemRecyclerView.setAdapter(itemAdapter);
+//                    //itemAdapter.getFilter();
+//                }
+//            }
         }
 
     }

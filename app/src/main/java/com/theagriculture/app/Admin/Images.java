@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,6 +39,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.theagriculture.app.Ado.ReviewPicsRecyclerviewAdapter;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -49,7 +52,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Images extends Fragment {
+public class Images extends Fragment implements onBackPressed {
     private RecyclerView recyclerView;
     private ArrayList<String> mImagesUrl;
     private ReviewPicsRecyclerviewAdapter adapter;
@@ -72,6 +75,8 @@ public class Images extends Fragment {
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setHasOptionsMenu(true);
 
         TextView title_top = view.findViewById(R.id.app_name);
         if (view.isEnabled()){
@@ -88,7 +93,7 @@ public class Images extends Fragment {
         adapter = new ReviewPicsRecyclerviewAdapter(getActivity(), mImagesUrl);//Recycler view for images
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        mUrl = "http://18.224.202.135/api/report-ado/" + id + "/";
+        mUrl = Globals.report_ado + id + "/";                       //"http://18.224.202.135/api/report-ado/" + id + "/";
 
         getData();
 
@@ -224,5 +229,19 @@ public class Images extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 }

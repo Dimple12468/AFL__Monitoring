@@ -2,8 +2,10 @@ package com.theagriculture.app.Admin;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -13,6 +15,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,6 +40,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 
 import org.json.JSONException;
@@ -50,7 +54,7 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PendingDetailsFragment extends Fragment {
+public class PendingDetailsFragment extends Fragment implements onBackPressed  {
 
     private String ado_name;
     private String dda_name;
@@ -94,6 +98,25 @@ public class PendingDetailsFragment extends Fragment {
 
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void onBackPressed() {
+//        final Myfragment fragment = (Myfragment) getSupportFragmentManager().findFragmentByTag(TAG_FRAGMENT);
+//
+//        if (fragment.allowBackPressed()) { // and then you define a method allowBackPressed with the logic to allow back pressed or not
+//            super.onBackPressed();
+//        }
+        getActivity().getSupportFragmentManager().popBackStack();
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -103,9 +126,13 @@ public class PendingDetailsFragment extends Fragment {
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        setHasOptionsMenu(true);
+//        appCompatActivity.getSupportActionBar().setDisplayShowHomeEnabled(true);
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        appCompatActivity.getSupportActionBar().setDisplayShowHomeEnabled(true);
         //appCompatActivity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.go_back);
+//        Drawable drawable = toolbar.getNavigationIcon();
+//        drawable.setColorFilter(ContextCompat.getColor(appCompatActivity, colorId), PorterDuff.Mode.SRC_ATOP);
+
 
         Bundle bundle = this.getArguments();
         if(bundle!=null) {
@@ -183,9 +210,11 @@ public class PendingDetailsFragment extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", MODE_PRIVATE);
         token = prefs.getString("token", "");
 
-        urlado = "http://18.224.202.135/api/user/" + ado_id + "/";
-        urldda = "http://18.224.202.135/api/user/" + dda_id + "/";
+        urlado = Globals.User + ado_id + "/";           // "http://api.theagriculture.tk/api/user/" + ado_id + "/";
+        urldda = Globals.User + dda_id + "/";           //"http://api.theagriculture.tk/api/user/" + dda_id + "/";
 
+        Log.d(TAG, "urlado" + urlado);
+        Log.d(TAG, "urldda" + urldda);
 
         if(ado_name.equals("NOT ASSIGNED") && dda_name.equals("NOT ASSIGNED")){
             both = false;

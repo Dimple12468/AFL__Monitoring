@@ -39,6 +39,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.theagriculture.app.Ado.AdoListAdapter;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -115,7 +116,7 @@ public class AdoDdoOngoing extends Fragment {
             role = "dda";
         else
             role = "ado";
-        mUrl = "http://18.224.202.135/api/admin/" + role + "/" + mDdoId + "/ongoing";
+        mUrl = Globals.admin + role + "/" + mDdoId + "/ongoing";                //"http://18.224.202.135/api/admin/" + role + "/" + mDdoId + "/ongoing";
         Log.d("url", "onCreateView: ongoing" + mUrl);
 
         //Toast.makeText(getActivity(),"got id="+ mDdoId + "isDdo="+isDdo,Toast.LENGTH_LONG).show();

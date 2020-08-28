@@ -41,8 +41,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> /*
     private boolean isComplete = false;
     private boolean isOngoing = false;
     private boolean isPending = false;
+//    private boolean is_DDA_user = false;
     Context mcontext;
+//    private String sectionTitle_dda,villagename_dda,blockname_dda,district_dda,state_dda;
 
+
+    //itemAdapter = new ItemAdapter(context, section.getDda(), section.getAda(), section.getAddress(), section.getId(), section.getAdapk(), section.getDdapk(), section.getPendingstatus(), section.getOngoingstatus(), section.getCompletedstatus());
     public  ItemAdapter(Context mcontext,ArrayList<String> mtextview1, ArrayList<String> mtextview2, ArrayList<String> mtextview3, ArrayList<String> mIds,ArrayList<String> ado_pk, ArrayList<String> dda_pk,boolean isPending,boolean isOngoing,boolean isComplete) {
         this.mcontext = mcontext;
         // this.mtextview_letter = mtextview_letter;
@@ -58,6 +62,27 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> /*
 
         this.mtextview3_address = new ArrayList<>(mtextview3);
     }
+
+    //itemAdapter_DDA = new ItemAdapter(context,section.getSectionTitle_DDA(),section.getVillagename_DDA(),section.getBlockname_DDA(),section.getDistrict_DDA(),section.getState_DDA(),
+    //                    section.getId_DDA(),section.getAddress_DDA(),section.getName_DDA(),section.getmAdoIds_DDA(),is_DDA_User);
+    /*public ItemAdapter(Context context, String sectionTitle_dda, String villagename_dda, String blockname_dda, String district_dda, String state_dda, ArrayList<String> id_dda, ArrayList<String> address_dda, ArrayList<String> name_dda, ArrayList<String> getmAdoIds_dda, Boolean is_dda_user) {
+        System.out.println("Dimple in item adapter constructor for dda");
+        this.mcontext = context;
+        this.mtextview1 = name_dda;
+        this.mtextview2 = name_dda;
+        this.mtextview3 = address_dda;
+        this.is_DDA_user = is_dda_user;
+
+        this.mIds = id_dda;
+        this.mpkado = getmAdoIds_dda;
+
+        this.sectionTitle_dda=sectionTitle_dda;
+        this.villagename_dda=villagename_dda;
+        this.blockname_dda=blockname_dda;
+        this.district_dda=district_dda;
+        this.state_dda=state_dda;
+
+    }*/
 
 
     @NonNull
@@ -152,6 +177,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> /*
             tv2.setText("ADO:     " + tv2g.toUpperCase());
             tv3.setText(tv3g);
             tv_letter.setText(letter);
+//            if(is_DDA_user){
+//                tv2.setVisibility(View.GONE);
+//            }else{
+//                tv2.setText("ADO:     " + tv2g.toUpperCase());
+//            }
+
         }
 
         @Override

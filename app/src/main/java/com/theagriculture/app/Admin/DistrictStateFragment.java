@@ -212,7 +212,7 @@ public class DistrictStateFragment extends Fragment {
         }
 
 
-        mURL = "http://18.224.202.135/api/countReportBtwDates/?start_date=2019-10-10&end_date=2019-11-20&points=8";
+        mURL = "http://api.theagriculture.tk/api/countReportBtwDates/?start_date=2019-10-10&end_date=2019-11-20&points=8";
         totalPendingTextView = view.findViewById(R.id.total_pending);
         totalOngoingTextView = view.findViewById(R.id.total_ongoing);
         totalCompletedTextView = view.findViewById(R.id.total_completed);
@@ -293,7 +293,7 @@ public class DistrictStateFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(getActivity(),"position is "+ position + "date is "+ start_date_set.toString()+end_date_set.toString(),Toast.LENGTH_LONG).show();
-                String spin_url = "http://18.224.202.135/api/countReportBtwDates/?start_date="+start_date_set.toString()+"&end_date="+ end_date_set.toString()+"&points=8";
+                String spin_url = "http://api.theagriculture.tk/api/countReportBtwDates/?start_date="+start_date_set.toString()+"&end_date="+ end_date_set.toString()+"&points=8";
                 String state = null;
                 if(position==0) {
                     state = "All";
@@ -373,7 +373,7 @@ public class DistrictStateFragment extends Fragment {
                 end_date_set = df2.format(date2).toString();
                 System.out.println(start_date_set);
                 System.out.println(end_date_set);
-                String btn_url="http://18.224.202.135/api/countReportBtwDates/?start_date=" + start_date_set + "&end_date=" + end_date_set + "&points=8";
+                String btn_url="http://api.theagriculture.tk/api/countReportBtwDates/?start_date=" + start_date_set + "&end_date=" + end_date_set + "&points=8";
                 String state = String.valueOf(spin.getSelectedItem());
                 getGraph(btn_url,state);
                 //getData(URL,start_date_set,end_date_set);

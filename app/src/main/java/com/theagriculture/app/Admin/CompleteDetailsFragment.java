@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -38,6 +40,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.theagriculture.app.Ado.ReviewTableRecycleAdapter;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -53,7 +56,7 @@ import static java.lang.String.valueOf;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CompleteDetailsFragment extends Fragment {
+public class CompleteDetailsFragment extends Fragment implements onBackPressed {
     private ImageButton back_button;
 
     private TextView review_address_top;
@@ -138,6 +141,8 @@ public class CompleteDetailsFragment extends Fragment {
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setHasOptionsMenu(true);
 
         Bundle bundle = this.getArguments();
         id = bundle.get("id").toString();
@@ -235,7 +240,8 @@ public class CompleteDetailsFragment extends Fragment {
             title_top.setText("AFL Monitoring");
         }
 
-        mUrl = "http://18.224.202.135/api/report-ado/" + id + "/";
+        mUrl = Globals.report_ado + id + "/";                //"http://18.224.202.135/api/report-ado/" + id + "/";
+        Log.d(TAG,"URL: " + mUrl);
         //Log.d("click","reached herw"+id);
         // mUrl = "https://jsonplaceholder.typicode.com/todos/1";
         getData();
@@ -429,5 +435,19 @@ public class CompleteDetailsFragment extends Fragment {
         androidx.appcompat.app.AlertDialog alertDialog=builder.create();
         alertDialog.show();
         alertDialog.getWindow().getWindowStyle();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 }

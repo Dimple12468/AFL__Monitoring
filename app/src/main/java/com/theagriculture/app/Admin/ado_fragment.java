@@ -52,6 +52,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -334,7 +335,31 @@ public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelect
         sp4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+//                if (R.id.parent == R.id.district_filter_spinner) {
+//                    //sp4.setOnItemSelectedListener(new OnSpinnerItemClicked());
+//                    LayoutInflater li_dist = LayoutInflater.from(getActivity());
+//                    final View dist = li_dist.inflate(R.layout.search_view, null);
+//                    final android.app.AlertDialog.Builder alertDialogBuilder_dist = new android.app.AlertDialog.Builder(getActivity());
+//                    alertDialogBuilder_dist.setTitle("Filter Search");
+//                    alertDialogBuilder_dist.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog,
+//                                            int which) {
+//                            Toast.makeText(getActivity(), "Select is clicked", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                    alertDialogBuilder_dist.setNegativeButton("Reset", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            Toast.makeText(getActivity(), "Reset is clicked", Toast.LENGTH_LONG).show();
+//                            //alertDialogBuilder.setCancelable(true);
+//                        }
+//                    });
+//                    alertDialogBuilder_dist.setView(dist);
+//                    alertDialogBuilder_dist.setCancelable(true);
+//                    AlertDialog alertDialog_dist = alertDialogBuilder_dist.create();
+//                    alertDialog_dist.show();
+//
+//                }
             }
 
             @Override
@@ -403,7 +428,10 @@ public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelect
         spinner = view.findViewById(R.id.ado_progress);
         spinner.setVisibility(View.VISIBLE);
         adolist = view.findViewById(R.id.adolist);
-        district_list_url = "http://18.224.202.135/api/district/";
+
+        district_list_url = Globals.districtUrl;                 //= "http://18.224.202.135/api/district/";
+        Log.d(TAG,district_list_url);
+
         username = new ArrayList<>();
         userinfo = new ArrayList<>();
         mUserId = new ArrayList<>();

@@ -21,12 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
+import com.theagriculture.app.Admin.onBackPressed;
 import com.theagriculture.app.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AdoDdoActivityFragment extends Fragment {
+public class AdoDdoActivityFragment extends Fragment implements onBackPressed {
 
     private AdoDdoActivityPagerAdapter adapter;
     private boolean isDdo;
@@ -84,6 +85,7 @@ public class AdoDdoActivityFragment extends Fragment {
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setHasOptionsMenu(true);
 
         Bundle bundle = this.getArguments();
@@ -126,5 +128,19 @@ public class AdoDdoActivityFragment extends Fragment {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         return view;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 }

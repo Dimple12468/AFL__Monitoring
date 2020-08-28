@@ -53,6 +53,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.theagriculture.app.Admin.AdoDdoActivity.nothing_toshow_fragment;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -85,7 +86,7 @@ public class ddo_fragment extends Fragment {
     ProgressBar spinner;
     private LinearLayoutManager layoutManager;
     private boolean isRefresh;
-    private String mUrl = "http://18.224.202.135/api/users-list/dda/";
+    private String mUrl ;       //= "http://18.224.202.135/api/users-list/dda/";
 
     ImageButton Ib,Ib1,Ib2,Ib3;
     TextView tv_edit;
@@ -111,6 +112,9 @@ public class ddo_fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: check1check");
         view = inflater.inflate(R.layout.ddo_fragment, container, false);
+
+        mUrl = Globals.usersList;
+        Log.d(TAG,mUrl);
 
         swipeRefreshLayout = view.findViewById(R.id.refreshpull2);
         progressBar = view.findViewById(R.id.ddo_list_progressbar);

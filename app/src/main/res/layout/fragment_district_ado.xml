@@ -38,14 +38,15 @@
         <ProgressBar
             android:id="@+id/ado_list_progressbar1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/app__bar_district_ado"
             android:layout_marginBottom="8dp"
-            android:indeterminateDrawable="@drawable/progress"
+            android:indeterminateTint="@color/app_color"
             android:elevation="15dp"
             android:visibility="gone" />
+<!--        android:indeterminateDrawable="@drawable/progress"-->
 
         <!--binds layout for edit-->
         <LinearLayout
@@ -242,12 +243,12 @@
         <ProgressBar
             android:id="@+id/ado_progressbar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:indeterminateDrawable="@drawable/progress"
+            android:indeterminateTint="@color/app_color"
             android:visibility="visible" />
-
+<!--            android:indeterminateDrawable="@drawable/progress"-->
     </RelativeLayout>
 
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -40,8 +42,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.theagriculture.app.Admin.AdoDdoActivity.nothing_toshow_fragment;
 import com.theagriculture.app.Ado.ReviewPicsRecyclerviewAdapter;
 import com.theagriculture.app.Ado.ReviewTableRecycleAdapter;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 import com.theagriculture.app.login_activity;
 
@@ -59,7 +63,7 @@ import static java.lang.String.valueOf;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ongoingDetailsFragment extends Fragment {
+public class ongoingDetailsFragment extends Fragment implements onBackPressed{
 
     private ImageButton back_button;
 
@@ -98,6 +102,7 @@ public class ongoingDetailsFragment extends Fragment {
 
     private static String TAG = "ReviewReport";
 
+    private View view;
     private String mUrl;
     private boolean isComplete;
     private boolean isAdmin;
@@ -137,12 +142,14 @@ public class ongoingDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_ongoing_details, container, false);
-        View view = inflater.inflate(R.layout.fragment_ongoing_details, container, false);
+        view = inflater.inflate(R.layout.fragment_ongoing_details, container, false);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_ongoing);
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setHasOptionsMenu(true);
 
         TextView title_top = view.findViewById(R.id.app_name);
         if (view.isEnabled()){
@@ -152,8 +159,8 @@ public class ongoingDetailsFragment extends Fragment {
         }
 
         Bundle bundle = this.getArguments();
-            id = bundle.get("id").toString();
-            review_address_big = bundle.get("review_address_top").toString();//address of the incident
+        id = bundle.get("id").toString();
+        review_address_big = bundle.get("review_address_top").toString();//address of the incident
 
         review_address_top = view.findViewById(R.id.review_address_top);
 
@@ -232,7 +239,8 @@ public class ongoingDetailsFragment extends Fragment {
         });
         review_address_top.setText(review_address_big);
 
-        mUrl = "http://18.224.202.135/api/report-ado/" + id + "/";
+        mUrl = Globals.report_ado +  id + "/";                  //"http://18.224.202.135/api/report-ado/" + id + "/";
+        Log.d(TAG,"Report-ADO URL: "+mUrl);
         getData();
         //Log.d("click","reached herw"+id);
        // mUrl = "https://jsonplaceholder.typicode.com/todos/1";
@@ -267,6 +275,13 @@ public class ongoingDetailsFragment extends Fragment {
                 //villCodeLeft.setText(abcd);
                 try {
                     JSONObject rootObject = new JSONObject(valueOf(response));
+                    Log.d(TAG,"on Response: "+response + "\n" + "root object" + rootObject);
+//                    if (rootObject.getString("detail").equals("Not found.")){
+//                        Log.d(TAG, "onResponse: Data not found.... " + view);
+//                        nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+//                        AppCompatActivity activity = (AppCompatActivity)getContext();
+//                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame_complete_details, no_data).commit();
+//                    }
                     String villCode = rootObject.getString("village_code");
                     farmerId = rootObject.getString("farmer_code");
                     Log.d(TAG, "onResponse: farmerid"+farmerId);
@@ -459,5 +474,19 @@ public class ongoingDetailsFragment extends Fragment {
         androidx.appcompat.app.AlertDialog alertDialog=builder.create();
         alertDialog.show();
         alertDialog.getWindow().getWindowStyle();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 }

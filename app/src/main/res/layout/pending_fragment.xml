@@ -17,19 +17,21 @@
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="290dp" />
 
-        <!--ProgressBar
+        <ProgressBar
             android:id="@+id/locations_loading"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="2dp"
-            android:indeterminateDrawable="@drawable/progress"
             android:visibility="gone"
+            android:indeterminateTint="@color/app_color"
             app:layout_constraintBottom_toBottomOf="@+id/recyclerViewpending"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline8" /-->
+            app:layout_constraintTop_toTopOf="@+id/guideline8" />
+<!--        style="@android:style/Widget.ProgressBar.Small"
+android:indeterminateDrawable="@drawable/progress"-->
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline8"
@@ -42,11 +44,11 @@
         <ProgressBar
             android:id="@+id/pending_progress"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:indeterminateDrawable="@drawable/progress"
             android:visibility="visible"
+            android:indeterminateTint="@color/app_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -138,11 +138,11 @@ public class RecyclerViewAdapter_district extends RecyclerView.Adapter<RecyclerV
             mContext.startActivity(intent);
             */
             Bundle bundle = new Bundle();
-                bundle.putString("district", mDistrictNames.get(this.getAdapterPosition()));
-                DistrictAdo abc = new DistrictAdo();
-                abc.setArguments(bundle);
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).addToBackStack(null).commit();
+            bundle.putString("district", mDistrictNames.get(this.getAdapterPosition()));
+            DistrictAdo abc = new DistrictAdo();
+            abc.setArguments(bundle);
+            AppCompatActivity activity = (AppCompatActivity) v.getContext();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).addToBackStack(null).commit();
         }
 
 

@@ -5,6 +5,7 @@
         <!--parent="Theme.MaterialComponents.Light.NoActionBar.Bridge"-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorControlNormal">@color/black</item>
     </style>
 
 

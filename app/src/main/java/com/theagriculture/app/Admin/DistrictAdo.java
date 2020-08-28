@@ -50,6 +50,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.theagriculture.app.Admin.AdoDdoActivity.nothing_toshow_fragment;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -65,7 +66,7 @@ import dmax.dialog.SpotsDialog;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DistrictAdo extends Fragment {
+public class DistrictAdo extends Fragment implements onBackPressed{
     private ArrayList<String> username;
     private ArrayList<String> userinfo;
     private ArrayList<String> mUserId;
@@ -149,11 +150,12 @@ public class DistrictAdo extends Fragment {
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setHasOptionsMenu(true);
 
         ll = view.findViewById(R.id.for_edit_ado);
         ado_list="";
-        district_list_url ="http://18.224.202.135/api/district/";
+        district_list_url = Globals.districtUrl;            //"http://18.224.202.135/api/district/";
         username = new ArrayList<>();
         userinfo = new ArrayList<>();
         mUserId = new ArrayList<>();
@@ -264,7 +266,7 @@ public class DistrictAdo extends Fragment {
 
          */
 
-        ado_list="http://18.224.202.135/api/users-list/ado/?search="+curr_dist;
+        ado_list= Globals.usersListADO + curr_dist;              //"http://18.224.202.135/api/users-list/ado/?search="+curr_dist;
         getData();
         /*
         final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
@@ -756,5 +758,17 @@ public class DistrictAdo extends Fragment {
         return text;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
+    @Override
+    public void onBackPressed() {
+        getActivity().getSupportFragmentManager().popBackStack();
+    }
 }

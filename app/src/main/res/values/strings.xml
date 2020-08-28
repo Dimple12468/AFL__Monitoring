@@ -23,6 +23,10 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
 
+<!--    <string name="serverUrl">https://api.theagriculture.tk/</string>-->
+<!--    <string name="userTypeUrl">api/get-user/</string>-->
+<!--    <string name="urlpost_user">api-token-auth/</string>-->
+
     <!--google map key-->
     <string name="google_map_key">AIzaSyAUKi9N7ZNLUj3QjYK9Zn-7PxVMw85koOY</string>
 

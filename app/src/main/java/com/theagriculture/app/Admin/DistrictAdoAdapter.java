@@ -34,7 +34,8 @@ import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> implements Filterable {
+public class
+DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> implements Filterable {
 
    // View view1;
     ArrayList<String> mtextview1;

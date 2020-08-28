@@ -5,33 +5,43 @@
     android:layout_height="match_parent"
     android:id="@+id/refreshpull3">
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/locOngoing"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <ProgressBar
-            android:id="@+id/locations_loading_ongoing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:indeterminateDrawable="@drawable/progress"
-            android:visibility="gone" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ongoing_recyclerview"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/on_going_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:indeterminateDrawable="@drawable/progress"
-            android:visibility="visible" />
-    </RelativeLayout>
+
+            <ProgressBar
+                android:id="@+id/locations_loading_ongoing"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:indeterminateTint="@color/app_color"
+                android:visibility="gone" />
+            <!--        android:indeterminateDrawable="@drawable/progress"-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ongoing_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ProgressBar
+                android:id="@+id/on_going_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:indeterminateTint="@color/app_color"
+                android:visibility="visible" />
+
+            <!--        android:indeterminateDrawable="@drawable/progress"-->
+        </RelativeLayout>
+
+    </FrameLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -39,7 +40,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.internal.$Gson$Preconditions;
+import com.theagriculture.app.Admin.onBackPressed;
 import com.theagriculture.app.Ado.AdoListAdapter;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -127,8 +130,8 @@ public class AdoDdoPending extends Fragment {
         String role;
         if (isDdo) {
             role = "dda";
-            String mUrlAssigned = "http://18.224.202.135/api/admin/" + role + "/" + mDdoId + "/assigned";
-            mUrlUnAssigned = "http://18.224.202.135/api/admin/" + role + "/" + mDdoId + "/unassigned";
+            String mUrlAssigned = Globals.admin + role + "/" + mDdoId + "/assigned";            //"http://18.224.202.135/api/admin/" + role + "/" + mDdoId + "/assigned";
+            mUrlUnAssigned = Globals.admin + role + "/" + mDdoId + "/unassigned" ;              //"http://18.224.202.135/api/admin/" + role + "/" + mDdoId + "/unassigned";
             Log.d("url", "onCreateView: pending" + mUrlAssigned);
             Log.d("url", "onCreateView: pending" + mUrlUnAssigned);
             //mUrl = mUrlAssigned;
@@ -137,7 +140,7 @@ public class AdoDdoPending extends Fragment {
 
         } else {
             role = "ado";
-            String mUrlPending = "http://18.224.202.135/api/admin/" + role + "/" + mDdoId + "/pending";
+            String mUrlPending = Globals.admin + role + "/" + mDdoId + "/pending";              //"http://18.224.202.135/api/admin/" + role + "/" + mDdoId + "/pending";
             Log.d("url", "onCreateView: pending" + mUrlPending);
             getData(mUrlPending); //just passed true and Set it accordingly in the function called
             //mUrl = mUrlPending;
@@ -595,5 +598,8 @@ public class AdoDdoPending extends Fragment {
         });
 
     }
+
+
+
 
 }
