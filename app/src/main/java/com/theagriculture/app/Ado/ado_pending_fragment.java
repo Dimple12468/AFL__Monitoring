@@ -34,6 +34,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.theagriculture.app.Admin.SectionAdapter;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -59,7 +60,7 @@ public class ado_pending_fragment extends Fragment {
     private ArrayList<String> longitude;
     private ArrayList<String> latitude;
     private ArrayList<String> idList;
-    private String url = "http://18.224.202.135/api/locations/ado/pending";
+    private String url = "http://api.theagriculture.tk/api/locations/ado/pending";
     private String nextUrl;
     private boolean isNextBusy = false;
     View view;
@@ -129,21 +130,6 @@ public class ado_pending_fragment extends Fragment {
 
         });
 
-
-        // MenuItemCompat.setOn
-        /*searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                //searchItem_filter.setVisible(false);
-               // if (getSupportActionBar().setDisplayHomeAsUpEnabled(true))
-
-
-                searchItem_filter.setVisible(false);
-                dialog.invalidateOptionsMenu();
-                return false;
-            }
-        });*/
-
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -191,6 +177,8 @@ public class ado_pending_fragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
          */
+
+        /*ye theek hai
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -201,12 +189,19 @@ public class ado_pending_fragment extends Fragment {
         adoListAdapter = new SectionAdapter_ado(getActivity(),sections);
         recyclerView.setAdapter(adoListAdapter);
         adoListAdapter.notifyDataSetChanged();
-
-
         getData(url);
 
+         */
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration divider = new DividerItemDecoration(getActivity(), linearLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(divider);
 
-
+        /////////////////////////////
+        getData(url);
+        adoListAdapter = new SectionAdapter_ado(getActivity(),sections);
+        recyclerView.setAdapter(adoListAdapter);
+        adoListAdapter.notifyDataSetChanged();
 
 
         return view;
@@ -334,13 +329,13 @@ public class ado_pending_fragment extends Fragment {
                             }
                             sections.add(new Section_ado(predate,mDid, mDlocation_name, mDlocation_address,mlatitude,mlongitude,true,false));
                             //adoListAdapter.mshowshimmer = false;
-                            adoListAdapter.notifyDataSetChanged();
+                            //adoListAdapter.notifyDataSetChanged();
                             isNextBusy = false;
                             spinner.setVisibility(View.GONE);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getActivity(),"An exception occured",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(),"An exception occurred",Toast.LENGTH_LONG).show();
                             spinner.setVisibility(View.GONE);
                             //Fragment fragment = getFragmentManager().findFragmentById(R.id.rootView);
                             //fragment.getView().setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));

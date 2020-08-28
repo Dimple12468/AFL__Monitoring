@@ -204,6 +204,7 @@ public class ado_complete_fragment extends Fragment {
         getData(url);
 
          */
+        /*
         adoListAdapter = new SectionAdapter_ado(getActivity(),sections);
         getData(url);
         linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -218,6 +219,19 @@ public class ado_complete_fragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         adoListAdapter.notifyDataSetChanged();
         //adoListAdapter.notifyDataSetChanged();
+
+         */
+
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration divider = new DividerItemDecoration(getActivity(), linearLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(divider);
+
+        /////////////////////////////
+        getData(url);
+        adoListAdapter = new SectionAdapter_ado(getActivity(),sections);
+        recyclerView.setAdapter(adoListAdapter);
+        adoListAdapter.notifyDataSetChanged();
 
         //getData(url);
         /*
