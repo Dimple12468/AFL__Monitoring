@@ -18,11 +18,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.theagriculture.app.R;
 
 import java.util.ArrayList;
@@ -59,8 +61,8 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
     int id;
 
     //for drawer layout
-    //private DrawerLayout mDrawer;
-    //private NavigationView nvDrawer;
+    private DrawerLayout mDrawer;
+    private NavigationView nvDrawer;
 
     private int fragment_id;
     Fragment fragment1;
@@ -113,10 +115,10 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_artboard_1);*/
 
-/*        mDrawer = findViewById(R.id.drawer_view);
+        mDrawer = findViewById(R.id.drawer_view);
         nvDrawer = findViewById(R.id.navigation_view);
 
-        View header = nvDrawer.getHeaderView(0);
+/*      View header = nvDrawer.getHeaderView(0);
         TextView textUsername = header.findViewById(R.id.name);
         TextView textUser = header.findViewById(R.id.type_of_user);
         SharedPreferences preferences = getSharedPreferences("tokenFile",Context.MODE_PRIVATE);

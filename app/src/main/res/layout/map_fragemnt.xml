@@ -4,12 +4,22 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <include
+        layout="@layout/app_bar_admin"
+        android:id="@+id/map_dda_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <fragment
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/map"
         tools:context=".MapsActivity"
+        android:layout_below="@id/map_dda_toolbar"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 
     <androidx.cardview.widget.CardView

@@ -61,8 +61,9 @@ public class AdoActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private BottomNavigationView navigation;
     FrameLayout frameLayout;
-    //private DrawerLayout mDrawer;
-    //private NavigationView nvDrawer;
+    ////////
+    private DrawerLayout mDrawer;
+    private NavigationView nvDrawer;
 
     private ado_pending_fragment ado_pending_fragment;
     //map_fragemnt map_fragemnt;
@@ -75,10 +76,10 @@ public class AdoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ado);
         //navigationView = findViewById(R.id.navigation_view_ado);
         frameLayout = findViewById(R.id.frameLayout_ado);
-        navigation = findViewById(R.id.navigation_ado);
-        // for Drawer layout
-        //mDrawer = findViewById(R.id.drawer_view_ado);
-        //nvDrawer = findViewById(R.id.navigation_view_ado);
+        navigation = findViewById(R.id.navigation_cmn);
+        //////////////// for Drawer layout
+        mDrawer = findViewById(R.id.drawer_view_cmn);
+        nvDrawer = findViewById(R.id.navigation_view_cmn);
 
 
 
@@ -112,9 +113,10 @@ public class AdoActivity extends AppCompatActivity {
         String typeofuser = preferences.getString("typeOfUser","");
         String username = preferences.getString("Name","");
 
+
+        ////////////////////Defining the drawer layout
+        ///////////////get the header of drawer layout and set user name and type
         /*
-        //Defining the drawer layout
-        //get the header of drawer layout and set user name and type
         View header = nvDrawer.getHeaderView(0);
         TextView textUsername = header.findViewById(R.id.name);
         TextView textUser = header.findViewById(R.id.type_of_user);
@@ -166,11 +168,14 @@ public class AdoActivity extends AppCompatActivity {
                 return false;
             }
         });
-        */
+
+         */
+
 
         //if all permissions granted then initilize pending fragment and set navigation items
         if(getPermission()) {
             //InitializeFragment(map_fragemnt);
+            //nvDrawer.setVisibility(View.VISIBLE);
             InitializeFragment(ado_map_fragment);
             navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -179,12 +184,15 @@ public class AdoActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
                         case R.id.home_ado:
                             //InitializeFragment(map_fragemnt);
+                            //nvDrawer.setVisibility(View.VISIBLE);
                             InitializeFragment(ado_map_fragment);
                             return true;
                         case R.id.pending_ado:
+                            //nvDrawer.setVisibility(View.GONE);
                             InitializeFragment(ado_pending_fragment);
                             return true;
                         case R.id.completed_ado:
+                            //nvDrawer.setVisibility(View.GONE);
                             InitializeFragment(ado_complete_fragment);
                             return true;
                         default:

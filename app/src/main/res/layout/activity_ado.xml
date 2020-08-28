@@ -33,7 +33,7 @@
     xmlns:tool="http://schemas.android.com/tools"
     android:fitsSystemWindows="true"
     tool:context=".Ado.AdoActivity"
-    android:id="@+id/drawer_view_ado">
+    android:id="@+id/drawer_view_cmn">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,7 +48,7 @@
             android:id="@+id/frameLayout_ado"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/navigation_ado"
+            app:layout_constraintBottom_toTopOf="@+id/navigation_cmn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -59,7 +59,7 @@
         </FrameLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/navigation_ado"
+            android:id="@+id/navigation_cmn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
@@ -76,13 +76,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <!--com.google.android.material.navigation.NavigationView
-    android:id="@+id/navigation_view_ado"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="start"
-    app:menu="@menu/admin_drawer"
-    app:headerLayout="@layout/header_layout"
-    app:itemTextColor="@color/black"/-->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view_cmn"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:visibility="visible"
+        app:headerLayout="@layout/header_layout"
+        app:itemTextColor="@color/black"
+        app:menu="@menu/admin_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

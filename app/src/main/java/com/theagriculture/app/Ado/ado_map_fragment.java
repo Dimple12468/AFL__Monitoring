@@ -1,5 +1,6 @@
 package com.theagriculture.app.Ado;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -27,11 +29,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.theagriculture.app.R;
 import com.theagriculture.app.login_activity;
 
 import static android.content.Context.MODE_PRIVATE;
+import static androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
+import static androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_UNLOCKED;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,8 +54,7 @@ public class ado_map_fragment extends Fragment implements OnMapReadyCallback {//
     private double latitude;
     private DrawerLayout mDrawer;
     private NavigationView nvDrawer;
-
-
+    BottomNavigationView navBar;
 
     public ado_map_fragment() {
         // Required empty public constructor
@@ -84,20 +90,58 @@ public class ado_map_fragment extends Fragment implements OnMapReadyCallback {//
         Toolbar toolbar = mView.findViewById(R.id.app__bar_ado_home);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
-        //display hamburger icon
-        final ActionBar actionBar =((AppCompatActivity) getActivity()).getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_artboard_1);
-        setHasOptionsMenu(true);//tomake hamburger responsive
+        ////////finding bottom nav and drawer from main activity
+        navBar = getActivity().findViewById(R.id.navigation_cmn);
+        mDrawer = getActivity().findViewById(R.id.drawer_view_cmn);
+        nvDrawer = getActivity().findViewById(R.id.navigation_view_cmn);
+        mDrawer.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED);
 
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
+                getActivity(),mDrawer,R.string.navigation_drawer_open,R.string.navigation_drawer_close)
+        {
+            @Override
+            public void onDrawerClosed(View drawerView)
+            {
+                //Toast.makeText(getActivity(),"Drwaer closed",Toast.LENGTH_SHORT).show();
+                //super.onDrawerClosed(drawerView);
+                mDrawer.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView)
+            {
+                //Toast.makeText(getActivity(),"Drawer open",Toast.LENGTH_SHORT).show();
+                //super.onDrawerOpened(drawerView);
+                mDrawer.setDrawerLockMode(LOCK_MODE_UNLOCKED);
+            }
+        };
+        mDrawer.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
+
+
+
+         /*
         mDrawer = mView.findViewById(R.id.drawer_view_ado);
         nvDrawer = mView.findViewById(R.id.navigation_view_ado);
 
+          */
+
+        //display hamburger icon
+        final ActionBar actionBar =((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_artboard_1);
+        setHasOptionsMenu(true);//tomake hamburger responsive//onOptionsItemSelected() function is defined later for the function of hamburger icon
+
+
+        //get user name and type from shared prefernces file
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", MODE_PRIVATE);
         String typeofuser = preferences.getString("typeOfUser","");
         String username = preferences.getString("Name","");
 
+
         View header = nvDrawer.getHeaderView(0);
+        //nvDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         TextView textUsername = header.findViewById(R.id.name);
         TextView textUser = header.findViewById(R.id.type_of_user);
         textUsername.setText(username);
@@ -106,6 +150,7 @@ public class ado_map_fragment extends Fragment implements OnMapReadyCallback {//
         nvDrawer.setBackgroundColor(getResources().getColor(R.color.white));
 
         //set the items in drawer layout
+
         nvDrawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -147,65 +192,32 @@ public class ado_map_fragment extends Fragment implements OnMapReadyCallback {//
                         mDrawer.closeDrawers();
                         return true;
 
-
                 }
                 return false;
             }
         });
 
 
-
-        //Toast.makeText(getActivity(),lat_string + " and "+long_string,Toast.LENGTH_LONG).show();
         lat_string = "20.59";
         long_string="78.234";
         longitude = Double.parseDouble(long_string);
         latitude = Double.parseDouble(lat_string);
 
-        /*
-
-        FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.fab_ado);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(mView,"FAB OK HAI",Snackbar.LENGTH_LONG).show();
-            }
-        });
-
-         */
         return mView;
     }
-
+    //to open drwaer when hamburger is clicked
     public boolean onOptionsItemSelected(MenuItem item) {
         //Intent intent;
         switch (item.getItemId()) {
 
             case android.R.id.home:
-                //Toast.makeText(getActivity(),"You clicked",Toast.LENGTH_LONG).show();
                 mDrawer.openDrawer(GravityCompat.START);
+                //Toast.makeText(getActivity(),"Drawer open",Toast.LENGTH_LONG).show();
                 break;
 
         }
         return true;
     }
-
-
-    /*did not work
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()){
-            case android.R.id.home:
-                //Toast.makeText(this, "this is for hamburger menu", Toast.LENGTH_SHORT).show();
-                mDrawer.openDrawer(GravityCompat.START);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-     */
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
