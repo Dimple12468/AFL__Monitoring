@@ -11,10 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -74,6 +77,7 @@ public class map_fragemnt_dda extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.map_fragemnt, container, false);
+
         mapFragment = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map));
         statsCardview = view.findViewById(R.id.stats_cardview);
         statsCardview.setVisibility(View.GONE);
@@ -83,11 +87,24 @@ public class map_fragemnt_dda extends Fragment {
         longitude = new ArrayList<>();
         villname = new ArrayList<>();
 //        pbar = view.findViewById(R.id.pbar);
+
+        Toolbar toolbar = view.findViewById(R.id.map_dda_toolbar);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //for title heading
+        TextView title_top = view.findViewById(R.id.app_name);
+        if (view.isEnabled()){
+            title_top.setText("Home");
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
+
         dialog = new SpotsDialog.Builder().setContext(getActivity()).setMessage("Loading locations...")
                 .setTheme(R.style.CustomDialog)
                 .setCancelable(false).build();
         dialog.show();
-
 
         next = url_pending;
         getMarkers(next);

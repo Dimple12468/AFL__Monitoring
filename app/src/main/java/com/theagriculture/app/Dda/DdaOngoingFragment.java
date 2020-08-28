@@ -7,9 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -80,6 +83,19 @@ public class DdaOngoingFragment extends Fragment {
                 getFragmentManager().beginTransaction().detach(DdaOngoingFragment.this).attach(DdaOngoingFragment.this).commit();
             }
         });
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.ongoing_dda_toolbar);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //for title heading
+        TextView title_top = view.findViewById(R.id.app_name);
+        if (view.isEnabled()){
+            title_top.setText("Ongoing");
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
 
         review = view.findViewById(R.id.recyclerViewongoing);
 

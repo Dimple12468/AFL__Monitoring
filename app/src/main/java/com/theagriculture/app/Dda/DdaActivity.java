@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.theagriculture.app.Admin.EditActivity;
 import com.theagriculture.app.R;
@@ -48,22 +49,26 @@ public class DdaActivity extends AppCompatActivity implements NavigationView.OnN
     private final String READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE;
     private final String WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     private final int RESULT_CODE = 786;
+    BottomNavigationView b_nav_in_dda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dda);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        Toolbar toolbar = findViewById(R.id.home_dda_toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        b_nav_in_dda = findViewById(R.id.b_nav_dda);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_dda);
         navigationView = findViewById(R.id.navofdda);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+//        drawer.addDrawerListener(toggle);
+//        toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         boolean isAssignedLocation = false;
         try {
@@ -93,10 +98,44 @@ public class DdaActivity extends AppCompatActivity implements NavigationView.OnN
         if (getPermission()) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new map_fragemnt_dda()).commit();
             navigationView.getMenu().getItem(0).setChecked(true);
-            getSupportActionBar().setTitle("HOME");
+            //getSupportActionBar().setTitle("HOME");
         }
-    }
 
+        b_nav_in_dda.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.dda_home:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, new map_fragemnt_dda()).commit();
+//                        navigationView.getMenu().getItem(0).setChecked(true);
+//                        Toast.makeText(DdaActivity.this, "Home clicked", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.dda_pending:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container,new DdaPendingFragment()).commit();
+//                        navigationView.setCheckedItem(R.id.pending_item);
+//                        Toast.makeText(DdaActivity.this, "pending clicked", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.dda_ongoing:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container,new DdaOngoingFragment()).commit();
+//                        navigationView.setCheckedItem(R.id.ongoing_item);
+//                        Toast.makeText(DdaActivity.this, "ongoing clicked", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.dda_completed:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container,new DdaCompletedFragment()).commit();
+//                        navigationView.setCheckedItem(R.id.completed_item);
+//                        Toast.makeText(DdaActivity.this, "completed clicked", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.dda_user:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container,new adounderddo()).commit();
+//                        navigationView.getMenu().getItem(1).setChecked(true);
+//                        Toast.makeText(DdaActivity.this, "user clicked", Toast.LENGTH_SHORT).show();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+    }
 
 
     @Override
@@ -141,52 +180,52 @@ public class DdaActivity extends AppCompatActivity implements NavigationView.OnN
         return false;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main,menu);
-
-        // Associate searchable configuration with the SearchView
-//        SearchManager searchManager =
-//                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//        SearchView searchView =
-//                (SearchView) menu.findItem(R.id.search).getActionView();
-//        searchView.setSearchableInfo(
-//                searchManager.getSearchableInfo(getComponentName()));
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
-            SharedPreferences.Editor editor = getSharedPreferences("tokenFile", MODE_PRIVATE).edit();
-            editor.clear();
-            editor.commit();
-            Intent intent = new Intent(DdaActivity.this, login_activity.class);
-            startActivity(intent);
-            finish();
-            return true;
-        }
-
-        if (id == R.id.edit_profile){
-
-
-            SharedPreferences preferences = this.getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-            String pk= preferences.getString("pk","");
-            Intent intent = new Intent(this, EditActivity.class);
-            intent.putExtra("id",pk);
-            startActivity(intent);
-
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.main,menu);
+//
+//        // Associate searchable configuration with the SearchView
+////        SearchManager searchManager =
+////                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+////        SearchView searchView =
+////                (SearchView) menu.findItem(R.id.search).getActionView();
+////        searchView.setSearchableInfo(
+////                searchManager.getSearchableInfo(getComponentName()));
+//
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_logout) {
+//            SharedPreferences.Editor editor = getSharedPreferences("tokenFile", MODE_PRIVATE).edit();
+//            editor.clear();
+//            editor.commit();
+//            Intent intent = new Intent(DdaActivity.this, login_activity.class);
+//            startActivity(intent);
+//            finish();
+//            return true;
+//        }
+//
+//        if (id == R.id.edit_profile){
+//
+//
+//            SharedPreferences preferences = this.getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
+//            String pk= preferences.getString("pk","");
+//            Intent intent = new Intent(this, EditActivity.class);
+//            intent.putExtra("id",pk);
+//            startActivity(intent);
+//
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public void onBackPressed() {

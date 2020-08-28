@@ -12,13 +12,37 @@
     android:id="@+id/drawer_layout_dda"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    android:fitsSystemWindows="true">
+<!--    tools:openDrawer="start">-->
 
-    <include
-        layout="@layout/app_bar_main"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/app_bar_main"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/b_nav_dda"/>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/b_nav_dda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/dda_bottom_nav"
+            android:background="@color/white"
+            android:isScrollContainer="false"
+            app:itemIconTint="@drawable/tab_color"
+            app:itemTextColor="@drawable/tab_color"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navofdda"

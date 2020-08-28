@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toolbar;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -23,6 +25,7 @@ public class DdaPendingFragment extends Fragment {
     ViewPager page;
     private static final String TAG = "DdaPendingFragment";
     private boolean isRefresh;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,6 +35,20 @@ public class DdaPendingFragment extends Fragment {
         assigned = view.findViewById(R.id.assigned);
         notassigned = view.findViewById(R.id.notassigned);
         page = view.findViewById(R.id.viewPage);
+
+        androidx.appcompat.widget.Toolbar toolbar =  view.findViewById(R.id.pending_dda_toolbar);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //for title heading
+        TextView title_top = view.findViewById(R.id.app_name);
+        if (view.isEnabled()){
+            title_top.setText("Pending");
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
+
         mpageAdapter = new TabPageDdaAdapter(getChildFragmentManager(),mtablayout.getTabCount());
         page.setAdapter(mpageAdapter);
 

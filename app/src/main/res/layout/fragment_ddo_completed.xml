@@ -20,12 +20,13 @@
             <ProgressBar
                 android:id="@+id/Ddo_completed_loading"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:indeterminateDrawable="@drawable/progress"
+                android:indeterminateTint="@color/app_color"
                 android:layout_marginBottom="8dp"
                 android:visibility="gone" />
+<!--                            android:indeterminateDrawable="@drawable/progress"-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -35,11 +36,12 @@
             <ProgressBar
                 android:id="@+id/Ddo_completed_loading_json"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:indeterminateDrawable="@drawable/progress"
+                android:indeterminateTint="@color/app_color"
                 android:visibility="visible" />
+<!--                            android:indeterminateDrawable="@drawable/progress"-->
         </RelativeLayout>
 
     </FrameLayout>

@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,6 +63,20 @@ public class adounderddo extends Fragment {
         adoIds = new ArrayList<>();
         villagesMap = new ArrayList<>();
         adoPhones = new ArrayList<>();
+
+        Toolbar toolbar = view.findViewById(R.id.ado_dda_toolbar);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //for title heading
+        TextView title_top = view.findViewById(R.id.app_name);
+        if (view.isEnabled()){
+            title_top.setText("ADO");
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
+
         recyclerView = view.findViewById(R.id.recyclerViewadounderddo);
         progressBar = view.findViewById(R.id.ado_list_loading);
         adapter = new adounderddoadapter(getContext(), ado_names, adoIds, villagesMap, adoPhones);

@@ -7,9 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +27,8 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.theagriculture.app.Admin.Section;
+import com.theagriculture.app.Admin.SectionAdapter;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -43,6 +48,8 @@ public class assignedfragment extends Fragment {
     private ArrayList<String> mAdoIds;
     private ArrayList<String> mDate;
     private DdapendingassignedAdapter ddaassignedAdapter;
+    ArrayList<Section> sections = new ArrayList<>();
+    private SectionAdapter recyclerViewAdater;
     private String urlget = "http://18.224.202.135/api/locations/dda/assigned";
     private String token;
     private String villagename;
@@ -69,24 +76,53 @@ public class assignedfragment extends Fragment {
         mDate = new ArrayList<>();
         isReferesh = false;
         swipeRefreshLayout = view.findViewById(R.id.refreshpull_dda);
+        RecyclerView review = view.findViewById(R.id.recyclerViewongoing);
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.ongoing_dda_toolbar);
+        toolbar.setVisibility(View.GONE);
+
+        review.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int topRowVerticalPosition =
+                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+                //swipeRefreshLayout.setRefreshing(false);
+
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getFragmentManager().beginTransaction().detach(assignedfragment.this).attach(assignedfragment.this).commit();
             }
         });
-        ddaassignedAdapter = new DdapendingassignedAdapter(getActivity(), Id, Name, Address, mAdoIds,mDate);
+
+        recyclerViewAdater = new SectionAdapter(getActivity(), sections,true);
+        review.setAdapter(recyclerViewAdater);
+//        recyclerViewAdater.notifyDataSetChanged();
+
+
+//        ddaassignedAdapter = new DdapendingassignedAdapter(getActivity(), Id, Name, Address, mAdoIds,mDate);
+//        review.setAdapter(ddaassignedAdapter);
+
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        RecyclerView review = view.findViewById(R.id.recyclerViewongoing);
-        review.setAdapter(ddaassignedAdapter);
         review.setLayoutManager(layoutManager);
         DividerItemDecoration divider = new DividerItemDecoration(review.getContext(), layoutManager.getOrientation());
         review.addItemDecoration(divider);
+
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         token = preferences.getString("token","");
         Log.d(TAG, "onCreateView: "+token);
 
         Log.d(TAG, "onCreateView: inflated fragment_ongoing");
+
         final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, urlget, null, new Response.Listener<JSONObject>() {
@@ -96,14 +132,25 @@ public class assignedfragment extends Fragment {
                     JSONObject jsonObject = new JSONObject(String.valueOf(response));
                     JSONArray jsonArray = jsonObject.getJSONArray("results");
                     nextUrl = jsonObject.getString("next");
+//                    String date = jsonObject.getString("created_on");
                     length_of_arrray = jsonArray.length();
                     if(length_of_arrray==0){
-                        ddaassignedAdapter.showassignedshimmer = false;
-                        ddaassignedAdapter.notifyDataSetChanged();
+//                        ddaassignedAdapter.showassignedshimmer = false;
+//                        ddaassignedAdapter.notifyDataSetChanged();
+                        recyclerViewAdater.notifyDataSetChanged();
+                        //todo image
                         view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
                     }
                     for(int i=0;i<jsonArray.length();i++){
+//                        sections = new ArrayList<>();
+                        Id = new ArrayList<String>();
+                        Name = new ArrayList<String>();
+                        Address = new ArrayList<String>();
+                        mAdoIds = new ArrayList<>();
+//                        mDate = new ArrayList<>();
                         JSONObject singleObject = jsonArray.getJSONObject(i);
+                        String date = singleObject.getString("created_on");
+                        System.out.println(date);
                         Id.add(singleObject.getString("id"));
                         mDate.add(singleObject.getString("acq_date"));
                         villagename = singleObject.getString("village_name");
@@ -116,9 +163,16 @@ public class assignedfragment extends Fragment {
                         Name.add(adoObject.getString("name"));
                         String adoId = adoObject.getString("id");
                         mAdoIds.add(adoId);
+                        sections.add(new Section(date,Id,villagename,blockname,district,state,Address,Name,mAdoIds,true));
+//                        recyclerViewAdater.notifyDataSetChanged();
+//                        System.out.println("see here for size"+sections.size());
+//                        System.out.println(sections);
+
                     }
-                    ddaassignedAdapter.showassignedshimmer = false;
-                    ddaassignedAdapter.notifyDataSetChanged();
+//                    ddaassignedAdapter.showassignedshimmer = false;
+//                    ddaassignedAdapter.notifyDataSetChanged();
+                    recyclerViewAdater.notifyDataSetChanged();
+
                 }catch (JSONException e){
                     Log.e(TAG, "onResponse: " + e.getLocalizedMessage());
                     e.printStackTrace();
@@ -214,12 +268,21 @@ public class assignedfragment extends Fragment {
                     nextUrl = jsonObject.getString("next");
                     length_of_arrray=jsonArray.length();
                     if(length_of_arrray==0){
-                        ddaassignedAdapter.showassignedshimmer = false;
-                        ddaassignedAdapter.notifyDataSetChanged();
+//                        ddaassignedAdapter.showassignedshimmer = false;
+//                        ddaassignedAdapter.notifyDataSetChanged();
+                        recyclerViewAdater.notifyDataSetChanged();
+                        //todo image
                         view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
                     }
                     for (int i = 0; i < jsonArray.length(); i++) {
+//                        sections = new ArrayList<>();
+                        Id = new ArrayList<String>();
+                        Name = new ArrayList<String>();
+                        Address = new ArrayList<String>();
+                        mAdoIds = new ArrayList<>();
+//                        mDate = new ArrayList<>();
                         JSONObject singleObject = jsonArray.getJSONObject(i);
+                        String date = singleObject.getString("created_on");
                         mDate.add(singleObject.getString("acq_date"));
                         Id.add(singleObject.getString("id"));
                         villagename = singleObject.getString("village_name");
@@ -232,10 +295,16 @@ public class assignedfragment extends Fragment {
                         Name.add(adoObject.getString("name"));
                         String adoId = adoObject.getString("id");
                         mAdoIds.add(adoId);
+                        sections.add(new Section(date,Id,villagename,blockname,district,state,Address,Name,mAdoIds,true));
+//                        recyclerViewAdater.notifyDataSetChanged();
+//                        System.out.println(sections.size());
+//                        System.out.println(sections);
                     }
                     isNextBusy = false;
-                    ddaassignedAdapter.showassignedshimmer = false;
-                    ddaassignedAdapter.notifyDataSetChanged();
+//                    ddaassignedAdapter.showassignedshimmer = false;
+//                    ddaassignedAdapter.notifyDataSetChanged();
+                    recyclerViewAdater.notifyDataSetChanged();
+
                 } catch (JSONException e) {
                     Log.e(TAG, "onResponse: " + e.getLocalizedMessage());
                     e.printStackTrace();
