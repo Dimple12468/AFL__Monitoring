@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +25,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.theagriculture.app.Admin.AdoDdoActivity.nothing_toshow_fragment;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -41,7 +43,7 @@ public class notassignedfragment extends Fragment {
     private ArrayList<String> Address;
     private ArrayList<String> mDates;
     private DdapendingUnassignedAdapter ddapendingUnassignedAdapter;
-    private String urlget = "http://18.224.202.135/api/locations/dda/unassigned";
+    private String urlget = "http://api.theagriculture.tk/api/locations/dda/unassigned";
     private String villagename;
     private String blockname;
     private String district;
@@ -102,7 +104,10 @@ public class notassignedfragment extends Fragment {
                     if(length_of_array==0){
                         ddapendingUnassignedAdapter.showunassignedshimmer = false;
                         ddapendingUnassignedAdapter.notifyDataSetChanged();
-                        view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
+//                        view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
+                        nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+                        AppCompatActivity activity = (AppCompatActivity)getActivity();
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.unassigned_dda, no_data).commit();
                     }
                     for(int i=0;i<jsonArray.length();i++){
                         JSONObject c = jsonArray.getJSONObject(i);

@@ -2,12 +2,17 @@ package com.theagriculture.app.Dda;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -26,6 +31,61 @@ public class DdaPendingFragment extends Fragment {
     private static final String TAG = "DdaPendingFragment";
     private boolean isRefresh;
 
+    MenuItem searchItem;
+    MenuItem searchItem_filter;
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_top_bar,menu);
+        searchItem = menu.findItem(R.id.search_in_title);
+        searchItem_filter = menu.findItem(R.id.filter);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Search something");
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                searchItem_filter.setVisible(true);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                searchItem_filter.setVisible(false);
+                return true;
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // perform query here
+                searchView.clearFocus();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+               /* if (newText.equals("")) {
+                    //searchView.setQuery("", false);
+                    newText = newText.trim();
+                }
+                adapter.getFilter().filter(newText);*/
+                return true;
+            }
+        });
+        searchItem_filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+//                alert_filter_dialog();
+                return true;
+            }
+
+
+        });
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,6 +100,7 @@ public class DdaPendingFragment extends Fragment {
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        setHasOptionsMenu(true);
 
         //for title heading
         TextView title_top = view.findViewById(R.id.app_name);

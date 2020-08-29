@@ -88,7 +88,17 @@ public class ado_map_fragment extends Fragment implements OnMapReadyCallback {//
 
         //display app bar
         Toolbar toolbar = mView.findViewById(R.id.app__bar_ado_home);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+//        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        TextView title_top = mView.findViewById(R.id.app_name);
+        if (mView.isEnabled()){
+            title_top.setText("Home");
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
 
         ////////finding bottom nav and drawer from main activity
         navBar = getActivity().findViewById(R.id.navigation_cmn);

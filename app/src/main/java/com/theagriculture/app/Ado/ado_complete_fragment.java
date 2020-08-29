@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -62,7 +63,7 @@ public class ado_complete_fragment extends Fragment {
     private SectionAdapter_ado adoListAdapter;
     private ArrayList<String> longitude;
     private ArrayList<String> latitude;
-    private String url = "http://18.224.202.135/api/locations/ado/completed";
+    private String url = "http://api.theagriculture.tk/api/locations/ado/completed";
     private String nextUrl;
     private boolean isNextBusy = false;
     private View view;
@@ -169,7 +170,17 @@ public class ado_complete_fragment extends Fragment {
         //add data in the array with load data
 
         Toolbar toolbar = view.findViewById(R.id.app__bar_ado_completed);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+//        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        TextView title_top = view.findViewById(R.id.app_name);
+        if (view.isEnabled()){
+            title_top.setText("Completed");
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
 
         final ActionBar actionBar =((AppCompatActivity) getActivity()).getSupportActionBar();
         //actionBar.setDisplayHomeAsUpEnabled(true);

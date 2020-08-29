@@ -27,6 +27,8 @@ public class SectionAdapter_ado extends RecyclerView.Adapter<SectionAdapter_ado.
         sectionList = sections;
         this.context = context;
     }
+
+
     @NonNull
     @Override
     public SectionAdapter_ado.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

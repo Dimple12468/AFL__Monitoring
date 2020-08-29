@@ -9,9 +9,16 @@
 
     <!--android:layout_marginTop="?attr/actionBarSize"-->
 
+<!--    <include-->
+<!--        layout="@layout/app_bar_completed"-->
+<!--        android:id="@+id/app__bar_ado_completed"/>-->
+
     <include
-        layout="@layout/app_bar_completed"
-        android:id="@+id/app__bar_ado_completed"/>
+        layout="@layout/app_bar_admin"
+        android:id="@+id/app__bar_ado_completed"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshpull8"

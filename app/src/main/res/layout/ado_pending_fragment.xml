@@ -9,10 +9,16 @@
 
     <!--android:layout_marginTop="?attr/actionBarSize"-->
 
-    <include
-        layout="@layout/app_bar_pending"
-        android:id="@+id/app__bar_ado_pending"/>
+<!--    <include-->
+<!--        layout="@layout/app_bar_pending"-->
+<!--        android:id="@+id/app__bar_ado_pending"/>-->
 
+    <include
+        layout="@layout/app_bar_admin"
+        android:id="@+id/app__bar_ado_pending"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

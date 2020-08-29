@@ -17,8 +17,6 @@ public class Globals {
     public static String ongoingList = serverURL + "api/locationsDatewise/ongoing";
     public static String completedList = serverURL + "api/locationsDatewise/completed";
 
-
-
     public static String User = serverURL + "api/user/";
     public static String report_ado = serverURL + "api/report-ado/";
 
@@ -28,10 +26,14 @@ public class Globals {
 
     public static String usersList = serverURL + "api/users-list/dda/";
 
+    //ADO user
+    public static String adoPending = serverURL + "api/locations/ado/pending";
 
-
-
-
+    //DDA user
+    public static String assignedLocationsDDA = serverURL + "api/locations/dda/assigned";
+    public static String unassignedLocationsDDA = serverURL + "api/locations/dda/unassigned";
+    public static String ddaOngoing = serverURL + "api/locations/dda/ongoing";
+    public static String ddaCompleted = serverURL + "api/locations/dda/completed";
 
 
 }

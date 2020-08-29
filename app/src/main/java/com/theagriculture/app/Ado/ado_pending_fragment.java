@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.theagriculture.app.Admin.SectionAdapter;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -60,7 +62,7 @@ public class ado_pending_fragment extends Fragment {
     private ArrayList<String> longitude;
     private ArrayList<String> latitude;
     private ArrayList<String> idList;
-    private String url = "http://api.theagriculture.tk/api/locations/ado/pending";
+    private String url = Globals.adoPending;                        //"http://api.theagriculture.tk/api/locations/ado/pending";
     private String nextUrl;
     private boolean isNextBusy = false;
     View view;
@@ -146,7 +148,17 @@ public class ado_pending_fragment extends Fragment {
 
 
         Toolbar toolbar = view.findViewById(R.id.app__bar_ado_pending);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+//        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        TextView title_top = view.findViewById(R.id.app_name);
+        if (view.isEnabled()){
+            title_top.setText("Pending");
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
 
         final ActionBar actionBar =((AppCompatActivity) getActivity()).getSupportActionBar();
         //actionBar.setDisplayHomeAsUpEnabled(true);

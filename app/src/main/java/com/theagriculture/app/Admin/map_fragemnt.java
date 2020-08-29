@@ -14,6 +14,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
@@ -28,6 +29,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -130,6 +132,9 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
     private TextView ongoingView;
     private TextView completedView;
 
+    private CardView statsCardview;
+
+
     //bottom_nav bottom_nav_map;
 
     public map_fragemnt() {
@@ -179,6 +184,10 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
         mapFragment_admin = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_admin));
         setHasOptionsMenu(true);
        // getContext().getTheme().applyStyle(R.style.AppTheme, true);
+
+        statsCardview = mView.findViewById(R.id.stats_cardview_admin);
+        statsCardview.setVisibility(View.GONE);
+//        Button fab = mView.findViewById(R.id.fab);
 
         url_unassigned = Globals.map_Unassigned_Admin;
         url_assigned = Globals.map_Assigned_Admin;

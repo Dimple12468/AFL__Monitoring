@@ -13,9 +13,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+<!--        <include-->
+<!--            layout="@layout/app_bar_home"-->
+<!--            android:id="@+id/app__bar_ado_home"/>-->
+
         <include
-            layout="@layout/app_bar_home"
-            android:id="@+id/app__bar_ado_home"/>
+            layout="@layout/app_bar_admin"
+            android:id="@+id/app__bar_ado_home"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/map_ado"
