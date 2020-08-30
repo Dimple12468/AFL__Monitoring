@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 //import android.widget.Toolbar;
@@ -22,6 +23,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -59,7 +61,7 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
     //private PrivacyPolicy privacyPolicy;
     TextView title_top;
     int id;
-
+    private ViewPager2 viewPager2;
     //for drawer layout
     private DrawerLayout mDrawer;
     private NavigationView nvDrawer;
@@ -79,7 +81,7 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);*/
-
+        viewPager2 = findViewById(R.id.viewpager2);
         navigation = findViewById(R.id.navigation);
         frameLayout = findViewById(R.id.frameLayout);
         //title_top = findViewById(R.id.app_name);
@@ -188,12 +190,13 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
             }
         });*/
 
-
+        viewPager2.setOffscreenPageLimit(5);
+        viewPager2.setUserInputEnabled(false);
         // ask for permissions and intializes fragment according to
         // items in bottom navigation clicked
        if(getPermission()) {
-           InitializeFragment(mapFragmnt);
-
+//           InitializeFragment(mapFragmnt);
+           viewPager2.setCurrentItem(0,false);
             //bottom_nav.bottom_navigation_admin();
             navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -214,25 +217,30 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
                         case R.id.adminshome:
                            // ((DrawerLocker) mapFragmnt).setDrawerEnabled(true);
                            // title_top.setText("AFL Monitoring");
-                            InitializeFragment(mapFragmnt);
+//                            InitializeFragment(mapFragmnt);
+                            viewPager2.setCurrentItem(0,false);
                             return true;
                         case R.id.adminslocation:
                             //((DrawerLocker) locationFragment).setDrawerEnabled(true);
                             //title_top.setText("Locations");
-                            InitializeFragment(locationFragment);
+//                            InitializeFragment(locationFragment);
+                            viewPager2.setCurrentItem(1,false);
                             return true;
                         case R.id.adminsado:
                            // ((DrawerLocker) adoFragment).setDrawerEnabled(false);
                             //title_top.setText("ADO");
-                            InitializeFragment(adoFragment);
+//                            InitializeFragment(adoFragment);
+                            viewPager2.setCurrentItem(2,false);
                             return true;
                         case R.id.adminsdda:
                            // title_top.setText("DDA");
-                            InitializeFragment(ddoFragment);
+//                            InitializeFragment(ddoFragment);
+                            viewPager2.setCurrentItem(3,false);
                             return true;
                         case R.id.adminsdistrict_state:
                            // title_top.setText("District Stats");
-                            InitializeFragment(districtStateFragment);
+//                            InitializeFragment(districtStateFragment);
+                            viewPager2.setCurrentItem(4,false);
                             return true;
                         default:
                            // title_top.setText("AFL Monitoring");
@@ -241,11 +249,52 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
                 }
             });
 
+
+
         }
+
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+
+                switch (position) {
+                    case 0:
+                        navigation.getMenu().findItem(R.id.adminshome).setChecked(true);
+                        break;
+                    case 1:
+                        navigation.getMenu().findItem(R.id.adminslocation).setChecked(true);
+                        break;
+                    case 2:
+                        navigation.getMenu().findItem(R.id.adminsado).setChecked(true);
+                        break;
+                    case 3:
+                        navigation.getMenu().findItem(R.id.adminsdda).setChecked(true);
+                        break;
+                    case 4:
+                        navigation.getMenu().findItem(R.id.adminsdistrict_state).setChecked(true);
+                        break;
+                }
+            }
+        });
+
+        setupViewPager(viewPager2);
 
     }
     //end of onCreate
 
+    private void setupViewPager(ViewPager2 viewPager) {
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
+
+
+        adapter.addFragment(mapFragmnt);
+        adapter.addFragment(locationFragment);
+        adapter.addFragment(adoFragment);
+        adapter.addFragment(ddoFragment);
+        adapter.addFragment(districtStateFragment);
+        viewPager.setAdapter(adapter);
+    }
 
     //function to change fragment
     public void InitializeFragment(Fragment fragment) {

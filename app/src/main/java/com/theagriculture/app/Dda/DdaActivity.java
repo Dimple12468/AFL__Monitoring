@@ -30,10 +30,12 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.theagriculture.app.Admin.EditActivity;
+import com.theagriculture.app.Admin.ViewPagerAdapter;
 import com.theagriculture.app.Ado.ado_map_fragment;
 import com.theagriculture.app.R;
 import com.theagriculture.app.login_activity;
@@ -63,7 +65,7 @@ public class DdaActivity extends AppCompatActivity {
     private DdaOngoingFragment DdaOngoingFragment;
     private DdaCompletedFragment DdaCompletedFragment;
     private adounderddo adounderddo;
-
+    private ViewPager2 viewPager2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class DdaActivity extends AppCompatActivity {
 
         frameLayout = findViewById(R.id.frameLayout_dda);
         navigation = findViewById(R.id.navigation_cmnd);
+        viewPager2 = findViewById(R.id.viewpager2_dda);
 
         ado_map_fragment = new ado_map_fragment();
         map_fragemnt_dda = new map_fragemnt_dda();
@@ -85,38 +88,91 @@ public class DdaActivity extends AppCompatActivity {
         String typeofuser = preferences.getString("typeOfUser", "");
         String username = preferences.getString("Name", "");
 
+        viewPager2.setOffscreenPageLimit(5);
+
         if(getPermission()){
-            InitializeFragment(map_fragemnt_dda);
+//            InitializeFragment(map_fragemnt_dda);
             //InitializeFragment(ado_map_fragment);
+            viewPager2.setCurrentItem(0,false);
             navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                     switch (item.getItemId()) {
                         case R.id.home_dda:
-                            InitializeFragment(map_fragemnt_dda);
+                            viewPager2.setCurrentItem(0,false);
+//                            InitializeFragment(map_fragemnt_dda);
                             //InitializeFragment(map_fragemnt_dda);
                             return true;
                         case R.id.pending_dda:
-                            InitializeFragment(DdaPendingFragment);
+                            viewPager2.setCurrentItem(1,false);
+//                            InitializeFragment(DdaPendingFragment);
                             return true;
                         case R.id.ongoing_dda:
-                            InitializeFragment(DdaOngoingFragment);
+                            viewPager2.setCurrentItem(2,false);
+//                            InitializeFragment(DdaOngoingFragment);
                             return true;
                         case R.id.completed_dda:
-                            InitializeFragment(DdaCompletedFragment);
+                            viewPager2.setCurrentItem(3,false);
+//                            InitializeFragment(DdaCompletedFragment);
                             return true;
                         case R.id.ado_dda:
-                            InitializeFragment(adounderddo);
+                            viewPager2.setCurrentItem(4,false);
+//                            InitializeFragment(adounderddo);
                             return true;
                         default:
                             return false;
                     }
                 }
             });
+
+
+            viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+
+                    switch (position) {
+                        case 0:
+                            navigation.getMenu().findItem(R.id.home_dda).setChecked(true);
+                            break;
+                        case 1:
+                            navigation.getMenu().findItem(R.id.pending_dda).setChecked(true);
+                            break;
+                        case 2:
+                            navigation.getMenu().findItem(R.id.ongoing_dda).setChecked(true);
+                            break;
+                        case 3:
+                            navigation.getMenu().findItem(R.id.completed_dda).setChecked(true);
+                            break;
+                        case 4:
+                            navigation.getMenu().findItem(R.id.ado_dda).setChecked(true);
+                            break;
+                    }
+                }
+            });
+
+            setupViewPager(viewPager2);
+
         }
 
     }
+
+
+    private void setupViewPager(ViewPager2 viewPager) {
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
+
+
+        adapter.addFragment(map_fragemnt_dda);
+        adapter.addFragment(DdaPendingFragment);
+        adapter.addFragment(DdaOngoingFragment);
+        adapter.addFragment(DdaCompletedFragment);
+        adapter.addFragment(adounderddo);
+
+        viewPager.setAdapter(adapter);
+    }
+
     private boolean getPermission() {
         List<String> Permission = new ArrayList<>();
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(), ACCESS_FINE_LOCATION)

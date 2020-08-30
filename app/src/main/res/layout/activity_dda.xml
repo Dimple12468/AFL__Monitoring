@@ -48,6 +48,18 @@
 
         </FrameLayout>
 
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager2_dda"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/navigation_cmnd"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation_cmnd"
             android:layout_width="match_parent"

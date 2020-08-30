@@ -33,11 +33,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.theagriculture.app.Admin.AdminActivity;
 import com.theagriculture.app.Admin.EditActivity;
+import com.theagriculture.app.Admin.ViewPagerAdapter;
 import com.theagriculture.app.Admin.map_fragemnt;
 import com.theagriculture.app.R;
 import com.theagriculture.app.login_activity;
@@ -70,6 +72,8 @@ public class AdoActivity extends AppCompatActivity {
     private ado_complete_fragment ado_complete_fragment;
     private ado_map_fragment ado_map_fragment;
 
+    private ViewPager2 viewPager2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +84,7 @@ public class AdoActivity extends AppCompatActivity {
         //////////////// for Drawer layout
         mDrawer = findViewById(R.id.drawer_view_cmn);
         nvDrawer = findViewById(R.id.navigation_view_cmn);
-
+        viewPager2 = findViewById(R.id.viewpager2_ado);
 
 
         /*
@@ -171,12 +175,13 @@ public class AdoActivity extends AppCompatActivity {
 
          */
 
-
+        viewPager2.setOffscreenPageLimit(3);
         //if all permissions granted then initilize pending fragment and set navigation items
         if(getPermission()) {
             //InitializeFragment(map_fragemnt);
             //nvDrawer.setVisibility(View.VISIBLE);
-            InitializeFragment(ado_map_fragment);
+            viewPager2.setCurrentItem(0,false);
+//            InitializeFragment(ado_map_fragment);
             navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -185,15 +190,18 @@ public class AdoActivity extends AppCompatActivity {
                         case R.id.home_ado:
                             //InitializeFragment(map_fragemnt);
                             //nvDrawer.setVisibility(View.VISIBLE);
-                            InitializeFragment(ado_map_fragment);
+                            viewPager2.setCurrentItem(0,false);
+//                            InitializeFragment(ado_map_fragment);
                             return true;
                         case R.id.pending_ado:
                             //nvDrawer.setVisibility(View.GONE);
-                            InitializeFragment(ado_pending_fragment);
+                            viewPager2.setCurrentItem(1,false);
+//                            InitializeFragment(ado_pending_fragment);
                             return true;
                         case R.id.completed_ado:
                             //nvDrawer.setVisibility(View.GONE);
-                            InitializeFragment(ado_complete_fragment);
+                            viewPager2.setCurrentItem(2,false);
+//                            InitializeFragment(ado_complete_fragment);
                             return true;
                         default:
                             return false;
@@ -201,8 +209,43 @@ public class AdoActivity extends AppCompatActivity {
                 }
             });
 
+
+            viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+
+                    switch (position) {
+                        case 0:
+                            navigation.getMenu().findItem(R.id.home_ado).setChecked(true);
+                            break;
+                        case 1:
+                            navigation.getMenu().findItem(R.id.pending_ado).setChecked(true);
+                            break;
+                        case 2:
+                            navigation.getMenu().findItem(R.id.completed_ado).setChecked(true);
+                            break;
+
+                    }
+                }
+            });
+
+            setupViewPager(viewPager2);
+
         }
 
+    }
+
+    private void setupViewPager(ViewPager2 viewPager) {
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
+
+
+        adapter.addFragment(ado_map_fragment);
+        adapter.addFragment(ado_pending_fragment);
+        adapter.addFragment(ado_complete_fragment);
+
+        viewPager.setAdapter(adapter);
     }
 
 
