@@ -142,7 +142,7 @@ public class RecyclerViewAdapter_district extends RecyclerView.Adapter<RecyclerV
             DistrictAdo abc = new DistrictAdo();
             abc.setArguments(bundle);
             AppCompatActivity activity = (AppCompatActivity) v.getContext();
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).addToBackStack(null).commit();
+            activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc).addToBackStack(null).commit();
         }
 
 

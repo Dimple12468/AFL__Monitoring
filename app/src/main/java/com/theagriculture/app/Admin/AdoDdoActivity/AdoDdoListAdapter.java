@@ -88,7 +88,7 @@ public class AdoDdoListAdapter extends RecyclerView.Adapter<AdoDdoListAdapter.Ad
 
     private void change_fragemnt(nothing_toshow_fragment no_data) {
         AppCompatActivity activity = (AppCompatActivity) no_data.getContext();
-        activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, no_data).addToBackStack(null).commit();
+        activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, no_data).addToBackStack(null).commit();
     }
 
     @NonNull
@@ -260,7 +260,7 @@ public class AdoDdoListAdapter extends RecyclerView.Adapter<AdoDdoListAdapter.Ad
                 CompleteDetailsFragment abc = new CompleteDetailsFragment();
                 abc.setArguments(bundle);
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).addToBackStack(null).commit();
+                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc).addToBackStack(null).commit();
                 /*
                 Intent intent = new Intent(mcontext, ReviewReport.class);
                 int position =this.getAdapterPosition();
@@ -288,7 +288,7 @@ public class AdoDdoListAdapter extends RecyclerView.Adapter<AdoDdoListAdapter.Ad
                 CompleteDetailsFragment abc = new CompleteDetailsFragment();
                 abc.setArguments(bundle);
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).addToBackStack(null).commit();
+                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc).addToBackStack(null).commit();
             }
 
 

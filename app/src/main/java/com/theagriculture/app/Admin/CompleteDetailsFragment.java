@@ -38,6 +38,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.theagriculture.app.Ado.ReviewTableRecycleAdapter;
 import com.theagriculture.app.Globals;
@@ -106,7 +107,7 @@ public class CompleteDetailsFragment extends Fragment implements onBackPressed {
     private ArrayList<String> financialYearNamedata;
     private ArrayList<String> dateOfBenefitdata;
     private TextView noSubsidiesTextView;
-
+    BottomNavigationView navigation;
     private String farmerId;
     private String id;
     private String review_address_big;
@@ -143,7 +144,10 @@ public class CompleteDetailsFragment extends Fragment implements onBackPressed {
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setHasOptionsMenu(true);
-
+//        LayoutInflater li = LayoutInflater.from(getActivity());
+//        View promptsView = li.inflate(R.layout.activity_admin, null);
+//        navigation = promptsView.findViewById(R.id.navigation);
+//        navigation.setVisibility(View.GONE);
         Bundle bundle = this.getArguments();
         id = bundle.get("id").toString();
         review_address_big = bundle.get("review_address_top").toString();//address of the incident
