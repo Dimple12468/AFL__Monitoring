@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     xmlns:tool="http://schemas.android.com/tools"
     android:fitsSystemWindows="true"
     tool:context=".Admin.AdminActivity"
@@ -44,9 +45,11 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="0dp"
             android:isScrollContainer="true"
             app:itemIconTint="@drawable/tab_color"
             app:itemTextColor="@drawable/tab_color"

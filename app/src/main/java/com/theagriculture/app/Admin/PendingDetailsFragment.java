@@ -112,8 +112,12 @@ public class PendingDetailsFragment extends Fragment implements onBackPressed  {
 //        if (fragment.allowBackPressed()) { // and then you define a method allowBackPressed with the logic to allow back pressed or not
 //            super.onBackPressed();
 //        }
-        getActivity().getSupportFragmentManager().popBackStack();
 
+
+
+
+        getActivity().getSupportFragmentManager().popBackStack();
+//
     }
 
     @Override
@@ -194,7 +198,7 @@ public class PendingDetailsFragment extends Fragment implements onBackPressed  {
                     ongoingDetailsFragment abc = new ongoingDetailsFragment();
                     abc.setArguments(bundle);
                     AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).addToBackStack(null).commit();
+                    activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc,"a").addToBackStack("a").commit();
                 }
             });
         }

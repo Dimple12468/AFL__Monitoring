@@ -664,7 +664,7 @@ public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelect
 
 
        AppCompatActivity activity = (AppCompatActivity) fragment.getContext();
-       activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).addToBackStack(null).commit();
+       activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,fragment,"a").addToBackStack("a").commit();
 
 
    }

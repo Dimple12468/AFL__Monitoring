@@ -48,13 +48,13 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
 
     //declare all fragments
 
-    private map_fragemnt mapFragmnt;
-    private location_fragment locationFragment;
-    private ado_fragment adoFragment;
-    private ddo_fragment ddoFragment;
-    private count_fragment countFragment;
-    private DistrictStateFragment districtStateFragment;
-    private DistrictAdo districtAdo;
+//    private map_fragemnt mapFragmnt;
+//    private location_fragment locationFragment;
+//    private ado_fragment adoFragment;
+//    private ddo_fragment ddoFragment;
+//    private count_fragment countFragment;
+//    private DistrictStateFragment districtStateFragment;
+//    private DistrictAdo districtAdo;
     bottom_nav bottom_nav;
     //private PrivacyPolicy privacyPolicy;
     TextView title_top;
@@ -67,35 +67,47 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
     private int fragment_id;
     Fragment fragment1;
     Fragment fragment2;
+    final Fragment mapFragmnt = new map_fragemnt();
+    final Fragment locationFragment = new location_fragment();
+    final Fragment adoFragment = new ado_fragment();
+    final Fragment ddoFragment = new ddo_fragment();
+    final Fragment countFragment = new count_fragment();
+    final Fragment districtAdo = new DistrictAdo();
+    final Fragment districtStateFragment= new DistrictStateFragment();
+    final FragmentManager fm = getSupportFragmentManager();
+    Fragment active = mapFragmnt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
 
-        /*AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+        if(savedInstanceState == null) {
+            setContentView(R.layout.activity_admin);
+            /*AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);*/
 
-        navigation = findViewById(R.id.navigation);
-        frameLayout = findViewById(R.id.frameLayout);
-        //title_top = findViewById(R.id.app_name);
-        //id = R.id.app_name;
+            navigation = findViewById(R.id.navigation);
+            frameLayout = findViewById(R.id.frameLayout);
+            //title_top = findViewById(R.id.app_name);
+            //id = R.id.app_name;
 
-        mapFragmnt = new map_fragemnt();
-        locationFragment = new location_fragment();
-        adoFragment = new ado_fragment();
-        ddoFragment = new ddo_fragment();
-        countFragment = new count_fragment();
-        districtStateFragment= new DistrictStateFragment();
- //       privacyPolicy = new PrivacyPolicy();
-        districtAdo = new DistrictAdo();
-        bottom_nav = new bottom_nav();
+//            mapFragmnt = new map_fragemnt();
+//            locationFragment = new location_fragment();
+//            adoFragment = new ado_fragment();
+//            ddoFragment = new ddo_fragment();
+//            final Fragment countFragment = new count_fragment();
+//            final Fragment districtAdo = new DistrictAdo();
+//            districtStateFragment= new DistrictStateFragment();
 
-        //for toolbar text
+            //       privacyPolicy = new PrivacyPolicy();
+
+            bottom_nav = new bottom_nav();
+
+            //for toolbar text
         /*if (districtAdo.isVisible()){
             System.out.println("Dimple in admin for ambal wala text");
             title_top.setText(districtAdo.for_title_top());
@@ -103,11 +115,11 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
             System.out.println("Dimple in else else for ambal wala text");
             title_top.setText("AFL Monitoring");
         }*/
-       // districtAdo.for_title_top(title_top,R.id.app_name);
+            // districtAdo.for_title_top(title_top,R.id.app_name);
 
 
 
-        // toolbar for admin activity
+            // toolbar for admin activity
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.app__bar);
 //        setSupportActionBar(toolbar);
 
@@ -115,8 +127,8 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_artboard_1);*/
 
-        mDrawer = findViewById(R.id.drawer_view);
-        nvDrawer = findViewById(R.id.navigation_view);
+            mDrawer = findViewById(R.id.drawer_view);
+            nvDrawer = findViewById(R.id.navigation_view);
 
 /*      View header = nvDrawer.getHeaderView(0);
         TextView textUsername = header.findViewById(R.id.name);
@@ -126,9 +138,9 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
         String username = preferences.getString("Name","");
         textUsername.setText(username);
         textUser.setText(typeofuser);*/
-        // Toast.makeText(AdminActivity.this,textUsername.getText().toString().trim(),Toast.LENGTH_LONG).show();
+            // Toast.makeText(AdminActivity.this,textUsername.getText().toString().trim(),Toast.LENGTH_LONG).show();
 
-        //navigation items listerner in navigation drawer
+            //navigation items listerner in navigation drawer
 /*        nvDrawer.setBackgroundColor(getResources().getColor(R.color.white));
         nvDrawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -137,8 +149,8 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
                 switch (item.getItemId()){
 
                     case R.id.logout_now:                                                                                */
-                        //item.setChecked(true);
-                        //mDrawer.closeDrawers();
+            //item.setChecked(true);
+            //mDrawer.closeDrawers();
                         /*
                         Intent login_intent = new Intent(AdminActivity.this,login_activity.class);
                         startActivity(login_intent);
@@ -189,18 +201,23 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
         });*/
 
 
-        // ask for permissions and intializes fragment according to
-        // items in bottom navigation clicked
-       if(getPermission()) {
-           InitializeFragment(mapFragmnt);
+            // ask for permissions and intializes fragment according to
+            // items in bottom navigation clicked
+            if(getPermission()) {
+//           InitializeFragment(mapFragmnt);
+//           fm.beginTransaction().hide(active).show(mapFragmnt).commit();
+//           active = mapFragmnt;
+                //bottom_nav.bottom_navigation_admin();
+//           fm.beginTransaction().hide(active).show(mapFragmnt).commit();
+                active = mapFragmnt;
 
-            //bottom_nav.bottom_navigation_admin();
-            navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                    //todo style for fab
-                    //fragment_id = item.getItemId();
+                navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                        //todo style for fab
+                        //fragment_id = item.getItemId();
                    /* if (item.getItemId() == R.id.adminsdistrict_state){
                         //setTheme(R.style.calendar_theme);
                         getTheme().applyStyle(R.style.calendar_theme,true);
@@ -210,38 +227,59 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
                         getTheme().applyStyle(R.style.AppTheme,true);
                         //setTheme(R.style.AppTheme);
                     }*/
-                   switch (item.getItemId()) {
-                        case R.id.adminshome:
-                           // ((DrawerLocker) mapFragmnt).setDrawerEnabled(true);
-                           // title_top.setText("AFL Monitoring");
-                            InitializeFragment(mapFragmnt);
-                            return true;
-                        case R.id.adminslocation:
-                            //((DrawerLocker) locationFragment).setDrawerEnabled(true);
-                            //title_top.setText("Locations");
-                            InitializeFragment(locationFragment);
-                            return true;
-                        case R.id.adminsado:
-                           // ((DrawerLocker) adoFragment).setDrawerEnabled(false);
-                            //title_top.setText("ADO");
-                            InitializeFragment(adoFragment);
-                            return true;
-                        case R.id.adminsdda:
-                           // title_top.setText("DDA");
-                            InitializeFragment(ddoFragment);
-                            return true;
-                        case R.id.adminsdistrict_state:
-                           // title_top.setText("District Stats");
-                            InitializeFragment(districtStateFragment);
-                            return true;
-                        default:
-                           // title_top.setText("AFL Monitoring");
-                            return false;
+                        switch (item.getItemId()) {
+                            case R.id.adminshome:
+                                // ((DrawerLocker) mapFragmnt).setDrawerEnabled(true);
+                                // title_top.setText("AFL Monitoring");
+//                            InitializeFragment(mapFragmnt);
+                                fm.beginTransaction().hide(active).show(mapFragmnt).commit();
+                                active = mapFragmnt;
+                                return true;
+                            case R.id.adminslocation:
+                                //((DrawerLocker) locationFragment).setDrawerEnabled(true);
+                                //title_top.setText("Locations");
+//                            InitializeFragment(locationFragment);
+                                fm.beginTransaction().hide(active).show(locationFragment).commit();
+                                active = locationFragment;
+                                return true;
+                            case R.id.adminsado:
+                                // ((DrawerLocker) adoFragment).setDrawerEnabled(false);
+                                //title_top.setText("ADO");
+//                            InitializeFragment(adoFragment);
+                                fm.beginTransaction().hide(active).show(adoFragment).commit();
+                                active = adoFragment;
+                                return true;
+                            case R.id.adminsdda:
+                                // title_top.setText("DDA");
+//                            InitializeFragment(ddoFragment);
+                                fm.beginTransaction().hide(active).show(ddoFragment).commit();
+                                active = ddoFragment;
+                                return true;
+                            case R.id.adminsdistrict_state:
+                                // title_top.setText("District Stats");
+//                            InitializeFragment(districtStateFragment);
+                                fm.beginTransaction().hide(active).show(districtStateFragment).commit();
+                                active = districtStateFragment;
+                                return true;
+                            default:
+                                // title_top.setText("AFL Monitoring");
+                                return false;
+                        }
                     }
-                }
-            });
+                });
+
+            }
+
+            fm.beginTransaction().add(R.id.frameLayout, districtStateFragment, "5").hide(ddoFragment).commit();
+            fm.beginTransaction().add(R.id.frameLayout, ddoFragment, "4").hide(adoFragment).commit();
+            fm.beginTransaction().add(R.id.frameLayout, adoFragment, "3").hide(locationFragment).commit();
+            fm.beginTransaction().add(R.id.frameLayout, locationFragment, "2").hide(mapFragmnt).commit();
+            fm.beginTransaction().add(R.id.frameLayout,mapFragmnt, "1").commit();
+            fm.beginTransaction().show(mapFragmnt).commit();
+
 
         }
+
 
     }
     //end of onCreate
@@ -547,7 +585,7 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
         //List<ActivityManager.RunningTaskInfo> services = result.getRunningTasks(Integer.MAX_VALUE);//Integer.MAX_VALUE=value of all running tasks
 
         //Toast.makeText(AdminActivity.this,services.get(0).topActivity.toString(),Toast.LENGTH_LONG).show();
-
+//        fm.beginTransaction().replace(R.id.frameLayout, abc).addToBackStack(null).commit();
         super.onBackPressed();//shows items in stack only done for ongoingDetailsFragment
         //finish();
         //}

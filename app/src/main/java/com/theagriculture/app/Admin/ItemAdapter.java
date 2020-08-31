@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.theagriculture.app.R;
@@ -41,6 +43,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> /*
     private boolean isComplete = false;
     private boolean isOngoing = false;
     private boolean isPending = false;
+
 //    private boolean is_DDA_user = false;
     Context mcontext;
 //    private String sectionTitle_dda,villagename_dda,blockname_dda,district_dda,state_dda;
@@ -203,7 +206,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> /*
                 PendingDetailsFragment abc = new PendingDetailsFragment();
                 abc.setArguments(bundle);
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, abc).addToBackStack(null).commit();
+
+                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, abc,"a").addToBackStack("a").commit();
                 //activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).commit();
             }
             if(isOngoing) {
@@ -219,7 +223,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> /*
                 PendingDetailsFragment abc = new PendingDetailsFragment();
                 abc.setArguments(bundle);
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, abc).addToBackStack(null).commit();
+                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, abc,"a").addToBackStack("a").commit();
                 /*
                 Bundle bundle = new Bundle();
 
@@ -251,7 +255,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> /*
                 CompleteDetailsFragment abc = new CompleteDetailsFragment();
                 abc.setArguments(bundle);
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).addToBackStack(null).commit();
+                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc, "a").addToBackStack("a").commit();
 
 
                 //activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, abc).commit();
