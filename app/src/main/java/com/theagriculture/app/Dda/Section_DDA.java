@@ -4,7 +4,14 @@ import java.util.ArrayList;
 
 public class Section_DDA {
     public String sectionTitle;
-    public ArrayList<String> Did,Dlocation_name,Dlocation_address,Dlatitude,Dlongitude;
+    public ArrayList<String> Did;
+    public ArrayList<String> Dlocation_name;
+    public ArrayList<String> Dlocation_address;
+    public ArrayList<String> Dlatitude;
+    public ArrayList<String> Dlongitude;
+
+    public ArrayList<String> DAdoID;
+//    public String  DAdoID;
     public Boolean isPending,isCompleted,isOngoing;
 
     public Section_DDA(String sectionTitle, ArrayList<String> Did, ArrayList<String> Dlocation_name, ArrayList<String> Dlocation_address, ArrayList<String> Dlatitude, ArrayList<String> Dlongitude, Boolean isPending, Boolean isCompleted, Boolean isOngoing) {
@@ -18,6 +25,25 @@ public class Section_DDA {
         this.isCompleted = isCompleted;
         this.isOngoing = isOngoing;
     }
+
+    public Section_DDA(String sectionTitle, ArrayList<String> Did, ArrayList<String> Dlocation_name, ArrayList<String> Dlocation_address, ArrayList<String> Dlatitude, ArrayList<String> Dlongitude,ArrayList<String> DAdoID/*String DAdoID*/, Boolean isPending, Boolean isCompleted, Boolean isOngoing) {
+        this.sectionTitle = sectionTitle;
+        this.Did=Did;
+        this.Dlocation_name = Dlocation_name;
+        this.Dlocation_address = Dlocation_address;
+        this.Dlatitude = Dlatitude;
+        this.Dlongitude = Dlongitude;
+        this.isPending = isPending;
+        this.isCompleted = isCompleted;
+        this.isOngoing = isOngoing;
+        this.DAdoID = DAdoID;
+
+    }
+
+//    public Section_DDA(ArrayList<String> DAdoID){
+//        System.out.println("Hi dimple .... I am being called");
+//        this.DAdoID = DAdoID;
+//    }
 
     public String getSectionTitle() {
         return sectionTitle;
@@ -80,6 +106,14 @@ public class Section_DDA {
     }
     public void setIsOngoing(Boolean isOngoing) {
         this.isOngoing = isOngoing;
+    }
+
+    public ArrayList<String> getDAdoID() {
+        return DAdoID;
+    }
+
+    public void setDAdoID(ArrayList<String> DAdoID) {
+        this.DAdoID = DAdoID;
     }
 
 }

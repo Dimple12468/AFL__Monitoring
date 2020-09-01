@@ -381,6 +381,19 @@
             android:textColor="#ffffff"
             android:textSize="15sp" />
 
+        <Button
+            android:id="@+id/start_button"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/shape_btn"
+            android:fontFamily="@font/arial"
+            android:text="Start"
+            android:visibility="gone"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
+
     </LinearLayout>
 
     <TextView

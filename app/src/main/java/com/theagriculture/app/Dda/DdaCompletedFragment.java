@@ -141,6 +141,7 @@ public class DdaCompletedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG,"onCreateView: ");
         view = inflater.inflate(R.layout.fragment_ongoing,container,false);
 
         review = view.findViewById(R.id.recyclerViewongoing);
@@ -171,6 +172,7 @@ public class DdaCompletedFragment extends Fragment {
 //        review.setAdapter(ddacompletedAdapter);
 
         getData(urlget);
+        Log.d(TAG,"URL: " + urlget);
 
         review.addOnScrollListener(new RecyclerView.OnScrollListener(){
             @Override
@@ -300,7 +302,7 @@ public class DdaCompletedFragment extends Fragment {
     }
 
     private void getData(final String url) {
-//        sections=new ArrayList<>();
+        sections=new ArrayList<>();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         isNextBusy = true;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null,
@@ -314,10 +316,12 @@ public class DdaCompletedFragment extends Fragment {
                             nextUrl = rootObject.getString("next");
                             if(resultsArray.length()== 0){
                                 //adoListAdapter.mshowshimmer = false;
+                                String[][] arr = new String[0][0];
                                 recyclerViewAdater.notifyDataSetChanged();
                                 nothing_toshow_fragment no_data = new nothing_toshow_fragment();
                                 AppCompatActivity activity = (AppCompatActivity)getActivity();
                                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.assigned_dda, no_data).commit();
+                                return;
 //                                view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
                             }
 
@@ -536,7 +540,8 @@ public class DdaCompletedFragment extends Fragment {
 
 
     private void getNextData(final String url) {
-        sections=new ArrayList<>();
+        Log.d(TAG,"locations corresponding to next URL: "+url);
+//        sections=new ArrayList<>();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         isNextBusy = true;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null,
@@ -550,10 +555,12 @@ public class DdaCompletedFragment extends Fragment {
                             nextUrl = rootObject.getString("next");
                             if(resultsArray.length()== 0){
                                 //adoListAdapter.mshowshimmer = false;
+                                String[][] arr = new String[0][0];
                                 recyclerViewAdater.notifyDataSetChanged();
-                                nothing_toshow_fragment no_data = new nothing_toshow_fragment();
-                                AppCompatActivity activity = (AppCompatActivity)getActivity();
-                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.assigned_dda, no_data).commit();
+//                                nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+//                                AppCompatActivity activity = (AppCompatActivity)getActivity();
+//                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.assigned_dda, no_data).commit();
+                                return;
 //                                view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
                                 //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                             }

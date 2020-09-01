@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rel_lay"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/reassign_bg">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/reassign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Reassign Location"
+            android:textSize="17sp"
+            android:padding="8dp"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.2px"
+            android:layout_gravity="center_horizontal"
+            android:background="#707070" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+<!--                        android:padding="4dp"
+            android:weightSum="2"-->
+
+            <Button
+                android:id="@+id/no_assign"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="0.5"
+                android:padding="0dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="No"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textAllCaps="false"
+                android:fontFamily="@font/arial"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+            <!--            android:layout_width="wrap_content"
+                            android:clickable="true"
+                            android:layout_gravity="left"
+            android:focusable="true"-->
+
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0.2px"-->
+<!--                android:rotation="90"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:background="#707070"/>-->
+
+            <Button
+                android:id="@+id/yes_assign"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="0.5"
+                android:padding="0dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="Yes"
+                android:gravity="center"
+                android:textAllCaps="false"
+                android:fontFamily="@font/arial"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+            <!--            android:layout_width="wrap_content"
+                            android:clickable="true"
+                            android:layout_gravity="right"
+    android:focusable="true"-->
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
+

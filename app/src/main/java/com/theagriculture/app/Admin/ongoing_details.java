@@ -4,27 +4,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
+import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -53,10 +49,8 @@ import java.util.Map;
 
 import static java.lang.String.valueOf;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class CompleteDetailsFragment extends Fragment implements onBackPressed {
+public class ongoing_details extends AppCompatActivity {
+
     private ImageButton back_button;
 
     private TextView review_address_top;
@@ -88,11 +82,9 @@ public class CompleteDetailsFragment extends Fragment implements onBackPressed {
     private TextView reasonLeft;
     private TextView reasonRight;
 
-
-    Button editButton;
+    Button forfeitButton;
     Button images;
-    Button forfeit;
-    Button startButton;
+    Button editButton;
 
     private static String TAG = "ReviewReport";
 
@@ -107,13 +99,11 @@ public class CompleteDetailsFragment extends Fragment implements onBackPressed {
     private ArrayList<String> financialYearNamedata;
     private ArrayList<String> dateOfBenefitdata;
     private TextView noSubsidiesTextView;
-
+    boolean doubleBackToExitPressedOnce=false;
     private String farmerId;
     private String id;
     private String review_address_big;
     private boolean isDdo;
-    private boolean isDDA = false;
-    boolean doubleBackToExitPressedOnce=false;
 
 
     private String urlfarmer = "https://agriharyana.org/api/farmer";
@@ -128,62 +118,63 @@ public class CompleteDetailsFragment extends Fragment implements onBackPressed {
     private TextView amountLeft;
     private TextView amountRight;
 
-    public CompleteDetailsFragment() {
-        // Required empty public constructor
+
+    //for back button on action bar
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_ongoing_details, container, false);
-        View view = inflater.inflate(R.layout.fragment_complete_details, container, false);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_ongoing_details);
+        Log.d(TAG,"in onCreate: ");
 
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_completed);
-        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
-        appCompatActivity.setSupportActionBar(toolbar);
-        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setHasOptionsMenu(true);
-
-        Bundle bundle = this.getArguments();
+        Bundle bundle = getIntent().getExtras();
         id = bundle.get("id").toString();
-        review_address_big = bundle.get("review_address_top").toString();//address of the incident
-        isDDA = bundle.getBoolean("isDDA");
-        isComplete = bundle.getBoolean("isComplete");
-        isOngoing = bundle.getBoolean("isOngoing");
-        //Toast.makeText(getActivity(),"Got id="+id + "address="+ review_address_big,Toast.LENGTH_LONG).show();
+        review_address_big = bundle.get("review_address_top").toString();
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app__bar_ongoing);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Report");
 
-        review_address_top = view.findViewById(R.id.review_address_top);
+        review_address_top = findViewById(R.id.review_address_top);
 
-        villCodeRight = view.findViewById(R.id.villCodeRight);
-        villCodeLeft = view.findViewById(R.id.villCodeLeft);
+        villCodeRight = findViewById(R.id.villCodeRight);
+        villCodeLeft = findViewById(R.id.villCodeLeft);
 
-        villnameleft = view.findViewById(R.id.villnameLeft);
-        villnameright = view.findViewById(R.id.villnameRight);
+        villnameleft = findViewById(R.id.villnameLeft);
+        villnameright = findViewById(R.id.villnameRight);
 
-        districtleft = view.findViewById(R.id.districtLeft);
-        districtright = view.findViewById(R.id.districtRight);
+        districtleft = findViewById(R.id.districtLeft);
+        districtright = findViewById(R.id.districtRight);
 
-        nameLeft = view.findViewById(R.id.nameLeft);
-        nameRight = view.findViewById(R.id.nameRight);
+        nameLeft = findViewById(R.id.nameLeft);
+        nameRight = findViewById(R.id.nameRight);
 
+        fatherNameRight = findViewById(R.id.fatherNameRight);
+        fatherNameLeft = findViewById(R.id.fatherNameLeft);
 
-        fatherNameRight = view.findViewById(R.id.fatherNameRight);
-        fatherNameLeft = view.findViewById(R.id.fatherNameLeft);
+        ownLeaseLeft = findViewById(R.id.own_lease_Left);
+        ownLeaseRight = findViewById(R.id.own_lease_Right);
 
-        ownLeaseLeft = view.findViewById(R.id.own_lease_Left);
-        ownLeaseRight = view.findViewById(R.id.own_lease_Right);
+        fireLeft = findViewById(R.id.fire_Left);
+        fireRight = findViewById(R.id.fire_Right);
 
-        fireLeft = view.findViewById(R.id.fire_Left);
-        fireRight = view.findViewById(R.id.fire_Right);
+        remarksLeft = findViewById(R.id.remarksLeft);
+        remarksRight = findViewById(R.id.remarksRight);
 
-        remarksLeft = view.findViewById(R.id.remarksLeft);
-        remarksRight = view.findViewById(R.id.remarksRight);
-
-        reasonLeft = view.findViewById(R.id.reasonLeft);
-        reasonRight = view.findViewById(R.id.reasonRight);
+        reasonLeft = findViewById(R.id.reasonLeft);
+        reasonRight = findViewById(R.id.reasonRight);
 
         mImagesUrl = new ArrayList<>();
         schemedata = new ArrayList<>();
@@ -191,37 +182,24 @@ public class CompleteDetailsFragment extends Fragment implements onBackPressed {
         financialYearNamedata = new ArrayList<>();
         dateOfBenefitdata = new ArrayList<>();
 
+        forfeitButton = findViewById(R.id.forfeit);
+        images = findViewById(R.id.images);
+        editButton = findViewById(R.id.edits_button);
 
-        editButton = view.findViewById(R.id.edit_button);
-        images = view.findViewById(R.id.images);
-        forfeit = view.findViewById(R.id.forfeit_button);
-        startButton = view.findViewById(R.id.start_button);
+        if(!isAdmin)
+            images.setVisibility(View.GONE);
 
-        if(isDDA){
-            if(isComplete) {
-                editButton.setVisibility(View.GONE);
-                forfeit.setVisibility(View.GONE);
-                startButton.setVisibility(View.VISIBLE);
-            }else{
-                editButton.setVisibility(View.GONE);
-                images.setVisibility(View.GONE);
-                forfeit.setVisibility(View.VISIBLE);
-//                forfeit.setGravity(Gravity.CENTER_HORIZONTAL);
-            }
-        }
-        editButton.setOnClickListener(new View.OnClickListener() {
+        forfeitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"You clicked edit " ,Toast.LENGTH_LONG).show();
+                Toast.makeText(ongoing_details.this,"You clicked forefit " ,Toast.LENGTH_LONG).show();
             }
         });
 
         images.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Toast.makeText(getActivity(),"You clicked forefit " ,Toast.LENGTH_LONG).show();
                 if(mImagesUrl.toString().equals("[]")) {
-                    //Toast.makeText(getActivity(), "No images uploaded ", Toast.LENGTH_LONG).show();
                     displayDialog("No Images were Uploaded");
                 }
                 else {
@@ -230,79 +208,40 @@ public class CompleteDetailsFragment extends Fragment implements onBackPressed {
                     Images abc = new Images();
                     abc.setArguments(bundle);
                     AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                    if (isDDA){
-                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_dda, abc).addToBackStack(null).commit();
-                    }else {
-                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, abc).addToBackStack(null).commit();
-                    }
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, abc).addToBackStack(null).commit();
                 }
             }
         });
 
-        forfeit.setOnClickListener(new View.OnClickListener() {
+        editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"You clicked forfeit " ,Toast.LENGTH_LONG).show();
+                Toast.makeText(ongoing_details.this,"You clicked edit " ,Toast.LENGTH_LONG).show();
             }
         });
-
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(),"You clicked start " ,Toast.LENGTH_LONG).show();
-            }
-        });
-
         review_address_top.setText(review_address_big);
 
-        TextView title_top = view.findViewById(R.id.app_name);
-        if (view.isEnabled()){
-            title_top.setText("Location Details");
-            /*title_top.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-            title_top.setHorizontallyScrolling(true);
-            title_top.setMinLines(1);
-            title_top.setMarqueeRepeatLimit(-1); //for infinite
-            title_top.setText(review_address_big);*/
-        }else {
-            title_top.setText("AFL Monitoring");
-        }
-
-        mUrl = Globals.report_ado + id + "/";                //"http://18.224.202.135/api/report-ado/" + id + "/";
-        Log.d(TAG,"URL: " + mUrl);
-        //Log.d("click","reached herw"+id);
-        // mUrl = "https://jsonplaceholder.typicode.com/todos/1";
+        mUrl = Globals.report_ado +  id + "/";                  //"http://18.224.202.135/api/report-ado/" + id + "/";
+        Log.d(TAG,"Report-ADO URL: "+mUrl);
         getData();
 
-
-        return view;
-    }
-    /*
-    @Override
-    public void onBackPressed() {
-        if(some condition) {
-            // do something
-        } else {
-            super.onBackPressed();
-        }
-
-     */
-    /*
-    public void onBackPressed(){
-        getActivity().finish();//will pop previous activity from stack
     }
 
-     */
     public void getData(){
         RequestQueue requestQueue;
-        requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue = Volley.newRequestQueue(ongoing_details.this);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                //String abcd= response.toString();
-                //Toast.makeText(getActivity(),"This response" + abcd,Toast.LENGTH_LONG).show();
-                //villCodeLeft.setText(abcd);
                 try {
                     JSONObject rootObject = new JSONObject(valueOf(response));
+                    Log.d(TAG,"on Response: "+response + "\n" + "root object" + rootObject);
+//                    if (rootObject.getString("detail").equals("Not found.")){
+//                        Log.d(TAG, "onResponse: Data not found.... " + view);
+//                        nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+//                        AppCompatActivity activity = (AppCompatActivity)getContext();
+//                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame_complete_details, no_data).commit();
+//                    }
                     String villCode = rootObject.getString("village_code");
                     farmerId = rootObject.getString("farmer_code");
                     Log.d(TAG, "onResponse: farmerid"+farmerId);
@@ -313,7 +252,6 @@ public class CompleteDetailsFragment extends Fragment implements onBackPressed {
                     String remarks = rootObject.getString("remarks");
                     String reason = rootObject.getString("incident_reason");
                     JSONObject location = rootObject.getJSONObject("location");
-                    //Toast.makeText(getActivity(),location.toString(),Toast.LENGTH_LONG).show();
                     String village_name = location.getString("village_name");
                     String district = location.getString("district");
                     String fire = rootObject.getString("fire");
@@ -330,7 +268,7 @@ public class CompleteDetailsFragment extends Fragment implements onBackPressed {
                     catch (Exception e){
 
                     }
-                    //review_address_top.setText(village_name.toUpperCase()+","+ district.toUpperCase());
+
                     fireLeft.setText("Fire:");
                     fireRight.setText(capitalCase(fire));
                     villCodeLeft.setText("Village Code:");
@@ -349,10 +287,11 @@ public class CompleteDetailsFragment extends Fragment implements onBackPressed {
                     remarksRight.setText(capitalCase(remarks));
                     reasonLeft.setText("Incident Reason:");
                     reasonRight.setText(capitalCase(reason));
+
                 }
 
                 catch (JSONException e) {
-                    Toast.makeText(getActivity(),"This exception is "+ e ,Toast.LENGTH_LONG).show();
+                    Toast.makeText(ongoing_details.this,"This exception is "+ e ,Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
             }
@@ -364,8 +303,10 @@ public class CompleteDetailsFragment extends Fragment implements onBackPressed {
                         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                             //This indicates that the reuest has either time out or there is no connection
                             //Toast.makeText(getActivity(), "This error is case1", Toast.LENGTH_LONG).show();
-                            final BottomSheetDialog mBottomDialogNotificationAction = new BottomSheetDialog(getActivity());
-                            View sheetView = getActivity().getLayoutInflater().inflate(R.layout.no_internet, null);
+                            final BottomSheetDialog mBottomDialogNotificationAction = new BottomSheetDialog(ongoing_details.this);
+//                            View sheetView = getActivity().getLayoutInflater().inflate(R.layout.no_internet, null);
+                            LayoutInflater li = LayoutInflater.from(ongoing_details.this);
+                            View sheetView = li.inflate(R.layout.no_internet, null);
                             mBottomDialogNotificationAction.setContentView(sheetView);
                             mBottomDialogNotificationAction.setCanceledOnTouchOutside(false);
                             mBottomDialogNotificationAction.setCancelable(false);
@@ -394,7 +335,7 @@ public class CompleteDetailsFragment extends Fragment implements onBackPressed {
                                 public void onClick(View v) {
                                     if (!doubleBackToExitPressedOnce) {
                                         doubleBackToExitPressedOnce = true;
-                                        Toast toast = Toast.makeText(getActivity(),"Tap on Close App again to exit app", Toast.LENGTH_LONG);
+                                        Toast toast = Toast.makeText(ongoing_details.this,"Tap on Close App again to exit app", Toast.LENGTH_LONG);
                                         toast.setGravity(Gravity.CENTER, 0, 0);
                                         toast.show();
 
@@ -417,27 +358,28 @@ public class CompleteDetailsFragment extends Fragment implements onBackPressed {
 
                             });
 
+
                         } else if (error instanceof AuthFailureError) {
                             // Error indicating that there was an Authentication Failure while performing the request
-                            Toast.makeText(getActivity(), "This error is case2", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ongoing_details.this, "This error is case2", Toast.LENGTH_LONG).show();
                         } else if (error instanceof ServerError) {
                             //Indicates that the server responded with a error response
-                            Toast.makeText(getActivity(), "This error is case3", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ongoing_details.this, "This error is case3", Toast.LENGTH_LONG).show();
                         } else if (error instanceof NetworkError) {
                             //Indicates that there was network error while performing the request
-                            Toast.makeText(getActivity(), "This error is case4", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ongoing_details.this, "This error is case4", Toast.LENGTH_LONG).show();
                         } else if (error instanceof ParseError) {
                             // Indicates that the server response could not be parsed
-                            Toast.makeText(getActivity(), "This error is case5", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ongoing_details.this, "This error is case5", Toast.LENGTH_LONG).show();
                         } else {
-                            Toast.makeText(getActivity(), "An unknown error occurred.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ongoing_details.this, "An unknown error occurred.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
-                SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
+                SharedPreferences preferences = ongoing_details.this.getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
                 String token = preferences.getString("token", "");
                 map.put("Authorization", "Token " + token);
                 return map;
@@ -448,7 +390,6 @@ public class CompleteDetailsFragment extends Fragment implements onBackPressed {
 
     }
 
-
     private String capitalCase(String str)
     {
         String newStr = str.substring(0,1).toUpperCase() + str.substring(1).toLowerCase();
@@ -457,24 +398,12 @@ public class CompleteDetailsFragment extends Fragment implements onBackPressed {
 
     public final void displayDialog(String str){
 
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getActivity(),R.style.AlertDialog);
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(ongoing_details.this,R.style.AlertDialog);
         builder.setMessage(str);
         androidx.appcompat.app.AlertDialog alertDialog=builder.create();
         alertDialog.show();
         alertDialog.getWindow().getWindowStyle();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
-    @Override
-    public void onBackPressed() {
-        getActivity().getSupportFragmentManager().popBackStack();
-    }
 }

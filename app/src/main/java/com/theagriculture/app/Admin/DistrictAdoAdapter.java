@@ -27,12 +27,14 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.theagriculture.app.Admin.AdoDdoActivity.AdoDdoActivity;
 import com.theagriculture.app.Admin.AdoDdoActivity.AdoDdoActivityFragment;
 import com.theagriculture.app.Ado.ReviewTableRecycleAdapter;
+import com.theagriculture.app.Dda.DdaselectAdo;
 import com.theagriculture.app.R;
 import com.theagriculture.app.adapter.PendingAdapter;
 
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 public class
 DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> implements Filterable {
@@ -55,6 +57,16 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
 //    private ImageButton imageView6;
     private TextView tv3;
     private boolean is_settings_clicked = false;
+
+    //DDA->pending->assign
+    private ArrayList<String> mtextview1_dda;
+    private Map<Integer, ArrayList<String>> mtextview2_dda;
+//    private ArrayList<String> adoid_dda;
+    private String locationID;
+    private int currentAdo_Pos = -1;
+    private ArrayList<String> AdoId;
+    boolean isDDAuser = false;
+
 
     public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2,
                               ArrayList<String> mUserId, boolean isDdoFragment, ArrayList<String> mPkList, ArrayList<String> mDdoNames, ArrayList<String> mDistrictNames){// boolean is_settings_clicked) {
@@ -92,7 +104,6 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
         this.isDdoFragment = isDdoFragment;
         mPkList = pkList;
         this.is_settings_clicked = is_settings_clicked;
-
         //this.mtextview1_all = new ArrayList<>(mtextview1);
     }
 
@@ -114,6 +125,34 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
 
     }
 
+    //constructor for DDA(assign ado (background))
+    public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, Map<Integer, ArrayList<String>> mtextview2) {
+        this.mcontext = mcontext;
+        this.mtextview1_dda = mtextview1;
+        this.mtextview2_dda = mtextview2;
+        AdoId = new ArrayList<>();
+    }
+
+    public DistrictAdoAdapter(boolean isDDAuser){
+        System.out.println("hi dimple isDDAuser is: "+isDDAuser);
+        this.isDDAuser=isDDAuser;
+    }
+
+    public void getLocationID(String lid){
+        this.locationID = lid;
+    }
+
+    public void getCurrentADO(int pos) {
+        currentAdo_Pos = pos;
+    }
+
+    public void getAdoId(String adoid){
+        this.AdoId.add(adoid);
+    }
+
+
+
+
     @NonNull
     @Override
     public DistrictAdoAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -134,8 +173,13 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
         if (!isDdoFragment) {
             holder.districtTextview.setText("DDA : " + mDdoNames.get(position).toUpperCase());/* + " (" + mDistrictNames.get(position) + ")");*/
             holder.districtTextview.setBackground(null);
-        } else
+        } else {
             holder.districtTextview.setVisibility(View.GONE);
+            if (isDDAuser){
+                System.out.println("hi dimple in if condition: "+isDDAuser);
+                holder.tv1.setText(mtextview1_dda.get(position));
+            }
+        }
 
 
 

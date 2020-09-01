@@ -46,6 +46,22 @@
                 android:value=".Admin.AdminActivity"/
             -->
         </activity>
+        <activity android:name=".Admin.pending_details"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".Admin.ongoing_details"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".Admin.complete_details"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".Admin.Images_activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".Dda.VillagesUnderAdo"
             android:screenOrientation="portrait" />

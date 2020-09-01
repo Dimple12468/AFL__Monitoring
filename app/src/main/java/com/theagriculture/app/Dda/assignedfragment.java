@@ -71,6 +71,7 @@ public class assignedfragment extends Fragment {
     private ArrayList<String> mDate;
     private DdapendingassignedAdapter ddaassignedAdapter;
     ArrayList<Section_DDA> sections = new ArrayList<>();
+//    ArrayList<Section_DDA> sections_adoid = new ArrayList<>();
     private SectionAdapter_DDA recyclerViewAdater;
     private String urlget = Globals.assignedLocationsDDA;                           //"http://18.224.202.135/api/locations/dda/assigned";
     private String token;
@@ -92,9 +93,11 @@ public class assignedfragment extends Fragment {
 
     public assignedfragment() {
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG,"onCreateView: ");
         view = inflater.inflate(R.layout.fragment_ongoing,container,false);
         Id = new ArrayList<String>();
         Name = new ArrayList<String>();
@@ -136,6 +139,7 @@ public class assignedfragment extends Fragment {
 
 
         getData(urlget);
+        Log.d(TAG,"URL: " + urlget);
 
 
 //        recyclerViewAdater = new SectionAdapter(getActivity(), sections,true);
@@ -147,7 +151,6 @@ public class assignedfragment extends Fragment {
 //        review.setAdapter(ddaassignedAdapter);
 //        ddaassignedAdapter.notifyDataSetChanged();
 
-//        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager = new LinearLayoutManager(getActivity());
         review.setLayoutManager(layoutManager);
         DividerItemDecoration divider = new DividerItemDecoration(review.getContext(), layoutManager.getOrientation());
@@ -318,15 +321,18 @@ public class assignedfragment extends Fragment {
                             nextUrl = rootObject.getString("next");
                             if(resultsArray.length()== 0){
                                 //adoListAdapter.mshowshimmer = false;
+                                String[][] arr = new String[0][0];
                                 recyclerViewAdater.notifyDataSetChanged();
                                 nothing_toshow_fragment no_data = new nothing_toshow_fragment();
                                 AppCompatActivity activity = (AppCompatActivity)getActivity();
                                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.assigned_dda, no_data).commit();
+                                return;
 //                                view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
                             }
 
-                            String[][] arr = new String[6][resultsArray.length()];
+                            String[][] arr = new String[7][resultsArray.length()];
                             for (int i = 0; i < resultsArray.length(); i++) {
+//                                mAdoIds = new ArrayList<>();
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
                                 String did = singleObject.getString("id");
                                 String dlocation_name = singleObject.getString("village_name");
@@ -335,18 +341,26 @@ public class assignedfragment extends Fragment {
                                 String dlongitude = singleObject.getString("longitude");
                                 String dlatitude = singleObject.getString("latitude");
                                 String ddate = singleObject.getString("acq_date");
+                                JSONObject adoObject = singleObject.getJSONObject("ado");
+                                String ado_id = adoObject.getString("id");
                                 arr[0][i]=ddate;
                                 arr[1][i]=did;
                                 arr[2][i]=dlocation_name;
                                 arr[3][i]=dlocation_address;
                                 arr[4][i]=dlatitude;
                                 arr[5][i]=dlongitude;
+                                arr[6][i]=ado_id;
+                                System.out.println("dimple1" + "arr[6][" + i + "]: " + arr[6][i]);
                             }
-                            String inter;
+                            String inter,one_adoid;
                             for(int i=0;i<resultsArray.length()-1;i++){
                                 for(int j=0;j<resultsArray.length()-i-1;j++){
                                     String idate = arr[0][j];
                                     String ndate = arr[0][j+1];
+
+                                    String iadoid = arr[6][j];
+                                    String nadoid = arr[6][j+1];
+
                                     SimpleDateFormat sdfo = new SimpleDateFormat("yyyy-MM-dd");
                                     // Get the two dates to be compared
                                     Date d1 = null;
@@ -362,10 +376,17 @@ public class assignedfragment extends Fragment {
                                         e.printStackTrace();
                                     }
                                     if (d1.compareTo(d2) < 0) {
-                                        for(int k=0;k<6;k++) {
+                                        for(int k=0;k<7;k++) {              //k<6
                                             inter = arr[k][j];
                                             arr[k][j] = arr[k][j + 1];
                                             arr[k][j + 1] = inter;
+                                        }
+                                    }
+                                    if (iadoid.equals(nadoid)){
+                                        for(int k=0;k<7;k++) {              //k<6
+                                            one_adoid = arr[k][j];
+                                            arr[k][j] = arr[k][j + 1];
+                                            arr[k][j + 1] = one_adoid;
                                         }
                                     }
                                 }
@@ -375,10 +396,19 @@ public class assignedfragment extends Fragment {
                             ArrayList<String> mDlocation_address = new ArrayList<>();
                             ArrayList<String> mlatitude= new ArrayList<>();
                             ArrayList<String> mlongitude= new ArrayList<>();
+                            ArrayList<String> m_ado_id= new ArrayList<>();
                             String predate=arr[0][0];
+                            String preadoid=arr[6][0];
+                            m_ado_id.add(arr[6][0]);
                             //String predate = null;
                             for(int i=0;i<resultsArray.length();i++){
                                 String idate = arr[0][i];
+                                String iadoid = arr[6][i];
+
+                                if (!preadoid.equals(iadoid)){
+                                    m_ado_id.add(arr[6][i]);
+                                    System.out.println("in if m_ado_id: " + m_ado_id);
+                                }
                                 if(predate.equals(idate)){
                                     mDid.add(arr[1][i]);
                                     mDlocation_name.add(arr[2][i]);
@@ -389,23 +419,33 @@ public class assignedfragment extends Fragment {
                                     //predate=idate;
                                 }
                                 else{
-                                    sections.add(new Section_DDA(predate,mDid, mDlocation_name, mDlocation_address,mlatitude,mlongitude,true,false,false));
+                                    System.out.println("in else m_ado_id: " + m_ado_id);
+                                    System.out.println("in else preadoid: " + preadoid);
+//                                    new Section_DDA(m_ado_id);
+                                    sections.add(new Section_DDA(predate,mDid, mDlocation_name, mDlocation_address,mlatitude,mlongitude,m_ado_id,true,false,false));
                                     mDid = new ArrayList<>();
                                     mDlocation_name = new ArrayList<>();
                                     mDlocation_address = new ArrayList<>();
                                     mlatitude = new ArrayList<>();
                                     mlongitude = new ArrayList<>();
+//                                    m_ado_id = new ArrayList<>();
                                     mDid.add(arr[1][i]);
                                     mDlocation_name.add(arr[2][i]);
                                     mDlocation_address.add(arr[3][i]);
                                     mlatitude.add(arr[4][i]);
                                     mlongitude.add(arr[5][i]);
+//                                    m_ado_id.add(arr[6][i]);
                                     //date.equals(idate);
+
                                 }
                                 //predate.equals(idate);
                                 predate=idate;
+                                preadoid=iadoid;
                             }
-                            sections.add(new Section_DDA(predate,mDid, mDlocation_name, mDlocation_address,mlatitude,mlongitude,true,false,false));
+                            System.out.println("end pe chk ado id: "+ m_ado_id);
+                            System.out.println("end pe chk ado id ek hai?: "+ preadoid);
+//                            new Section_DDA(m_ado_id);
+                            sections.add(new Section_DDA(predate,mDid, mDlocation_name, mDlocation_address,mlatitude,mlongitude,m_ado_id,true,false,false));
                             //adoListAdapter.mshowshimmer = false;
                             recyclerViewAdater.notifyDataSetChanged();
                             isNextBusy = false;
@@ -540,7 +580,8 @@ public class assignedfragment extends Fragment {
 
 
     private void getNextData(final String url) {
-        sections=new ArrayList<>();
+        Log.d(TAG,"locations corresponding to next URL: "+url);
+//        sections=new ArrayList<>();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         isNextBusy = true;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null,
@@ -554,13 +595,17 @@ public class assignedfragment extends Fragment {
                             nextUrl = rootObject.getString("next");
                             if(resultsArray.length()== 0){
                                 //adoListAdapter.mshowshimmer = false;
+                                String[][] arr = new String[0][0];
                                 recyclerViewAdater.notifyDataSetChanged();
-
-                                view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
+//                                nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+//                                AppCompatActivity activity = (AppCompatActivity)getActivity();
+//                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.assigned_dda, no_data).commit();
+                                return;
+//                                view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
                                 //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                             }
 
-                            String[][] arr = new String[6][resultsArray.length()];
+                            String[][] arr = new String[7][resultsArray.length()];
                             for (int i = 0; i < resultsArray.length(); i++) {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
                                 String did = singleObject.getString("id");
@@ -570,18 +615,27 @@ public class assignedfragment extends Fragment {
                                 String dlongitude = singleObject.getString("longitude");
                                 String dlatitude = singleObject.getString("latitude");
                                 String ddate = singleObject.getString("acq_date");
+                                JSONObject adoObject = singleObject.getJSONObject("ado");
+                                String ado_id = adoObject.getString("id");
                                 arr[0][i]=ddate;
                                 arr[1][i]=did;
                                 arr[2][i]=dlocation_name;
                                 arr[3][i]=dlocation_address;
                                 arr[4][i]=dlatitude;
                                 arr[5][i]=dlongitude;
+                                arr[6][i]=ado_id;
+                                System.out.println("dimple1 in next fn" + "arr[6][" + i + "]: " + arr[6][i]);
+
                             }
-                            String inter;
+                            String inter,one_adoid;
                             for(int i=0;i<resultsArray.length()-1;i++){
                                 for(int j=0;j<resultsArray.length()-i-1;j++){
                                     String idate = arr[0][j];
                                     String ndate = arr[0][j+1];
+
+                                    String iadoid = arr[6][j];
+                                    String nadoid = arr[6][j+1];
+
                                     SimpleDateFormat sdfo = new SimpleDateFormat("yyyy-MM-dd");
                                     // Get the two dates to be compared
                                     Date d1 = null;
@@ -597,10 +651,17 @@ public class assignedfragment extends Fragment {
                                         e.printStackTrace();
                                     }
                                     if (d1.compareTo(d2) < 0) {
-                                        for(int k=0;k<6;k++) {
+                                        for(int k=0;k<7;k++) {          //k<6
                                             inter = arr[k][j];
                                             arr[k][j] = arr[k][j + 1];
                                             arr[k][j + 1] = inter;
+                                        }
+                                    }
+                                    if (iadoid.equals(nadoid)){
+                                        for(int k=0;k<7;k++) {              //k<6
+                                            one_adoid = arr[k][j];
+                                            arr[k][j] = arr[k][j + 1];
+                                            arr[k][j + 1] = one_adoid;
                                         }
                                     }
                                 }
@@ -610,37 +671,54 @@ public class assignedfragment extends Fragment {
                             ArrayList<String> mDlocation_address = new ArrayList<>();
                             ArrayList<String> mlatitude= new ArrayList<>();
                             ArrayList<String> mlongitude= new ArrayList<>();
+                            ArrayList<String> m_ado_id= new ArrayList<>();
                             String predate=arr[0][0];
+                            String preadoid=arr[6][0];
+                            m_ado_id.add(arr[6][0]);
                             //String predate = null;
                             for(int i=0;i<resultsArray.length();i++){
                                 String idate = arr[0][i];
+                                String iadoid = arr[6][i];
+
+                                if (!preadoid.equals(iadoid)){
+                                    m_ado_id.add(arr[6][i]);
+                                    System.out.println("in if m_ado_id: " + m_ado_id);
+                                }
                                 if(predate.equals(idate)){
                                     mDid.add(arr[1][i]);
                                     mDlocation_name.add(arr[2][i]);
                                     mDlocation_address.add(arr[3][i]);
                                     mlatitude.add(arr[4][i]);
                                     mlongitude.add(arr[5][i]);
+                                    m_ado_id.add(arr[6][i]);
+                                    System.out.println("in if of next fn m_ado_id: " + m_ado_id);
 
                                     //predate=idate;
                                 }
                                 else{
-                                    sections.add(new Section_DDA(predate,mDid, mDlocation_name, mDlocation_address,mlatitude,mlongitude,true,false,false));
+//                                    new Section_DDA(m_ado_id);
+                                    sections.add(new Section_DDA(predate,mDid, mDlocation_name, mDlocation_address,mlatitude,mlongitude,m_ado_id,true,false,false));
                                     mDid = new ArrayList<>();
                                     mDlocation_name = new ArrayList<>();
                                     mDlocation_address = new ArrayList<>();
                                     mlatitude = new ArrayList<>();
                                     mlongitude = new ArrayList<>();
+//                                    m_ado_id = new ArrayList<>();
                                     mDid.add(arr[1][i]);
                                     mDlocation_name.add(arr[2][i]);
                                     mDlocation_address.add(arr[3][i]);
                                     mlatitude.add(arr[4][i]);
                                     mlongitude.add(arr[5][i]);
+//                                    m_ado_id.add(arr[6][i]);
                                     //date.equals(idate);
+//                                    System.out.println("in else of next fn m_ado_id: " + m_ado_id);
+
                                 }
                                 //predate.equals(idate);
                                 predate=idate;
                             }
-                            sections.add(new Section_DDA(predate,mDid, mDlocation_name, mDlocation_address,mlatitude,mlongitude,true,false,false));
+//                            new Section_DDA(m_ado_id);
+                            sections.add(new Section_DDA(predate,mDid, mDlocation_name, mDlocation_address,mlatitude,mlongitude,m_ado_id,true,false,false));
                             //adoListAdapter.mshowshimmer = false;
                             recyclerViewAdater.notifyDataSetChanged();
                             isNextBusy = false;

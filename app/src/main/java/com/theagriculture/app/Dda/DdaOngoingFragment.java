@@ -150,11 +150,7 @@ public class DdaOngoingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Id = new ArrayList<String>();
-        Name = new ArrayList<String>();
-        Address = new ArrayList<String>();
-        mDates = new ArrayList<>();
-        isRefresh = false;
+        Log.d(TAG,"onCreateView: ");
 
         view = inflater.inflate(R.layout.fragment_ongoing,container,false);
         swipeRefreshLayout = view.findViewById(R.id.refreshpull_dda);
@@ -162,6 +158,12 @@ public class DdaOngoingFragment extends Fragment {
         spinner = view.findViewById(R.id.progressbar_dda);
         progressBar = view.findViewById(R.id.locations_loading_dda);
         setHasOptionsMenu(true);
+
+        Id = new ArrayList<String>();
+        Name = new ArrayList<String>();
+        Address = new ArrayList<String>();
+        mDates = new ArrayList<>();
+        isRefresh = false;
 
         review.addOnScrollListener(new RecyclerView.OnScrollListener(){
             @Override
@@ -201,6 +203,7 @@ public class DdaOngoingFragment extends Fragment {
         }
 
         getData(url_get_ongoing);
+        Log.d(TAG,"URL: " + url_get_ongoing);
 
 //        ddaongoingAdapter = new DdaongoingAdapter(getActivity(),Id,Name,Address,mDates);
 //        review.setAdapter(ddaongoingAdapter);
@@ -240,7 +243,8 @@ public class DdaOngoingFragment extends Fragment {
     }
 
     private void getData(final String url) {
-//        sections=new ArrayList<>();
+//        spinner.setVisibility(View.GONE);
+        sections=new ArrayList<>();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         isNextBusy = true;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null,
@@ -250,15 +254,18 @@ public class DdaOngoingFragment extends Fragment {
                         try {
                             JSONObject rootObject = new JSONObject(String.valueOf(response));
                             JSONArray resultsArray = rootObject.getJSONArray("results");
-                            //Toast.makeText(getActivity(),rootObject.toString(),Toast.LENGTH_LONG).show();
                             nextUrl = rootObject.getString("next");
-                            if(resultsArray.length()== 0){
+//                            int count = rootObject.getInt("count");
+                            if(resultsArray.length() == 0 /* count == 0*/){
                                 //adoListAdapter.mshowshimmer = false;
+                                String[][] arr = new String[0][0];
+                                spinner.setVisibility(View.GONE);
                                 recyclerViewAdater.notifyDataSetChanged();
                                 nothing_toshow_fragment no_data = new nothing_toshow_fragment();
                                 AppCompatActivity activity = (AppCompatActivity)getActivity();
                                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.assigned_dda, no_data).commit();
 //                                view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
+                                return;
                             }
 
                             String[][] arr = new String[6][resultsArray.length()];
@@ -476,6 +483,7 @@ public class DdaOngoingFragment extends Fragment {
 
 
     private void getNextData(final String url) {
+        Log.d(TAG,"locations corresponding to next URL: "+url);
         sections=new ArrayList<>();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         isNextBusy = true;
@@ -490,10 +498,12 @@ public class DdaOngoingFragment extends Fragment {
                             nextUrl = rootObject.getString("next");
                             if(resultsArray.length()== 0){
                                 //adoListAdapter.mshowshimmer = false;
+                                String[][] arr = new String[0][0];
                                 recyclerViewAdater.notifyDataSetChanged();
-                                nothing_toshow_fragment no_data = new nothing_toshow_fragment();
-                                AppCompatActivity activity = (AppCompatActivity)getActivity();
-                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.assigned_dda, no_data).commit();
+//                                nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+//                                AppCompatActivity activity = (AppCompatActivity)getActivity();
+//                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.assigned_dda, no_data).commit();
+                                return;
 //                                view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
                                 //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                             }

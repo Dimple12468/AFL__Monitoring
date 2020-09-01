@@ -34,6 +34,8 @@ public class Globals {
     public static String unassignedLocationsDDA = serverURL + "api/locations/dda/unassigned";
     public static String ddaOngoing = serverURL + "api/locations/dda/ongoing";
     public static String ddaCompleted = serverURL + "api/locations/dda/completed";
+    public static String assignADO = serverURL + "api/ado/";
+
 
 
 }

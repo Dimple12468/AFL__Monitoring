@@ -1,46 +1,59 @@
 package com.theagriculture.app.Dda;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.theagriculture.app.Admin.CompleteDetailsFragment;
 import com.theagriculture.app.Admin.ongoingDetailsFragment;
 import com.theagriculture.app.Ado.ItemAdapter_ado;
 import com.theagriculture.app.Ado.PendingReport;
+import com.theagriculture.app.Ado.ReviewReport;
 import com.theagriculture.app.R;
 
 import java.util.ArrayList;
 
 public class ItemAdapter_DDA extends RecyclerView.Adapter<ItemAdapter_DDA.ViewHolder> {
 
+    View view;
     Context context;
     ArrayList<String> did;
     ArrayList<String> dlocation_name;
     ArrayList<String> dlocation_address;
     private ArrayList<String> dlatitude;
     private ArrayList<String> dlongitude;
+    private ArrayList<String> dAdoID;
     Boolean isPending,isCompleted,isOngoing;
+//    final ItemAdapter_DDA.ViewHolder viewHolderAssignedDda;
 
-    public ItemAdapter_DDA(Context context, ArrayList<String> did, ArrayList<String> dlocation_name, ArrayList<String> dlocation_address, ArrayList<String> dlatitude, ArrayList<String> dlongitude, Boolean isPending, Boolean isCompleted, Boolean isOngoing) {
+    public ItemAdapter_DDA(Context context, ArrayList<String> did, ArrayList<String> dlocation_name, ArrayList<String> dlocation_address, ArrayList<String> dlatitude, ArrayList<String> dlongitude,ArrayList<String> dAdoID, Boolean isPending, Boolean isCompleted, Boolean isOngoing) {
         this.context=context;
         this.did=did;
         this.dlocation_name=dlocation_name;
         this.dlocation_address=dlocation_address;
         this.dlatitude=dlatitude;
         this.dlongitude=dlongitude;
+        this.dAdoID=dAdoID;
         this.isPending=isPending;
         this.isCompleted=isCompleted;
         this.isOngoing=isOngoing;
@@ -49,7 +62,8 @@ public class ItemAdapter_DDA extends RecyclerView.Adapter<ItemAdapter_DDA.ViewHo
     @NonNull
     @Override
     public ItemAdapter_DDA.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_dda, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_dda, parent, false);
+//        viewHolderAssignedDda = new ItemAdapter_DDA.ViewHolder(view);
         return new ViewHolder(view);
     }
 
@@ -87,63 +101,68 @@ public class ItemAdapter_DDA extends RecyclerView.Adapter<ItemAdapter_DDA.ViewHo
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(context, "item clicked", Toast.LENGTH_SHORT).show();
-            /*if(isPending){
+            if(isPending){
                 final int position = this.getAdapterPosition();
-                final BottomSheetDialog mBottomDialogNotificationAction = new BottomSheetDialog(context);
-                View sheetView = ((FragmentActivity)context).getLayoutInflater().inflate(R.layout.pending_options_ado, null);
-                mBottomDialogNotificationAction.setContentView(sheetView);
-                //mBottomDialogNotificationAction.setCancelable(false);
-                mBottomDialogNotificationAction.show();
 
-                // Remove default white color background
-                FrameLayout bottomSheet = (FrameLayout) mBottomDialogNotificationAction.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                bottomSheet.setBackground(null);
+                LayoutInflater li = LayoutInflater.from(context);
+                View promptsView = li.inflate(R.layout.assign_alert_dda, null);
 
-                LinearLayout for_check = (LinearLayout) sheetView.findViewById(R.id.for_check);
-                LinearLayout for_navigation = (LinearLayout) sheetView.findViewById(R.id.for_navigation);
-                LinearLayout for_cancel = (LinearLayout) sheetView.findViewById(R.id.for_cancel_ado);
+                Button bt1 = promptsView.findViewById(R.id.yes_assign);
+                Button bt2 = promptsView.findViewById(R.id.no_assign);
 
-                for_check.setOnClickListener(new View.OnClickListener() {
+                final AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialog)
+                        .setView(promptsView)
+                        .create();
+
+                bt1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mBottomDialogNotificationAction.dismiss();
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString("Id_I_Need", did.get(position));
+//                        bundle.putString("adoId", dAdoID.get(position));
+//                        Intent intent = new Intent(context, DdaselectAdo.class);
+//                        intent.putExtras(bundle);
+//                        DdaselectAdo abc = new DdaselectAdo();
 
-                        Bundle bundle = new Bundle();
-                        bundle.putString("id",did.get(position));
-                        bundle.putString("lat",dlatitude.get(position));
-                        bundle.putString("long",dlongitude.get(position));
-                        PendingReport abc = new PendingReport();
-                        abc.setArguments(bundle);
-                        AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_ado,abc).addToBackStack(null).commit();
-
-
-
+                        Intent intent = new Intent(context, DdaselectAdo.class);
+                        intent.putExtra("Id_I_Need", did.get(position));
+                        intent.putExtra("adoId", dAdoID.get(position));
+                        System.out.println("did: " + did  + "dAdoID: " + dAdoID);
+                        context.startActivity(intent);
+                        alertDialog.dismiss();
                     }
                 });
 
-                for_navigation.setOnClickListener(new View.OnClickListener() {
+                bt2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Toast.makeText(mcontext,"clicked navigation with "+ longitude.get(position)+" and "+latitude.get(position),Toast.LENGTH_LONG).show();
-                        //Snackbar.make(mView,"email here",Snackbar.LENGTH_LONG).show();
-                        onClickNavigation(dlatitude.get(position).toString(),dlongitude.get(position).toString());
+                        alertDialog.dismiss();
                     }
                 });
-                NotificationManagerCompat manager = NotificationManagerCompat.from(context);
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                alertDialog.show();
 
-                for_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Snackbar.make(mView,"Cancel here",Snackbar.LENGTH_LONG).show();
-                        mBottomDialogNotificationAction.dismiss();
-                    }
-                });
+            }
 
-            }*/
+            if(isOngoing){
+                int position = this.getAdapterPosition();
+                Bundle bundle = new Bundle();
+                bundle.putString("id", did.get(position));
+                bundle.putString("review_address_top",dlocation_name.get(position)+", "+dlocation_address.get(position));
+                bundle.putBoolean("isDdo", true);
+                bundle.putBoolean("isAdmin", false);
+                bundle.putBoolean("isComplete", false);
+                bundle.putBoolean("isOngoing",true);
+                bundle.putBoolean("isDDA", true);
 
-            /*if(isCompleted){
+//                ongoingDetailsFragment abc = new ongoingDetailsFragment();
+                CompleteDetailsFragment abc = new CompleteDetailsFragment();
+                abc.setArguments(bundle);
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout_dda,abc).addToBackStack(null).commit();
+            }
+
+            if(isCompleted){
                 int position = this.getAdapterPosition();
                 Bundle bundle = new Bundle();
                 bundle.putString("id", did.get(position));
@@ -151,12 +170,14 @@ public class ItemAdapter_DDA extends RecyclerView.Adapter<ItemAdapter_DDA.ViewHo
                 bundle.putBoolean("isDdo", true);
                 bundle.putBoolean("isAdmin", false);
                 bundle.putBoolean("isComplete", true);
+                bundle.putBoolean("isDDA", true);
+                bundle.putBoolean("isOngoing",false);
 
-                ongoingDetailsFragment abc = new ongoingDetailsFragment();
+                CompleteDetailsFragment abc = new CompleteDetailsFragment();
                 abc.setArguments(bundle);
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_ado,abc).addToBackStack(null).commit();
-            }*/
+                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout_dda,abc).addToBackStack(null).commit();
+            }
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.theagriculture.app.Admin;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -188,82 +190,64 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> /*
         @Override
         public void onClick(View v) {
             int position = this.getAdapterPosition();
-            //Toast.makeText(mcontext,"You clicked "+ mIds.get(position)+ "ddo_name"+mtextview1.get(position)+"ado_name"+mtextview2.get(position),Toast.LENGTH_LONG).show();
-            //Toast.makeText(mcontext,"You clicked "+ mtextview3.get(position)+ "ado_pke"+mpkado.get(position)+"ddao_pke"+mpkdda.get(position),Toast.LENGTH_LONG).show();
             if(isPending) {
-                Bundle bundle = new Bundle();
-                bundle.putString("id", mIds.get(position));
-                bundle.putString("ado_name", mtextview1.get(position));
-                bundle.putString("dda_name", mtextview2.get(position));
-                bundle.putString("address_big", mtextview3.get(position));
-                bundle.putString("ado_pk", mpkado.get(position));
-                bundle.putString("dda_pk", mpkdda.get(position));
-                bundle.putBoolean("isPending",true);
-                bundle.putBoolean("isOngoing", false);
-                PendingDetailsFragment abc = new PendingDetailsFragment();
-                abc.setArguments(bundle);
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, abc).addToBackStack(null).commit();
-                //activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).commit();
+                Intent intent = new Intent(mcontext,pending_details.class);
+                intent.putExtra("id", mIds.get(position));
+                intent.putExtra("ado_name", mtextview1.get(position));
+                intent.putExtra("dda_name", mtextview2.get(position));
+                intent.putExtra("address_big", mtextview3.get(position));
+                intent.putExtra("ado_pk", mpkado.get(position));
+                intent.putExtra("dda_pk", mpkdda.get(position));
+                intent.putExtra("isPending",true);
+                intent.putExtra("isOngoing", false);
+                mcontext.startActivity(intent);
+//                ((Activity)mcontext).finish();
+
+//                Bundle bundle = new Bundle();
+//                bundle.putString("id", mIds.get(position));
+//                bundle.putString("ado_name", mtextview1.get(position));
+//                bundle.putString("dda_name", mtextview2.get(position));
+//                bundle.putString("address_big", mtextview3.get(position));
+//                bundle.putString("ado_pk", mpkado.get(position));
+//                bundle.putString("dda_pk", mpkdda.get(position));
+//                bundle.putBoolean("isPending",true);
+//                bundle.putBoolean("isOngoing", false);
+//                PendingDetailsFragment abc = new PendingDetailsFragment();
+//                abc.setArguments(bundle);
+//                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+//                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, abc).addToBackStack(null).commit();
             }
             if(isOngoing) {
-                Bundle bundle = new Bundle();
-                bundle.putString("id", mIds.get(position));
-                bundle.putString("ado_name", mtextview1.get(position));
-                bundle.putString("dda_name", mtextview2.get(position));
-                bundle.putString("address_big", mtextview3.get(position));
-                bundle.putString("ado_pk", mpkado.get(position));
-                bundle.putString("dda_pk", mpkdda.get(position));
-                bundle.putBoolean("isPending",false);
-                bundle.putBoolean("isOngoing", true);
-                PendingDetailsFragment abc = new PendingDetailsFragment();
-                abc.setArguments(bundle);
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, abc).addToBackStack(null).commit();
-                /*
-                Bundle bundle = new Bundle();
-
-                bundle.putString("id", mIds.get(position));
-                bundle.putString("review_address_top",mtextview3.get(position));
-                bundle.putBoolean("isDdo", true);
-                bundle.putBoolean("isAdmin", true);
-                bundle.putBoolean("isComplete", true);
-
-                ongoingDetailsFragment abc = new ongoingDetailsFragment();
-                abc.setArguments(bundle);
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).addToBackStack(null).commit();
-
-                 */
-                //activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, abc).commit();
+                Intent intent = new Intent(mcontext,pending_details.class);
+                intent.putExtra("id", mIds.get(position));
+                intent.putExtra("ado_name", mtextview1.get(position));
+                intent.putExtra("dda_name", mtextview2.get(position));
+                intent.putExtra("address_big", mtextview3.get(position));
+                intent.putExtra("ado_pk", mpkado.get(position));
+                intent.putExtra("dda_pk", mpkdda.get(position));
+                intent.putExtra("isPending",false);
+                intent.putExtra("isOngoing", true);
+                mcontext.startActivity(intent);
+//                PendingDetailsFragment abc = new PendingDetailsFragment();
+//                abc.setArguments(bundle);
+//                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+//                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, abc).addToBackStack(null).commit();
             }
             if(isComplete) {
-                //Toast.makeText(mcontext,"sending "+ mIds.get(position)+" "+mtextview3.get(position),Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(mcontext,complete_details.class);
+                intent.putExtra("id", mIds.get(position));
+                intent.putExtra("review_address_top",mtextview3.get(position));
+                mcontext.startActivity(intent);
 
-                Bundle bundle = new Bundle();
-
-                bundle.putString("id", mIds.get(position));
-                bundle.putString("review_address_top",mtextview3.get(position));
-               // bundle.putBoolean("isDdo", true);
+                // bundle.putBoolean("isDdo", true);
                // bundle.putBoolean("isAdmin", true);
                 //bundle.putBoolean("isComplete", true);
-
-                CompleteDetailsFragment abc = new CompleteDetailsFragment();
-                abc.setArguments(bundle);
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).addToBackStack(null).commit();
-
-
-                //activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, abc).commit();
+//                CompleteDetailsFragment abc = new CompleteDetailsFragment();
+//                abc.setArguments(bundle);
+//                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+//                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).addToBackStack(null).commit();
             }
         }
-
-/*
-        public void bind(String item) {
-            itemName.setText(item);
-        }
-
- */
     }
 }
 

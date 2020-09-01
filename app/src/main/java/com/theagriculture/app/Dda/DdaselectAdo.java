@@ -25,6 +25,8 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.theagriculture.app.Admin.DistrictAdoAdapter;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -41,7 +43,7 @@ public class DdaselectAdo extends AppCompatActivity {
     private ArrayList<String> nameofado;
     private Map<Integer, ArrayList<String>> villagename;
     private String mCurrentAdoId = "";
-    private String urlget = "http://18.224.202.135/api/ado/";
+    private String urlget = Globals.assignADO;                                  //"http://18.224.202.135/api/ado/";
     private String token;
     private DdaAdoListAdapter ddaAdoListAdapter;
     private String idtopass;
@@ -51,29 +53,45 @@ public class DdaselectAdo extends AppCompatActivity {
     private String nextUrl;
     private boolean isNextBusy = false;
     private ProgressBar progressBar;
+    RecyclerView review;
+    private DistrictAdoAdapter recyclerViewAdater;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ddaselect_ado);
 
-
         nameofado = new ArrayList<String>();
         villagename = new HashMap<>();
         progressBar = findViewById(R.id.ado_list_loading);
-        ddaAdoListAdapter = new DdaAdoListAdapter(DdaselectAdo.this,nameofado,villagename);
-        RecyclerView review = findViewById(R.id.RecyclerViewadolist);
-        review.setAdapter(ddaAdoListAdapter);
+        review = findViewById(R.id.RecyclerViewadolist);
+
+        new DistrictAdoAdapter(true);
+        recyclerViewAdater = new DistrictAdoAdapter(DdaselectAdo.this,nameofado,villagename);
+//        ddaAdoListAdapter = new DdaAdoListAdapter(DdaselectAdo.this,nameofado,villagename);
+        review.setAdapter(recyclerViewAdater);
+
         layoutManager = new LinearLayoutManager(this);
         review.setLayoutManager(layoutManager);
         DividerItemDecoration divider = new DividerItemDecoration(review.getContext(), layoutManager.getOrientation());
         review.addItemDecoration(divider);
+
         //getting location id coming from unassigned fragment to this activity
         Intent intent = getIntent();
         idtopass = intent.getStringExtra("Id_I_Need");
         mCurrentAdoId = intent.getStringExtra("adoId");
+
         Log.d(TAG, "onCreate: Id_I_Need=" + idtopass);
-        ddaAdoListAdapter.getlocationid(idtopass);
+        Log.d(TAG, "onCreate: adoId=" + mCurrentAdoId);
+
+//        Bundle bundle = getIntent().getExtras();
+//        bundle.getString("Id_I_Need");
+//        bundle.getString("adoId");
+
+
+        recyclerViewAdater.getLocationID(idtopass);
+//        ddaAdoListAdapter.getlocationid(idtopass);
         try {
 
         } catch (Exception e) {
@@ -81,8 +99,11 @@ public class DdaselectAdo extends AppCompatActivity {
         }
         //Toast.makeText(this, "List of Ado's", Toast.LENGTH_SHORT).show();
         loadData(urlget);
+        Log.d(TAG, "URL: " + urlget);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("List of Ado's");
+//        getSupportActionBar().setTitle("List of Ado's");
+
         SharedPreferences preferences = getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         token = preferences.getString("token", "");
         Log.d(TAG, "onCreateView: " + token);
@@ -124,10 +145,12 @@ public class DdaselectAdo extends AppCompatActivity {
                         JSONObject c =jsonArray.getJSONObject(i);
                         adoid = c.getString("id");
                         if (adoid.equals(mCurrentAdoId)) {
-                            ddaAdoListAdapter.getCurrentAdo(currentListSize + i);
+                            recyclerViewAdater.getCurrentADO(currentListSize + i);
+//                            ddaAdoListAdapter.getCurrentAdo(currentListSize + i);
                             Log.d(TAG, "onResponse: CURRENT ADO ID" + currentListSize + i);
                         }
-                        ddaAdoListAdapter.getadoid(adoid);
+                        recyclerViewAdater.getAdoId(adoid);
+//                        ddaAdoListAdapter.getadoid(adoid);
                         Log.d(TAG, "onResponse: ID " + adoid);
                         nameofado.add(c.getString("name").toUpperCase());
                         JSONArray villageArray = c.getJSONArray("village");
@@ -141,7 +164,8 @@ public class DdaselectAdo extends AppCompatActivity {
                         villagename.put(i, villagesList);
                     }
                     isNextBusy = false;
-                    ddaAdoListAdapter.notifyDataSetChanged();
+                    recyclerViewAdater.notifyDataSetChanged();
+//                    ddaAdoListAdapter.notifyDataSetChanged();
                     progressBar.setVisibility(View.GONE);
                 }catch (JSONException e){
                     Log.d(TAG, "onResponse: "+e);

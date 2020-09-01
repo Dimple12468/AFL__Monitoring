@@ -34,6 +34,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 import com.theagriculture.app.login_activity;
 
@@ -161,10 +162,13 @@ public class ReviewReport extends AppCompatActivity {
 
         fatherNameRight = findViewById(R.id.fatherNameRight);
         fatherNameLeft = findViewById(R.id.fatherNameLeft);
+
         nameLeft = findViewById(R.id.nameLeft);
         nameRight = findViewById(R.id.nameRight);
+
         villCodeRight = findViewById(R.id.villCodeRight);
         villCodeLeft = findViewById(R.id.villCodeLeft);
+
        // mobileLeft = findViewById(R.id.mobileLeft);
         //mobileRight = findViewById(R.id.mobileRight);
 //        khasraLeft = findViewById(R.id.khasraLeft);
@@ -201,7 +205,7 @@ public class ReviewReport extends AppCompatActivity {
         isComplete = intent.getBooleanExtra("isComplete", false);
         isAdmin = intent.getBooleanExtra("isAdmin", false);
         isOngoing = intent.getBooleanExtra("isOngoing", false);
-        mUrl = "http://18.224.202.135/api/report-ado/" + id + "/";
+        mUrl = Globals.report_ado +  id + "/";                          //"http://18.224.202.135/api/report-ado/" + id + "/";
         Log.d(TAG, "onCreate: URL " + mUrl);
         /*schemedata.add("State Scheme for Promotion of Cotton Cultivation in Haryana ");
         programNamedata.add("Pest Management Demonstration (IPM)");
