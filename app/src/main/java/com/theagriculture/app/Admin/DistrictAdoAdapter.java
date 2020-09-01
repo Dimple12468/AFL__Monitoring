@@ -329,7 +329,7 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
             AdoDdoActivityFragment abc = new AdoDdoActivityFragment();
             abc.setArguments(bundle);
             AppCompatActivity activity = (AppCompatActivity) v.getContext();
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).addToBackStack(null).commit();
+            activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc).addToBackStack(null).commit();
 
 
         }

@@ -29,6 +29,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -57,63 +58,91 @@ public class DdaActivity extends AppCompatActivity {
     private BottomNavigationView navigation;
     FrameLayout frameLayout;
 
-    private ado_map_fragment ado_map_fragment;
-    private map_fragemnt_dda map_fragemnt_dda;
-    private DdaPendingFragment DdaPendingFragment;
-    private DdaOngoingFragment DdaOngoingFragment;
-    private DdaCompletedFragment DdaCompletedFragment;
-    private adounderddo adounderddo;
+//    private ado_map_fragment ado_map_fragment;
+//    private map_fragemnt_dda map_fragemnt_dda;
+//    private DdaPendingFragment DdaPendingFragment;
+//    private DdaOngoingFragment DdaOngoingFragment;
+//    private DdaCompletedFragment DdaCompletedFragment;
+//    private adounderddo adounderddo;
 
+
+    final Fragment ado_map_fragment = new ado_map_fragment();
+    final Fragment map_fragemnt_dda = new map_fragemnt_dda();
+    final Fragment DdaPendingFragment = new DdaPendingFragment();
+    final Fragment DdaOngoingFragment = new DdaOngoingFragment();
+    final Fragment DdaCompletedFragment = new DdaCompletedFragment();
+    final Fragment adounderddo = new adounderddo();
+
+    final FragmentManager fm = getSupportFragmentManager();
+    Fragment active = map_fragemnt_dda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dda);
 
-        frameLayout = findViewById(R.id.frameLayout_dda);
-        navigation = findViewById(R.id.navigation_cmnd);
+        if (savedInstanceState == null) {
 
-        ado_map_fragment = new ado_map_fragment();
-        map_fragemnt_dda = new map_fragemnt_dda();
-        DdaPendingFragment = new DdaPendingFragment();
-        DdaOngoingFragment = new DdaOngoingFragment();
-        DdaCompletedFragment = new DdaCompletedFragment();
-        adounderddo = new adounderddo();
 
-        //Get the name and type of user from the shared preferences file to display in header view of the drawer layout
-        SharedPreferences preferences = getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        String typeofuser = preferences.getString("typeOfUser", "");
-        String username = preferences.getString("Name", "");
+            setContentView(R.layout.activity_dda);
 
-        if(getPermission()){
-            InitializeFragment(map_fragemnt_dda);
-            //InitializeFragment(ado_map_fragment);
-            navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            frameLayout = findViewById(R.id.frameLayout_dda);
+            navigation = findViewById(R.id.navigation_cmnd);
 
-                    switch (item.getItemId()) {
-                        case R.id.home_dda:
-                            InitializeFragment(map_fragemnt_dda);
-                            //InitializeFragment(map_fragemnt_dda);
-                            return true;
-                        case R.id.pending_dda:
-                            InitializeFragment(DdaPendingFragment);
-                            return true;
-                        case R.id.ongoing_dda:
-                            InitializeFragment(DdaOngoingFragment);
-                            return true;
-                        case R.id.completed_dda:
-                            InitializeFragment(DdaCompletedFragment);
-                            return true;
-                        case R.id.ado_dda:
-                            InitializeFragment(adounderddo);
-                            return true;
-                        default:
-                            return false;
+
+            //Get the name and type of user from the shared preferences file to display in header view of the drawer layout
+            SharedPreferences preferences = getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
+            String typeofuser = preferences.getString("typeOfUser", "");
+            String username = preferences.getString("Name", "");
+
+            if (getPermission()) {
+                InitializeFragment(map_fragemnt_dda);
+                //InitializeFragment(ado_map_fragment);
+                navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.home_dda:
+//                                InitializeFragment(map_fragemnt_dda);
+                                fm.beginTransaction().hide(active).show(map_fragemnt_dda).commit();
+                                active = map_fragemnt_dda;
+                                //InitializeFragment(map_fragemnt_dda);
+                                return true;
+                            case R.id.pending_dda:
+//                                InitializeFragment(DdaPendingFragment);
+                                fm.beginTransaction().hide(active).show(DdaPendingFragment).commit();
+                                active = DdaPendingFragment;
+                                return true;
+                            case R.id.ongoing_dda:
+//                                InitializeFragment(DdaOngoingFragment);
+                                fm.beginTransaction().hide(active).show(DdaOngoingFragment).commit();
+                                active = DdaOngoingFragment;
+                                return true;
+                            case R.id.completed_dda:
+//                                InitializeFragment(DdaCompletedFragment);
+                                fm.beginTransaction().hide(active).show(DdaCompletedFragment).commit();
+                                active = DdaCompletedFragment;
+                                return true;
+                            case R.id.ado_dda:
+//                                InitializeFragment(adounderddo);
+                                fm.beginTransaction().hide(active).show(adounderddo).commit();
+                                active = adounderddo;
+                                return true;
+                            default:
+                                return false;
+                        }
                     }
-                }
-            });
+                });
+            }
+
+            fm.beginTransaction().add(R.id.frameLayout_dda, adounderddo, "5").hide(DdaCompletedFragment).commit();
+            fm.beginTransaction().add(R.id.frameLayout_dda, DdaCompletedFragment, "4").hide(DdaOngoingFragment).commit();
+            fm.beginTransaction().add(R.id.frameLayout_dda, DdaOngoingFragment, "3").hide(DdaPendingFragment).commit();
+            fm.beginTransaction().add(R.id.frameLayout_dda, DdaPendingFragment, "2").hide(map_fragemnt_dda).commit();
+            fm.beginTransaction().add(R.id.frameLayout_dda,map_fragemnt_dda, "1").commit();
+            fm.beginTransaction().show(map_fragemnt_dda).commit();
+
+
         }
 
     }

@@ -1,6 +1,7 @@
 package com.theagriculture.app.Admin;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ public class location_fragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
         inflater.inflate(R.menu.menu_top_bar,menu);
         searchItem = menu.findItem(R.id.search_in_title);
         searchItem_filter = menu.findItem(R.id.filter);
