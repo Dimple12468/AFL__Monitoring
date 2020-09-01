@@ -194,7 +194,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> /*
         public void onClick(View v) {
             int position = this.getAdapterPosition();
             if(isPending) {
-<<<<<<< HEAD
                 Intent intent = new Intent(mcontext,pending_details.class);
                 intent.putExtra("id", mIds.get(position));
                 intent.putExtra("ado_name", mtextview1.get(position));
@@ -232,58 +231,22 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> /*
                 intent.putExtra("isPending",false);
                 intent.putExtra("isOngoing", true);
                 mcontext.startActivity(intent);
+
+//              Bundle bundle = new Bundle();
+//                bundle.putString("id", mIds.get(position));
+//                bundle.putString("ado_name", mtextview1.get(position));
+//                bundle.putString("dda_name", mtextview2.get(position));
+//                bundle.putString("address_big", mtextview3.get(position));
+//                bundle.putString("ado_pk", mpkado.get(position));
+//                bundle.putString("dda_pk", mpkdda.get(position));
+//                bundle.putBoolean("isPending",true);
+//                bundle.putBoolean("isOngoing", false);
 //                PendingDetailsFragment abc = new PendingDetailsFragment();
 //                abc.setArguments(bundle);
 //                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-//                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, abc).addToBackStack(null).commit();
-=======
-                Bundle bundle = new Bundle();
-                bundle.putString("id", mIds.get(position));
-                bundle.putString("ado_name", mtextview1.get(position));
-                bundle.putString("dda_name", mtextview2.get(position));
-                bundle.putString("address_big", mtextview3.get(position));
-                bundle.putString("ado_pk", mpkado.get(position));
-                bundle.putString("dda_pk", mpkdda.get(position));
-                bundle.putBoolean("isPending",true);
-                bundle.putBoolean("isOngoing", false);
-                PendingDetailsFragment abc = new PendingDetailsFragment();
-                abc.setArguments(bundle);
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-
-                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, abc,"a").addToBackStack("a").commit();
+//
+//                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, abc,"a").addToBackStack("a").commit();
                 //activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).commit();
-            }
-            if(isOngoing) {
-                Bundle bundle = new Bundle();
-                bundle.putString("id", mIds.get(position));
-                bundle.putString("ado_name", mtextview1.get(position));
-                bundle.putString("dda_name", mtextview2.get(position));
-                bundle.putString("address_big", mtextview3.get(position));
-                bundle.putString("ado_pk", mpkado.get(position));
-                bundle.putString("dda_pk", mpkdda.get(position));
-                bundle.putBoolean("isPending",false);
-                bundle.putBoolean("isOngoing", true);
-                PendingDetailsFragment abc = new PendingDetailsFragment();
-                abc.setArguments(bundle);
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, abc,"a").addToBackStack("a").commit();
-                /*
-                Bundle bundle = new Bundle();
-
-                bundle.putString("id", mIds.get(position));
-                bundle.putString("review_address_top",mtextview3.get(position));
-                bundle.putBoolean("isDdo", true);
-                bundle.putBoolean("isAdmin", true);
-                bundle.putBoolean("isComplete", true);
-
-                ongoingDetailsFragment abc = new ongoingDetailsFragment();
-                abc.setArguments(bundle);
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).addToBackStack(null).commit();
-
-                 */
-                //activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, abc).commit();
->>>>>>> f53fca9ce38662b81b6f371060f5f28b9c7c3937
             }
             if(isComplete) {
                 Intent intent = new Intent(mcontext,complete_details.class);
@@ -294,21 +257,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> /*
                 // bundle.putBoolean("isDdo", true);
                // bundle.putBoolean("isAdmin", true);
                 //bundle.putBoolean("isComplete", true);
-<<<<<<< HEAD
 //                CompleteDetailsFragment abc = new CompleteDetailsFragment();
 //                abc.setArguments(bundle);
 //                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-//                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).addToBackStack(null).commit();
-=======
-
-                CompleteDetailsFragment abc = new CompleteDetailsFragment();
-                abc.setArguments(bundle);
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc, "a").addToBackStack("a").commit();
+//                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc, "a").addToBackStack("a").commit();
 
 
-                //activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, abc).commit();
->>>>>>> f53fca9ce38662b81b6f371060f5f28b9c7c3937
             }
         }
     }
