@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.theagriculture.app.Admin.AdoDdoActivity.AdoDdoActivity;
 import com.theagriculture.app.Admin.AdoDdoActivity.AdoDdoActivityFragment;
+import com.theagriculture.app.Admin.AdoDdoActivity.AdoDdo_Activity;
 import com.theagriculture.app.Ado.ReviewTableRecycleAdapter;
 import com.theagriculture.app.Dda.DdaselectAdo;
 import com.theagriculture.app.R;
@@ -306,30 +307,25 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
         }
         @Override
         public void onClick(View v) {
-            //Toast.makeText(mcontext,"you clicked an ado",Toast.LENGTH_LONG).show();
-            //Toast.makeText(mcontext,"Sending user id "+ mUserId.get(this.getAdapterPosition()),Toast.LENGTH_LONG).show();
-            /*
-            Intent intent = new Intent(mcontext, AdoDdoActivity.class);
+            Intent intent =  new Intent(mcontext, AdoDdo_Activity.class);
             intent.putExtra("Id", mUserId.get(this.getAdapterPosition()));
-            if (isDdoFragment)
+//            Bundle bundle = new Bundle();
+//            bundle.putString("Id", mUserId.get(this.getAdapterPosition()));
+            if(isDdoFragment) {
                 intent.putExtra("isDdo", true);
-            else
+//                bundle.putBoolean("isDdo", true);
+            }
+            else {
                 intent.putExtra("isDdo", false);
+//                bundle.putBoolean("isDdo", false);
+            }
             intent.putExtra("name", mtextview1.get(this.getAdapterPosition()));
             mcontext.startActivity(intent);
-
-             */
-            Bundle bundle = new Bundle();
-            bundle.putString("Id", mUserId.get(this.getAdapterPosition()));
-            if(isDdoFragment)
-                bundle.putBoolean("isDdo",true);
-            else
-                bundle.putBoolean("isDdo",false);
-            bundle.putString("name", mtextview1.get(this.getAdapterPosition()));
-            AdoDdoActivityFragment abc = new AdoDdoActivityFragment();
-            abc.setArguments(bundle);
-            AppCompatActivity activity = (AppCompatActivity) v.getContext();
-            activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc).addToBackStack(null).commit();
+//            bundle.putString("name", mtextview1.get(this.getAdapterPosition()));
+//            AdoDdoActivityFragment abc = new AdoDdoActivityFragment();
+//            abc.setArguments(bundle);
+//            AppCompatActivity activity = (AppCompatActivity) v.getContext();
+//            activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc).addToBackStack(null).commit();
 
 
         }

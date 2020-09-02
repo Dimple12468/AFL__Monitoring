@@ -229,6 +229,7 @@ public class DistrictStateFragment extends Fragment {
         legend.setTextColor(Color.BLACK);
         legend.setForm(Legend.LegendForm.SQUARE);
         legend.setFormSize(10);
+//        legend.setXOffset(10);
         lineChart.invalidate();
 
         LegendEntry[] legendEntry = new LegendEntry[3];

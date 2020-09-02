@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.theagriculture.app.Admin.CompleteDetailsFragment;
+import com.theagriculture.app.Admin.complete_details;
 import com.theagriculture.app.Admin.ongoingDetailsFragment;
 import com.theagriculture.app.Ado.ItemAdapter_ado;
 import com.theagriculture.app.Ado.PendingReport;
@@ -146,37 +147,55 @@ public class ItemAdapter_DDA extends RecyclerView.Adapter<ItemAdapter_DDA.ViewHo
 
             if(isOngoing){
                 int position = this.getAdapterPosition();
-                Bundle bundle = new Bundle();
-                bundle.putString("id", did.get(position));
-                bundle.putString("review_address_top",dlocation_name.get(position)+", "+dlocation_address.get(position));
-                bundle.putBoolean("isDdo", true);
-                bundle.putBoolean("isAdmin", false);
-                bundle.putBoolean("isComplete", false);
-                bundle.putBoolean("isOngoing",true);
-                bundle.putBoolean("isDDA", true);
+                Intent intent = new Intent(context, complete_details.class);
+                intent.putExtra("id", did.get(position));
+                intent.putExtra("review_address_top",dlocation_name.get(position)+", "+dlocation_address.get(position));
+                intent.putExtra("isDdo", true);
+                intent.putExtra("isAdmin", false);
+                intent.putExtra("isComplete", false);
+                intent.putExtra("isOngoing",true);
+                intent.putExtra("isDDA", true);
+                context.startActivity(intent);
 
-//                ongoingDetailsFragment abc = new ongoingDetailsFragment();
-                CompleteDetailsFragment abc = new CompleteDetailsFragment();
-                abc.setArguments(bundle);
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout_dda,abc).addToBackStack(null).commit();
+//                Bundle bundle = new Bundle();
+//                bundle.putString("id", did.get(position));
+//                bundle.putString("review_address_top",dlocation_name.get(position)+", "+dlocation_address.get(position));
+//                bundle.putBoolean("isDdo", true);
+//                bundle.putBoolean("isAdmin", false);
+//                bundle.putBoolean("isComplete", false);
+//                bundle.putBoolean("isOngoing",true);
+//                bundle.putBoolean("isDDA", true);
+
+//                CompleteDetailsFragment abc = new CompleteDetailsFragment();
+//                abc.setArguments(bundle);
+//                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+//                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout_dda,abc).addToBackStack(null).commit();
             }
 
             if(isCompleted){
                 int position = this.getAdapterPosition();
-                Bundle bundle = new Bundle();
-                bundle.putString("id", did.get(position));
-                bundle.putString("review_address_top",dlocation_name.get(position)+", "+dlocation_address.get(position));
-                bundle.putBoolean("isDdo", true);
-                bundle.putBoolean("isAdmin", false);
-                bundle.putBoolean("isComplete", true);
-                bundle.putBoolean("isDDA", true);
-                bundle.putBoolean("isOngoing",false);
+                Intent intent = new Intent(context,complete_details.class);
+                intent.putExtra("id", did.get(position));
+                intent.putExtra("review_address_top",dlocation_name.get(position)+", "+dlocation_address.get(position));
+                intent.putExtra("isDdo", true);
+                intent.putExtra("isAdmin", false);
+                intent.putExtra("isComplete", true);
+                intent.putExtra("isDDA", true);
+                intent.putExtra("isOngoing",false);
+                context.startActivity(intent);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("id", did.get(position));
+//                bundle.putString("review_address_top",dlocation_name.get(position)+", "+dlocation_address.get(position));
+//                bundle.putBoolean("isDdo", true);
+//                bundle.putBoolean("isAdmin", false);
+//                bundle.putBoolean("isComplete", true);
+//                bundle.putBoolean("isDDA", true);
+//                bundle.putBoolean("isOngoing",false);
 
-                CompleteDetailsFragment abc = new CompleteDetailsFragment();
-                abc.setArguments(bundle);
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout_dda,abc).addToBackStack(null).commit();
+//                CompleteDetailsFragment abc = new CompleteDetailsFragment();
+//                abc.setArguments(bundle);
+//                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+//                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout_dda,abc).addToBackStack(null).commit();
             }
         }
     }

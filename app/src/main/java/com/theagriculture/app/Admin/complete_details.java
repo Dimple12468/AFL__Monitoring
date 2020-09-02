@@ -152,7 +152,7 @@ public class complete_details extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Location Details");
+//        getSupportActionBar().setTitle("Location Details");
 
         review_address_top = findViewById(R.id.review_address_top);
 
@@ -217,9 +217,7 @@ public class complete_details extends AppCompatActivity {
         images.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Toast.makeText(getActivity(),"You clicked forefit " ,Toast.LENGTH_LONG).show();
                 if(mImagesUrl.toString().equals("[]")) {
-                    //Toast.makeText(getActivity(), "No images uploaded ", Toast.LENGTH_LONG).show();
                     displayDialog("No Images were Uploaded");
                 }
                 else {
@@ -256,9 +254,9 @@ public class complete_details extends AppCompatActivity {
 
         review_address_top.setText(review_address_big);
 
-//        TextView title_top = findViewById(R.id.app_name);
+        TextView title_top = findViewById(R.id.app_name);
 //        if (view.isEnabled()){
-//            title_top.setText("Location Details");
+            title_top.setText("Location Details");
 //        }else {
 //            title_top.setText("AFL Monitoring");
 //        }

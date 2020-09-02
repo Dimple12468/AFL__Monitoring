@@ -81,8 +81,6 @@ public class DdaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
-
-
             setContentView(R.layout.activity_dda);
 
             frameLayout = findViewById(R.id.frameLayout_dda);
@@ -95,8 +93,8 @@ public class DdaActivity extends AppCompatActivity {
             String username = preferences.getString("Name", "");
 
             if (getPermission()) {
-                InitializeFragment(map_fragemnt_dda);
-                //InitializeFragment(ado_map_fragment);
+//                InitializeFragment(map_fragemnt_dda);
+                active = map_fragemnt_dda;
                 navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

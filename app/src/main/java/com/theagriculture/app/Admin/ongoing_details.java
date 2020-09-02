@@ -145,7 +145,9 @@ public class ongoing_details extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Report");
+//        getSupportActionBar().setTitle("Report");
+        TextView title_top = findViewById(R.id.app_name);
+        title_top.setText("Report");
 
         review_address_top = findViewById(R.id.review_address_top);
 

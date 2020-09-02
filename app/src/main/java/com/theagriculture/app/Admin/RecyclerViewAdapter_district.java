@@ -130,19 +130,15 @@ public class RecyclerViewAdapter_district extends RecyclerView.Adapter<RecyclerV
 
         @Override
         public void onClick(View v) {
-            //Toast.makeText(mContext,"The position is " + this.getAdapterPosition(),Toast.LENGTH_LONG).show();
-            /*
-            Intent intent = new Intent(mContext, adoListofDistrict.class);
+            Intent intent = new Intent(mContext,DistrictAdo_Activity.class);
             intent.putExtra("district", mDistrictNames.get(this.getAdapterPosition()));
-            //Intent intent = new Intent(mContext, RegistrationActivity.class);
             mContext.startActivity(intent);
-            */
-            Bundle bundle = new Bundle();
-            bundle.putString("district", mDistrictNames.get(this.getAdapterPosition()));
-            DistrictAdo abc = new DistrictAdo();
-            abc.setArguments(bundle);
-            AppCompatActivity activity = (AppCompatActivity) v.getContext();
-            activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc).addToBackStack(null).commit();
+//            Bundle bundle = new Bundle();
+//            bundle.putString("district", mDistrictNames.get(this.getAdapterPosition()));
+//            DistrictAdo abc = new DistrictAdo();
+//            abc.setArguments(bundle);
+//            AppCompatActivity activity = (AppCompatActivity) v.getContext();
+//            activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc).addToBackStack(null).commit();
         }
 
 

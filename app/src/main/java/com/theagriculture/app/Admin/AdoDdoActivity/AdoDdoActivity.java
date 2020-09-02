@@ -13,9 +13,11 @@ import com.theagriculture.app.R;
 public class AdoDdoActivity extends AppCompatActivity {
     private AdoDdoActivityPagerAdapter adapter;
     private boolean isDdo;
+    private String TAG = "AdoDdoActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG,"hi i am here");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ddo);
         Intent intent = getIntent();

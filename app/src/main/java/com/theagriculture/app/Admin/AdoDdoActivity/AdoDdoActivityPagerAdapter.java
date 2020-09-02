@@ -1,5 +1,6 @@
 package com.theagriculture.app.Admin.AdoDdoActivity;
 
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 
 public class AdoDdoActivityPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<Fragment> fragments;
+//    private ArrayList<Activity> activities;
     private int tabCount;
     long baseId = 0;
 
@@ -58,4 +60,10 @@ public class AdoDdoActivityPagerAdapter extends FragmentPagerAdapter {
         fragments.add(fragment);
     }
 
+//    public void addFragment(AdoDdoPending_Activity activity) {
+//        activities.add(activity);
+//    }
+//
+//    public void addFragment(AdoDdoOngoing_activity adoDdoOngoing_activity) {
+//    }
 }

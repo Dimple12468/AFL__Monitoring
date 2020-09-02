@@ -127,7 +127,7 @@ public class pending_details extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Location Details");
+//        getSupportActionBar().setTitle("Location Details");
 
         aname= findViewById(R.id.adodetail_name2);
         aemail = findViewById(R.id.adodetail_email2);
@@ -136,9 +136,9 @@ public class pending_details extends AppCompatActivity {
         aaddress = findViewById(R.id.addr2);
         aaddress.setText(address_top);
 
-//        TextView title_top = findViewById(R.id.app_name);
+        TextView title_top = findViewById(R.id.app_name);
 //        if (view.isEnabled()){
-//            title_top.setText("Location Details");
+            title_top.setText("Location Details");
 //        }else {
 //            title_top.setText("AFL Monitoring");
 //        }

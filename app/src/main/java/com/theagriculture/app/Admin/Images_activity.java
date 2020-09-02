@@ -84,9 +84,9 @@ public class Images_activity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Images");
 
-//        TextView title_top = findViewById(R.id.app_name);
+        TextView title_top = findViewById(R.id.app_name);
 //        if (view.isEnabled()){
-//            title_top.setText("Images");
+            title_top.setText("Images");
 //        }else {
 //            title_top.setText("AFL Monitoring");
 //        }

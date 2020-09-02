@@ -68,6 +68,26 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity android:name=".Admin.DistrictAdo_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".Admin.AdoDdoActivity.AdoDdo_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".adapter.AdoDdoPending_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".adapter.AdoDdoOngoing_activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".adapter.AdoDdoCompleted_activity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar">
+    </activity>
         <activity
             android:name=".Dda.VillagesUnderAdo"
             android:screenOrientation="portrait" />

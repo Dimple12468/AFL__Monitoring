@@ -182,7 +182,7 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
         Log.d(TAG, "onCreateView: ");
         mView = inflater.inflate(R.layout.fragment_map_admin, container, false);
         mapFragment_admin = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_admin));
-        setHasOptionsMenu(true);
+//        setHasOptionsMenu(true);
        // getContext().getTheme().applyStyle(R.style.AppTheme, true);
 
         statsCardview = mView.findViewById(R.id.stats_cardview_admin);
@@ -196,6 +196,13 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
         Log.d(TAG,url_assigned);
         Log.d(TAG,url_count);
 
+        TextView title_top = mView.findViewById(R.id.app_name);
+        if (mView.isEnabled()){
+            title_top.setText("Home");
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
+
 
         mDrawer_map = getActivity().findViewById(R.id.drawer_view);                         //mView.findViewById(R.id.drawer_map);
         nvDrawer_map = getActivity().findViewById(R.id.navigation_view);                    //mView.findViewById(R.id.navigation_view_map);
@@ -207,7 +214,6 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
             @Override
             public void onDrawerClosed(View drawerView)
             {
-                //Toast.makeText(getActivity(),"Drwaer closed",Toast.LENGTH_SHORT).show();
                 //super.onDrawerClosed(drawerView);
                 mDrawer_map.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED);
             }
@@ -215,7 +221,6 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
             @Override
             public void onDrawerOpened(View drawerView)
             {
-                //Toast.makeText(getActivity(),"Drawer open",Toast.LENGTH_SHORT).show();
                 //super.onDrawerOpened(drawerView);
                 mDrawer_map.setDrawerLockMode(LOCK_MODE_UNLOCKED);
             }
