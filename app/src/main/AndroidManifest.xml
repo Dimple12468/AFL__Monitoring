@@ -17,22 +17,19 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
-
     <application
         android:name=".AppNotificationChannels"
         android:allowBackup="true"
         android:icon="@mipmap/ic_app"
         android:label="@string/app_name"
+        android:launchMode="singleTop"
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@drawable/logo_afl"
         android:supportsRtl="true"
-        android:launchMode="singleTop"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-
-
-
-        <activity android:name=".Admin.bottom_nav"></activity>
+        <activity android:name=".Initial_page"></activity>
+        <activity android:name=".Admin.bottom_nav" />
         <activity android:name=".Admin.Filter_search" />
         <activity android:name=".Admin.no_internet" />
         <activity android:name=".Admin.adoListofDistrict" />
@@ -40,7 +37,6 @@
         <activity android:name=".ForgetPasswordActivity" />
         <activity android:name=".Admin.NotificationActivity" />
         <activity android:name=".Dda.SearchResultsActivity" />
-
         <activity
             android:name=".Admin.detailsActivity"
             android:screenOrientation="portrait"
@@ -52,42 +48,42 @@
                 android:value=".Admin.AdminActivity"/
             -->
         </activity>
-        <activity android:name=".Admin.pending_details"
+        <activity
+            android:name=".Admin.pending_details"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".Admin.ongoing_details"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Admin.ongoing_details"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".Admin.complete_details"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Admin.complete_details"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".Admin.Images_activity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Admin.Images_activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".Admin.DistrictAdo_Activity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Admin.DistrictAdo_Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".Admin.AdoDdoActivity.AdoDdo_Activity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Admin.AdoDdoActivity.AdoDdo_Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".adapter.AdoDdoPending_Activity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".adapter.AdoDdoPending_Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".adapter.AdoDdoOngoing_activity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".adapter.AdoDdoOngoing_activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".adapter.AdoDdoCompleted_activity"
-        android:screenOrientation="portrait"
-        android:theme="@style/AppTheme.NoActionBar">
-    </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".adapter.AdoDdoCompleted_activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Dda.VillagesUnderAdo"
             android:screenOrientation="portrait" />
@@ -134,9 +130,6 @@
             <!-- android:name="android.app.searchable" -->
             <!-- android:resource="@xml/searchable" /> -->
         </activity>
-
-
-
         <activity
             android:name=".Ado.AdoActivity"
             android:screenOrientation="portrait"
@@ -148,8 +141,8 @@
         </activity>
         <activity
             android:name=".Dda.DdaActivity"
-            android:screenOrientation="fullSensor"
             android:launchMode="singleTop"
+            android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
 
@@ -159,14 +152,14 @@
         </activity>
         <activity
             android:name=".Admin.AdminActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            android:configChanges="keyboard|keyboardHidden|orientation">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
 
             <!-- <meta-data -->
@@ -184,7 +177,6 @@
         </activity>
         <activity
             android:name=".login_activity"
-
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

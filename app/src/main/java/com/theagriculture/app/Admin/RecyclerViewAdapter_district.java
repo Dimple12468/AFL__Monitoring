@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,14 +57,23 @@ public class RecyclerViewAdapter_district extends RecyclerView.Adapter<RecyclerV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final DistrictCustomViewHolder holder, int position) {
-        if(position%2==0)
+    public void onBindViewHolder(@NonNull final DistrictCustomViewHolder holder, final int position) {
+        String x= String.valueOf(mDistrictNames.get(position).charAt(0));
+
+        /*if(position%2==0)
             holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.recycler_color));
-            //holder.itemView.setBackgroundResource(R.color.district_background);
         else
-            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-            //holder.itemView.setBackgroundResource(R.color.white);
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));*/
         holder.textView.setText(mDistrictNames.get(position));
+        holder.tv.setText(x);
+        holder.ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext,DistrictAdo_Activity.class);
+                intent.putExtra("district", mDistrictNames.get(position));
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -117,13 +127,25 @@ public class RecyclerViewAdapter_district extends RecyclerView.Adapter<RecyclerV
 
 
     public class DistrictCustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView textView;
+        TextView textView,tv;
         RelativeLayout itemLayout;
-        public DistrictCustomViewHolder(@NonNull View itemView) {
+        ImageButton ib;
+        public DistrictCustomViewHolder(@NonNull final View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);//function to make onClick() valid
             textView = itemView.findViewById(R.id.dist);
             itemLayout = itemView.findViewById(R.id.dist_item);
+            tv = itemView.findViewById(R.id.in_admin_ado);
+            ib = itemView.findViewById(R.id.ado_next);
+//            final int pos = this.getAdapterPosition();
+//            ib.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(mContext,DistrictAdo_Activity.class);
+//                    intent.putExtra("district", mDistrictNames.get(this.getAdapterPosition()));
+//                    mContext.startActivity(intent);
+//                }
+//            });
 
 
         }
@@ -140,7 +162,6 @@ public class RecyclerViewAdapter_district extends RecyclerView.Adapter<RecyclerV
 //            AppCompatActivity activity = (AppCompatActivity) v.getContext();
 //            activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc).addToBackStack(null).commit();
         }
-
 
     }
 }

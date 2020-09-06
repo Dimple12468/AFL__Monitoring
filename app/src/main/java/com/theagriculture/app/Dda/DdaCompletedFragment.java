@@ -147,6 +147,7 @@ public class DdaCompletedFragment extends Fragment {
         review = view.findViewById(R.id.recyclerViewongoing);
         spinner = view.findViewById(R.id.progressbar_dda);
         progressBar = view.findViewById(R.id.locations_loading_dda);
+        swipeRefreshLayout = view.findViewById(R.id.refreshpull_dda);
 
         mAdoNames = new ArrayList<String>();
         Address = new ArrayList<String>();
@@ -181,16 +182,13 @@ public class DdaCompletedFragment extends Fragment {
                         (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
                 swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
                 //swipeRefreshLayout.setRefreshing(false);
-
             }
-
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
 
-        swipeRefreshLayout = view.findViewById(R.id.refreshpull_dda);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -209,7 +207,7 @@ public class DdaCompletedFragment extends Fragment {
         Log.d(TAG, "onCreateView: "+token);
 
         Log.d(TAG, "onCreateView: inflated fragment_ongoing");
-        final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+//        final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
 
         recyclerViewAdater = new SectionAdapter_DDA(getActivity(),sections);
         review.setAdapter(recyclerViewAdater);
@@ -303,18 +301,17 @@ public class DdaCompletedFragment extends Fragment {
 
     private void getData(final String url) {
         sections=new ArrayList<>();
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         isNextBusy = true;
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null,
-                new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest( Request.Method.GET,url,null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             JSONObject rootObject = new JSONObject(String.valueOf(response));
                             JSONArray resultsArray = rootObject.getJSONArray("results");
-                            //Toast.makeText(getActivity(),rootObject.toString(),Toast.LENGTH_LONG).show();
                             nextUrl = rootObject.getString("next");
                             if(resultsArray.length()== 0){
+                                Log.d(TAG,"i will show length 0");
                                 //adoListAdapter.mshowshimmer = false;
                                 String[][] arr = new String[0][0];
                                 recyclerViewAdater.notifyDataSetChanged();
@@ -542,9 +539,9 @@ public class DdaCompletedFragment extends Fragment {
     private void getNextData(final String url) {
         Log.d(TAG,"locations corresponding to next URL: "+url);
 //        sections=new ArrayList<>();
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         isNextBusy = true;
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest( Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

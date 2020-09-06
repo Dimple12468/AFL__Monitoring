@@ -95,61 +95,15 @@ public class DdaOngoingFragment extends Fragment {
 
     }
 
-
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_top_bar,menu);
-        searchItem = menu.findItem(R.id.search_in_title);
-        searchItem_filter = menu.findItem(R.id.filter);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setQueryHint("Search something");
-        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                searchItem_filter.setVisible(true);
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                searchItem_filter.setVisible(false);
-                return true;
-            }
-        });
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // perform query here
-                searchView.clearFocus();
-
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-               /* if (newText.equals("")) {
-                    //searchView.setQuery("", false);
-                    newText = newText.trim();
-                }
-                adapter.getFilter().filter(newText);*/
-                return true;
-            }
-        });
-        searchItem_filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-//                alert_filter_dialog();
-                return true;
-            }
-
-
-        });
-        super.onCreateOptionsMenu(menu, inflater);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
+        isRefresh = false;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG,"onCreateView: ");
 
         view = inflater.inflate(R.layout.fragment_ongoing,container,false);
@@ -165,6 +119,9 @@ public class DdaOngoingFragment extends Fragment {
         mDates = new ArrayList<>();
         isRefresh = false;
 
+        getData(url_get_ongoing);
+        Log.d(TAG,"URL: " + url_get_ongoing);
+
         review.addOnScrollListener(new RecyclerView.OnScrollListener(){
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -172,9 +129,7 @@ public class DdaOngoingFragment extends Fragment {
                         (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
                 swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
                 //swipeRefreshLayout.setRefreshing(false);
-
             }
-
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -202,8 +157,6 @@ public class DdaOngoingFragment extends Fragment {
             title_top.setText("AFL Monitoring");
         }
 
-        getData(url_get_ongoing);
-        Log.d(TAG,"URL: " + url_get_ongoing);
 
 //        ddaongoingAdapter = new DdaongoingAdapter(getActivity(),Id,Name,Address,mDates);
 //        review.setAdapter(ddaongoingAdapter);
@@ -245,15 +198,15 @@ public class DdaOngoingFragment extends Fragment {
     private void getData(final String url) {
 //        spinner.setVisibility(View.GONE);
         sections=new ArrayList<>();
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         isNextBusy = true;
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null,
-                new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             JSONObject rootObject = new JSONObject(String.valueOf(response));
                             JSONArray resultsArray = rootObject.getJSONArray("results");
+                            Log.d(TAG,"see response: "+ resultsArray);
                             nextUrl = rootObject.getString("next");
 //                            int count = rootObject.getInt("count");
                             if(resultsArray.length() == 0 /* count == 0*/){
@@ -861,12 +814,58 @@ public class DdaOngoingFragment extends Fragment {
             requestQueue1.add(jsonObjectRequest1);
     }
 
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: ");
-        isRefresh = false;
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_top_bar,menu);
+        searchItem = menu.findItem(R.id.search_in_title);
+        searchItem_filter = menu.findItem(R.id.filter);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Search something");
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                searchItem_filter.setVisible(true);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                searchItem_filter.setVisible(false);
+                return true;
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // perform query here
+                searchView.clearFocus();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+               /* if (newText.equals("")) {
+                    //searchView.setQuery("", false);
+                    newText = newText.trim();
+                }
+                adapter.getFilter().filter(newText);*/
+                return true;
+            }
+        });
+        searchItem_filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+//                alert_filter_dialog();
+                return true;
+            }
+
+
+        });
+        super.onCreateOptionsMenu(menu, inflater);
     }
+
 
     @Override
     public void onPause() {

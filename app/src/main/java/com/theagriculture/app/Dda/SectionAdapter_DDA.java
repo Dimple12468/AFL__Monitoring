@@ -82,7 +82,11 @@ public class SectionAdapter_DDA extends RecyclerView.Adapter<SectionAdapter_DDA.
             // RecyclerView for items
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             itemRecyclerView.setLayoutManager(linearLayoutManager);
-            itemAdapter = new ItemAdapter_DDA(context,section.getDid(), section.getDlocation_name(), section.getDlocation_address(), section.getDlatitude(), section.getDlongitude(),section.getDAdoID(),section.getIsPending(),section.getIsCompleted(),section.getIsOngoing());
+            if (section.getIsPending()){
+                itemAdapter = new ItemAdapter_DDA(context,section.getDid(), section.getDlocation_name(), section.getDlocation_address(), section.getDlatitude(), section.getDlongitude(),section.getDAdoID(),section.getIsPending(),section.getIsCompleted(),section.getIsOngoing());
+            }else{
+                itemAdapter = new ItemAdapter_DDA(context,section.getDid(), section.getDlocation_name(), section.getDlocation_address(), section.getDlatitude(), section.getDlongitude()/*,section.getDAdoID()*/,section.getIsPending(),section.getIsCompleted(),section.getIsOngoing());
+            }
             itemRecyclerView.setAdapter(itemAdapter);
 
         }

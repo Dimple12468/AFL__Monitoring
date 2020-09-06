@@ -23,7 +23,8 @@ public class splash_page extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent( splash_page.this ,login_activity.class);
+//                Intent i = new Intent( splash_page.this ,login_activity.class);
+                Intent i = new Intent( splash_page.this ,Initial_page.class);
                 startActivity(i);
                 finish();
             }

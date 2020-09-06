@@ -76,7 +76,7 @@ public class DdaAdoListAdapter extends RecyclerView.Adapter<DdaAdoListAdapter.Ad
                             final JSONObject postbody = new JSONObject();
                             postbody.put("ado", adoid.get(adoListViewHolder.getAdapterPosition()));
                             final RequestQueue requestQueue = Volley.newRequestQueue(mcontext);
-                            urlpatch = "http://18.224.202.135/api/location/" + locationid + "/";
+                            urlpatch = "http://api.theagriculture.tk/api/location/" + locationid + "/";
                             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PATCH, urlpatch, postbody, new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {

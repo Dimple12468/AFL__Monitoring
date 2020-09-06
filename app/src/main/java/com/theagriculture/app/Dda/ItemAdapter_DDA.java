@@ -47,6 +47,19 @@ public class ItemAdapter_DDA extends RecyclerView.Adapter<ItemAdapter_DDA.ViewHo
     Boolean isPending,isCompleted,isOngoing;
 //    final ItemAdapter_DDA.ViewHolder viewHolderAssignedDda;
 
+    public ItemAdapter_DDA(Context context, ArrayList<String> did, ArrayList<String> dlocation_name, ArrayList<String> dlocation_address, ArrayList<String> dlatitude, ArrayList<String> dlongitude,/*ArrayList<String> dAdoID,*/ Boolean isPending, Boolean isCompleted, Boolean isOngoing) {
+        this.context=context;
+        this.did=did;
+        this.dlocation_name=dlocation_name;
+        this.dlocation_address=dlocation_address;
+        this.dlatitude=dlatitude;
+        this.dlongitude=dlongitude;
+//        this.dAdoID=dAdoID;
+        this.isPending=isPending;
+        this.isCompleted=isCompleted;
+        this.isOngoing=isOngoing;
+    }
+
     public ItemAdapter_DDA(Context context, ArrayList<String> did, ArrayList<String> dlocation_name, ArrayList<String> dlocation_address, ArrayList<String> dlatitude, ArrayList<String> dlongitude,ArrayList<String> dAdoID, Boolean isPending, Boolean isCompleted, Boolean isOngoing) {
         this.context=context;
         this.did=did;

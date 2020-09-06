@@ -66,7 +66,7 @@ public class DdaActivity extends AppCompatActivity {
 //    private adounderddo adounderddo;
 
 
-    final Fragment ado_map_fragment = new ado_map_fragment();
+//    final Fragment ado_map_fragment = new ado_map_fragment();
     final Fragment map_fragemnt_dda = new map_fragemnt_dda();
     final Fragment DdaPendingFragment = new DdaPendingFragment();
     final Fragment DdaOngoingFragment = new DdaOngoingFragment();
@@ -85,7 +85,6 @@ public class DdaActivity extends AppCompatActivity {
 
             frameLayout = findViewById(R.id.frameLayout_dda);
             navigation = findViewById(R.id.navigation_cmnd);
-
 
             //Get the name and type of user from the shared preferences file to display in header view of the drawer layout
             SharedPreferences preferences = getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
@@ -200,7 +199,9 @@ public class DdaActivity extends AppCompatActivity {
             if (deniedCount == 0) {
                 navigationView.setCheckedItem(R.id.nav_home);
                 getSupportActionBar().setTitle("HOME");
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, new map_fragemnt_dda()).commit();
+                fm.beginTransaction().hide(active).show(map_fragemnt_dda).commit();
+                active = map_fragemnt_dda;
+//                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_dda, new map_fragemnt_dda()).commit();
 
             } else {
                 for (Map.Entry<String, Integer> entry : permissionResults.entrySet()) {
