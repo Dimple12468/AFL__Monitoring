@@ -49,6 +49,14 @@
             -->
         </activity>
         <activity
+            android:name=".ReportFire"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ImageUpload"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".Admin.pending_details"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>

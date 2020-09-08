@@ -23,6 +23,8 @@
     <color name="ongoing_color">#7B26C6</color>
     <color name="completed_color">#B2DF8A</color>
     <color name="recycler_color">#F9F9F9</color>
+    <color name="btn_before_text">#73DC5C58</color>
+    <color name="btn_submit">#DC5C58</color>
 
 
 </resources>
