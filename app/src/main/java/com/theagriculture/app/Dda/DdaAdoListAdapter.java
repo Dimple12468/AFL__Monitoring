@@ -1,16 +1,19 @@
 package com.theagriculture.app.Dda;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +28,8 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.theagriculture.app.Admin.RecyclerViewAdapter_district;
+import com.theagriculture.app.AlternateColorAdapter;
 import com.theagriculture.app.R;
 
 import org.json.JSONException;
@@ -61,7 +66,7 @@ public class DdaAdoListAdapter extends RecyclerView.Adapter<DdaAdoListAdapter.Ad
         final AdoListViewHolder adoListViewHolder = new AdoListViewHolder(view);
         Log.d(TAG, "onCreateViewHolder:");
 
-
+        /*
 
         adoListViewHolder.btnassign.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +81,7 @@ public class DdaAdoListAdapter extends RecyclerView.Adapter<DdaAdoListAdapter.Ad
                             final JSONObject postbody = new JSONObject();
                             postbody.put("ado", adoid.get(adoListViewHolder.getAdapterPosition()));
                             final RequestQueue requestQueue = Volley.newRequestQueue(mcontext);
+                            //urlpatch = "http://18.224.202.135/api/location/" + locationid + "/";
                             urlpatch = "http://api.theagriculture.tk/api/location/" + locationid + "/";
                             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PATCH, urlpatch, postbody, new Response.Listener<JSONObject>() {
                                 @Override
@@ -145,6 +151,8 @@ public class DdaAdoListAdapter extends RecyclerView.Adapter<DdaAdoListAdapter.Ad
                 mcontext.startActivity(intent);
             }
         });
+
+         */
         return adoListViewHolder;
     }
 
@@ -152,12 +160,14 @@ public class DdaAdoListAdapter extends RecyclerView.Adapter<DdaAdoListAdapter.Ad
     public void onBindViewHolder(@NonNull AdoListViewHolder holder, int position) {
         holder.tv1.setText(mtextview1.get(position));
         if (currentAdoPos == position) {
+            holder.tv1.setTextColor(mcontext.getResources().getColor(R.color.app_color));
+            /*
             holder.btnassign.setText("Assigned");
             holder.btnassign.setEnabled(false);
             holder.btnassign.setAlpha(0.7f);
+
+             */
         }
-//        holder.tv2.setVisibility(View.GONE);
-        //holder.tv2.setText(mtextview2.get(position));
     }
 
     @Override
@@ -165,23 +175,48 @@ public class DdaAdoListAdapter extends RecyclerView.Adapter<DdaAdoListAdapter.Ad
         return mtextview1.size();
     }
 
-    public class AdoListViewHolder extends RecyclerView.ViewHolder{
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    public class AdoListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv1;
-        //        TextView tv2;
         RelativeLayout adolistlayout;
-        Button btnassign;
+        //LinearLayout adolistlayout;
+        //////Button btnassign;
 
         public AdoListViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             mcontext = itemView.getContext();
-            adolistlayout = (RelativeLayout) itemView.findViewById(R.id.adolistlayout);
+            adolistlayout = (RelativeLayout)itemView.findViewById(R.id.adolistlayout);
             tv1 = itemView.findViewById(R.id.nameofado);
-//            tv2 = itemView.findViewById(R.id.nameofvillage);
-            btnassign = itemView.findViewById(R.id.btnAssign);
+            //btnassign = itemView.findViewById(R.id.btnAssign);
         }
 
+        /*
+        @Override
+        public void onItemClick(View v, int pos) {
 
+        }
 
+         */
+
+        @Override
+        public void onClick(View v) {
+            //Toast.makeText(mcontext,"You clicked",Toast.LENGTH_LONG).show();
+            DetailsDialog detailsDialog;
+            int pos = this.getAdapterPosition();
+            ArrayList<String> items =  mtextview2.get(pos);
+            // Toast.makeText(mcontext,adoid.toString(),Toast.LENGTH_LONG).show();
+            //RecyclerViewAdapter_district dataAdapter = new RecyclerViewAdapter_district(mcontext, items);
+            AlternateColorAdapter dataAdapter = new AlternateColorAdapter(mcontext, items);
+            detailsDialog = new DetailsDialog(mcontext, dataAdapter,mtextview1.get(pos),locationid,adoid.get(pos));
+
+            detailsDialog.show();
+            detailsDialog.setCanceledOnTouchOutside(false);
+        }
     }
 
 
