@@ -68,6 +68,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.maps.android.clustering.ClusterManager;
 import com.obsez.android.lib.filechooser.ChooserDialog;
 import com.theagriculture.app.Globals;
+import com.theagriculture.app.Initial_page;
 import com.theagriculture.app.PrivacyPolicy;
 import com.theagriculture.app.R;
 import com.theagriculture.app.login_activity;
@@ -300,6 +301,7 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
         View header = nvDrawer_map.getHeaderView(0);
         TextView textUsername = header.findViewById(R.id.name);
         TextView textUser = header.findViewById(R.id.type_of_user);
+//        SharedPreferences preferences = AdminActivity.getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         String typeofuser = prefs.getString("typeOfUser","");
         String username = prefs.getString("Name","");
         textUsername.setText(username);
@@ -317,7 +319,7 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
                         editor.clear();
                         editor.commit();
                         mDrawer_map.closeDrawers();
-                        Intent intent = new Intent(getActivity(), login_activity.class);
+                        Intent intent = new Intent(getActivity(), Initial_page.class);
                         //Intent intent = new Intent(getApplicationContext(), login_activity.class);
                         startActivity(intent);
                         getActivity().finish();

@@ -24,6 +24,7 @@ import com.theagriculture.app.Admin.ado_fragment;
 import com.theagriculture.app.Admin.detailsActivity;
 import com.theagriculture.app.Admin.map_fragemnt;
 import com.theagriculture.app.Admin.ongoingDetailsFragment;
+import com.theagriculture.app.Admin.pending_details;
 import com.theagriculture.app.Ado.ReviewReport;
 import com.theagriculture.app.R;
 
@@ -54,7 +55,7 @@ public class PendingAdapter extends RecyclerView.Adapter<PendingAdapter.ViewHold
 
 
 
-    public PendingAdapter(Context mcontext,ArrayList<String> mtextview1, ArrayList<String> mtextview2, ArrayList<String> mtextview3, ArrayList<String> mIds, boolean isOngoing,ArrayList<String> mdate) {
+/*    public PendingAdapter(Context mcontext,ArrayList<String> mtextview1, ArrayList<String> mtextview2, ArrayList<String> mtextview3, ArrayList<String> mIds, boolean isOngoing,ArrayList<String> mdate) {
         this.mcontext = mcontext;
         //this.mtextview_letter = mtextview_letter;
         this.mtextview1 = mtextview1;
@@ -76,7 +77,7 @@ public class PendingAdapter extends RecyclerView.Adapter<PendingAdapter.ViewHold
         this.mdate = mdate;
         this.isComplete = isComplete;
         Log.d(TAG, "AdminLocationAdapter: "+this.mdate.size());
-    }
+    }*/
 
     public  PendingAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2, boolean isPending, ArrayList<String> mtextview3, ArrayList<String> mIds,ArrayList<String> ado_pk, ArrayList<String> dda_pk,ArrayList<String> mdate) {
         this.mcontext = mcontext;
@@ -178,26 +179,19 @@ public class PendingAdapter extends RecyclerView.Adapter<PendingAdapter.ViewHold
             //Toast.makeText(mcontext,"The position is " + position,Toast.LENGTH_LONG).show();
 
             if(isPending){
-                /*
-                Intent intent1 = new Intent(mcontext,detailsActivity.class);
-                intent1.putExtra("ado_name",mtextview1.get(position));
-                intent1.putExtra("dda_name",mtextview2.get(position));
-                intent1.putExtra("address_big",mtextview3.get(position));
-                intent1.putExtra("ado_pk",mpkado.get(position));
-                intent1.putExtra("dda_pk",mpkdda.get(position));
-                mcontext.startActivity(intent1);
-                 */
-                Bundle bundle = new Bundle();
-                PendingDetailsFragment abc = new PendingDetailsFragment();
-
-                abc.setArguments(bundle);
-                AppCompatActivity activity = (AppCompatActivity)v.getContext();
-                //activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).addToBackStack(null).commit();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).commit();
-
+                Intent intent = new Intent(mcontext, pending_details.class);
+                intent.putExtra("id", mIds.get(position));
+                intent.putExtra("ado_name", mtextview1.get(position));
+                intent.putExtra("dda_name", mtextview2.get(position));
+                intent.putExtra("address_big", mtextview3.get(position));
+                intent.putExtra("ado_pk", mpkado.get(position));
+                intent.putExtra("dda_pk", mpkdda.get(position));
+                intent.putExtra("isPending",true);
+                intent.putExtra("isOngoing", false);
+                mcontext.startActivity(intent);
             }
 
-            if(isOngoing) {
+            /*if(isOngoing) {
                 Bundle bundle = new Bundle();
 
                 bundle.putString("id", mIds.get(position));
@@ -221,7 +215,7 @@ public class PendingAdapter extends RecyclerView.Adapter<PendingAdapter.ViewHold
                 intent2.putExtra("isComplete", true);
                 mcontext.startActivity(intent2);
 
-            }
+            }*/
             /*
 
             if (isOngoing || isComplete){

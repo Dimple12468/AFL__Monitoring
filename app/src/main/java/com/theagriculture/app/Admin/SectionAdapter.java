@@ -38,7 +38,6 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
     }
 
     public SectionAdapter(Context context, ArrayList<Section> sections,boolean is_DDA_User) {
-        System.out.println("Dimple in section adapter constructor for dda");
         sectionList = sections;
         this.context = context;
         this.is_DDA_User=is_DDA_User;

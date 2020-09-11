@@ -1,8 +1,10 @@
 package com.theagriculture.app.Admin;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -132,11 +134,11 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
 
 /*      View header = nvDrawer.getHeaderView(0);
         TextView textUsername = header.findViewById(R.id.name);
-        TextView textUser = header.findViewById(R.id.type_of_user);
-        SharedPreferences preferences = getSharedPreferences("tokenFile",Context.MODE_PRIVATE);
+        TextView textUser = header.findViewById(R.id.type_of_user);*/
+        SharedPreferences preferences = getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         String typeofuser = preferences.getString("typeOfUser","");
         String username = preferences.getString("Name","");
-        textUsername.setText(username);
+/*        textUsername.setText(username);
         textUser.setText(typeofuser);*/
             // Toast.makeText(AdminActivity.this,textUsername.getText().toString().trim(),Toast.LENGTH_LONG).show();
 
@@ -590,6 +592,7 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
         //finish();
         //}
     }
+
 
    /* @Override
     public void setDrawerEnabled(boolean enabled) {

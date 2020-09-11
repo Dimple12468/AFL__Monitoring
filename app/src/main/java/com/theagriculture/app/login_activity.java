@@ -458,6 +458,25 @@ public class login_activity extends AppCompatActivity {
         }
     };
 
+//    public void isUserLoggedIn(){
+//        final SharedPreferences sp1 = getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
+//        String Usertype = sp1.getString("typeOfUser", "");
+//        if (sp1.contains("token")) {
+//            Intent intent = null;
+//            if (Usertype.equals("dda"))
+//                intent = new Intent(this, DdaActivity.class);
+//            if (Usertype.equals("ado"))
+//                intent = new Intent(this, AdoActivity.class);
+//            if (Usertype.equals("admin"))
+//                intent = new Intent(this, AdminActivity.class);
+//            if (intent != null) {
+//                startActivity(intent);
+//                finish();
+//            }
+//
+//        }
+//    }
+
 
 }
 

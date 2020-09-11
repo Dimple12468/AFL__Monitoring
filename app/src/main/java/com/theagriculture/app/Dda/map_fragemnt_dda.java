@@ -49,6 +49,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.maps.android.clustering.ClusterManager;
 import com.theagriculture.app.Admin.MyItem;
+import com.theagriculture.app.Globals;
+import com.theagriculture.app.Initial_page;
 import com.theagriculture.app.R;
 import com.theagriculture.app.login_activity;
 
@@ -70,11 +72,9 @@ public class map_fragemnt_dda extends Fragment {
     private final String TAG = "map fragment";
 
     public GoogleMap map = null;
-    //private String url_pending = "http://18.224.202.135/api/locations/dda/assigned";
-    // private String url_unassigned = "http://18.224.202.135/api/locations/dda/unassigned";
 
-    private String url_pending = "http://api.theagriculture.tk/api/locations/dda/assigned";
-    private String url_unassigned = "http://api.theagriculture.tk/api/locations/dda/unassigned";
+    private String url_pending = Globals.assignedLocationsDDA;                          //"http://api.theagriculture.tk/api/locations/dda/assigned";
+    private String url_unassigned = Globals.unassignedLocationsDDA;                     //"http://api.theagriculture.tk/api/locations/dda/unassigned";
     private String token;
     private String next;
     private SupportMapFragment mapFragment;
@@ -182,7 +182,7 @@ public class map_fragemnt_dda extends Fragment {
                         Toast.makeText(getActivity(), "privacy clicked", Toast.LENGTH_SHORT).show();
                         mDrawer.closeDrawers();
 
-                        Intent intent = new Intent(getActivity(), login_activity.class);
+                        Intent intent = new Intent(getActivity(), Initial_page.class);
                         //Intent intent = new Intent(getApplicationContext(), login_activity.class);
                         startActivity(intent);
                         getActivity().finish();

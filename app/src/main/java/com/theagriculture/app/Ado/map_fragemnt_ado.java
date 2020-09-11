@@ -38,6 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.android.clustering.ClusterManager;
 import com.theagriculture.app.Admin.MyItem;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -54,7 +55,7 @@ public class map_fragemnt_ado extends Fragment {
     private final String TAG = "map fragment";
 
     public GoogleMap map = null;
-    private String url_pending = "http://18.224.202.135/api/locations/ado/pending";
+    private String url_pending = Globals.adoPending;                              //"http://18.224.202.135/api/locations/ado/pending";
     private String token;
     private String next;
     private SupportMapFragment mapFragment;

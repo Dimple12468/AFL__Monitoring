@@ -12,6 +12,8 @@ public class Globals {
     public static String url_Location_Admin = serverURL + "api/upload/locations/";
     public static String url_Bulk_Admin = serverURL + "api/upload/mail/";
 
+    public static String pendingDatewiseList = serverURL + "api/locations/pending";
+
     public static String pendingList = serverURL + "api/locationsDatewise/pending";
     public static String smsPending = serverURL + "api/trigger/sms/pending";
     public static String ongoingList = serverURL + "api/locationsDatewise/ongoing";

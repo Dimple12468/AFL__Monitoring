@@ -28,10 +28,10 @@
             android:indeterminateTint="@color/app_color"
             app:layout_constraintBottom_toBottomOf="@+id/recyclerViewpending"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline8" />
+            app:layout_constraintStart_toStartOf="parent"/>
 <!--        style="@android:style/Widget.ProgressBar.Small"
-android:indeterminateDrawable="@drawable/progress"-->
+android:indeterminateDrawable="@drawable/progress"
+            app:layout_constraintTop_toTopOf="@+id/guideline8" -->
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline8"
