@@ -27,9 +27,9 @@ public class Initial_page extends AppCompatActivity {
         report_fire.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(Initial_page.this,ReportFire.class);
-                //startActivity(intent);
-                Toast.makeText(Initial_page.this, "report clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Initial_page.this,ReportFire.class);
+                startActivity(intent);
+                //Toast.makeText(Initial_page.this, "report clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -47,6 +47,7 @@ public class Initial_page extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(Initial_page.this,RegistrationActivity.class);
                 startActivity(i);
+                finish();
             }
         });
     }
