@@ -89,4 +89,10 @@
         <item>Agricultural</item>
     </string-array>
 
+    <string-array name="profile_status">
+        <item>Pending</item>
+        <item>Ongoing</item>
+        <item>Completed</item>
+    </string-array>
+
 </resources>

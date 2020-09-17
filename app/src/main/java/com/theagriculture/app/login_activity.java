@@ -55,6 +55,7 @@ import com.theagriculture.app.Admin.AdminActivity;
 import com.theagriculture.app.Ado.AdoActivity;
 import com.theagriculture.app.Dda.DdaActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -269,12 +270,25 @@ public class login_activity extends AppCompatActivity {
                             JSONObject a = c.getJSONObject("auth_user");
                             typeOfUser = a.getString("type_of_user");
                             Name = c.getString("name");
+                            /////from here
+                            String number = c.getString("number");
+                            String email = c.getString("email");
+                            JSONArray village = c.getJSONArray("village");
+                            JSONObject villageDetails = village.getJSONObject(0);
+                            String villageName = villageDetails.getString("village");
+                            String address = villageName;
+                            ////till here
                             pk = a.getString("pk");
                             Log.d(TAG, "onResponse: valuepk"+pk);
                             SharedPreferences.Editor editor = getSharedPreferences("tokenFile", Context.MODE_PRIVATE).edit();
                             editor.putString("typeOfUser", typeOfUser);
                             editor.putString("Name", Name);
                             editor.putString("pk", pk);
+                            //from here
+                            editor.putString("PhoneNumber",number);
+                            editor.putString("Email",email);
+                            editor.putString("Address",address);
+                            ///to here
                             editor.apply();
 
                             Log.d(TAG, "onResponse: typeOfUser:" + typeOfUser);
