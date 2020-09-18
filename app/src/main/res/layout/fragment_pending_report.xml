@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,238 +8,268 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Report"
-        android:textSize="23dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/black"/>
-
-    <!--Farmer Name-->
-    <RelativeLayout
+    <include
+        android:id="@+id/app__bar_report"
+        layout="@layout/app_bar_admin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:paddingTop="5dp">
+        android:layout_alignParentTop="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-            android:id="@+id/view1"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/rectanglebg" />
 
-        <TextView
-            android:id="@+id/text_dummy_hint_username"
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="6dp"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:text="Farmer Name"
-            android:textSize="16sp"
-            android:background="@android:color/white"
-            android:visibility="invisible"
-            android:textColor="@color/black"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-
-            android:id="@+id/ti1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="16dp"
-            android:hint="Farmer Name"
-            android:textColorHint="#707070"
-            app:hintTextAppearance="@style/HintTextStyle">
-
-            <EditText
-                android:id="@+id/edit_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text|textCapWords"
-                android:maxLines="1"
-                android:backgroundTint="@android:color/transparent"/>
-        </com.google.android.material.textfield.TextInputLayout>
-    </RelativeLayout>
-
-    <!--Father Name-->
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/report_page"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:paddingTop="5dp">
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app__bar_report">
 
-        <View
-            android:id="@+id/view2"
+        <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/rectanglebg" />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/submit_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/text_dummy_hint_fathername"
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="6dp"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:text="Farmer's Father Name"
-            android:textSize="16sp"
-            android:background="@android:color/white"
-            android:visibility="invisible"
-            android:textColor="@color/black"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-
-            android:id="@+id/ti2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="16dp"
-            android:hint="Farmer's Father Name"
-            android:textColorHint="#707070"
-            app:hintTextAppearance="@style/HintTextStyle">
-
-            <EditText
-                android:id="@+id/edit_fathername"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text|textCapWords"
-                android:maxLines="1"
-                android:backgroundTint="@android:color/transparent"/>
-        </com.google.android.material.textfield.TextInputLayout>
-    </RelativeLayout>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:paddingTop="5dp">
+                <!--TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Report"
+                    android:textColor="@color/black"
+                    android:textSize="23dp" /-->
 
-        <!--Village Code-->
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.4">
-
-            <View
-                android:id="@+id/view3a"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/rectanglebg" />
-
-            <TextView
-                android:id="@+id/text_dummy_hint_code"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="6dp"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:text="Village Code"
-                android:textSize="16sp"
-                android:background="@android:color/white"
-                android:visibility="invisible"
-                android:textColor="@color/black"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-
-                android:id="@+id/ti3a"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="16dp"
-                android:hint="Village Code"
-                android:textColorHint="#707070"
-                app:hintTextAppearance="@style/HintTextStyle">
-
-                <EditText
-                    android:id="@+id/edit_code"
+                <!--Farmer Name-->
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text|textCapWords"
-                    android:maxLines="1"
-                    android:backgroundTint="@android:color/transparent"/>
-            </com.google.android.material.textfield.TextInputLayout>
-        </RelativeLayout>
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:paddingTop="5dp">
 
-        <!--Village Name-->
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_weight="0.6">
+                    <View
+                        android:id="@+id/view1"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rectanglebg" />
 
-            <View
-                android:id="@+id/view3b"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/rectanglebg" />
+                    <TextView
+                        android:id="@+id/text_dummy_hint_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="2dp"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/white"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:text="Farmer Name"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:visibility="invisible" />
 
-            <TextView
-                android:id="@+id/text_dummy_hint_name"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="6dp"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:text="Village Name"
-                android:textSize="16sp"
-                android:background="@android:color/white"
-                android:visibility="invisible"
-                android:textColor="@color/black"/>
+                    <com.google.android.material.textfield.TextInputLayout
 
-            <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ti1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginRight="16dp"
+                        android:hint="Farmer Name"
+                        android:textColorHint="#707070"
+                        app:hintTextAppearance="@style/HintTextStyle">
 
-                android:id="@+id/ti3b"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="16dp"
-                android:hint="Village Name"
-                android:textColorHint="#707070"
-                app:hintTextAppearance="@style/HintTextStyle">
+                        <EditText
+                            android:id="@+id/edit_username"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@android:color/transparent"
+                            android:inputType="text|textCapWords"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </RelativeLayout>
 
-                <EditText
-                    android:id="@+id/edit_name"
+                <!--Father Name-->
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@android:color/transparent"
-                    android:inputType="text|textCapWords"
-                    android:maxLines="1" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </RelativeLayout>
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:paddingTop="5dp">
 
-    </LinearLayout>
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rectanglebg" />
 
-    <Spinner
-        android:id="@+id/spinner_district"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:background="@drawable/rectanglebg"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="15dp"
-        android:popupBackground="@color/white"/>
+                    <TextView
+                        android:id="@+id/text_dummy_hint_fathername"
+                        android:layout_width="wrap_content"
+                        android:layout_height="2dp"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/white"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:text="Farmer's Father Name"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:visibility="invisible" />
 
-    <!--LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
+
+                        android:id="@+id/ti2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginRight="16dp"
+                        android:hint="Farmer's Father Name"
+                        android:textColorHint="#707070"
+                        app:hintTextAppearance="@style/HintTextStyle">
+
+                        <EditText
+                            android:id="@+id/edit_fathername"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@android:color/transparent"
+                            android:inputType="text|textCapWords"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal"
+                    android:paddingTop="5dp">
+
+                    <!--Village Code-->
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4">
+
+                        <View
+                            android:id="@+id/view3a"
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/rectanglebg" />
+
+                        <TextView
+                            android:id="@+id/text_dummy_hint_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@android:color/white"
+                            android:paddingLeft="4dp"
+                            android:paddingRight="4dp"
+                            android:text="Village Code"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:visibility="invisible" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+
+                            android:id="@+id/ti3a"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="16dp"
+                            android:hint="Village Code"
+                            android:textColorHint="#707070"
+                            app:hintTextAppearance="@style/HintTextStyle">
+
+                            <EditText
+                                android:id="@+id/edit_code"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@android:color/transparent"
+                                android:inputType="text|textCapWords"
+                                android:maxLines="1" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </RelativeLayout>
+
+                    <!--Village Name-->
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="0.6">
+
+                        <View
+                            android:id="@+id/view3b"
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/rectanglebg" />
+
+                        <TextView
+                            android:id="@+id/text_dummy_hint_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@android:color/white"
+                            android:paddingLeft="4dp"
+                            android:paddingRight="4dp"
+                            android:text="Village Name"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:visibility="invisible" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+
+                            android:id="@+id/ti3b"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="16dp"
+                            android:hint="Village Name"
+                            android:textColorHint="#707070"
+                            app:hintTextAppearance="@style/HintTextStyle">
+
+                            <EditText
+                                android:id="@+id/edit_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@android:color/transparent"
+                                android:inputType="text|textCapWords"
+                                android:maxLines="1" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/spinner_district"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/rectanglebg"
+                    android:popupBackground="@color/white" />
+
+                <!--LinearLayout
         android:id="@+id/x"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -298,171 +328,244 @@
 
     </LinearLayout-->
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:paddingTop="20dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal"
+                    android:paddingTop="20dp">
 
-        <Spinner
-            android:id="@+id/spinner1"
-            android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_weight="0.4"
-            android:background="@drawable/rectanglebg"
-            android:entries="@array/fire_status"
-            android:popupBackground="@color/white"/>
+                    <Spinner
+                        android:id="@+id/spinner1"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_weight="0.4"
+                        android:background="@drawable/rectanglebg"
+                        android:entries="@array/fire_status"
+                        android:popupBackground="@color/white" />
 
-        <Spinner
-            android:id="@+id/spinner2"
-            android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_weight="0.6"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/rectanglebg"
-            android:entries="@array/land_use"
-            android:popupBackground="@color/white"/>
+                    <Spinner
+                        android:id="@+id/spinner2"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="0.6"
+                        android:background="@drawable/rectanglebg"
+                        android:entries="@array/land_use"
+                        android:popupBackground="@color/white" />
 
-    </LinearLayout>
+                </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:paddingTop="5dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:paddingTop="5dp">
 
-        <View
-            android:id="@+id/view4"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/rectanglebg" />
+                    <View
+                        android:id="@+id/view4"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rectanglebg" />
 
-        <TextView
-            android:id="@+id/text_dummy_hint_remarks"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="6dp"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:text="Remarks"
-            android:textSize="16sp"
-            android:background="@android:color/white"
-            android:visibility="invisible"
-            android:textColor="@color/black"/>
+                    <TextView
+                        android:id="@+id/text_dummy_hint_remarks"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/white"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:text="Remarks"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:visibility="invisible" />
 
-        <com.google.android.material.textfield.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
 
-            android:id="@+id/ti4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="16dp"
-            android:hint="Remarks"
-            android:textColorHint="#707070"
-            android:layout_marginTop="-30dp"
-            app:hintTextAppearance="@style/HintTextStyle">
+                        android:id="@+id/ti4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="-30dp"
+                        android:layout_marginRight="16dp"
+                        android:hint="Remarks"
+                        android:textColorHint="#707070"
+                        app:hintTextAppearance="@style/HintTextStyle">
 
-            <EditText
-                android:id="@+id/edit_remarks"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:backgroundTint="@android:color/transparent"
-                android:inputType="text|textMultiLine"
-                android:maxLines="3" />
-        </com.google.android.material.textfield.TextInputLayout>
+                        <EditText
+                            android:id="@+id/edit_remarks"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:backgroundTint="@android:color/transparent"
+                            android:inputType="text|textMultiLine"
+                            android:maxLines="3" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-        <!--TextView
+                    <!--TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#707070"
             android:text="0/50"
             android:textAlignment="viewEnd"/-->
-    </RelativeLayout>
+                </RelativeLayout>
 
-       <!--Incident Reason-->
-        <RelativeLayout
-            android:layout_width="match_parent"
+                <!--Incident Reason-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:paddingTop="5dp">
+
+                    <View
+                        android:id="@+id/view5"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rectanglebg" />
+
+                    <TextView
+                        android:id="@+id/text_dummy_hint_reason"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/white"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:text="Incident Reason"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:visibility="invisible" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+
+                        android:id="@+id/ti5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="-30dp"
+                        android:layout_marginRight="16dp"
+                        android:hint="Incident Reason"
+                        android:textColorHint="#707070"
+                        app:hintTextAppearance="@style/HintTextStyle">
+
+                        <EditText
+                            android:id="@+id/edit_reason"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:backgroundTint="@android:color/transparent"
+                            android:inputType="text|textMultiLine"
+                            android:maxLines="3" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <!--ImageButton
+        android:id="@+id/camera"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="20dp"
+        android:layout_weight="0.15"
+        app:srcCompat="@drawable/camera" /-->
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/camera"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:paddingTop="5dp">
-
-        <View
-            android:id="@+id/view5"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/rectanglebg" />
-
-        <TextView
-            android:id="@+id/text_dummy_hint_reason"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="6dp"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:text="Incident Reason"
-            android:textSize="16sp"
-            android:background="@android:color/white"
-            android:visibility="invisible"
-            android:textColor="@color/black"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-
-            android:id="@+id/ti5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp"
             android:layout_marginRight="16dp"
-            android:hint="Incident Reason"
-            android:textColorHint="#707070"
-            android:layout_marginTop="-30dp"
-            app:hintTextAppearance="@style/HintTextStyle">
+            android:layout_marginBottom="32dp"
+            android:tint="@color/white"
+            app:backgroundTint="#E03B3B"
+            app:elevation="6dp"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@id/submit_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/camera_fab" />
 
-            <EditText
-                android:id="@+id/edit_reason"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:backgroundTint="@android:color/transparent"
-                android:inputType="text|textMultiLine"
-                android:maxLines="3" />
-        </com.google.android.material.textfield.TextInputLayout>
-        </RelativeLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <!--LinearLayout
+        android:id= "@+id/btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"-->
+
+        <Button
+            android:id="@+id/submit_btn"
             android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/submit_btn"
+            android:text="SUBMIT"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/images_page"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app__bar_report">
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/click_photo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="32dp"
+            android:tint="@color/white"
+            app:backgroundTint="#E03B3B"
+            app:elevation="6dp"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/save_images"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/camera_fab" />
 
-            <Button
-                android:id="@+id/submit_btn"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_weight="0.85"
-                android:background="@drawable/submit_btn"
-                android:text="SUBMIT"/>
 
-            <ImageButton
-                android:id="@+id/camera"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_weight="0.15"
-                android:layout_marginStart="20dp"
-                app:srcCompat="@drawable/camera" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvimages"
+            android:layout_width="409dp"
+            android:layout_height="510dp"
+            android:layout_marginBottom="2dp"
+            app:layout_constraintBottom_toTopOf="@+id/save_images"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        <Button
+            android:id="@+id/save_images"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="#DC5C58"
+            android:text="SAVE"
+            android:textColor="@color/white"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--/LinearLayout-->
 
-    </LinearLayout>
 
-</ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 

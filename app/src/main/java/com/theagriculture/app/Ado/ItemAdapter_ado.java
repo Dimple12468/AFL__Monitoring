@@ -147,7 +147,7 @@ public class ItemAdapter_ado extends RecyclerView.Adapter<ItemAdapter_ado.ViewHo
 
 
 
-                        /*
+
                         Bundle bundle = new Bundle();
                         bundle.putString("id",did.get(position));
                         bundle.putString("lat",dlatitude.get(position));
@@ -157,7 +157,7 @@ public class ItemAdapter_ado extends RecyclerView.Adapter<ItemAdapter_ado.ViewHo
                         AppCompatActivity activity = (AppCompatActivity) v.getContext();
                         activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_ado,abc).addToBackStack(null).commit();
 
-                         */
+
 
                          /*
                         Intent intent = new Intent(context, CheckInActivity2.class);
