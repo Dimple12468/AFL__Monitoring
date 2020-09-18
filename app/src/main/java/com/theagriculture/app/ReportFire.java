@@ -86,8 +86,10 @@ import static io.fabric.sdk.android.Fabric.TAG;
 
 public class ReportFire extends AppCompatActivity {
 
-    String mytoken = "f7b0f292e11552bcb60459576fedc754064ed663";
+    //String mytoken = "f7b0f292e11552bcb60459576fedc754064ed663";
+    String mytoken;
     String district_list_url = "https://api.aflmonitoring.com/api/district/";
+    String newUrl = "https://api.aflmonitoring.com/rest-auth/login/";
     //String district_list_url = "http://api.theagriculture.tk/api/district/";
     String reportSubmitUrl = "https://api.aflmonitoring.com/api/report-user/add/";
     String imageUploadUrl = "https://api.aflmonitoring.com/api/upload/images/";
@@ -127,6 +129,8 @@ public class ReportFire extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.report_fire);
+
+        getToken(newUrl,"haryana_admin","haryana_admin");
 
         reportPage= findViewById(R.id.report_page);
         imagesPage = findViewById(R.id.images_page);
@@ -255,7 +259,12 @@ public class ReportFire extends AppCompatActivity {
 
         district_spinner = findViewById(R.id.spinner_district);
         district_spinner.setPrompt("District");
-        getDistrictData();
+        final SharedPreferences sp = getSharedPreferences("tokenFire", Context.MODE_PRIVATE);
+        if (sp.contains("token")) {
+            mytoken = sp.getString("token","");
+            getDistrictData();
+        }
+
         district_spinner.setSelection(0,false);
         district_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -577,6 +586,7 @@ public class ReportFire extends AppCompatActivity {
                             Toast.makeText(ReportFire.this,"response is "+response.toString(),Toast.LENGTH_LONG).show();
                             JSONObject singleObject = new JSONObject(String.valueOf(response));
                             reportId = singleObject.getString("NormalUserReport_id");
+                            Toast.makeText(getApplicationContext(),"report id is "+reportId,Toast.LENGTH_LONG).show();
                             Log.d(TAG, "onResponse: " + singleObject);
                             //isReportSubmitted = true;
                             uploadingPhotos();
@@ -750,10 +760,9 @@ public class ReportFire extends AppCompatActivity {
 
 
     public void uploadingPhotos(){
-        Integer intId = Integer.parseInt(reportId);
         Toast.makeText(getApplicationContext(),"Eneterd uploading photos function",Toast.LENGTH_LONG).show();
         AndroidNetworking.upload(imageUploadUrl)
-                .addHeaders("Authorization", "Token " + mytoken)
+                .addHeaders("Authorization", "Token " + token)
                 .addMultipartParameter("report",reportId)
                 .addMultipartFile("image", mImages.get(PhotosUploadedCount))
                 .setTag("Upload Images")
@@ -783,7 +792,7 @@ public class ReportFire extends AppCompatActivity {
                                      @Override
                                      public void onError(ANError anError) {
                                          Log.d(TAG, "onError: " + anError.getErrorBody());
-                                         Toast.makeText(getApplicationContext(), "Photos Upload failed, please try again "+ anError.getErrorBody()+" message is "+anError.getMessage()+" details are "+anError.getErrorDetail(), Toast.LENGTH_SHORT).show();
+                                         Toast.makeText(getApplicationContext(), "Photos Upload failed, please try again "+ anError.getErrorBody(), Toast.LENGTH_SHORT).show();
                                          reportSubmitLoading.dismiss();
                                      }
 
@@ -791,6 +800,89 @@ public class ReportFire extends AppCompatActivity {
                 );
     }
 
+    public void getToken(String url,String username,String password){
+        final RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
+        JSONObject postparams = null;
+        try {
+            postparams = new JSONObject();
+            postparams.put("username", username);
+            postparams.put("password", password);
+        } catch (JSONException e) {
+            //Log.d(TAG, "Login: Error:" + e);
+            Toast.makeText(getApplicationContext(), "Please try again", Toast.LENGTH_LONG).show();
+        }
+        // Toast.makeText(CheckToken.this,"posted "+postparams.toString(),Toast.LENGTH_LONG).show();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest( url, postparams,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //Toast.makeText(CheckToken.this,"response from token url is "+response.toString(),Toast.LENGTH_LONG).show();
+                        //token.setText(response.toString());
+                        //retrieve the token from server
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(String.valueOf(response));
+                            String tokenfire = jsonObject.getString("key");
+                            SharedPreferences.Editor editor = getSharedPreferences("tokenFire", Context.MODE_PRIVATE).edit();
+                            editor.putString("token", tokenfire);
+                            editor.apply();
+                            // Toast.makeText(getApplicationContext(),"got token "+tokenfire,Toast.LENGTH_LONG).show();
+
+                        } catch (JSONException e) {
+                            Toast.makeText(getApplicationContext(),"exception occured",Toast.LENGTH_LONG).show();
+                            //Log.d(TAG, "onResponse: error in post catch block: " + e);
+                        }
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(),"error from token url is "+error.getMessage(),Toast.LENGTH_LONG).show();
+                        if (error instanceof NoConnectionError)
+                            Toast.makeText(getApplicationContext(), "Check your internet connection", Toast.LENGTH_LONG).show();
+                        else if (error instanceof ClientError)
+                            Toast.makeText(getApplicationContext(), "Invalid User!", Toast.LENGTH_SHORT).show();
+                        else if (error instanceof TimeoutError)
+                            Toast.makeText(getApplicationContext(), "Time our!", Toast.LENGTH_SHORT).show();
+                        else if (error instanceof AuthFailureError) {
+                            // Error indicating that there was an Authentication Failure while performing the request
+                            Toast.makeText(getApplicationContext(), "This error is case2", Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ServerError) {
+                            //Indicates that the server responded with a error response
+                            Toast.makeText(getApplicationContext(), "This error is case3", Toast.LENGTH_LONG).show();
+                        } else if (error instanceof NetworkError) {
+                            //Indicates that there was network error while performing the request
+                            Toast.makeText(getApplicationContext(), "This error is case4", Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ParseError) {
+                            // Indicates that the server response could not be parsed
+                            Toast.makeText(getApplicationContext(), "This error is case5", Toast.LENGTH_LONG).show();
+                        }
+                        else
+                            Toast.makeText(getApplicationContext(), "Something went wrong, please try again!", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        MyRequestQueue.add(jsonObjectRequest);
+
+        jsonObjectRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+    }
 
 
 
