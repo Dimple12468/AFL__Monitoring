@@ -161,6 +161,16 @@ public class ReportFire extends AppCompatActivity {
         photo = findViewById(R.id.fab_camera);
         submit = findViewById(R.id.submit_fire_report);
 
+
+        final TextView title_top = findViewById(R.id.app_name);
+        if (title_top.isEnabled()){
+            title_top.setText("Report");
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
+
+
+
         editName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -328,6 +338,7 @@ public class ReportFire extends AppCompatActivity {
             public void onClick(View v) {
                 reportPage.setVisibility(View.GONE);
                 imagesPage.setVisibility(View.VISIBLE);
+                title_top.setText("Image Upload");
                 //Intent intent = new Intent(ReportFire.this,ImageUpload.class);
                 //startActivity(intent);
                 //Toast.makeText(ReportFire.this,"To upload Image screen",Toast.LENGTH_LONG).show();
@@ -400,6 +411,7 @@ public class ReportFire extends AppCompatActivity {
                 //save.setVisibility(View.GONE);
                 imagesPage.setVisibility(View.GONE);
                 reportPage.setVisibility(View.VISIBLE);
+                title_top.setText("Report");
 
 
             }
