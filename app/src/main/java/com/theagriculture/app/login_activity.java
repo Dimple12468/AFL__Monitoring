@@ -271,12 +271,34 @@ public class login_activity extends AppCompatActivity {
                             typeOfUser = a.getString("type_of_user");
                             Name = c.getString("name");
                             /////from here
+                            /*
                             String number = c.getString("number");
                             String email = c.getString("email");
                             JSONArray village = c.getJSONArray("village");
                             JSONObject villageDetails = village.getJSONObject(0);
                             String villageName = villageDetails.getString("village");
                             String address = villageName;
+
+                             */
+                            String number="Not Available",email="Not Available",address="Not Available";
+                            try{
+                                number = c.getString("number");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            try{
+                                email = c.getString("email");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            try{
+                                JSONArray village = c.getJSONArray("village");
+                                JSONObject villageDetails = village.getJSONObject(0);
+                                String villageName = villageDetails.getString("village");
+                                address = villageName;
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             ////till here
                             pk = a.getString("pk");
                             Log.d(TAG, "onResponse: valuepk"+pk);
