@@ -160,6 +160,7 @@ public class ado_map_fragment extends Fragment implements OnMapReadyCallback {//
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDrawer.closeDrawers();
                 //Toast.makeText(getActivity(),"Synjnd",Toast.LENGTH_LONG).show();
                 Intent intent= new Intent(getActivity(), ProfilePage.class);
                 startActivity(intent);

@@ -307,6 +307,7 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getActivity(),"Synjnd",Toast.LENGTH_LONG).show();
+                mDrawer_map.closeDrawers();
                 Intent intent= new Intent(getActivity(), ProfilePage.class);
                 startActivity(intent);
             }

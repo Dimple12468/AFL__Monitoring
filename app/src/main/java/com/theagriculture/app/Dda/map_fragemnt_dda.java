@@ -171,6 +171,7 @@ public class map_fragemnt_dda extends Fragment {
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDrawer.closeDrawers();
                 //Toast.makeText(getActivity(),"Synjnd",Toast.LENGTH_LONG).show();
                 Intent intent= new Intent(getActivity(), ProfilePage.class);
                 startActivity(intent);
