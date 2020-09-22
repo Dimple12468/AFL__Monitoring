@@ -28,6 +28,7 @@ public class Globals {
 
     //ADO user
     public static String adoPending = serverURL + "api/locations/ado/pending";
+    public static String adoCompleted = serverURL + "api/locations/ado/completed";
 
     //DDA user
     public static String assignedLocationsDDA = serverURL + "api/locations/dda/assigned";

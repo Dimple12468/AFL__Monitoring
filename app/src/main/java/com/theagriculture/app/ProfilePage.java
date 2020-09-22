@@ -60,9 +60,9 @@ public class ProfilePage extends AppCompatActivity {
     String typeOfUser;
 
     String adminPendingUrl = Globals.pendingList,adminOngoingUrl = Globals.ongoingList,adminCompletedUrl = Globals.completedList;
-    String adoPendingUrl = Globals.adoPending;
-    String ddaOngoing = Globals.ddaOngoing;
-    String ddaCompleted = Globals.ddaCompleted;
+    String adoPendingUrl = Globals.adoPending,adoCompletedUrl = Globals.adoCompleted;
+    String ddaAssignedUrl = Globals.assignedLocationsDDA, ddaUnassignedUrl = Globals.unassignedLocationsDDA,
+            ddaOngoingUrl = Globals.ddaOngoing,ddaCompletedUrl = Globals.ddaCompleted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +80,8 @@ public class ProfilePage extends AppCompatActivity {
 
         location = new ArrayList<>();
         district = new ArrayList<>();
+
+
         /*
         location.add("wee");
         location.add("wee");
@@ -106,6 +108,30 @@ public class ProfilePage extends AppCompatActivity {
         userAddress.setText(preferences.getString("Address",""));
         userMail.setText(preferences.getString("Email",""));
 
+        String[] adminSpinner={"Pending","Ongoing","Completed"};
+        String[] adoSpinner={"Pending","Completed"};
+        String[] ddaSpinner={"Assigned Pending","Unassigned Pending","Ongoing","Completed"};
+        //Creating the ArrayAdapter instance having the list
+
+        ArrayAdapter aa;
+        if(typeOfUser.equals("admin")) {
+            aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, adminSpinner);
+            aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            //Setting the ArrayAdapter data on the Spinner
+            spin.setAdapter(aa);
+        }
+        else if(typeOfUser.equals("ado")) {
+            aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, adoSpinner);
+            aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            //Setting the ArrayAdapter data on the Spinner
+            spin.setAdapter(aa);
+        }
+        else if(typeOfUser.equals("dda"))  {
+            aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, ddaSpinner);
+            aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            //Setting the ArrayAdapter data on the Spinner
+            spin.setAdapter(aa);
+        }
 
         spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -120,13 +146,21 @@ public class ProfilePage extends AppCompatActivity {
                     if(spin.getSelectedItemPosition()==2)
                         getData(adminCompletedUrl);
                 }
-                if(typeOfUser.equals("ado")){
+                else if(typeOfUser.equals("ado")){
                     if(spin.getSelectedItemPosition()==0)
                         getData(adoPendingUrl);
                     if(spin.getSelectedItemPosition()==1)
-                        //getData(adoOngoingUrl);
+                        getData(adoCompletedUrl);
+                }
+                if(typeOfUser.equals("dda")){
+                    if(spin.getSelectedItemPosition()==0)
+                        getData(ddaAssignedUrl);
+                    if(spin.getSelectedItemPosition()==1)
+                        getData(ddaUnassignedUrl);
                     if(spin.getSelectedItemPosition()==2)
-                        getData(adminCompletedUrl);
+                        getData(ddaOngoingUrl);
+                    if(spin.getSelectedItemPosition()==3)
+                        getData(ddaCompletedUrl);
                 }
 
                 //Toast.makeText(getApplicationContext(),country,Toast.LENGTH_LONG).show();
@@ -138,10 +172,13 @@ public class ProfilePage extends AppCompatActivity {
         });
 
 
+
+
+
         layoutManager = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        getData(adoPendingUrl);
+        ////////getData(adoPendingUrl);
 
         adapter = new ProfilePageAdapter(getApplicationContext(),location,district,false,false,false);
         recyclerView.setAdapter(adapter);
