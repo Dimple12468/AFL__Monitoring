@@ -51,11 +51,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.androidnetworking.utils.Utils;
+import com.google.gson.JsonObject;
 import com.theagriculture.app.Admin.AdminActivity;
 import com.theagriculture.app.Ado.AdoActivity;
 import com.theagriculture.app.Dda.DdaActivity;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -81,8 +81,6 @@ public class login_activity extends AppCompatActivity {
 
     private String urlget;          // = "http://api.theagriculture.tk/api/get-user/";
     private String urlpost;         // = "http://api.theagriculture.tk/api-token-auth/";
-//    private String urlget ;
-//    private String urlpost;
 
     private AlertDialog dialog;
     private CheckBox checkBox;
@@ -120,15 +118,21 @@ public class login_activity extends AppCompatActivity {
 */
 
         final SharedPreferences sp = getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        String Usertype = sp.getString("typeOfUser", "");
-        if (sp.contains("token")) {
+        String Usertype = sp.getString("role", "");
+        if (sp.contains("key")) {
             Intent intent = null;
-            if (Usertype.equals("dda"))
-                intent = new Intent(this, DdaActivity.class);
-            if (Usertype.equals("ado"))
+            if (Usertype.equals("1"))
+                Toast.makeText(login_activity.this, "login for farmer", Toast.LENGTH_SHORT).show();
+            if (Usertype.equals("2"))
                 intent = new Intent(this, AdoActivity.class);
-            if (Usertype.equals("admin"))
+            if (Usertype.equals("3"))
+                Toast.makeText(login_activity.this, "login for block admin", Toast.LENGTH_SHORT).show();
+            if (Usertype.equals("4"))
+                intent = new Intent(this, DdaActivity.class);
+            if (Usertype.equals("5"))
                 intent = new Intent(this, AdminActivity.class);
+            if (Usertype.equals("6"))
+                Toast.makeText(this, "login for super admin", Toast.LENGTH_SHORT).show();
             if (intent != null) {
                 startActivity(intent);
                 finish();
@@ -267,73 +271,40 @@ public class login_activity extends AppCompatActivity {
                         try {
                             JSONObject c = new JSONObject(String.valueOf(response));
                             Log.d(TAG, "onResponse: " + c);
-                            JSONObject a = c.getJSONObject("auth_user");
-                            typeOfUser = a.getString("type_of_user");
-                            Name = c.getString("name");
-                            /////from here
-                            /*
-                            String number = c.getString("number");
-                            String email = c.getString("email");
-                            JSONArray village = c.getJSONArray("village");
-                            JSONObject villageDetails = village.getJSONObject(0);
-                            String villageName = villageDetails.getString("village");
-                            String address = villageName;
-
-                             */
-                            String number="Not Available",email="Not Available",address="Not Available";
-                            try{
-                                number = c.getString("number");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            try{
-                                email = c.getString("email");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            try{
-                                JSONArray village = c.getJSONArray("village");
-                                JSONObject villageDetails = village.getJSONObject(0);
-                                String villageName = villageDetails.getString("village");
-                                address = villageName;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            ////till here
-                            pk = a.getString("pk");
+                            JSONObject a = c.getJSONObject("user");
+                            Log.d(TAG, "onResponse: user:" + a);
+                            typeOfUser = a.getString("role");
+                            Name = a.getString("name");
+                            pk = a.getString("id");
                             Log.d(TAG, "onResponse: valuepk"+pk);
                             SharedPreferences.Editor editor = getSharedPreferences("tokenFile", Context.MODE_PRIVATE).edit();
-                            editor.putString("typeOfUser", typeOfUser);
+                            editor.putString("role", typeOfUser);
                             editor.putString("Name", Name);
-                            editor.putString("pk", pk);
-                            //from here
-                            editor.putString("PhoneNumber",number);
-                            editor.putString("Email",email);
-                            editor.putString("Address",address);
-                            ///to here
+                            editor.putString("id", pk);
                             editor.apply();
-
-                            Log.d(TAG, "onResponse: typeOfUser:" + typeOfUser);
-
 
                             Intent intent = null;
 
-                            if (typeOfUser.equals("admin")) {
-
-                                intent = new Intent(login_activity.this,AdminActivity.class);
+                            if (typeOfUser.equals("1")) {
+                                Toast.makeText(login_activity.this, "login for farmer", Toast.LENGTH_SHORT).show();
+                            }else if (typeOfUser.equals("2")) {
+                                intent = new Intent(login_activity.this, AdoActivity.class);
                                 startActivity(intent);
                                 finish();
-                            } else if (typeOfUser.equals("dda")) {
+                            }else if (typeOfUser.equals("3")) {
+                                Toast.makeText(login_activity.this, "login for block admin", Toast.LENGTH_SHORT).show();
+                            }else if (typeOfUser.equals("4")) {
                                 btnLogin.setEnabled(false);
                                 btnLogin.setClickable(false);
                                 intent = new Intent(login_activity.this, DdaActivity.class);
                                 startActivity(intent);
                                 finish();
-                            } else if (typeOfUser.equals("ado")) {
-
-                                intent = new Intent(login_activity.this, AdoActivity.class);
+                            }else if (typeOfUser.equals("5")) {
+                                intent = new Intent(login_activity.this,AdminActivity.class);
                                 startActivity(intent);
                                 finish();
+                            }else if (typeOfUser.equals("6")) {
+                                Toast.makeText(login_activity.this, "login for super admin", Toast.LENGTH_SHORT).show();
                             } else {
                                 dialog.dismiss();
                                 //Toast.makeText(getApplicationContext(), "Invalid User", Toast.LENGTH_SHORT).show();
@@ -355,14 +326,13 @@ public class login_activity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         if (error instanceof NoConnectionError)
-                            //Toast.makeText(getApplicationContext(), "Check your internet connection", Toast.LENGTH_LONG).show();
                             noInternetDialog();
                         else if (error instanceof ClientError)
-                            //Toast.makeText(getApplicationContext(), "Invalid User!", Toast.LENGTH_SHORT).show();
                             displayDialog("Invalid User!");
-                        else
-                            //Toast.makeText(getApplicationContext(), "Something went wrong, please try again!", Toast.LENGTH_LONG).show();
+                        else {
+                            Log.d(TAG,"error.networkResponse.toString()" + error.networkResponse.toString());
                             displayDialog("Something went wrong,please try again");
+                        }
                         btnLogin.setEnabled(true);
                         dialog.dismiss();
                         Log.d(TAG, "onErrorResponse: some error in get: " + error.getLocalizedMessage());
@@ -385,12 +355,12 @@ public class login_activity extends AppCompatActivity {
                         //retrieve the token from server
                         try {
                             JSONObject jsonObject = new JSONObject(String.valueOf(response));
-                            token = jsonObject.getString("token");
+                            token = jsonObject.getString("key");
                             SharedPreferences.Editor editor = getSharedPreferences("tokenFile", Context.MODE_PRIVATE).edit();
-                            editor.putString("token", token);
+                            editor.putString("key", token);
                             editor.apply();
                             MyRequestQueue.add(jsonObjectRequest1);
-                            Log.d(TAG, "onResponse: Token:" + token);
+                            Log.d(TAG, "onResponse: key:" + token);
                         } catch (JSONException e) {
                             dialog.dismiss();
                             btnLogin.setEnabled(true);
@@ -402,13 +372,10 @@ public class login_activity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         if (error instanceof NoConnectionError)
-                            //Toast.makeText(getApplicationContext(), "Check your internet connection", Toast.LENGTH_LONG).show();
                             noInternetDialog();
                         else if (error instanceof ClientError)
-                            //Toast.makeText(getApplicationContext(), "Invalid User!", Toast.LENGTH_SHORT).show();
                             displayDialog("Incorrect Password or Email");
                         else
-                            //Toast.makeText(getApplicationContext(), "Something went wrong, please try again!", Toast.LENGTH_LONG).show();
                             displayDialog("Something went wrong,please try again");
                         Log.d(TAG, "onErrorResponse: invalid user : " + error);
                         dialog.dismiss();

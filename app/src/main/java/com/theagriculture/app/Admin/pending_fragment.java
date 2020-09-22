@@ -43,6 +43,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.theagriculture.app.Dda.SectionAdapter_DDA;
+import com.theagriculture.app.Dda.Section_DDA;
 import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 import com.theagriculture.app.adapter.PendingAdapter;
@@ -51,7 +53,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,8 +67,8 @@ import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
 public class pending_fragment extends Fragment {
 
     //variables
-    private ArrayList<String> mDdaName;
-    private ArrayList<String> mAdaName;
+//    private ArrayList<String> mDdaName;
+//    private ArrayList<String> mAdaName;
     private ArrayList<String> mAddress;
     private ArrayList<String> mpkado;
     private ArrayList<String> mpkdda;
@@ -78,8 +83,10 @@ public class pending_fragment extends Fragment {
     //tags
     private static final String TAG = "pending_fragment";
     //private String pendingUrl = "http://18.224.202.135/api/locations/pending";
-    private String pendingUrl = Globals.pendingList;     //"http://api.theagriculture.tk/api/locationsDatewise/pending";              //= "http://18.224.202.135/api/locationsDatewise/pending";
-    final ArrayList<Section> sections = new ArrayList<>();
+    private String pendingUrl = Globals.pendingDatewiseList;     //"http://api.theagriculture.tk/api/locationsDatewise/pending";              //= "http://18.224.202.135/api/locationsDatewise/pending";
+    ArrayList<Section> sections = new ArrayList<>();
+//    ArrayList<Section_DDA> sections_dda = new ArrayList<>();
+
     private String nextPendingUrl = "null";
     private LinearLayoutManager layoutManager;
 
@@ -87,6 +94,8 @@ public class pending_fragment extends Fragment {
     //public PendingAdapter recyclerViewAdater;
     private ItemAdapter item_adapter;
     private SectionAdapter recyclerViewAdater;
+//    private SectionAdapter_DDA recyclerViewAdater_dda;
+
     private ProgressBar progressBar;
     private boolean isNextBusy = false;
     private boolean isSendingNotifications = false;
@@ -95,10 +104,17 @@ public class pending_fragment extends Fragment {
     RecyclerView recyclerView;
     ProgressBar spinner;
     private boolean isRefresh;
-
-
     int count_entry = 0;
     //ProgressDialog pDialog;
+    String last_date,last_date_next;
+
+    ArrayList<String> mDid = new ArrayList<>();
+    ArrayList<String> mDlocation_name = new ArrayList<>();
+    ArrayList<String> mDlocation_address = new ArrayList<>();
+    ArrayList<String> mAdaName= new ArrayList<>();
+    ArrayList<String> mDdaName= new ArrayList<>();
+    ArrayList<String> mpk_ado = new ArrayList<>();
+    ArrayList<String> mpk_dda = new ArrayList<>();
 
     // Required empty public constructor
     public pending_fragment() {
@@ -125,6 +141,8 @@ public class pending_fragment extends Fragment {
         spinner = view.findViewById(R.id.pending_progress);
 //        spinner.setVisibility(View.VISIBLE);
 
+        getData(pendingUrl);
+        Log.d(TAG,"URL: " + pendingUrl);
 
         //for complete scroll for recycler view (from bottom to up(top))
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
@@ -153,29 +171,29 @@ public class pending_fragment extends Fragment {
             }
         });
 
-        recyclerViewAdater = new SectionAdapter(getActivity(), sections);
-        recyclerView.setAdapter(recyclerViewAdater);
-
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(divider);
 
         final SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = preferences.getString("token", "");
+        token = preferences.getString("key", "");
         Log.d(TAG, "onCreateView: " + token);
 //        Log.d(TAG, "onCreateView: inflated fragment_ongoing");
 
         // spinner.setVisibility(View.VISIBLE);
-//        getData(pendingUrl);
+        recyclerViewAdater = new SectionAdapter(getActivity(), sections);
+        recyclerView.setAdapter(recyclerViewAdater);
         recyclerViewAdater.notifyDataSetChanged();
 
         return view;
     }
 
     private void getData(final String url) {
-        sections.clear();
+//        sections.clear();
+        sections=new ArrayList<>();
         final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        isNextBusy = true;
         final JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -184,6 +202,201 @@ public class pending_fragment extends Fragment {
                     nextPendingUrl = jsonObject.getString("next");
                     Log.d(TAG, "onResponse: nextPendingUrl " + nextPendingUrl);
                     JSONArray jsonArray = jsonObject.getJSONArray("results");
+
+                    String[][] arr = new String[8][jsonArray.length()];
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject singleObject = jsonArray.getJSONObject(i);
+                        String did = singleObject.getString("id");
+                        String date = singleObject.getString("acq_date");
+                        String dlocation_name = singleObject.getString("village_name");
+                        String dlocation_address = singleObject.getString("village_name").toUpperCase() + "," + singleObject.getString("block").toUpperCase() + ", " +
+                                singleObject.getString("district").toUpperCase();
+
+                        String adoName , auth_ado ;
+                        String ddaName , auth_ddo ;
+
+
+                        try {
+                            JSONObject adoobj = singleObject.getJSONObject("ado");
+                            JSONObject authado = adoobj.getJSONObject("user");
+                            auth_ado = authado.getString("id");
+                        } catch (JSONException e) {
+                            auth_ado = "null";
+                        }
+                        try {
+                            JSONObject adoobj = singleObject.getJSONObject("ado");
+                            JSONObject authado = adoobj.getJSONObject("user");
+                            adoName = authado.getString("name");
+                        } catch (JSONException e) {
+                            adoName = "Not Assigned";
+                        }
+
+
+
+                        try {
+                            JSONObject ddaobj = singleObject.getJSONObject("dda");
+                            JSONObject authddo = ddaobj.getJSONObject("user");
+                            auth_ddo = authddo.getString("id");
+                        } catch (JSONException e) {
+                            auth_ddo = "null";
+                        }
+                        try {
+                            JSONObject ddaobj = singleObject.getJSONObject("dda");
+                            JSONObject authddo = ddaobj.getJSONObject("user");
+                            ddaName = authddo.getString("name");
+                        } catch (JSONException e) {
+                            ddaName = "Not Assigned";
+                        }
+
+
+
+
+
+                        arr[0][i] = date;
+                        arr[1][i] = did;
+                        arr[2][i] = dlocation_name;
+                        arr[3][i] = dlocation_address;
+                        arr[4][i]=adoName;
+                        arr[5][i]=ddaName;
+                        arr[6][i]=auth_ado;
+                        arr[7][i]=auth_ddo;
+                        Log.d(TAG,"in first loop: "+ date + " " + did + " " + dlocation_name + " " + dlocation_address + " " + adoName + " " + ddaName + auth_ado + " " + auth_ddo + "\n");
+                    }
+                    String inter;
+                    for(int i=0;i<jsonArray.length()-1;i++){
+                        for(int j=0;j<jsonArray.length()-i-1;j++){
+                            String idate = arr[0][j];
+                            String ndate = arr[0][j+1];
+                            SimpleDateFormat sdfo = new SimpleDateFormat("yyyy-MM-dd");
+                            // Get the two dates to be compared
+                            Date d1 = null;
+                            try {
+                                d1 = sdfo.parse(idate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            Date d2 = null;
+                            try {
+                                d2 = sdfo.parse(ndate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            if (d1.compareTo(d2) < 0) {
+                                for(int k=0;k<8;k++) {
+                                    inter = arr[k][j];
+                                    arr[k][j] = arr[k][j + 1];
+                                    arr[k][j + 1] = inter;
+                                }
+                            }
+                        }
+                    }
+
+                    mDid = new ArrayList<>();
+                    mDlocation_name = new ArrayList<>();
+                    mDlocation_address = new ArrayList<>();
+                    mAdaName= new ArrayList<>();
+                    mDdaName= new ArrayList<>();
+                    mpk_ado = new ArrayList<>();
+                    mpk_dda = new ArrayList<>();
+                    String predate=arr[0][0];
+                    last_date = arr[0][jsonArray.length()-1];
+                    Log.d(TAG,"last_date in first get data: " + last_date);
+
+
+                    for(int i=0;i<jsonArray.length();i++){
+                        String idate = arr[0][i];
+                        if(predate.equals(idate)){
+                            mDid.add(arr[1][i]);
+                            mDlocation_name.add(arr[2][i]);
+                            mDlocation_address.add(arr[3][i]);
+                            mAdaName.add(arr[4][i]);
+                            mDdaName.add(arr[5][i]);
+                            mpk_ado.add(arr[6][i]);
+                            mpk_dda.add(arr[7][i]);
+
+                            //predate=idate;
+                        }
+                        else{
+                            Log.d(TAG,"in else: "+ predate + " " + mDid + " " + mDlocation_name + " " + mDlocation_address + " " + mAdaName + " " + mDdaName + mpk_ado + " " + mpk_dda + "\n");
+                            sections.add(new Section(predate,mDid, mDlocation_name, mDlocation_address,mAdaName,mDdaName,mpk_ado,mpk_dda,true,false,false));
+                            mDid = new ArrayList<>();
+                            mDlocation_name = new ArrayList<>();
+                            mDlocation_address = new ArrayList<>();
+                            mAdaName = new ArrayList<>();
+                            mDdaName = new ArrayList<>();
+                            mpk_ado = new ArrayList<>();
+                            mpk_dda = new ArrayList<>();
+                            mDid.add(arr[1][i]);
+                            mDlocation_name.add(arr[2][i]);
+                            mDlocation_address.add(arr[3][i]);
+                            mAdaName.add(arr[4][i]);
+                            mDdaName.add(arr[5][i]);
+                            mpk_ado.add(arr[6][i]);
+                            mpk_dda.add(arr[7][i]);
+                            //date.equals(idate);
+                        }
+                        //predate.equals(idate);
+                        predate=idate;
+                    }
+                    Log.d(TAG,"out of else: "+ predate + " " + mDid + " " + mDlocation_name + " " + mDlocation_address + " " + mAdaName + " " + mDdaName + mpk_ado + " " + mpk_dda + "\n");
+                    sections.add(new Section(predate,mDid, mDlocation_name, mDlocation_address,mAdaName,mDdaName,mpk_ado,mpk_dda,true,false,false));
+                    //adoListAdapter.mshowshimmer = false;
+                    spinner.setVisibility(View.GONE);
+                    recyclerViewAdater.notifyDataSetChanged();
+                    isNextBusy = false;
+
+
+
+                        /*try {
+                            JSONObject adoobj = singleObject.getJSONObject("ado");
+
+                            JSONObject authado = adoobj.getJSONObject("auth_user");
+                            mpkado.add(authado.getString("pk"));
+
+                        } catch (JSONException e) {
+                            mpkado.add("null");
+                        }
+                        try {
+                            JSONObject ddaobj = singleObject.getJSONObject("dda");
+                            JSONObject authddo = ddaobj.getJSONObject("auth_user");
+                            mpkdda.add(authddo.getString("pk"));
+                        } catch (JSONException e)
+                        {
+                            mpkdda.add("null");
+                        }
+                        villagename = singleObject.getString("village_name");
+                        blockname = singleObject.getString("block_name");
+                        district = singleObject.getString("district");
+                        try {
+                            JSONObject mDdaObject = singleObject.getJSONObject("dda");
+                            String ddaName = mDdaObject.getString("name");
+                            mDdaName.add(ddaName);
+                        } catch (JSONException e) {
+                            mDdaName.add("Not Assigned");
+                        }
+                        try {
+                            JSONObject mAdoObject = singleObject.getJSONObject("ado");
+                            String adoName = mAdoObject.getString("name");
+                            mAdaName.add(adoName);
+                        } catch (JSONException e) {
+                            mAdaName.add("Not Assigned");
+                        }
+                        mAddress.add(villagename.toUpperCase() + ", " +
+                                blockname.toUpperCase() + ", " + district.toUpperCase());
+
+
+
+
+
+
+                    }
+
+
+
+
+
+
                     for (int i = 0; i < jsonArray.length(); i++) {
                         mDdaName = new ArrayList<>();
                         mAdaName = new ArrayList<>();
@@ -245,11 +458,12 @@ public class pending_fragment extends Fragment {
                         }
                         sections.add(new Section(mdate, mDdaName, mAdaName, mAddress, mId, mpkado, mpkdda, true, false, false));
                     }
-                    spinner.setVisibility(View.GONE);
+                    spinner.setVisibility(View.GONE);*/
                 } catch (Exception e) {
                     spinner.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "An exception occurred", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
+                    isNextBusy = false;
                 }
             }
         }, new Response.ErrorListener() {
@@ -276,7 +490,7 @@ public class pending_fragment extends Fragment {
                         @Override
                         public void onClick(View v) {
                             mBottomDialogNotificationAction.dismiss();
-                            //spinner.setVisibility(View.VISIBLE);
+                            spinner.setVisibility(View.VISIBLE);
                             getData(url);
                         }
                     });
@@ -332,6 +546,7 @@ public class pending_fragment extends Fragment {
             }
         };
         requestQueue.add(jsonObjectRequest1);
+        requestFinished(requestQueue);//this function is defined below
         jsonObjectRequest1.setRetryPolicy(new RetryPolicy() {
             @Override
             public int getCurrentTimeout() {
@@ -349,6 +564,8 @@ public class pending_fragment extends Fragment {
             }
         });
 
+
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int totalCount, pastItemCount, visibleItemCount;
             @Override
@@ -365,21 +582,11 @@ public class pending_fragment extends Fragment {
                     totalCount = layoutManager.getItemCount();
                     pastItemCount = layoutManager.findFirstVisibleItemPosition();
                     visibleItemCount = layoutManager.getChildCount();
-                    //Toast.makeText(getActivity(),"totalCount is "+ totalCount + "pastItemCount is " + pastItemCount + " visibleItemCount" + visibleItemCount,Toast.LENGTH_LONG).show();
-                    //if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
-                    if (((pastItemCount + visibleItemCount) >= totalCount) && (pastItemCount >= 0) && (totalCount >= PAGE_SIZE)) {
+                   if (((pastItemCount + visibleItemCount) >= totalCount) /*&& (pastItemCount >= 0) && (totalCount >= PAGE_SIZE)*/) {
                         count_entry++;
-                        //Toast.makeText(getActivity(),"cleared first if with count "+ count_entry,Toast.LENGTH_LONG).show();
-                        //if (!isNextBusy) {
-                        //Toast.makeText(getActivity(),"cleared next if",Toast.LENGTH_LONG).show();
-                        //pendingUrl.equals(nextPendingUrl);
-                        //getData(nextPendingUrl);
-                        progressBar.setVisibility(View.VISIBLE);
-                        getNextData(nextPendingUrl);
-                        //Toast.makeText(getActivity(),"We reached end of page",Toast.LENGTH_LONG).show();
-                        //loadNextLocations();
-                        //}
-                    }
+                       if (!isNextBusy)
+                           getNextData(nextPendingUrl);
+                   }
                 }
             }
         });
@@ -388,12 +595,217 @@ public class pending_fragment extends Fragment {
 
     public void getNextData(final String url) {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        progressBar.setVisibility(View.VISIBLE);
+        isNextBusy = true;
         final JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 //spinner.setVisibility(View.VISIBLE);
                 try {
+
                     JSONObject jsonObject = new JSONObject(String.valueOf(response));
+                    nextPendingUrl = jsonObject.getString("next");
+                    Log.d(TAG, "onResponse: nextPendingUrl " + nextPendingUrl);
+                    JSONArray jsonArray = jsonObject.getJSONArray("results");
+
+
+                    String[][] arr = new String[8][jsonArray.length()];
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject singleObject = jsonArray.getJSONObject(i);
+                        String did = singleObject.getString("id");
+                        String date = singleObject.getString("acq_date");
+                        String dlocation_name = singleObject.getString("village_name");
+                        String dlocation_address = singleObject.getString("village_name").toUpperCase() + "," + singleObject.getString("block").toUpperCase() + ", " +
+                                singleObject.getString("district").toUpperCase();
+
+                        String adoName , auth_ado ;
+                        String ddaName , auth_ddo ;
+
+
+                        try {
+                            JSONObject adoobj = singleObject.getJSONObject("ado");
+                            JSONObject authado = adoobj.getJSONObject("user");
+                            auth_ado = authado.getString("id");
+                        } catch (JSONException e) {
+                            auth_ado = "null";
+                        }
+                        try {
+                            JSONObject adoobj = singleObject.getJSONObject("ado");
+                            JSONObject authado = adoobj.getJSONObject("user");
+                            adoName = authado.getString("name");
+                        } catch (JSONException e) {
+                            adoName = "Not Assigned";
+                        }
+
+
+
+                        try {
+                            JSONObject ddaobj = singleObject.getJSONObject("dda");
+                            JSONObject authddo = ddaobj.getJSONObject("user");
+                            auth_ddo = authddo.getString("id");
+                        } catch (JSONException e) {
+                            auth_ddo = "null";
+                        }
+                        try {
+                            JSONObject ddaobj = singleObject.getJSONObject("dda");
+                            JSONObject authddo = ddaobj.getJSONObject("user");
+                            ddaName = authddo.getString("name");
+                        } catch (JSONException e) {
+                            ddaName = "Not Assigned";
+                        }
+
+
+
+                        arr[0][i] = date;
+                        arr[1][i] = did;
+                        arr[2][i] = dlocation_name;
+                        arr[3][i] = dlocation_address;
+                        arr[4][i]=adoName;
+                        arr[5][i]=ddaName;
+                        arr[6][i]=auth_ado;
+                        arr[7][i]=auth_ddo;
+                        Log.d(TAG,"in first loop of next: "+ date + " " + did + " " + dlocation_name + " " + dlocation_address + " " + adoName + " " + ddaName + auth_ado+ " " + auth_ddo + "\n");
+                    }
+                    String inter;
+                    for(int i=0;i<jsonArray.length()-1;i++){
+                        for(int j=0;j<jsonArray.length()-i-1;j++){
+                            String idate = arr[0][j];
+                            String ndate = arr[0][j+1];
+                            SimpleDateFormat sdfo = new SimpleDateFormat("yyyy-MM-dd");
+                            // Get the two dates to be compared
+                            Date d1 = null;
+                            try {
+                                d1 = sdfo.parse(idate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            Date d2 = null;
+                            try {
+                                d2 = sdfo.parse(ndate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            if (d1.compareTo(d2) < 0) {
+                                for(int k=0;k<8;k++) {
+                                    inter = arr[k][j];
+                                    arr[k][j] = arr[k][j + 1];
+                                    arr[k][j + 1] = inter;
+                                }
+                            }
+                        }
+                    }
+
+//                    /*ArrayList<String>*/ mDid = new ArrayList<>();
+//                    /*ArrayList<String>*/ mDlocation_name = new ArrayList<>();
+//                    /*ArrayList<String>*/ mDlocation_address = new ArrayList<>();
+//                    /*ArrayList<String>*/ mAdaName= new ArrayList<>();
+//                    /*ArrayList<String>*/ mDdaName= new ArrayList<>();
+//                    /*ArrayList<String>*/ mpk_ado = new ArrayList<>();
+//                    /*ArrayList<String>*/ mpk_dda = new ArrayList<>();
+                    String predate=arr[0][0];
+
+
+
+//                    mpkado = new ArrayList<>();
+//                    mpkdda = new ArrayList<>();
+
+//                    if (predate.equals(last_date)){
+//                            mDid.add(arr[1][i]);
+//                            mDlocation_name.add(arr[2][i]);
+//                            mDlocation_address.add(arr[3][i]);
+//                            mAdaName.add(arr[4][i]);
+//                            mDdaName.add(arr[5][i]);
+//                            mpk_ado.add(arr[6][i]);
+//                            mpk_dda.add(arr[7][i]);
+//
+//                            mDid_initial.add(arr[1][i]);
+//                            mDlocation_name_initial.add(arr[2][i]);
+//                            mDlocation_address_initial.add(arr[3][i]);
+//                            mAdaName_initial.add(arr[4][i]);
+//                            mDdaName_initial.add(arr[5][i]);
+//                            mpk_ado_initial.add(arr[6][i]);
+//                            mpk_dda_initial.add(arr[7][i]);
+//                            sections.add(new Section(predate,mDid_initial, mDlocation_name_initial, mDlocation_address_initial,mAdaName_initial,mDdaName_initial,mpk_ado_initial,mpk_dda_initial,true,false,false));
+//
+//                        }
+                    for(int i=0;i<jsonArray.length();i++){
+                        String idate = arr[0][i];
+                        int flag = 0 ;
+
+                        if (i==0 && predate.equals(last_date)){
+                            Log.d(TAG," find boolean for i == 0: " + predate.equals(last_date));
+                            mDid.add(arr[1][i]);
+                            mDlocation_name.add(arr[2][i]);
+                            mDlocation_address.add(arr[3][i]);
+                            mAdaName.add(arr[4][i]);
+                            mDdaName.add(arr[5][i]);
+                            mpk_ado.add(arr[6][i]);
+                            mpk_dda.add(arr[7][i]);
+//                            idate = arr[0][i];
+                        }
+//                        if (i == (jsonArray.length()-1) && predate.equals(last_date_next))
+                        else if(predate.equals(idate) /*|| predate.equals(last_date) || predate.equals(last_date_next)*/){
+                            Log.d(TAG,"first boolean: " + predate.equals(idate));
+                            mDid.add(arr[1][i]);
+                            mDlocation_name.add(arr[2][i]);
+                            mDlocation_address.add(arr[3][i]);
+                            mAdaName.add(arr[4][i]);
+                            mDdaName.add(arr[5][i]);
+                            mpk_ado.add(arr[6][i]);
+                            mpk_dda.add(arr[7][i]);
+                            //predate=idate;
+//                            Log.d(TAG,"last_date in from first get data: " + last_date + "\n");
+//                            Log.d(TAG,"last_date in second get data: " + last_date_next);
+                        }
+
+                        else{
+                            Log.d(TAG,"in else of next: "+ predate + " " + mDid + " " + mDlocation_name + " " + mDlocation_address + " " + mAdaName + " " + mDdaName + mpk_ado + " " + mpk_dda + "\n");
+                            sections.add(new Section(predate,mDid, mDlocation_name, mDlocation_address,mAdaName,mDdaName,mpk_ado,mpk_dda,true,false,false));
+                            mDid = new ArrayList<>();
+                            mDlocation_name = new ArrayList<>();
+                            mDlocation_address = new ArrayList<>();
+                            mAdaName = new ArrayList<>();
+                            mDdaName = new ArrayList<>();
+                            mpk_ado = new ArrayList<>();
+                            mpk_dda = new ArrayList<>();
+                            mDid.add(arr[1][i]);
+                            mDlocation_name.add(arr[2][i]);
+                            mDlocation_address.add(arr[3][i]);
+                            mAdaName.add(arr[4][i]);
+                            mDdaName.add(arr[5][i]);
+                            mpk_ado.add(arr[6][i]);
+                            mpk_dda.add(arr[7][i]);
+                            //date.equals(idate);
+                        }
+                        if(i==(jsonArray.length()-1)) {
+                            last_date_next = arr[0][jsonArray.length() - 1];
+                            Log.d(TAG," next bool chk for i: " + predate.equals(last_date_next));
+                            System.out.println("predate " + predate + "last wali: " + last_date_next );
+                            if(predate.equals(last_date_next)){
+                                mDid.add(arr[1][i]);
+                                mDlocation_name.add(arr[2][i]);
+                                mDlocation_address.add(arr[3][i]);
+                                mAdaName.add(arr[4][i]);
+                                mDdaName.add(arr[5][i]);
+                                mpk_ado.add(arr[6][i]);
+                                mpk_dda.add(arr[7][i]);
+                            }
+                        }
+                        //predate.equals(idate);
+                        predate=idate;
+                        Log.d(TAG,"loop finish for count: " + i);
+                    }
+                    Log.d(TAG,"out of else of next: "+ predate + " " + mDid + " " + mDlocation_name + " " + mDlocation_address + " " + mAdaName + " " + mDdaName + mpk_ado + " " + mpk_dda + "\n");
+                    sections.add(new Section(predate,mDid, mDlocation_name, mDlocation_address,mAdaName,mDdaName,mpk_ado,mpk_dda,true,false,false));
+                    //adoListAdapter.mshowshimmer = false;
+                    spinner.setVisibility(View.GONE);
+                    recyclerViewAdater.notifyDataSetChanged();
+                    isNextBusy = false;
+
+
+
+
+                    /*JSONObject jsonObject = new JSONObject(String.valueOf(response));
                     nextPendingUrl = jsonObject.getString("next");
                     JSONArray jsonArray = jsonObject.getJSONArray("results");
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -451,11 +863,13 @@ public class pending_fragment extends Fragment {
                         sections.add(new Section(mdate, mDdaName, mAdaName, mAddress, mId, mpkado, mpkdda, true, false, false));
                     }
                     spinner.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);*/
                 } catch (Exception e) {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "An exception occurred", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
+                    isNextBusy = false;
+
                 }
             }
         }, new Response.ErrorListener() {
@@ -481,7 +895,7 @@ public class pending_fragment extends Fragment {
                         @Override
                         public void onClick(View v) {
                             mBottomDialogNotificationAction.dismiss();
-                            //   spinner.setVisibility(View.VISIBLE);
+                            spinner.setVisibility(View.VISIBLE);
                             getNextData(url);
                         }
                     });
@@ -534,7 +948,9 @@ public class pending_fragment extends Fragment {
                 return map;
             }
         };
+
         requestQueue.add(jsonObjectRequest1);
+        requestFinished(requestQueue);//this function is defined below
         jsonObjectRequest1.setRetryPolicy(new RetryPolicy() {
             @Override
             public int getCurrentTimeout() {
@@ -568,11 +984,14 @@ public class pending_fragment extends Fragment {
                     totalCount = layoutManager.getItemCount();
                     pastItemCount = layoutManager.findFirstVisibleItemPosition();
                     visibleItemCount = layoutManager.getChildCount();
-                    if (((pastItemCount + visibleItemCount) >= totalCount) && (pastItemCount >= 0) && (totalCount >= PAGE_SIZE)) {
+                    if (((pastItemCount + visibleItemCount) >= totalCount) /*&& (pastItemCount >= 0) && (totalCount >= PAGE_SIZE)*/) {
                         count_entry++;
-                        if (!nextPendingUrl.equals("null")) {
+                        if (!isNextBusy) {
                             getNextData(nextPendingUrl);
                         }
+//                        if (!nextPendingUrl.equals("null")) {
+//                            getNextData(nextPendingUrl);
+//                        }
                     }
                 }
             }
@@ -589,12 +1008,12 @@ public class pending_fragment extends Fragment {
     private void getNextPendingLocations() {
         Log.d(TAG, "getNextPendingLocations: inside");
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        //   progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         isNextBusy = true;
         final JsonObjectRequest jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, nextPendingUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Toast.makeText(getActivity(), "entered response function got response " + response.toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getActivity(), "entered response function got response " + response.toString(), Toast.LENGTH_LONG).show();
                 try {
                     Toast.makeText(getActivity(), "entered try", Toast.LENGTH_LONG).show();
                     JSONObject jsonObject = new JSONObject(String.valueOf(response));
@@ -658,7 +1077,7 @@ public class pending_fragment extends Fragment {
                             mAddress.add(villagename.toUpperCase() + ", " + blockname.toUpperCase() + ", " + district.toUpperCase());
                             Toast.makeText(getActivity(), "Added mAddress", Toast.LENGTH_LONG).show();
                         }
-                        sections.add(new Section("date", mDdaName, mAdaName, mAddress, mId, mpkado, mpkdda, true, false, false));
+//                        sections.add(new Section("date", mDdaName, mAdaName, mAddress, mId, mpkado, mpkdda, true, false, false));
                         Toast.makeText(getActivity(), "Added a section", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -783,6 +1202,7 @@ public class pending_fragment extends Fragment {
 
             @Override
             public void onRequestFinished(Request<Object> request) {
+                spinner.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
             }
         });
@@ -791,7 +1211,7 @@ public class pending_fragment extends Fragment {
 
     private void sendNotifications() {
         isSendingNotifications = true;
-        String url = Globals.smsPending;              //"http://18.224.202.135/api/trigger/sms/pending";
+        String url = Globals.smsPending;                     //"http://18.224.202.135/api/trigger/sms/pending";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -848,9 +1268,9 @@ public class pending_fragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.d(TAG,"onStart: ");
-        spinner = view.findViewById(R.id.pending_progress);
-        spinner.setVisibility(View.VISIBLE);
-        getData(pendingUrl);
+//        spinner = view.findViewById(R.id.pending_progress);
+//        spinner.setVisibility(View.VISIBLE);
+//        getData(pendingUrl);
     }
 
 
@@ -859,13 +1279,6 @@ public class pending_fragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: ");
-        //spinner.setVisibility(View.GONE);
-//        if (isRefresh) {
-//            getFragmentManager().beginTransaction().detach(pending_fragment.this)
-//                    .attach(pending_fragment.this).commit();
-//            Log.d(TAG, "onResume: REFRESH");
-//            isRefresh = false;
-//        }
     }
 
     @Override

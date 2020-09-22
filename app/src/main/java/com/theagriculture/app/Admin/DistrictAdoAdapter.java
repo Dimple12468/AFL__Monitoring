@@ -91,9 +91,7 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
         this.mcontext = mcontext;
         this.isDdoFragment = isDdoFragment;
         mPkList = pkList;
-        //this.is_settings_clicked = is_settings_clicked;
 
-        //this.mtextview1_all = new ArrayList<>(mtextview1);
     }
 
     public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2,
@@ -120,9 +118,7 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
         this.mDdoNames = mDdoNames;
         this.mDistrictNames = mDistrictNames;
         this.is_settings_clicked = is_settings_clicked;
-      /*  if (is_settings_clicked){
-            radioButton.setVisibility(View.VISIBLE);
-        }*/
+
 
     }
 
@@ -135,7 +131,6 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
     }
 
     public DistrictAdoAdapter(boolean isDDAuser){
-        System.out.println("hi dimple isDDAuser is: "+isDDAuser);
         this.isDDAuser=isDDAuser;
     }
 
@@ -167,17 +162,13 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
         holder.tv2.setBackground(null);
         holder.tv1.setText(mtextview1.get(position));
         holder.tv2.setText(mtextview2.get(position));
-       // holder.selection.setVisibility(View.GONE);
-       /* if (is_settings_clicked){
-            holder.radioButton.setVisibility(View.VISIBLE);
-        }*/
+
         if (!isDdoFragment) {
             holder.districtTextview.setText("DDA : " + mDdoNames.get(position).toUpperCase());/* + " (" + mDistrictNames.get(position) + ")");*/
             holder.districtTextview.setBackground(null);
         } else {
             holder.districtTextview.setVisibility(View.GONE);
             if (isDDAuser){
-                System.out.println("hi dimple in if condition: "+isDDAuser);
                 holder.tv1.setText(mtextview1_dda.get(position));
             }
         }
@@ -265,9 +256,6 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
         RelativeLayout relativeLayout;
         TextView districtTextview;
         RadioButton radioButton;
-        //  RadioButton selection;
-    //    ImageButton imageView6;
-       // tv3 = itemView.findViewById(R.id.search_notfound);
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -277,55 +265,24 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
             relativeLayout = itemView.findViewById(R.id.relativeLayout2);
             districtTextview = itemView.findViewById(R.id.district_info);
             radioButton = itemView.findViewById(R.id.offer_select);
-     //       selection = itemView.findViewById(R.id.offer_select);
-           // imageView6 = itemView.findViewById(R.id.dropdown);
-            //tv3 = itemView.findViewById(R.id.search_notfound);
 
             if (is_settings_clicked){
                 radioButton.setVisibility(View.VISIBLE);
             }
-           /* imageView6.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Toast.makeText(mcontext,"you clicked",Toast.LENGTH_LONG).show();
-                    PopupMenu popup = new PopupMenu(mcontext, imageView6);
-                    //Inflating the Popup using xml file
-                    popup.getMenuInflater().inflate(R.menu.edit_delete, popup.getMenu());
-
-                    //registering popup with OnMenuItemClickListener
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem item) {
-                            Toast.makeText(mcontext,"You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
-                            return true;
-                        }
-                    });
-                    popup.show();
-
-                }
-            });*/
 
         }
         @Override
         public void onClick(View v) {
             Intent intent =  new Intent(mcontext, AdoDdo_Activity.class);
             intent.putExtra("Id", mUserId.get(this.getAdapterPosition()));
-//            Bundle bundle = new Bundle();
-//            bundle.putString("Id", mUserId.get(this.getAdapterPosition()));
             if(isDdoFragment) {
                 intent.putExtra("isDdo", true);
-//                bundle.putBoolean("isDdo", true);
             }
             else {
                 intent.putExtra("isDdo", false);
-//                bundle.putBoolean("isDdo", false);
             }
             intent.putExtra("name", mtextview1.get(this.getAdapterPosition()));
             mcontext.startActivity(intent);
-//            bundle.putString("name", mtextview1.get(this.getAdapterPosition()));
-//            AdoDdoActivityFragment abc = new AdoDdoActivityFragment();
-//            abc.setArguments(bundle);
-//            AppCompatActivity activity = (AppCompatActivity) v.getContext();
-//            activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc).addToBackStack(null).commit();
 
 
         }

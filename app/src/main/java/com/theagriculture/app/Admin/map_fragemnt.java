@@ -68,6 +68,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.maps.android.clustering.ClusterManager;
 import com.obsez.android.lib.filechooser.ChooserDialog;
 import com.theagriculture.app.Globals;
+import com.theagriculture.app.Initial_page;
 import com.theagriculture.app.PrivacyPolicy;
 import com.theagriculture.app.R;
 import com.theagriculture.app.login_activity;
@@ -103,24 +104,18 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
     private String token;
     private SupportMapFragment mapFragment_admin;
 
-    private PrivacyPolicy privacyPolicy;
     private DrawerLayout mDrawer_map;
     private NavigationView nvDrawer_map;
-//    BottomNavigationView b_nav_map;
-    private map_fragemnt mapFragmnt;
-    private location_fragment locationFragment;
-    private ado_fragment adoFragment;
-    private ddo_fragment ddoFragment;
-    private DistrictStateFragment districtStateFragment;
     private final String TAG = "map_fragment admin";
 
     private ArrayList<Double> latitude;
     private ArrayList<Double> longitude;
     private ArrayList<String> villname;
 
-    private String url_unassigned;          //="http://api.theagriculture.tk/api/locations/unassigned";
-    private String url_assigned;            //="http://api.theagriculture.tk/api/locations/assigned";
-    private String url_count;               //="http://api.theagriculture.tk/api/count-reports/";
+    private String url_unassigned = Globals.map_Unassigned_Admin;
+    private String url_assigned = Globals.map_Assigned_Admin;
+    private String url_count = Globals.map_Count_Admin;
+
     private String next;
     public GoogleMap map = null;
     private AlertDialog dialog;
@@ -135,25 +130,9 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
     private CardView statsCardview;
 
 
-    //bottom_nav bottom_nav_map;
-
     public map_fragemnt() {
         // Required empty public constructor
     }
-
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        //  fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-//        mMapView = (MapView) mView.findViewById(R.id.map);
-//        if (mMapView != null) {
-//            mMapView.onCreate(null);
-//            mMapView.onResume();
-//            mMapView.getMapAsync(this);
-//
-//        }
-//    }
 
 
     @Override
@@ -182,16 +161,11 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
         Log.d(TAG, "onCreateView: ");
         mView = inflater.inflate(R.layout.fragment_map_admin, container, false);
         mapFragment_admin = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_admin));
-//        setHasOptionsMenu(true);
-       // getContext().getTheme().applyStyle(R.style.AppTheme, true);
 
         statsCardview = mView.findViewById(R.id.stats_cardview_admin);
         statsCardview.setVisibility(View.GONE);
-//        Button fab = mView.findViewById(R.id.fab);
 
-        url_unassigned = Globals.map_Unassigned_Admin;
-        url_assigned = Globals.map_Assigned_Admin;
-        url_count = Globals.map_Count_Admin;
+
         Log.d(TAG,url_unassigned);
         Log.d(TAG,url_assigned);
         Log.d(TAG,url_count);
@@ -228,19 +202,9 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
         mDrawer_map.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        privacyPolicy = new PrivacyPolicy();
         pendingView = mView.findViewById(R.id.pending_count_admin);
         ongoingView = mView.findViewById(R.id.ongoing_count_admin);
         completedView = mView.findViewById(R.id.completed_count_admin);
-//        b_nav_map = mView.findViewById(R.id.bottom_nav_for_map);
-
-        mapFragmnt = new map_fragemnt();
-        locationFragment = new location_fragment();
-        adoFragment = new ado_fragment();
-        ddoFragment = new ddo_fragment();
-        districtStateFragment= new DistrictStateFragment();
-        //bottom_nav_map = new bottom_nav();
-        //bottom_nav_map.bottom_navigation_admin();
 
         Toolbar toolbar = (Toolbar) mView.findViewById(R.id.app__bar_map);
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
@@ -250,43 +214,8 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
         setHasOptionsMenu(true);
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        //Bottom_nav_adapter adapt = new Bottom_nav_adapter(getContext(),mapFragmnt,R.id.adminshome);
-
-
-/*        b_nav_map.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.adminshome:
-                        InitializeFragment(mapFragmnt);
-                        return true;
-                    case R.id.adminslocation:
-                        // InitializeFragment(locationFragment);
-                        Toast.makeText(getActivity(), "locations clicked", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.adminsado:
-                        Toast.makeText(getActivity(), "ado clicked", Toast.LENGTH_SHORT).show();
-                        //InitializeFragment(adoFragment);
-                        return true;
-                    case R.id.adminsdda:
-                        //InitializeFragment(ddoFragment);
-                        Toast.makeText(getActivity(), "dda clicked", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.adminsdistrict_state:
-                        // InitializeFragment(districtStateFragment);
-                        Toast.makeText(getActivity(), "stats clicked", Toast.LENGTH_SHORT).show();
-                        return true;
-                    default:
-                        // title_top.setText("AFL Monitoring");
-                        return false;
-                }
-            }
-        });*/
-
-
-
         final SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = prefs.getString("token", "");
+        token = prefs.getString("key", "");
         latitude = new ArrayList<>();
         longitude = new ArrayList<>();
         villname = new ArrayList<>();
@@ -300,7 +229,8 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
         View header = nvDrawer_map.getHeaderView(0);
         TextView textUsername = header.findViewById(R.id.name);
         TextView textUser = header.findViewById(R.id.type_of_user);
-        String typeofuser = prefs.getString("typeOfUser","");
+
+        String typeofuser = prefs.getString("role","");
         String username = prefs.getString("Name","");
         textUsername.setText(username);
         textUser.setText(typeofuser);
@@ -317,8 +247,7 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
                         editor.clear();
                         editor.commit();
                         mDrawer_map.closeDrawers();
-                        Intent intent = new Intent(getActivity(), login_activity.class);
-                        //Intent intent = new Intent(getApplicationContext(), login_activity.class);
+                        Intent intent = new Intent(getActivity(), Initial_page.class);
                         startActivity(intent);
                         getActivity().finish();
                         return true;
@@ -397,7 +326,7 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
                 View toolbar = ((View) mapFragment_admin.getView().findViewById(Integer.parseInt("1")).
                         getParent()).findViewById(Integer.parseInt("4"));
                 RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
-                // position on right bottom
+                // position on top right
                 rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
                 rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
                 rlp.setMargins(0, 30, 30, 0);
@@ -411,12 +340,9 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
         getMarkers(next);
 
         FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.fab);
-        //todo fab
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Snackbar.make(mView,"FAB OK HAI",Snackbar.LENGTH_LONG).show();
-
                 final BottomSheetDialog mBottomDialogNotificationAction = new BottomSheetDialog(getActivity());
                 View sheetView = getActivity().getLayoutInflater().inflate(R.layout.activity_fab_onclick, null);
                 mBottomDialogNotificationAction.setContentView(sheetView);
@@ -434,15 +360,6 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
 
                 final String url_location = Globals.url_Location_Admin;         //="http://api.theagriculture.tk/api/upload/locations/";
                 final String url_bulk = Globals.url_Bulk_Admin;                 //="http://api.theagriculture.tk/api/upload/mail/";
-
-
-                //for_upload.setOnClickListener(new View.OnClickListener() {
-                  //  @Override
-                   // public void onClick(View v) {
-                     //   Snackbar.make(mView,"Upload here",Snackbar.LENGTH_LONG).show();
-                    //}
-                //});
-
 
 
                 for_location.setOnClickListener(new View.OnClickListener() {
@@ -657,27 +574,6 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
 
     }
 
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        MapsInitializer.initialize(getContext());
-//        ngoogleMap = googleMap;
-//        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//
-//        //googleMap.getUiSettings().setMapToolbarEnabled(false);
-//        //change location of google map toolbar
-//        View toolbar = ((View) mMapView.findViewById(Integer.parseInt("1")).
-//                getParent()).findViewById(Integer.parseInt("4"));
-//        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
-//        // position on right bottom
-//        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-//        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
-//        rlp.setMargins(0, 30, 30, 0);
-//
-//
-//        googleMap.addMarker(new MarkerOptions().position(new LatLng(20.5937, 78.9629)).title("India").snippet("My country"));
-//        CameraPosition India = CameraPosition.builder().target(new LatLng(20.5937, 78.9629)).zoom(10).bearing(0).tilt(45).build();
-//        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(India));
-//    }
 
     private void openCsvPicker(final String url) {
         File file = Environment.getExternalStorageDirectory();
@@ -768,11 +664,8 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
     }
 
     public void InitializeFragment(Fragment fragment) {
-
-
         AppCompatActivity activity = (AppCompatActivity) fragment.getContext();
         activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).addToBackStack(null).commit();
-
 
     }
 }
