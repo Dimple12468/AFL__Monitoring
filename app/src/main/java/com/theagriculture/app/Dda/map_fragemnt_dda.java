@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +50,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.maps.android.clustering.ClusterManager;
 import com.theagriculture.app.Admin.MyItem;
+import com.theagriculture.app.ProfilePage;
 import com.theagriculture.app.R;
 import com.theagriculture.app.login_activity;
 
@@ -164,6 +166,17 @@ public class map_fragemnt_dda extends Fragment {
         //nvDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         TextView textUsername = header.findViewById(R.id.name);
         TextView textUser = header.findViewById(R.id.type_of_user);
+        //from here
+        ImageView userImage = header.findViewById(R.id.imageView);//for image click to profile
+        userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getActivity(),"Synjnd",Toast.LENGTH_LONG).show();
+                Intent intent= new Intent(getActivity(), ProfilePage.class);
+                startActivity(intent);
+            }
+        });
+        //to here
         textUsername.setText(username);
         textUser.setText(typeofuser);
         //set the navigation options in drawer layout

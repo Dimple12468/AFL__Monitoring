@@ -69,6 +69,7 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.obsez.android.lib.filechooser.ChooserDialog;
 import com.theagriculture.app.Globals;
 import com.theagriculture.app.PrivacyPolicy;
+import com.theagriculture.app.ProfilePage;
 import com.theagriculture.app.R;
 import com.theagriculture.app.login_activity;
 
@@ -300,6 +301,17 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
         View header = nvDrawer_map.getHeaderView(0);
         TextView textUsername = header.findViewById(R.id.name);
         TextView textUser = header.findViewById(R.id.type_of_user);
+        //from here
+        ImageView userImage = header.findViewById(R.id.imageView);//for image click to profile
+        userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getActivity(),"Synjnd",Toast.LENGTH_LONG).show();
+                Intent intent= new Intent(getActivity(), ProfilePage.class);
+                startActivity(intent);
+            }
+        });
+        //to here
         String typeofuser = prefs.getString("typeOfUser","");
         String username = prefs.getString("Name","");
         textUsername.setText(username);
