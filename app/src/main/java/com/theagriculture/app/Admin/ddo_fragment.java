@@ -217,7 +217,7 @@ public class ddo_fragment extends Fragment {
         Rview.addItemDecoration(divider);
 
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = preferences.getString("token", "");
+        token = preferences.getString("key", "");
         Log.d(TAG, "onCreateView: " + token);
         //getData();
 

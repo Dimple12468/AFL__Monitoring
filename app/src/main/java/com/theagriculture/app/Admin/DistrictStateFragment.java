@@ -258,7 +258,7 @@ public class DistrictStateFragment extends Fragment {
         end_date_set = year1 + "-" + (month1 + 1) + "-" + (day1);
 
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = preferences.getString("token", "");
+        token = preferences.getString("key", "");
         /*
         String pk = preferences.getString("pk","");
          primary=Integer.valueOf(pk);

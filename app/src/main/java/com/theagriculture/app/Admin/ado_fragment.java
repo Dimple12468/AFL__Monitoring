@@ -501,7 +501,7 @@ public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelect
         });*/
 
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = preferences.getString("token", "");
+        token = preferences.getString("key", "");
 
         gridlayout = new GridLayoutManager(getActivity(), 1);
         adolist.setLayoutManager(gridlayout);

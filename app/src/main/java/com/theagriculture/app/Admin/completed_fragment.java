@@ -159,7 +159,7 @@ public class completed_fragment extends Fragment {
         recyclerView.addItemDecoration(divider);
 
         SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = prefs.getString("token", "");
+        token = prefs.getString("key", "");
 //        getData();
         recyclerViewAdater = new SectionAdapter(getActivity(),sections);
         recyclerView.setAdapter(recyclerViewAdater);
