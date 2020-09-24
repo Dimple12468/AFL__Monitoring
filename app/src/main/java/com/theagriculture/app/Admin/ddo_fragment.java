@@ -237,27 +237,26 @@ public class ddo_fragment extends Fragment {
                     JSONArray resultsArray = rootObject.getJSONArray("results");
                     if(resultsArray.length()== 0){
                         Log.d(TAG, "onResponse: length of array is 0");
-                        //recyclerViewAdater.mShowShimmer = false;
                         recyclerViewAdater.notifyDataSetChanged();
                         LinearLayout ll = view.findViewById(R.id.for_edit_dda);
                         ll.setVisibility(View.GONE);
                         //todo image here
-                        //view.setBackground((Drawable) getActivity().getResources().getLayout(R.layout.fragment_nothing_toshow));
                         view.setBackground(getActivity().getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
-                        //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                     }
 
-                    for (int i = 0; i < resultsArray.length(); i++) {
+                    for (int i = 0; i < resultsArray.length(); i++)
+                    {
                         JSONObject singleObject = resultsArray.getJSONObject(i);
-                        username.add(singleObject.getString("name").toUpperCase());
+                        JSONObject userobj = singleObject.getJSONObject("user");
+                        username.add(userobj.getString("name").toUpperCase());
                         try {
                             JSONObject districtObject = singleObject.getJSONObject("district");
                             userinfo.add(districtObject.getString("district").toUpperCase());
                         } catch (JSONException e) {
                             userinfo.add("NOT ASSIGNED");
                         }
-                        JSONObject authObject = singleObject.getJSONObject("auth_user");
-                        String pk = authObject.getString("pk");
+//                        JSONObject authObject = singleObject.getJSONObject("auth_user");
+                        String pk = userobj.getString("id");
                         mPkList.add(pk);
                         String id = singleObject.getString("id");
                         mUserId.add(id);
@@ -409,15 +408,16 @@ public class ddo_fragment extends Fragment {
                     JSONArray resultsArray = rootObject.getJSONArray("results");
                     for (int i = 0; i < resultsArray.length(); i++) {
                         JSONObject singleObject = resultsArray.getJSONObject(i);
-                        username.add(singleObject.getString("name").toUpperCase());
+                        JSONObject userobj = singleObject.getJSONObject("user");
+                        username.add(userobj.getString("name").toUpperCase());
                         try {
                             JSONObject districtObject = singleObject.getJSONObject("district");
                             userinfo.add(districtObject.getString("district").toUpperCase());
                         } catch (JSONException e) {
                             userinfo.add("NOT ASSIGNED");
                         }
-                        JSONObject authObject = singleObject.getJSONObject("auth_user");
-                        String pk = authObject.getString("pk");
+//                        JSONObject authObject = singleObject.getJSONObject("auth_user");
+                        String pk = userobj.getString("id");
                         mPkList.add(pk);
                         String id = singleObject.getString("id");
                         mUserId.add(id);

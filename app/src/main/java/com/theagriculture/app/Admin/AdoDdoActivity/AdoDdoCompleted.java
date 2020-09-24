@@ -132,7 +132,7 @@ public class AdoDdoCompleted extends Fragment {
         DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(divider);
         SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = prefs.getString("token", "");
+        token = prefs.getString("key", "");
         locationNames = new ArrayList<>();
         locationAddresses = new ArrayList<>();
         mAdoNames = new ArrayList<>();
@@ -176,23 +176,19 @@ public class AdoDdoCompleted extends Fragment {
                             nextUrl = rootObject.getString("next");
                             JSONArray resultsArray = rootObject.getJSONArray("results");
                             if(resultsArray.length()== 0){
-                                //adapter.mshowshimmer = false;
                                 adapter.notifyDataSetChanged();
                                 //todo image
                                 nothing_toshow_fragment no_data = new nothing_toshow_fragment();
-                               // AdoDdoListAdapter adapt = new AdoDdoListAdapter(getActivity(),no_data);
-                               // recyclerView.setAdapter(adapt);
                                 AppCompatActivity activity = (AppCompatActivity)getContext();
                                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_when_nodata, no_data).commit();
-                                //view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_emptyartboard_1));
-                                //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                             }
                             for (int i = 0; i < resultsArray.length(); i++) {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
                                 if (isDdo) {
                                     try {
                                         JSONObject adoObject = singleObject.getJSONObject("ado");
-                                        String adoName = adoObject.getString("name");
+                                        JSONObject useronj_ado = adoObject.getJSONObject("user");
+                                        String adoName = useronj_ado.getString("name");
                                         mAdoNames.add(adoName);
                                     } catch (JSONException e) {
                                         mAdoNames.add("Not Assigned");
@@ -202,12 +198,11 @@ public class AdoDdoCompleted extends Fragment {
                                 String id = singleObject.getString("id");
                                 mIds.add(id);
                                 String locName = singleObject.getString("village_name");
-                                String locAdd = singleObject.getString("block_name") +
+                                String locAdd = singleObject.getString("block") +
                                         ", " + singleObject.getString("district");
                                 locationNames.add(locName);
                                 locationAddresses.add(locAdd);
                             }
-                            //adapter.mshowshimmer = false;
                             no_of_visits++;
                             adapter.notifyDataSetChanged();
                             spinner.setVisibility(View.GONE);
@@ -324,21 +319,20 @@ public class AdoDdoCompleted extends Fragment {
                                 JSONObject rootObject = new JSONObject(String.valueOf(response));
                                 JSONArray resultsArray = rootObject.getJSONArray("results");
                                 if(resultsArray.length()== 0){
-                                    //adapter.mshowshimmer = false;
                                     adapter.notifyDataSetChanged();
                                     Log.d("yo men im here " , url);
                                     nothing_toshow_fragment no_data = new nothing_toshow_fragment();
                                     AppCompatActivity activity = (AppCompatActivity)getContext();
                                     activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_when_nodata, no_data).commit();
-                                    // view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_group_217));
-                                    //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
+
                                 }
                                 for (int i = 0; i < resultsArray.length(); i++) {
                                     JSONObject singleObject = resultsArray.getJSONObject(i);
                                     if (isDdo) {
                                         try {
                                             JSONObject adoObject = singleObject.getJSONObject("ado");
-                                            String adoName = adoObject.getString("name");
+                                            JSONObject useronj_ado = adoObject.getJSONObject("user");
+                                            String adoName = useronj_ado.getString("name");
                                             mAdoNames.add(adoName);
                                         } catch (JSONException e) {
                                             mAdoNames.add("Not Assigned");
@@ -348,7 +342,7 @@ public class AdoDdoCompleted extends Fragment {
                                     String id = singleObject.getString("id");
                                     mIds.add(id);
                                     String locName = singleObject.getString("village_name");
-                                    String locAdd = singleObject.getString("block_name") +
+                                    String locAdd = singleObject.getString("block") +
                                             ", " + singleObject.getString("district");
                                     locationNames.add(locName);
                                     locationAddresses.add(locAdd);
@@ -418,7 +412,7 @@ public class AdoDdoCompleted extends Fragment {
 
                             }
                             else{
-                                Toast.makeText(getActivity(),"An error occured",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(),"An error occurred",Toast.LENGTH_LONG).show();
                             }
 
                         }

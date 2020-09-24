@@ -55,14 +55,12 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
     private ArrayList<String> mDistrictNames;
     private boolean isBusy = false;
     private String TAG = "RecyclerViewAdapter";
-//    private ImageButton imageView6;
     private TextView tv3;
     private boolean is_settings_clicked = false;
 
     //DDA->pending->assign
     private ArrayList<String> mtextview1_dda;
     private Map<Integer, ArrayList<String>> mtextview2_dda;
-//    private ArrayList<String> adoid_dda;
     private String locationID;
     private int currentAdo_Pos = -1;
     private ArrayList<String> AdoId;

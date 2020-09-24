@@ -245,7 +245,8 @@ public class DistrictAdo_Activity extends AppCompatActivity {
                         //todo add image
                         setContentView(R.layout.fragment_nothing_toshow);
                     }
-                    for (int i = 0; i < resultsArray.length(); i++) {
+                    for (int i = 0; i < resultsArray.length(); i++)
+                    {
                         JSONObject singleObject = resultsArray.getJSONObject(i);
                         JSONObject userobj = singleObject.getJSONObject("user");
                         username.add(userobj.getString("name").toUpperCase());
@@ -253,7 +254,7 @@ public class DistrictAdo_Activity extends AppCompatActivity {
                         Log.d(TAG, "onResponse: LENGTH " + villageArray.length());
                         if (villageArray.length() == 0)
                             userinfo.add("NOT ASSIGNED");
-                        for (int j = 0; j < 1; j++) {
+                        for (int j = 0; j < 1; j++) {               //j<villageArray.length()
                             try {
                                 JSONObject villageObject = villageArray.getJSONObject(i);
                                 userinfo.add(villageObject.getString("village").toUpperCase());
@@ -261,6 +262,7 @@ public class DistrictAdo_Activity extends AppCompatActivity {
                                 userinfo.add("NOT ASSIGNED");
                             }
                         }
+                        Log.d(TAG,"Dimple userinfo" + userinfo);
 //                        JSONObject authObject = singleObject.getJSONObject("auth_user");
                         String pk = userobj.getString("id");
                         mPkList.add(pk);

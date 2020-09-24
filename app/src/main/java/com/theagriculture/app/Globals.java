@@ -27,9 +27,12 @@ public class Globals {
     public static String admin = serverURL + "api/admin/";
 
     public static String usersList = serverURL + "api/users-list/dda/";
+    public static String districtStat = serverURL + "api/countReportBtwDates/";
+
 
     //ADO user
     public static String adoPending = serverURL + "api/locations/ado/pending";
+    public static String adoCompleted = serverURL + "api/locations/ado/completed";
 
     //DDA user
     public static String assignedLocationsDDA = serverURL + "api/locations/dda/assigned";

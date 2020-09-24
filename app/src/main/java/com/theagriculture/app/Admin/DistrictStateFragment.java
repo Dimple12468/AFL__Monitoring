@@ -68,6 +68,7 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -91,6 +92,7 @@ import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
  * A simple {@link Fragment} subclass.
  */
 public class DistrictStateFragment extends Fragment {
+    private static final String TAG = "Stat Fragment";
     String token;
     String name;
     String typeOfUser;
@@ -129,79 +131,35 @@ public class DistrictStateFragment extends Fragment {
     int completed_total;
     int ongoing_total;
 
-
     //final String burl="http://18.224.202.135/api/count-reports/?date=";
     private String URL;
     private Count_Adapter adapter;
     LineGraphSeries<DataPoint> series;
     LineChart lineChart;
-    //ArrayList<Integer> count=new ArrayList<Integer>();
-    //ArrayList<String> start_date= new ArrayList<String>();
-    String mURL;
+//    String mURL;
 
     Spinner spin;
     Legend legend;
     ImageView iv1,iv2;
 
     int Color_arr[] = {Color.parseColor("#1F78B4"),Color.parseColor("#7B26C6"),Color.parseColor("#B2DF8A")};
-    /*int Color_arr[] = {Color.argb(1,31, 120, 180),
-            Color.argb(1,123, 38, 198),
-            Color.argb(1,178, 223, 138)};*/
     String[] legend_name = {"Pending" , "Ongoing" ,"Completed"};
 
     public DistrictStateFragment() {
         // Required empty public constructor
     }
 
-
-   /* @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_top_bar,menu);
-        MenuItem searchItem = menu.findItem(R.id.search_in_title);
-        searchItem.setVisible(Invi)
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setQueryHint("Search something");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // perform query here
-                searchView.clearFocus();
-
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (newText.equals("")) {
-                    //searchView.setQuery("", false);
-                    newText = newText.trim();
-                }
-                adapter.getFilter().filter(newText);
-                return true;
-            }
-        });
-        super.onCreateOptionsMenu(menu, inflater);
-    }*/
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         getContext().getTheme().applyStyle(R.style.calendar_theme, true);
-        //final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.calendar_theme);
-        //LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        //View view = localInflater.inflate(R.layout.fragment_district_state, container, false);
-       // MyFragment myFragment = (MyFragment)getFragmentManager().findFragmentByTag("MY_FRAGMENT");
-
 
         View view = inflater.inflate(R.layout.fragment_district_state, container, false);
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_stat);
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        //setHasOptionsMenu(true);
 
         //for title heading
         TextView title_top = view.findViewById(R.id.app_name);
@@ -211,8 +169,7 @@ public class DistrictStateFragment extends Fragment {
             title_top.setText("AFL Monitoring");
         }
 
-
-        mURL = "http://api.theagriculture.tk/api/countReportBtwDates/?start_date=2019-10-10&end_date=2019-11-20&points=8";
+//        mURL = "http://api.aflmonitoring.com/api/countReportBtwDates/?start_date=2019-10-10&end_date=2019-11-20&points=8";
         totalPendingTextView = view.findViewById(R.id.total_pending);
         totalOngoingTextView = view.findViewById(R.id.total_ongoing);
         totalCompletedTextView = view.findViewById(R.id.total_completed);
@@ -259,19 +216,9 @@ public class DistrictStateFragment extends Fragment {
 
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         token = preferences.getString("key", "");
-        /*
-        String pk = preferences.getString("pk","");
-         primary=Integer.valueOf(pk);
-         String typeofuser = preferences.getString("typeOfUser","");
-         String username = preferences.getString("Name","");
 
-          */
         final LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
         pierecycler.setLayoutManager(linearLayoutManager);
-        //pierecycler.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
-        //adapter=new Count_Adapter(getActivity(),distlist,pending,ongoing,completed);
-        //pierecycler.setAdapter(adapter);
-        //getGraph(mURL,"All");
 
         //code for (drop-down) custom spinner
         String[] states = { "All", "Pending", "Ongoing", "Completed"};
@@ -286,28 +233,22 @@ public class DistrictStateFragment extends Fragment {
         CustomSpinnerAdapter adapt = new CustomSpinnerAdapter(getActivity(),states,images,drawable);
         adapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin.setAdapter(adapt);
-       /* ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, states);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin.setAdapter(adapter);*/
+
         spinner.setVisibility(View.VISIBLE);
         spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(getActivity(),"position is "+ position + "date is "+ start_date_set.toString()+end_date_set.toString(),Toast.LENGTH_LONG).show();
-                String spin_url = "http://api.theagriculture.tk/api/countReportBtwDates/?start_date="+start_date_set.toString()+"&end_date="+ end_date_set.toString()+"&points=8";
+                String spin_url = Globals.districtStat + "?start_date=" + start_date_set.toString() + "&end_date=" + end_date_set.toString() + "&points=8";
+                Log.d(TAG,"URL:" + spin_url);
                 String state = null;
                 if(position==0) {
                     state = "All";
-                    //image_in_spinner.setImageResource(R.drawable.for_pending);
                 }if(position==1) {
                     state = "Pending";
-                    //image_in_spinner.setImageResource(R.drawable.for_pending);
                 }if(position==2) {
                     state = "Ongoing";
-                    //image_in_spinner.setImageResource(R.drawable.for_ongoing);
                 }if(position==3) {
                     state = "Completed";
-                   // image_in_spinner.setImageResource(R.drawable.for_completed);
                 }
                 String currDateFormat = "yyyy-MM-dd";
                 String currdatestart = start_date_set;
@@ -325,14 +266,9 @@ public class DistrictStateFragment extends Fragment {
                 }
                 String dateStringresultstart = new SimpleDateFormat(Format).format(FromDate);
                 String dateStringresultend = new SimpleDateFormat(Format).format(ToDate);
-                //Toast.makeText(getActivity(),dateStringresultstart+" and "+dateStringresultend,Toast.LENGTH_LONG).show();
                 btndate.setText(dateStringresultstart+" - "+dateStringresultend);
 
-
-
                 getGraph(spin_url,state);
-                //Log.v("item", (String) parent.getItemAtPosition(position));
-                //((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
             }
 
             @Override
@@ -374,7 +310,8 @@ public class DistrictStateFragment extends Fragment {
                 end_date_set = df2.format(date2).toString();
                 System.out.println(start_date_set);
                 System.out.println(end_date_set);
-                String btn_url="http://api.theagriculture.tk/api/countReportBtwDates/?start_date=" + start_date_set + "&end_date=" + end_date_set + "&points=8";
+                String btn_url = Globals.districtStat + "?start_date=" + start_date_set + "&end_date=" + end_date_set + "&points=8";
+                Log.d(TAG,"btn_url" + btn_url);
                 String state = String.valueOf(spin.getSelectedItem());
                 getGraph(btn_url,state);
                 //getData(URL,start_date_set,end_date_set);
