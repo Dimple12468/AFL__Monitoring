@@ -77,7 +77,8 @@ public class login_activity extends AppCompatActivity {
     private String Name;
     private static final String TAG = "login_activity";
     private EditText editEmail, editPassword;
-    private TextView signUpAdo, signUpDda,tvForgot,tvReg;
+    private TextView signUpAdo, signUpDda,tvForgot;
+//    private TextView tvReg;
 
     private String urlget;          // = "http://api.theagriculture.tk/api/get-user/";
     private String urlpost;         // = "http://api.theagriculture.tk/api-token-auth/";
@@ -144,10 +145,10 @@ public class login_activity extends AppCompatActivity {
         editPassword = findViewById(R.id.editText3);
         btnLogin = findViewById(R.id.button);
         tvForgot = findViewById(R.id.tvForgot);
-        tvReg = findViewById(R.id.tvReg);
+//        tvReg = findViewById(R.id.tvReg);
 
         //function to go to register page
-        String text = "Don't have an account Register";
+/*        String text = "Don't have an account Register";
         SpannableString ss1 = new SpannableString(text);
         ClickableSpan clickableSpan1 = new ClickableSpan() {
             @Override
@@ -163,8 +164,8 @@ public class login_activity extends AppCompatActivity {
             }
         };
         ss1.setSpan(clickableSpan1,22,30, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tvReg.setText(ss1);
-        tvReg.setMovementMethod(LinkMovementMethod.getInstance());
+//        tvReg.setText(ss1);
+//        tvReg.setMovementMethod(LinkMovementMethod.getInstance());*/
 
         //function for forgot password
         String text_forgot = "Forgot Password?";

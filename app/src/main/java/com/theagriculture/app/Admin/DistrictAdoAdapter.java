@@ -161,6 +161,8 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
         holder.tv1.setText(mtextview1.get(position));
         holder.tv2.setText(mtextview2.get(position));
 
+        holder.tv2.setVisibility(View.GONE);
+
         if (!isDdoFragment) {
             holder.districtTextview.setText("DDA : " + mDdoNames.get(position).toUpperCase());/* + " (" + mDistrictNames.get(position) + ")");*/
             holder.districtTextview.setBackground(null);

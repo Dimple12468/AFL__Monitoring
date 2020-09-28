@@ -157,7 +157,7 @@ public class assignedfragment extends Fragment {
         review.addItemDecoration(divider);
 
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = preferences.getString("token","");
+        token = preferences.getString("key","");
         Log.d(TAG, "onCreateView: "+token);
 
         Log.d(TAG, "onCreateView: inflated fragment_ongoing");
@@ -336,7 +336,7 @@ public class assignedfragment extends Fragment {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
                                 String did = singleObject.getString("id");
                                 String dlocation_name = singleObject.getString("village_name");
-                                String dlocation_address = singleObject.getString("block_name") + ", " +
+                                String dlocation_address = singleObject.getString("block") + ", " +
                                         singleObject.getString("district");
                                 String dlongitude = singleObject.getString("longitude");
                                 String dlatitude = singleObject.getString("latitude");
@@ -534,7 +534,7 @@ public class assignedfragment extends Fragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
                 SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-                String token = prefs.getString("token", "");
+                String token = prefs.getString("key", "");
                 map.put("Authorization", "Token " + token);
                 return map;
             }
@@ -610,7 +610,7 @@ public class assignedfragment extends Fragment {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
                                 String did = singleObject.getString("id");
                                 String dlocation_name = singleObject.getString("village_name");
-                                String dlocation_address = singleObject.getString("block_name") + ", " +
+                                String dlocation_address = singleObject.getString("block") + ", " +
                                         singleObject.getString("district");
                                 String dlongitude = singleObject.getString("longitude");
                                 String dlatitude = singleObject.getString("latitude");
@@ -808,7 +808,7 @@ public class assignedfragment extends Fragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
                 SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-                String token = prefs.getString("token", "");
+                String token = prefs.getString("key", "");
                 map.put("Authorization", "Token " + token);
                 return map;
             }
@@ -850,7 +850,7 @@ public class assignedfragment extends Fragment {
 
     }
 
-    private void getNextLocations() {
+    /*private void getNextLocations() {
         final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         isNextBusy = true;
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, nextUrl, null, new Response.Listener<JSONObject>() {
@@ -936,5 +936,5 @@ public class assignedfragment extends Fragment {
             }
         });
         requestQueue.add(jsonObjectRequest);
-    }
+    }*/
 }

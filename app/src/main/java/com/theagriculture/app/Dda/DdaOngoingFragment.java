@@ -167,7 +167,7 @@ public class DdaOngoingFragment extends Fragment {
 
 
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = preferences.getString("token","");
+        token = preferences.getString("key","");
         Log.d(TAG, "onCreateView: "+token);
 //        getRequestData();
 
@@ -226,7 +226,7 @@ public class DdaOngoingFragment extends Fragment {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
                                 String did = singleObject.getString("id");
                                 String dlocation_name = singleObject.getString("village_name");
-                                String dlocation_address = singleObject.getString("block_name") + ", " +
+                                String dlocation_address = singleObject.getString("block") + ", " +
                                         singleObject.getString("district");
                                 String dlongitude = singleObject.getString("longitude");
                                 String dlatitude = singleObject.getString("latitude");
@@ -390,7 +390,7 @@ public class DdaOngoingFragment extends Fragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
                 SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-                String token = prefs.getString("token", "");
+                String token = prefs.getString("key", "");
                 map.put("Authorization", "Token " + token);
                 return map;
             }
@@ -466,7 +466,7 @@ public class DdaOngoingFragment extends Fragment {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
                                 String did = singleObject.getString("id");
                                 String dlocation_name = singleObject.getString("village_name");
-                                String dlocation_address = singleObject.getString("block_name") + ", " +
+                                String dlocation_address = singleObject.getString("block") + ", " +
                                         singleObject.getString("district");
                                 String dlongitude = singleObject.getString("longitude");
                                 String dlatitude = singleObject.getString("latitude");
@@ -631,7 +631,7 @@ public class DdaOngoingFragment extends Fragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
                 SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-                String token = prefs.getString("token", "");
+                String token = prefs.getString("key", "");
                 map.put("Authorization", "Token " + token);
                 return map;
             }
@@ -673,7 +673,7 @@ public class DdaOngoingFragment extends Fragment {
 
     }
 
-    private void getRequestData(){
+    /*private void getRequestData(){
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url_get_ongoing, null, new Response.Listener<JSONObject>() {
             @Override
@@ -739,9 +739,9 @@ public class DdaOngoingFragment extends Fragment {
             }
         });
         requestQueue.add(jsonObjectRequest);
-    }
+    }*/
 
-    private void get_ddaongoing(){
+    /*private void get_ddaongoing(){
         RequestQueue requestQueue1 = Volley.newRequestQueue(getActivity());
         isNextBusy = true;
             JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(next_url_get_ongoing, null,
@@ -812,7 +812,7 @@ public class DdaOngoingFragment extends Fragment {
             }
         });
             requestQueue1.add(jsonObjectRequest1);
-    }
+    }*/
 
 
     @Override

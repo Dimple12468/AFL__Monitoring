@@ -34,6 +34,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -49,7 +50,7 @@ public class adounderddo extends Fragment {
     RecyclerView recyclerView;
     ArrayList<String> ado_names;
     private ArrayList<String> adoIds;
-    private String urlget = "http://api.theagriculture.tk/api/ado/";
+    private String urlget = Globals.assignADO;                        //"http://api.aflmonitoring.com/api/ado/";
     private String nextUrl;
     private adounderddoadapter adapter;
     private final String TAG ="adouderddo";
@@ -150,7 +151,7 @@ public class adounderddo extends Fragment {
         DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(divider);
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = preferences.getString("token", "");
+        token = preferences.getString("key", "");
         loadData(urlget);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int totalCount, pastCount, visibleCount;
@@ -185,24 +186,34 @@ public class adounderddo extends Fragment {
                     JSONObject jsonObject = new JSONObject(String.valueOf(response));
                     nextUrl = jsonObject.getString("next");
                     JSONArray resultsArray = jsonObject.getJSONArray("results");
-                    for (int i = 0; i < resultsArray.length(); i++) {
+
+                    for (int i = 0; i < resultsArray.length(); i++)
+                    {
                         JSONObject c = resultsArray.getJSONObject(i);
-                        ado_names.add(c.getString("name"));
-                        JSONObject authObject = c.getJSONObject("auth_user");
-                        String adoId = authObject.getString("pk");
+                        JSONObject userobj = c.getJSONObject("user");
+                        ado_names.add(userobj.getString("name"));
+//                        JSONObject authObject = c.getJSONObject("auth_user");
+                        String adoId = userobj.getString("id");
                         adoIds.add(adoId);
-                        JSONArray villageArray = c.getJSONArray("village");
+                        JSONArray villageArray = c.getJSONArray("village_ado");
                         ArrayList<Integer> villageIds = new ArrayList<>();
-                        for (int j = 0; j < villageArray.length(); j++) {
+                        for (int j = 0; j < villageArray.length(); j++)
+                        {
                             JSONObject singleVillage = villageArray.getJSONObject(j);
                             int villageId = singleVillage.getInt("id");
                             Log.d(TAG, "onResponse: IDS " + villageId);
                             villageIds.add(villageId);
                         }
-                        String adoPhone = c.getString("number");
-                        adoPhones.add(adoPhone);
+                        try {
+                            String adoPhone = c.getString("number");
+                            adoPhones.add(adoPhone);
+                        } catch (JSONException e) {
+                            adoPhones.add(null);
+                        }
+
                         villagesMap.add(villageIds);
-                        if (i == 0) {
+                        if (i == 0)
+                        {
                             JSONObject ddaObject = c.getJSONObject("dda");
                             JSONObject districtObject = ddaObject.getJSONObject("district");
                             String districtId = districtObject.getString("id");
