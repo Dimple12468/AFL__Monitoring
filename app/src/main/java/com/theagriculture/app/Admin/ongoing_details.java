@@ -382,7 +382,7 @@ public class ongoing_details extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
                 SharedPreferences preferences = ongoing_details.this.getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-                String token = preferences.getString("token", "");
+                String token = preferences.getString("key", "");
                 map.put("Authorization", "Token " + token);
                 return map;
             }

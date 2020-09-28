@@ -138,7 +138,7 @@ public class pending_details extends AppCompatActivity {
 
         TextView title_top = findViewById(R.id.app_name);
 //        if (view.isEnabled()){
-            title_top.setText("Location Details");
+        title_top.setText("Location Details");
 //        }else {
 //            title_top.setText("AFL Monitoring");
 //        }
@@ -183,7 +183,7 @@ public class pending_details extends AppCompatActivity {
         });
 
         SharedPreferences prefs = this.getSharedPreferences("tokenFile", MODE_PRIVATE);
-        token = prefs.getString("token", "");
+        token = prefs.getString("key", "");
 
         urlado = Globals.User + ado_id + "/";
         urldda = Globals.User + dda_id + "/";

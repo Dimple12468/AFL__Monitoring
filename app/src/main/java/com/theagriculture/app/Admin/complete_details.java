@@ -122,7 +122,7 @@ public class complete_details extends AppCompatActivity {
     private TextView amountLeft;
     private TextView amountRight;
 
-    
+
     //for back button on action bar
     @Override
     public boolean onSupportNavigateUp() {
@@ -256,7 +256,7 @@ public class complete_details extends AppCompatActivity {
 
         TextView title_top = findViewById(R.id.app_name);
 //        if (view.isEnabled()){
-            title_top.setText("Location Details");
+        title_top.setText("Location Details");
 //        }else {
 //            title_top.setText("AFL Monitoring");
 //        }
@@ -412,7 +412,7 @@ public class complete_details extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
                 SharedPreferences preferences = complete_details.this.getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-                String token = preferences.getString("token", "");
+                String token = preferences.getString("key", "");
                 map.put("Authorization", "Token " + token);
                 return map;
             }
