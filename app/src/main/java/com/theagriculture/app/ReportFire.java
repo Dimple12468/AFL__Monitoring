@@ -566,10 +566,10 @@ public class ReportFire extends AppCompatActivity {
 
         JSONObject postParams = new JSONObject();
         try {
-            ///postParams.put("longitude", "76.8498");
-            /////postParams.put("latitude", "28.2314");
-            postParams.put("longitude", String.valueOf(userLocation.getLongitude()));
-            postParams.put("latitude", String.valueOf(userLocation.getLatitude()));
+            postParams.put("longitude", "76.8498");
+            postParams.put("latitude", "28.2314");
+//            postParams.put("longitude", String.valueOf(userLocation.getLongitude()));
+//            postParams.put("latitude", String.valueOf(userLocation.getLatitude()));
             postParams.put("name", sname);
             postParams.put("phone_number", spnumber);
             //Toast.makeText(getApplicationContext(),postParams.toString(),Toast.LENGTH_LONG).show();

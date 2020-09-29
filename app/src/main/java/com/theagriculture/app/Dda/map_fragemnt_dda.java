@@ -51,6 +51,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.maps.android.clustering.ClusterManager;
 import com.theagriculture.app.Admin.MyItem;
 import com.theagriculture.app.Globals;
+import com.theagriculture.app.ProfilePage;
 import com.theagriculture.app.R;
 import com.theagriculture.app.login_activity;
 

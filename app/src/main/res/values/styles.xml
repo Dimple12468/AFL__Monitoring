@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
-        <!--Theme.MaterialComponents.Light.NoActionBar.Bridge-->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <!--Theme.AppCompat.Light-->
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -95,12 +95,12 @@
         <item name="bottomSheetStyle">@style/AppTheme</item>
     </style>
 
-    <style name="calendar_theme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!--Theme.MaterialComponents.Light.NoActionBar.Bridge
+    <style name="calendar_theme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <!--Theme.MaterialComponents.Light.NoActionBar
         ThemeOverlay.MaterialComponents.MaterialCalendar-->
-        <!--item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
+        <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
         <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen</item>
-        <item name="materialCalendarTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar</item-->
+        <item name="materialCalendarTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar</item>
     </style>
 
     <style name="MaterialCalendarTheme_RangeFill" parent="Theme.MaterialComponents.Light.NoActionBar">
