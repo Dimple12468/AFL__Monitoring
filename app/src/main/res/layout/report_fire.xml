@@ -318,6 +318,7 @@
             app:backgroundTint="#E03B3B"
             app:elevation="6dp"
             app:fabSize="normal"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/submit_fire_report"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/camera_fab" />
@@ -413,7 +414,7 @@
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:background="#DC5C58"
-            android:text="SAVE"
+            android:text="SUBMIT"
             android:textColor="@color/white"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"

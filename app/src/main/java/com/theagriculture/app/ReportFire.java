@@ -81,6 +81,8 @@ import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
 import id.zelory.compressor.Compressor;
+import io.nlopez.smartlocation.OnLocationUpdatedListener;
+import io.nlopez.smartlocation.SmartLocation;
 
 import static io.fabric.sdk.android.Fabric.TAG;
 
@@ -107,6 +109,7 @@ public class ReportFire extends AppCompatActivity {
     FusedLocationProviderClient fusedLocationProviderClient;
     final Location AdoCurrentLocation = new Location(" ");
 
+    Location userLocation;
     int PhotosUploadedCount =0;
     String reportId;
 
@@ -122,6 +125,8 @@ public class ReportFire extends AppCompatActivity {
     public ReportImageRecyAdapter adapter;
     private ArrayList<String> mImagesPath;
 
+    TextView title_top;
+
     ConstraintLayout reportPage, imagesPage;
 
 
@@ -129,6 +134,8 @@ public class ReportFire extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.report_fire);
+
+        getUserLocation();
 
         getToken(newUrl,"haryana_admin","haryana_admin");
 
@@ -166,7 +173,7 @@ public class ReportFire extends AppCompatActivity {
         submit = findViewById(R.id.submit_fire_report);
 
 
-        final TextView title_top = findViewById(R.id.app_name);
+        title_top = findViewById(R.id.app_name);
         if (title_top.isEnabled()){
             title_top.setText("Report");
         }else {
@@ -337,7 +344,7 @@ public class ReportFire extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ReportFire.this,"Synjnd",Toast.LENGTH_LONG).show();
+                //Toast.makeText(ReportFire.this,"Synjnd",Toast.LENGTH_LONG).show();
                 checkReport();
             }
         });
@@ -384,7 +391,7 @@ public class ReportFire extends AppCompatActivity {
                     openCameraIntent();
                     isFirstPic = false;
                 } else if (mImages.size() < 4) {
-                    Toast.makeText(ReportFire.this, "images are " + mImagesPath, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(ReportFire.this, "images are " + mImagesPath, Toast.LENGTH_SHORT).show();
                     openCameraIntent();
                 }
                 else
@@ -409,18 +416,13 @@ public class ReportFire extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-                Intent intent = new Intent(ImageUpload.this,ReportFire.class);
-                //intent.putExtra("images",mImages);
-                //intent.putExtra("imagesPath",mImagesPath);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                */
-                //save.setVisibility(View.GONE);
-                imagesPage.setVisibility(View.GONE);
-                reportPage.setVisibility(View.VISIBLE);
-                title_top.setText("Report");
+                //imagesPage.setVisibility(View.GONE);
+                //reportPage.setVisibility(View.VISIBLE);
+                //title_top.setText("Report");
+                if(mImagesPath.size()==0)
+                    Toast.makeText(getApplicationContext(),"You have not uploaded any images",Toast.LENGTH_LONG).show();
+                else
+                    uploadingPhotos();
 
 
             }
@@ -536,23 +538,23 @@ public class ReportFire extends AppCompatActivity {
             Toast.makeText(ReportFire.this,"Select a district",Toast.LENGTH_LONG).show();
         else if(address1.isEmpty())
             Toast.makeText(ReportFire.this,"Enter your address",Toast.LENGTH_LONG).show();
-        else if(!checkIfLocationEnabled())
-            Toast.makeText(ReportFire.this,"Enable locations to send report",Toast.LENGTH_LONG).show();
+            //else if(!checkIfLocationEnabled())
+            //  Toast.makeText(ReportFire.this,"Enable locations to send report",Toast.LENGTH_LONG).show();
         else{
-            Toast.makeText(ReportFire.this,"enterd else loop",Toast.LENGTH_LONG).show();
-            Location abc = get();
-            Toast.makeText(ReportFire.this,"location is check is "+abc.toString(),Toast.LENGTH_LONG).show();
+            //Toast.makeText(ReportFire.this,"enterd else loop",Toast.LENGTH_LONG).show();
+            //Location abc = get();
+            //Toast.makeText(ReportFire.this,"location is check is "+abc.toString(),Toast.LENGTH_LONG).show();
             submitReport();
         }
     }
 
 
     public void submitReport(){
-        Toast.makeText(ReportFire.this,"enterd submit report",Toast.LENGTH_LONG).show();
+        //Toast.makeText(ReportFire.this,"enterd submit report",Toast.LENGTH_LONG).show();
         String sname = editName.getText().toString().trim();
         String spnumber = editPhoneNumber.getText().toString().trim();
-        Location abc = get();
-        Toast.makeText(ReportFire.this,"location in submit is "+abc.toString(),Toast.LENGTH_LONG).show();
+        //Location abc = get();
+        //Toast.makeText(ReportFire.this,"location in submit is "+abc.toString(),Toast.LENGTH_LONG).show();
 
 
         reportSubmitLoading = new SpotsDialog.Builder().setContext(ReportFire.this).setMessage("Submitting Report")
@@ -564,12 +566,13 @@ public class ReportFire extends AppCompatActivity {
 
         JSONObject postParams = new JSONObject();
         try {
-            postParams.put("longitude", "76.8498");
-            postParams.put("latitude", "28.2314");
-            //postParams.put("longitude", "77.056442");
-            //postParams.put("latitude", "28.010693");
+            ///postParams.put("longitude", "76.8498");
+            /////postParams.put("latitude", "28.2314");
+            postParams.put("longitude", String.valueOf(userLocation.getLongitude()));
+            postParams.put("latitude", String.valueOf(userLocation.getLatitude()));
             postParams.put("name", sname);
             postParams.put("phone_number", spnumber);
+            //Toast.makeText(getApplicationContext(),postParams.toString(),Toast.LENGTH_LONG).show();
 
 
         } catch (JSONException e) {
@@ -577,19 +580,24 @@ public class ReportFire extends AppCompatActivity {
             reportSubmitLoading.dismiss();
             Log.d(TAG, "submitReport: " + e);
         }
-        Toast.makeText(getApplicationContext(),"posting values "+postParams.toString(),Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),"posting values "+postParams.toString(),Toast.LENGTH_LONG).show();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(reportSubmitUrl, postParams,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            Toast.makeText(ReportFire.this,"response is "+response.toString(),Toast.LENGTH_LONG).show();
+                            //Toast.makeText(ReportFire.this,"response is "+response.toString(),Toast.LENGTH_LONG).show();
                             JSONObject singleObject = new JSONObject(String.valueOf(response));
                             reportId = singleObject.getString("NormalUserReport_id");
-                            Toast.makeText(getApplicationContext(),"report id is "+reportId,Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),"Your report id is "+reportId,Toast.LENGTH_LONG).show();
                             Log.d(TAG, "onResponse: " + singleObject);
+                            reportSubmitLoading.dismiss();
+                            ///////////
+                            reportPage.setVisibility(View.GONE);
+                            imagesPage.setVisibility(View.VISIBLE);
+                            title_top.setText("Image Upload");
                             //isReportSubmitted = true;
-                            uploadingPhotos();
+                            ////uploadingPhotos();
                         } catch (JSONException e) {
                             e.printStackTrace();
                             reportSubmitLoading.dismiss();
@@ -760,9 +768,16 @@ public class ReportFire extends AppCompatActivity {
 
 
     public void uploadingPhotos(){
-        Toast.makeText(getApplicationContext(),"Eneterd uploading photos function",Toast.LENGTH_LONG).show();
+        // Toast.makeText(getApplicationContext(),"Eneterd uploading photos function",Toast.LENGTH_LONG).show();
+        reportSubmitLoading = new SpotsDialog.Builder().setContext(ReportFire.this).setMessage("Uploading Images")
+                .setTheme(R.style.CustomDialog)
+                .setCancelable(false)
+                .build();
+        reportSubmitLoading.show();
+
         AndroidNetworking.upload(imageUploadUrl)
                 .addHeaders("Authorization", "Token " + token)
+                //.addHeaders("Authorization", "detail" + token)
                 .addMultipartParameter("report",reportId)
                 .addMultipartFile("image", mImages.get(PhotosUploadedCount))
                 .setTag("Upload Images")
@@ -774,7 +789,7 @@ public class ReportFire extends AppCompatActivity {
                         //if (bytesUploaded == totalBytes) {
                         //PhotosUploadedCount++;
                         //}
-                        Toast.makeText(getApplicationContext(),"uploading image "+PhotosUploadedCount+"bytesUploaded are "+String.valueOf(bytesUploaded)+"total bytes are "+String.valueOf(totalBytes),Toast.LENGTH_LONG).show();
+                        // Toast.makeText(getApplicationContext(),"uploading image "+PhotosUploadedCount+"bytesUploaded are "+String.valueOf(bytesUploaded)+"total bytes are "+String.valueOf(totalBytes),Toast.LENGTH_LONG).show();
                     }
                 })
                 .getAsJSONObject(new JSONObjectRequestListener() {
@@ -792,7 +807,7 @@ public class ReportFire extends AppCompatActivity {
                                      @Override
                                      public void onError(ANError anError) {
                                          Log.d(TAG, "onError: " + anError.getErrorBody());
-                                         Toast.makeText(getApplicationContext(), "Photos Upload failed, please try again "+ anError.getErrorBody(), Toast.LENGTH_SHORT).show();
+                                         Toast.makeText(getApplicationContext(), "Photos Upload failed, please try again ", Toast.LENGTH_SHORT).show();
                                          reportSubmitLoading.dismiss();
                                      }
 
@@ -880,6 +895,15 @@ public class ReportFire extends AppCompatActivity {
             @Override
             public void retry(VolleyError error) throws VolleyError {
 
+            }
+        });
+    }
+
+    public void getUserLocation(){
+        SmartLocation.with(getApplicationContext()).location().start(new OnLocationUpdatedListener() {
+            @Override
+            public void onLocationUpdated(Location location) {
+                userLocation = location;
             }
         });
     }
