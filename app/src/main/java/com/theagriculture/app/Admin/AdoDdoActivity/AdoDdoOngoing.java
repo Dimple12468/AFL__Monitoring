@@ -125,7 +125,7 @@ public class AdoDdoOngoing extends Fragment {
         recyclerView = view.findViewById(R.id.Ddo_ongoing_recyclerview);
         layoutManager = new LinearLayoutManager(getActivity());
         SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = prefs.getString("token", "");
+        token = prefs.getString("key", "");
         recyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(divider);
@@ -171,16 +171,15 @@ public class AdoDdoOngoing extends Fragment {
                                 adapter.notifyDataSetChanged();
                                 nothing_toshow_fragment no_data = new nothing_toshow_fragment();
                                 AppCompatActivity activity = (AppCompatActivity)getContext();
-                                //getFragmentManager().beginTransaction().detach(AdoDdoOngoing.this).attach(nothing_toshow_fragment).addToBackStack(null).commit();
                                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_nodata_completed, no_data).commit();
-                                //view.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_group_217));
                             }
                             for (int i = 0; i < resultsArray.length(); i++) {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
                                 if (isDdo) {
                                     try {
                                         JSONObject adoObject = singleObject.getJSONObject("ado");
-                                        String adoName = adoObject.getString("name");
+                                        JSONObject useronj_ado = adoObject.getJSONObject("user");
+                                        String adoName = useronj_ado.getString("name");
                                         mAdoNames.add(adoName);
                                     } catch (JSONException e) {
                                         mAdoNames.add("Not Assigned");
@@ -189,7 +188,7 @@ public class AdoDdoOngoing extends Fragment {
                                     mIds.add(id);
                                 }
                                 String locName = singleObject.getString("village_name");
-                                String locAdd = singleObject.getString("block_name") +
+                                String locAdd = singleObject.getString("block") +
                                         ", " + singleObject.getString("district");
                                 locationNames.add(locName);
                                 locationAddresses.add(locAdd);
@@ -310,22 +309,19 @@ public class AdoDdoOngoing extends Fragment {
                                 JSONObject rootObject = new JSONObject(String.valueOf(response));
                                 JSONArray resultsArray = rootObject.getJSONArray("results");
                                 if (resultsArray.length() == 0) {
-                                    //adapter.mshowshimmer = false;
                                     adapter.notifyDataSetChanged();
-
                                     //todo image here
                                     nothing_toshow_fragment no_data = new nothing_toshow_fragment();
                                     AppCompatActivity activity = (AppCompatActivity)getContext();
                                     activity.getSupportFragmentManager().beginTransaction().replace(R.id.change_nodata_completed, no_data).commit();
-                                    //view.setBackground(getActivity().getResources().getDrawable(R.drawable.svg_nothing_toshow_1));
-                                    //view.getView().setBackground(getActivity().getResources().getDrawable(R.drawable.no_entry_background));
                                 }
                                 for (int i = 0; i < resultsArray.length(); i++) {
                                     JSONObject singleObject = resultsArray.getJSONObject(i);
                                     if (isDdo) {
                                         try {
                                             JSONObject adoObject = singleObject.getJSONObject("ado");
-                                            String adoName = adoObject.getString("name");
+                                            JSONObject useronj_ado = adoObject.getJSONObject("user");
+                                            String adoName = useronj_ado.getString("name");
                                             mAdoNames.add(adoName);
                                         } catch (JSONException e) {
                                             mAdoNames.add("Not Assigned");
@@ -334,7 +330,7 @@ public class AdoDdoOngoing extends Fragment {
                                         mIds.add(id);
                                     }
                                     String locName = singleObject.getString("village_name");
-                                    String locAdd = singleObject.getString("block_name") +
+                                    String locAdd = singleObject.getString("block") +
                                             ", " + singleObject.getString("district");
                                     locationNames.add(locName);
                                     locationAddresses.add(locAdd);
@@ -351,7 +347,6 @@ public class AdoDdoOngoing extends Fragment {
                         public void onErrorResponse(VolleyError error) {
                             if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                                 //This indicates that the reuest has either time out or there is no connection
-                                //Toast.makeText(getActivity(), "This error is case1", Toast.LENGTH_LONG).show();
                                 final BottomSheetDialog mBottomDialogNotificationAction = new BottomSheetDialog(getActivity());
                                 View sheetView = getActivity().getLayoutInflater().inflate(R.layout.no_internet, null);
                                 mBottomDialogNotificationAction.setContentView(sheetView);
@@ -360,7 +355,6 @@ public class AdoDdoOngoing extends Fragment {
                                 mBottomDialogNotificationAction.show();
 
                                 // Remove default white color background
-
                                 FrameLayout bottomSheet = (FrameLayout) mBottomDialogNotificationAction.findViewById(com.google.android.material.R.id.design_bottom_sheet);
                                 bottomSheet.setBackground(null);
 

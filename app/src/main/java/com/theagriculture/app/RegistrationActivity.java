@@ -30,7 +30,8 @@ import static io.fabric.sdk.android.services.concurrency.AsyncTask.init;
 public class RegistrationActivity extends AppCompatActivity {
     //private WebView webView;
 
-    TextView tvName,tvEnd;
+    TextView tvName;
+//    TextView tvEnd;
     EditText etEmail,etType,etConfirm;
     Button btnRegister;
     ImageButton typeButton, confirmButton;
@@ -56,7 +57,7 @@ public class RegistrationActivity extends AppCompatActivity {
         etConfirm = findViewById(R.id.etConfirm);
         etType = findViewById(R.id.etType);
         btnRegister = findViewById(R.id.btnRegister);
-        tvEnd = findViewById(R.id.textView5);
+//        tvEnd = findViewById(R.id.textView5);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +82,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         //to redirect back to login page
         //String text = tvEnd.getText().toString().trim();
-        String text = "Don't have an account Login";
+/*        String text = "Don't have an account Login";
         SpannableString ss = new SpannableString(text);
         ClickableSpan clickableSpan1 = new ClickableSpan() {
             @Override
@@ -99,8 +100,8 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         };
         ss.setSpan(clickableSpan1,22,27, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tvEnd.setText(ss);
-        tvEnd.setMovementMethod(LinkMovementMethod.getInstance());
+//        tvEnd.setText(ss);
+//        tvEnd.setMovementMethod(LinkMovementMethod.getInstance());*/
 
         //to chnage colour of register button when text is filled in all fields
         etEmail.addTextChangedListener(registerTextWatcher);

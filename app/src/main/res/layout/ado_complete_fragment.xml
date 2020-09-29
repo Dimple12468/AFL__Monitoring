@@ -9,9 +9,9 @@
 
     <!--android:layout_marginTop="?attr/actionBarSize"-->
 
-<!--    <include-->
-<!--        layout="@layout/app_bar_completed"-->
-<!--        android:id="@+id/app__bar_ado_completed"/>-->
+    <!--    <include-->
+    <!--        layout="@layout/app_bar_completed"-->
+    <!--        android:id="@+id/app__bar_ado_completed"/>-->
 
     <include
         layout="@layout/app_bar_admin"
@@ -34,10 +34,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/ado_completed_rv"
+            <FrameLayout
+                android:id="@+id/nothing"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/ado_completed_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </FrameLayout>
 
             <ProgressBar
                 android:id="@+id/ado_complete_progress"
@@ -47,6 +53,15 @@
                 android:layout_centerVertical="true"
                 android:indeterminateDrawable="@drawable/progress"
                 android:visibility="visible"/>
+
+            <ProgressBar
+                android:id="@+id/ado_pending_nextpage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:indeterminateDrawable="@drawable/progress"
+                android:visibility="gone" />
         </RelativeLayout>
 
 

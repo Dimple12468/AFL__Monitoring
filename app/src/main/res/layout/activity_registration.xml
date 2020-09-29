@@ -7,7 +7,7 @@
     android:background="#ffffff"
     tools:context=".RegistrationActivity">
 
-    <ImageView
+    <!--ImageView
         android:id="@+id/ivLogo"
         android:layout_width="115dp"
         android:layout_height="115dp"
@@ -15,26 +15,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/afl_logo" />
+        app:srcCompat="@drawable/afl_logo" /-->
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:fontFamily="@font/arial"
         android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:text="AFL Monitoring"
+        android:textColor="#000000"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/register_in"
+        android:layout_width="wrap_content"
+        android:fontFamily="@font/arial"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:autoSizeTextType="uniform"
         android:gravity="left"
-        android:text="AFL\nMonitoring"
+        android:text="Register"
         android:textColor="@android:color/black"
-        android:textSize="50sp"
+        android:textSize="35dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivLogo"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1" />
+<!--        app:layout_constraintTop_toBottomOf="@+id/ivLogo"-->
 
     <EditText
         android:id="@+id/etEmail"
@@ -142,7 +160,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
 
-    <View
+    <!--View
         android:id="@+id/viewlong"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -153,10 +171,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline6" />
+        app:layout_constraintTop_toBottomOf="@id/guideline6" /-->
 
 
-    <TextView
+    <!--TextView
         android:id="@+id/textView5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -172,7 +190,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewlong"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.5" /-->
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline6"

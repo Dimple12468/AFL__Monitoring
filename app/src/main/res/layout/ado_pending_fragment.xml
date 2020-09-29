@@ -9,9 +9,9 @@
 
     <!--android:layout_marginTop="?attr/actionBarSize"-->
 
-<!--    <include-->
-<!--        layout="@layout/app_bar_pending"-->
-<!--        android:id="@+id/app__bar_ado_pending"/>-->
+    <!--    <include-->
+    <!--        layout="@layout/app_bar_pending"-->
+    <!--        android:id="@+id/app__bar_ado_pending"/>-->
 
     <include
         layout="@layout/app_bar_admin"
@@ -30,43 +30,64 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app__bar_ado_pending" >
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ado_pending_rv"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/ado_pending_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:indeterminateDrawable="@drawable/progress"
-            android:visibility="visible"/>
+            <FrameLayout
+                android:id="@+id/nothing"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/ado_pending_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
+
+            <ProgressBar
+                android:id="@+id/ado_pending_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:indeterminateDrawable="@drawable/progress"
+                android:visibility="visible" />
+
+            <ProgressBar
+                android:id="@+id/ado_pending_nextpage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:indeterminateDrawable="@drawable/progress"
+                android:visibility="gone" />
+
+        </RelativeLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-<!--?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/rootView">
+    <!--?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rootView">
 
-    <!-android:layout_marginTop="?attr/actionBarSize"->
+        <!-android:layout_marginTop="?attr/actionBarSize"->
 
 
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refreshpull9"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ado_pending_rv"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refreshpull9"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ado_pending_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-</RelativeLayout-->
+    </RelativeLayout-->

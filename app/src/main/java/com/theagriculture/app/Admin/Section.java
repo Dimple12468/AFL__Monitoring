@@ -48,6 +48,21 @@ public class Section {
 
     }
 
+    public Section(String sectionTitle, ArrayList<String> mDid, ArrayList<String> mDlocation_name, ArrayList<String> mDlocation_address, ArrayList<String> mAdaName, ArrayList<String> mDdaName, ArrayList<String> Adapk,ArrayList<String> Ddapk, boolean isPending, boolean isCompleted, boolean isOngoing) {
+        System.out.println("Dimple new constructor ko call kiya \n");
+        this.sectionTitle=sectionTitle;
+        this.Ada=mAdaName;
+        this.Dda=mDdaName;
+        this.Address=mDlocation_address;
+        this.Adapk=Adapk;
+        this.DdaPk=Ddapk;
+        this.isPending=isPending;
+        this.isComplete= isCompleted;
+        this.isOngoing=isOngoing;
+        this.Id=mDid;
+    }
+
+
 
     /*
     public Section(String sectionTitle, List<String> allItemsInSection) {

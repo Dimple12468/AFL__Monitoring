@@ -34,7 +34,6 @@ public class AdoDdo_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setTitle(title);
 
         TextView title_top = findViewById(R.id.app_name);
 //        if (view.isEnabled()){

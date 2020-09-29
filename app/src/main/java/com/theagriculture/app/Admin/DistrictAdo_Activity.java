@@ -213,7 +213,7 @@ public class DistrictAdo_Activity extends AppCompatActivity {
         Rview = findViewById(R.id.recyclerViewado1);
         Rview.setAdapter(recyclerViewAdater);
         SharedPreferences preferences = DistrictAdo_Activity.this.getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = preferences.getString("token", "");
+        token = preferences.getString("key", "");
         layoutManager = new LinearLayoutManager(DistrictAdo_Activity.this);
         Rview.setLayoutManager(layoutManager);
         DividerItemDecoration divider = new DividerItemDecoration(DistrictAdo_Activity.this, layoutManager.getOrientation());
@@ -239,23 +239,22 @@ public class DistrictAdo_Activity extends AppCompatActivity {
                     JSONArray resultsArray = rootObject.getJSONArray("results");
 
                     if(resultsArray.length()== 0){
-                        //recyclerViewAdater.mShowShimmer = false;
+                        Log.d(TAG,"results array seems to be empty" + resultsArray);
                         ll.setVisibility(View.GONE);
                         recyclerViewAdater.notifyDataSetChanged();
                         //todo add image
                         setContentView(R.layout.fragment_nothing_toshow);
-//                        nothing_toshow_fragment no_data = new nothing_toshow_fragment();
-//                        AppCompatActivity activity = (AppCompatActivity)getActivity();
-//                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.nodata_dist_ado, no_data).commit();
                     }
-                    for (int i = 0; i < resultsArray.length(); i++) {
+                    for (int i = 0; i < resultsArray.length(); i++)
+                    {
                         JSONObject singleObject = resultsArray.getJSONObject(i);
-                        username.add(singleObject.getString("name").toUpperCase());
-                        JSONArray villageArray = singleObject.getJSONArray("village");
+                        JSONObject userobj = singleObject.getJSONObject("user");
+                        username.add(userobj.getString("name").toUpperCase());
+                        JSONArray villageArray = singleObject.getJSONArray("village_ado");
                         Log.d(TAG, "onResponse: LENGTH " + villageArray.length());
                         if (villageArray.length() == 0)
                             userinfo.add("NOT ASSIGNED");
-                        for (int j = 0; j < 1; j++) {
+                        for (int j = 0; j < 1; j++) {               //j<villageArray.length()
                             try {
                                 JSONObject villageObject = villageArray.getJSONObject(i);
                                 userinfo.add(villageObject.getString("village").toUpperCase());
@@ -263,11 +262,13 @@ public class DistrictAdo_Activity extends AppCompatActivity {
                                 userinfo.add("NOT ASSIGNED");
                             }
                         }
-                        JSONObject authObject = singleObject.getJSONObject("auth_user");
-                        String pk = authObject.getString("pk");
+                        Log.d(TAG,"Dimple userinfo" + userinfo);
+//                        JSONObject authObject = singleObject.getJSONObject("auth_user");
+                        String pk = userobj.getString("id");
                         mPkList.add(pk);
                         String id = singleObject.getString("id");
                         mUserId.add(id);
+
                         try {
                             JSONObject ddaObject = singleObject.getJSONObject("dda");
                             String ddaName = ddaObject.getString("name");
@@ -438,10 +439,12 @@ public class DistrictAdo_Activity extends AppCompatActivity {
                     JSONObject rootObject = new JSONObject(String.valueOf(response));
                     nextUrl = rootObject.getString("next");
                     JSONArray resultsArray = rootObject.getJSONArray("results");
+
                     for (int i = 0; i < resultsArray.length(); i++) {
                         JSONObject singleObject = resultsArray.getJSONObject(i);
-                        username.add(singleObject.getString("name").toUpperCase());
-                        JSONArray villageArray = singleObject.getJSONArray("village");
+                        JSONObject userobj = singleObject.getJSONObject("user");
+                        username.add(userobj.getString("name").toUpperCase());
+                        JSONArray villageArray = singleObject.getJSONArray("village_ado");
                         Log.d(TAG, "onResponse: LENGTH " + villageArray.length());
                         if (villageArray.length() == 0)
                             userinfo.add("NOT ASSIGNED");
@@ -453,11 +456,12 @@ public class DistrictAdo_Activity extends AppCompatActivity {
                                 userinfo.add("NOT ASSIGNED");
                             }
                         }
-                        JSONObject authObject = singleObject.getJSONObject("auth_user");
-                        String pk = authObject.getString("pk");
+//                        JSONObject authObject = singleObject.getJSONObject("auth_user");
+                        String pk = userobj.getString("id");
                         mPkList.add(pk);
                         String id = singleObject.getString("id");
                         mUserId.add(id);
+
                         try {
                             JSONObject ddaObject = singleObject.getJSONObject("dda");
                             String ddaName = ddaObject.getString("name");

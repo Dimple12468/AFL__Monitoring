@@ -59,6 +59,7 @@ import com.androidnetworking.interfaces.UploadProgressListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.theagriculture.app.Dda.DdaselectAdo;
+import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -99,10 +100,14 @@ public class PendingReport extends Fragment {
     List DistrictName = new ArrayList<>();
     Button submit_btn;
     String lat, lon, id;
-    String district_list_url = "http://api.theagriculture.tk/api/district/";
+    //String district_list_url = "http://api.theagriculture.tk/api/district/";
+    String district_list_url = Globals.districtUrl;
+    String imageUploadUrl = Globals.adoPendingReportImageUpload;
+    String reportSubmitUrl = Globals.adoPendingReport;
+
     //String reportSubmitUrl = "http://127.0.0.1:8000/api/report-ado/add/";
-    String imageUploadUrl = "http://api.theagriculture.tk/api/upload/images/";
-    String reportSubmitUrl = "http://api.theagriculture.tk/api/report-ado/add/";
+    //String imageUploadUrl = "http://api.theagriculture.tk/api/upload/images/";
+    //String reportSubmitUrl = "http://api.theagriculture.tk/api/report-ado/add/";
     AlertDialog reportSubmitLoading;
 
     String reportId;//id required to send images
@@ -275,7 +280,7 @@ public class PendingReport extends Fragment {
         });
 
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = preferences.getString("token", "");
+        token = preferences.getString("key", "");
         //Toast.makeText(getActivity(),"token is "+token,Toast.LENGTH_LONG).show();
 
 
@@ -638,25 +643,25 @@ public class PendingReport extends Fragment {
             postParams.put("fire", sFireStatus);
             postParams.put("village", null);//village pk has to be passed
             postParams.put("location", Integer.parseInt(id));
-            Toast.makeText(getActivity(), postParams.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(getActivity(), postParams.toString(), Toast.LENGTH_LONG).show();
 
         } catch (JSONException e) {
             Toast.makeText(getActivity(), "An exception occured while doing post parameters", Toast.LENGTH_LONG).show();
         }
-        Toast.makeText(getActivity(),"making request object",Toast.LENGTH_LONG).show();
+        // Toast.makeText(getActivity(),"making request object",Toast.LENGTH_LONG).show();
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(reportSubmitUrl, postParams,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(getActivity(),"response is "+response.toString(),Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity(),"response is "+response.toString(),Toast.LENGTH_LONG).show();
                         JSONObject singleObject;
                         try {
                             singleObject = new JSONObject(String.valueOf(response));
                             Toast.makeText(getActivity(),singleObject.toString(),Toast.LENGTH_LONG).show();
                             reportId = singleObject.getString("id");
-                            Toast.makeText(getActivity(),"report id from reportSubmit Url is "+reportId,Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(),"Report id is "+reportId,Toast.LENGTH_LONG).show();
                             uploadingPhotos();
                         } catch (JSONException e) {
                             Toast.makeText(getActivity(),"An exception occured while sending report "+e.getMessage(),Toast.LENGTH_LONG).show();

@@ -91,14 +91,6 @@ public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelect
     MenuItem searchItem;
     MenuItem searchItem_filter;
     TextView title_top;
-    //bottom_nav bottom_nav_ado;
-
-//    BottomNavigationView b_nav_ado;
-    private map_fragemnt mapFragmnt;
-    private location_fragment locationFragment;
-    private ado_fragment adoFragment;
-    private ddo_fragment ddoFragment;
-    private DistrictStateFragment districtStateFragment;
 
     public ado_fragment() {
     }
@@ -175,113 +167,6 @@ public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelect
         String[] state = {"Any"};
         String[] district = {"Any"};
         String[] village =  {"Any"} ;
-
-
-
-       /* ArrayAdapter<String> status_adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,status);
-        status_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sp1.setAdapter(status_adapter);
-        //sp1.setOnItemSelectedListener(this);
-
-        sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        ArrayAdapter<String> date_adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,date);
-        date_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sp2.setAdapter(date_adapter);
-        sp2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        ArrayAdapter<String> state_adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,state);
-        state_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sp3.setAdapter(state_adapter);
-        sp3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //Intent intent = new Intent(this,ddo_fragment.class);
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        ArrayAdapter<String> district_adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,district);
-        if (sp4.isEnabled()) {
-            //district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            sp4.setAdapter(district_adapter);
-            sp4.setOnItemSelectedListener(new OnSpinnerItemClicked());
-        }
-        //sp4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                if (R.id.parent == R.id.district_filter_spinner) {
-                    sp4.setOnItemSelectedListener(new OnSpinnerItemClicked());
-                    LayoutInflater li_dist = LayoutInflater.from(getActivity());
-                    final View dist = li_dist.inflate(R.layout.search_view, null);
-                    final android.app.AlertDialog.Builder alertDialogBuilder_dist = new android.app.AlertDialog.Builder(getActivity());
-                    alertDialogBuilder_dist.setTitle("Filter Search");
-                    alertDialogBuilder_dist.setPositiveButton("Select", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,
-                                            int which) {
-                            Toast.makeText(getActivity(), "Select is clicked", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    alertDialogBuilder_dist.setNegativeButton("Reset", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getActivity(), "Reset is clicked", Toast.LENGTH_LONG).show();
-                            //alertDialogBuilder.setCancelable(true);
-                        }
-                    });
-                    alertDialogBuilder_dist.setView(dist);
-                    alertDialogBuilder_dist.setCancelable(true);
-                    AlertDialog alertDialog_dist = alertDialogBuilder_dist.create();
-                    alertDialog_dist.show();
-
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });//
-
-        ArrayAdapter<String> village_adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,village);
-        village_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sp5.setAdapter(village_adapter);
-        sp5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
 
 
         ArrayAdapter<String> status_adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,status);
@@ -408,16 +293,6 @@ public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelect
 
     }
 
-   /* @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        switch (item.getItemId()){
-            case R.id.search_in_title:
-                searchItem_filter.setVisible(true);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 
 
     @Nullable
@@ -439,24 +314,13 @@ public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelect
         mDdoNames = new ArrayList<>();
         mDistrictNames = new ArrayList<>();
         mdistrictlist = new ArrayList<>();
-        //bottom_nav_ado = new bottom_nav();
-        //bottom_nav_ado.bottom_navigation_admin();
-//        b_nav_ado = view.findViewById(R.id.bottom_nav_for_ado);
-        mapFragmnt = new map_fragemnt();
-        locationFragment = new location_fragment();
-        adoFragment = new ado_fragment();
-        ddoFragment = new ddo_fragment();
-        districtStateFragment= new DistrictStateFragment();
 
-        /*ImageView iv = view.findViewById(R.id.ham);
-        iv.setVisibility(View.INVISIBLE);*/
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_ado);
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
         title_top = view.findViewById(R.id.app_name);
         appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-
 
         // title_top = view.findViewById(R.id.app_name);
         if (view.isEnabled()){
@@ -465,43 +329,8 @@ public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelect
             title_top.setText("AFL Monitoring");
         }
 
-/*        b_nav_ado.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.adminshome:
-                        InitializeFragment(mapFragmnt);
-                        return true;
-                    case R.id.adminslocation:
-                        //((DrawerLocker) locationFragment).setDrawerEnabled(true);
-                        //title_top.setText("Locations");
-                        // InitializeFragment(locationFragment);
-                        Toast.makeText(getActivity(), "locations clicked", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.adminsado:
-                        // ((DrawerLocker) adoFragment).setDrawerEnabled(false);
-                        //title_top.setText("ADO");
-                        InitializeFragment(adoFragment);
-                        return true;
-                    case R.id.adminsdda:
-                        // title_top.setText("DDA");
-                        //InitializeFragment(ddoFragment);
-                        Toast.makeText(getActivity(), "dda clicked", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.adminsdistrict_state:
-                        // title_top.setText("District Stats");
-                        // InitializeFragment(districtStateFragment);
-                        Toast.makeText(getActivity(), "stats clicked", Toast.LENGTH_SHORT).show();
-                        return true;
-                    default:
-                        // title_top.setText("AFL Monitoring");
-                        return false;
-                }
-            }
-        });*/
-
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = preferences.getString("token", "");
+        token = preferences.getString("key", "");
 
         gridlayout = new GridLayoutManager(getActivity(), 1);
         adolist.setLayoutManager(gridlayout);
@@ -547,7 +376,6 @@ public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelect
                 //Toast.makeText(getActivity(), "something went wrong", Toast.LENGTH_LONG).show();
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     //This indicates that the reuest has either time out or there is no connection
-                    //Toast.makeText(getActivity(), "This error is case1", Toast.LENGTH_LONG).show();
                     final BottomSheetDialog mBottomDialogNotificationAction = new BottomSheetDialog(getActivity());
                     View sheetView = getActivity().getLayoutInflater().inflate(R.layout.no_internet, null);
                     mBottomDialogNotificationAction.setContentView(sheetView);
@@ -555,10 +383,8 @@ public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelect
                     mBottomDialogNotificationAction.show();
 
                     // Remove default white color background
-
                     FrameLayout bottomSheet = (FrameLayout) mBottomDialogNotificationAction.findViewById(com.google.android.material.R.id.design_bottom_sheet);
                     bottomSheet.setBackground(null);
-
 
                     TextView close = sheetView.findViewById(R.id.close);
                     Button retry = sheetView.findViewById(R.id.retry);
@@ -633,34 +459,7 @@ public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelect
 
     }
 
-   /* @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        //Spinner spinner1 = (Spinner)parent;
-        //Spinner spinner2 = (Spinner)parent;
-        int spinner_id = parent.getId();
-        switch (spinner_id)
-        {
-            case R.id.status_filter_spinner:
-                Toast.makeText(getActivity(), "hello in status", Toast.LENGTH_SHORT).show();
-            case R.id.date_filter_spinner:
-                Toast.makeText(getActivity(), "hello in date", Toast.LENGTH_SHORT).show();
-            case R.id.state_filter_spinner:
-                Toast.makeText(getActivity(), "hello in state", Toast.LENGTH_SHORT).show();
-            case R.id.district_filter_spinner:
-                Toast.makeText(getActivity(), "hello in district", Toast.LENGTH_SHORT).show();
-            case R.id.village_filter_spinner:
-                Toast.makeText(getActivity(), "hello in village", Toast.LENGTH_SHORT).show();
-        }
-      // if (spinner1.getId() == R.id.district_filter_spinner){
-
-       }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }*/
-   public void InitializeFragment(Fragment fragment) {
+    public void InitializeFragment(Fragment fragment) {
 
 
        AppCompatActivity activity = (AppCompatActivity) fragment.getContext();
@@ -669,11 +468,5 @@ public class ado_fragment extends Fragment /*implements AdapterView.OnItemSelect
 
    }
 
-   /* private TextView getProperties(TextView titleText){
-        titleText.setText("ADO");
-        titleText.setTextColor(Color.CYAN);
-        titleText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER); // CENTER ALIGNMENT
-        return titleText;
-    }*/
 }
 

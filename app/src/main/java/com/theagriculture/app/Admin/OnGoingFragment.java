@@ -175,7 +175,7 @@ OnGoingFragment extends Fragment {
         DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(divider);
         final SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = preferences.getString("token", "");
+        token = preferences.getString("key", "");
 
 
         getData();
