@@ -431,8 +431,8 @@ public class ReportFire extends AppCompatActivity {
 
         editName.addTextChangedListener(entryTextWatcher);//entryTextWatcher function is defined at last
         editPhoneNumber.addTextChangedListener(entryTextWatcher);
-        editVillage.addTextChangedListener(entryTextWatcher);
-        editAddress1.addTextChangedListener(entryTextWatcher);
+       //// editVillage.addTextChangedListener(entryTextWatcher);
+        ///////editAddress1.addTextChangedListener(entryTextWatcher);
 
 
 
@@ -440,7 +440,7 @@ public class ReportFire extends AppCompatActivity {
 
     //for district spinner
     public void getDistrictData(){
-        DistrictName.add("District");
+        DistrictName.add("District(Optional)");
         RequestQueue district_requestQueue = Volley.newRequestQueue(ReportFire.this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, district_list_url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -508,7 +508,7 @@ public class ReportFire extends AppCompatActivity {
             String pnumber = editPhoneNumber.getText().toString().trim();
             String village = editVillage.getText().toString().trim();
             String address1 = editAddress1.getText().toString().trim();
-            if(!name.isEmpty() && !pnumber.isEmpty() && !village.isEmpty() && !address1.isEmpty() && !(district_spinner.getSelectedItemPosition()==0))
+            if(!name.isEmpty() && !pnumber.isEmpty())// && !village.isEmpty() && !address1.isEmpty() && !(district_spinner.getSelectedItemPosition()==0))
             {
                 submit.setBackgroundResource(R.color.btn_submit);
             }
@@ -532,6 +532,7 @@ public class ReportFire extends AppCompatActivity {
             Toast.makeText(ReportFire.this,"Enter your name",Toast.LENGTH_LONG).show();
         else if(pnumber.isEmpty())
             Toast.makeText(ReportFire.this,"Enter phone number",Toast.LENGTH_LONG).show();
+        /*
         else if(village.isEmpty())
             Toast.makeText(ReportFire.this,"Enter village name",Toast.LENGTH_LONG).show();
         else if(district_spinner.getSelectedItemPosition()==0)
@@ -540,6 +541,8 @@ public class ReportFire extends AppCompatActivity {
             Toast.makeText(ReportFire.this,"Enter your address",Toast.LENGTH_LONG).show();
             //else if(!checkIfLocationEnabled())
             //  Toast.makeText(ReportFire.this,"Enable locations to send report",Toast.LENGTH_LONG).show();
+
+         */
         else{
             //Toast.makeText(ReportFire.this,"enterd else loop",Toast.LENGTH_LONG).show();
             //Location abc = get();

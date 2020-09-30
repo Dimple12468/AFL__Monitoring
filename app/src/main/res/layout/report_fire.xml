@@ -172,7 +172,7 @@
                         android:background="@android:color/white"
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"
-                        android:text="Village Name"
+                        android:text="Village Name(Optional)"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:visibility="invisible" />
@@ -183,7 +183,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="6dp"
                         android:layout_marginRight="16dp"
-                        android:hint="Village Name"
+                        android:hint="Village Name(Optional)"
                         android:textColorHint="#707070"
                         app:hintTextAppearance="@style/HintTextStyle">
 
@@ -231,7 +231,7 @@
                         android:background="@android:color/white"
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"
-                        android:text="Address1"
+                        android:text="Address1(Optional)"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:visibility="invisible" />
@@ -242,7 +242,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="6dp"
                         android:layout_marginRight="16dp"
-                        android:hint="Address1"
+                        android:hint="Address1(Optional)"
                         android:textColorHint="#707070"
                         app:hintTextAppearance="@style/HintTextStyle">
 
@@ -318,7 +318,6 @@
             app:backgroundTint="#E03B3B"
             app:elevation="6dp"
             app:fabSize="normal"
-            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/submit_fire_report"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/camera_fab" />
@@ -414,7 +413,7 @@
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:background="#DC5C58"
-            android:text="SUBMIT"
+            android:text="SAVE"
             android:textColor="@color/white"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
