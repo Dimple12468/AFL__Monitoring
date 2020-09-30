@@ -1,11 +1,9 @@
 package com.theagriculture.app;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
@@ -15,7 +13,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,9 +49,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
 import id.zelory.compressor.Compressor;
@@ -84,13 +79,14 @@ public class ImageUploadPage extends AppCompatActivity {
 
     String reportId;
     int PhotosUploadedCount =0;
-    String imageUploadUrl = "https://api.aflmonitoring.com/api/upload/images/";
+    String imageUploadUrl = "https://api.aflmonitoring.com/api/report-user/images/";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.image_upload_page);
+        getUserLocation();
         /*uncommets later
 
         reportSubmitLoading = new SpotsDialog.Builder().setContext(ImageUploadPage.this).setMessage("Submitting Report")
@@ -127,6 +123,7 @@ public class ImageUploadPage extends AppCompatActivity {
                     uploadingPhotos();
             }
         });
+
 
         opencamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,9 +185,18 @@ public class ImageUploadPage extends AppCompatActivity {
         adapter = new ReportImageRecyAdapter(this, mImagesPath);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(adapter);
+        sendReport();
 
 
+    }
 
+    public void getUserLocation(){
+        SmartLocation.with(getApplicationContext()).location().start(new OnLocationUpdatedListener() {
+            @Override
+            public void onLocationUpdated(Location location) {
+                userLocation = location;
+            }
+        });
     }
 
     private File createImageFile() throws IOException {
@@ -230,15 +236,19 @@ public class ImageUploadPage extends AppCompatActivity {
 
 
         // Toast.makeText(getApplicationContext(), "Entered reprt function", Toast.LENGTH_LONG).show();
-
+        reportSubmitLoading = new SpotsDialog.Builder().setContext(ImageUploadPage.this).setMessage("Submitting Report")
+                .setTheme(R.style.CustomDialog)
+                .setCancelable(false)
+                .build();
+        reportSubmitLoading.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         JSONObject postParams = new JSONObject();
         try {
             postParams.put("longitude", "76.8498");
             postParams.put("latitude", "28.2314");
-            ////postParams.put("longitude", String.valueOf(userLocation.getLongitude()));
-            ////postParams.put("latitude", String.valueOf(userLocation.getLatitude()));
+//            postParams.put("longitude", String.valueOf(userLocation.getLongitude()));
+//            postParams.put("latitude", String.valueOf(userLocation.getLatitude()));
             postParams.put("name", "Nmae");
             postParams.put("phone_number", "Phonenumber");
 
@@ -321,6 +331,9 @@ public class ImageUploadPage extends AppCompatActivity {
 
             }
         });
+
+
+        requestQueue.add(jsonObjectRequest);
     }
 
     //caamera
@@ -343,17 +356,22 @@ public class ImageUploadPage extends AppCompatActivity {
         }
     }
 
+
+
+
+
+
     public void uploadingPhotos(){
         // Toast.makeText(getApplicationContext(),"Eneterd uploading photos function",Toast.LENGTH_LONG).show();
-        reportSubmitLoading = new SpotsDialog.Builder().setContext(getApplicationContext()).setMessage("Uploading Images")
-                .setTheme(R.style.CustomDialog)
-                .setCancelable(false)
-                .build();
-        reportSubmitLoading.show();
+//        reportSubmitLoading = new SpotsDialog.Builder().setContext(getApplicationContext()).setMessage("Uploading Images")
+//                .setTheme(R.style.CustomDialog)
+//                .setCancelable(false)
+//                .build();
+//        reportSubmitLoading.show();
 
         AndroidNetworking.upload(imageUploadUrl)
                 //.addHeaders("Authorization", "Token " + token)//not needed as jatin has removed the authorisation
-                .addMultipartParameter("report",reportId)
+                .addMultipartParameter("NormalUserReport",reportId)
                 .addMultipartFile("image", mImages.get(PhotosUploadedCount))
                 .setTag("Upload Images")
                 .setPriority(Priority.HIGH)
@@ -370,7 +388,7 @@ public class ImageUploadPage extends AppCompatActivity {
                 .getAsJSONObject(new JSONObjectRequestListener() {
                                      @Override
                                      public void onResponse(JSONObject response) {
-                                         Log.d("uload", "onResponse: " + response);
+                                         Log.d("upload", "onResponse: " + response);
                                          PhotosUploadedCount++;
                                          Toast.makeText(getApplicationContext(),"response is "+response.toString(),Toast.LENGTH_LONG).show();
                                          if(PhotosUploadedCount==mImages.size()) {
