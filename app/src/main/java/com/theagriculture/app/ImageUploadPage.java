@@ -36,6 +36,11 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.UploadProgressListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.theagriculture.app.Ado.ReportImageRecyAdapter;
 
@@ -69,12 +74,17 @@ public class ImageUploadPage extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
+    private static int IMAGE_CAPTURE_RC = 123;
     boolean isFirstPic = true;
 
     int number_of_images=0;
     private ArrayList<File> mImages;
     private String imageFilePath;
     private ArrayList<String> mImagesPath;
+
+    String reportId;
+    int PhotosUploadedCount =0;
+    String imageUploadUrl = "https://api.aflmonitoring.com/api/upload/images/";
 
 
     @Override
@@ -110,7 +120,11 @@ public class ImageUploadPage extends AppCompatActivity {
         submitImages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Synjnd",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"Synjnd",Toast.LENGTH_LONG).show();
+                if(number_of_images==0)
+                    Toast.makeText(getApplicationContext(),"You have not uloaded any images",Toast.LENGTH_LONG).show();
+                else
+                    uploadingPhotos();
             }
         });
 
@@ -140,6 +154,24 @@ public class ImageUploadPage extends AppCompatActivity {
                                 ///startActivityForResult(pictureIntent, IMAGE_CAPTURE_RC);
                             }
                             startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                        }
+                    }
+                    else{//lower spi
+                        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (pictureIntent.resolveActivity(getPackageManager()) != null) {
+
+                            File photoFile = null;
+                            try {
+                                photoFile = createImageFile();
+                            } catch (IOException e) {
+                                Log.d("else", "openCameraIntent: IOEXCEPTION PHOTOFILE: " + e.getMessage());
+                                e.printStackTrace();
+                                return;
+                            }
+                            Uri photoUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName() + ".provider", photoFile);
+                            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                            pictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            startActivityForResult(pictureIntent, IMAGE_CAPTURE_RC);
                         }
                     }
                 }
@@ -224,7 +256,7 @@ public class ImageUploadPage extends AppCompatActivity {
                         try {
                             Toast.makeText(getApplicationContext(),"response is "+response.toString(),Toast.LENGTH_LONG).show();
                             JSONObject singleObject = new JSONObject(String.valueOf(response));
-                            String reportId = singleObject.getString("NormalUserReport_id");
+                            reportId = singleObject.getString("NormalUserReport_id");
                             Toast.makeText(getApplicationContext(),"report id is "+reportId,Toast.LENGTH_LONG).show();
                             Log.d("response", "onResponse: " + singleObject);
                             reportSubmitLoading.dismiss();
@@ -310,6 +342,54 @@ public class ImageUploadPage extends AppCompatActivity {
             }
         }
     }
+
+    public void uploadingPhotos(){
+        // Toast.makeText(getApplicationContext(),"Eneterd uploading photos function",Toast.LENGTH_LONG).show();
+        reportSubmitLoading = new SpotsDialog.Builder().setContext(getApplicationContext()).setMessage("Uploading Images")
+                .setTheme(R.style.CustomDialog)
+                .setCancelable(false)
+                .build();
+        reportSubmitLoading.show();
+
+        AndroidNetworking.upload(imageUploadUrl)
+                //.addHeaders("Authorization", "Token " + token)//not needed as jatin has removed the authorisation
+                .addMultipartParameter("report",reportId)
+                .addMultipartFile("image", mImages.get(PhotosUploadedCount))
+                .setTag("Upload Images")
+                .setPriority(Priority.HIGH)
+                .build()
+                .setUploadProgressListener(new UploadProgressListener() {
+                    @Override
+                    public void onProgress(long bytesUploaded, long totalBytes) {
+                        //if (bytesUploaded == totalBytes) {
+                        //PhotosUploadedCount++;
+                        //}
+                        // Toast.makeText(getApplicationContext(),"uploading image "+PhotosUploadedCount+"bytesUploaded are "+String.valueOf(bytesUploaded)+"total bytes are "+String.valueOf(totalBytes),Toast.LENGTH_LONG).show();
+                    }
+                })
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                                     @Override
+                                     public void onResponse(JSONObject response) {
+                                         Log.d("uload", "onResponse: " + response);
+                                         PhotosUploadedCount++;
+                                         Toast.makeText(getApplicationContext(),"response is "+response.toString(),Toast.LENGTH_LONG).show();
+                                         if(PhotosUploadedCount==mImages.size()) {
+                                             reportSubmitLoading.dismiss();
+                                             //submit_btn.setText("Submitted");
+                                         }
+                                     }
+
+                                     @Override
+                                     public void onError(ANError anError) {
+                                         Log.d("upload", "onError: " + anError.getErrorBody());
+                                         Toast.makeText(getApplicationContext(), "Photos Upload failed, please try again ", Toast.LENGTH_SHORT).show();
+                                         reportSubmitLoading.dismiss();
+                                     }
+
+                                 }
+                );
+    }
+
 
     /*site wla
     @Override
