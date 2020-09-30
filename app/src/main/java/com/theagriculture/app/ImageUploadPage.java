@@ -1,14 +1,28 @@
 package com.theagriculture.app;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -23,14 +37,22 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.theagriculture.app.Ado.ReportImageRecyAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
+import id.zelory.compressor.Compressor;
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
 
@@ -41,10 +63,25 @@ public class ImageUploadPage extends AppCompatActivity {
     Button submitImages;
     FloatingActionButton opencamera;
 
+    //recycler view
+    RecyclerView recyclerView;
+    public ReportImageRecyAdapter adapter;
+
+    private static final int CAMERA_REQUEST = 1888;
+    private static final int MY_CAMERA_PERMISSION_CODE = 100;
+    boolean isFirstPic = true;
+
+    int number_of_images=0;
+    private ArrayList<File> mImages;
+    private String imageFilePath;
+    private ArrayList<String> mImagesPath;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.image_upload_page);
+        /*uncommets later
 
         reportSubmitLoading = new SpotsDialog.Builder().setContext(ImageUploadPage.this).setMessage("Submitting Report")
                 .setTheme(R.style.CustomDialog)
@@ -61,6 +98,12 @@ public class ImageUploadPage extends AppCompatActivity {
             }
         });
 
+         */
+
+        mImagesPath = new ArrayList<>();
+        mImages = new ArrayList<>();
+
+
         submitImages = findViewById(R.id.submit_report);
         opencamera = findViewById(R.id.camera);
 
@@ -74,11 +117,82 @@ public class ImageUploadPage extends AppCompatActivity {
         opencamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"nabss",Toast.LENGTH_LONG).show();
+                if(number_of_images<4) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+                        } else {
+                            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+
+                                File photoFile = null;
+                                try {
+                                    photoFile = createImageFile();
+                                    //number_of_images++;
+                                } catch (IOException e) {
+                                    Log.d("exception", "openCameraIntent: IOEXCEPTION PHOTOFILE: " + e.getMessage());
+                                    e.printStackTrace();
+                                    return;
+                                }
+                                Uri photoUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName() + ".provider", photoFile);
+                                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                                cameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                ///startActivityForResult(pictureIntent, IMAGE_CAPTURE_RC);
+                            }
+                            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                        }
+                    }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Max Photos Reached..", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Max Photos Reached...images are " + mImagesPath, Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
+
+        recyclerView = findViewById(R.id.rvimages);
+        adapter = new ReportImageRecyAdapter(this, mImagesPath);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerView.setAdapter(adapter);
+
+
+
     }
+
+    private File createImageFile() throws IOException {
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "IMG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        imageFilePath = image.getAbsolutePath();
+        number_of_images++;
+        return image;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //if (requestCode == IMAGE_CAPTURE_RC) {
+        if (requestCode == CAMERA_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                File file = new File(imageFilePath);
+                try {
+                    mImagesPath.add(imageFilePath);
+                    File compressedFile = new Compressor(getApplicationContext()).compressToFile(file);
+                    mImages.add(compressedFile);
+                    adapter.notifyDataSetChanged();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Unable to load Image, please try again!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     public void sendReport() {
 
@@ -176,6 +290,61 @@ public class ImageUploadPage extends AppCompatActivity {
             }
         });
     }
+
+    //caamera
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_CAMERA_PERMISSION_CODE)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+            else
+            {
+                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    /*site wla
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            /// imageView.setImageBitmap(photo);
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Toast.makeText(getApplicationContext(),"onActivyt",Toast.LENGTH_LONG).show();
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK ) {
+                File file = new File(imageFilePath);
+                try {
+                    mImagesPath.add(imageFilePath);
+                    File compressedFile = new Compressor(getApplicationContext()).compressToFile(file);
+                    mImages.add(compressedFile);
+                    adapter.notifyDataSetChanged();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Unable to load Image, please try again!", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+
+     */
+
+
 }
+
 
 
