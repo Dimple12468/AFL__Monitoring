@@ -2,9 +2,11 @@ package com.theagriculture.app;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -89,20 +91,50 @@ public class ImageUploadPage extends AppCompatActivity {
         //getUserLocation();myc4
         //uncommets later
 
+        // Check if any provider (network or gps) is enabled
+       // Toast.makeText(getApplicationContext(),(SmartLocation.with(getApplicationContext()).location().state().isAnyProviderAvailable()),Toast.LENGTH_LONG).show();
+
+
+
         reportSubmitLoading = new SpotsDialog.Builder().setContext(ImageUploadPage.this).setMessage("Submitting Report")
                 .setTheme(R.style.CustomDialog)
                 .setCancelable(false)
                 .build();
-        reportSubmitLoading.show();
+        ///reportSubmitLoading.show();
+        if(checkIfLocationEnabled()){
+            SmartLocation.with(getApplicationContext()).location().oneFix().start(new OnLocationUpdatedListener() {
+                @Override
+                public void onLocationUpdated(Location location) {
+                        userLocation = location;
+                        Toast.makeText(getApplicationContext(), userLocation.toString(), Toast.LENGTH_LONG).show();
+                        sendReport();
+                    }
+                });
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"Your locations are disabled.Please enable it to send report",Toast.LENGTH_LONG).show();
+            finish();
+        }
 
+        /*
         SmartLocation.with(getApplicationContext()).location().oneFix().start(new OnLocationUpdatedListener() {
             @Override
             public void onLocationUpdated(Location location) {
-                userLocation = location;
-                Toast.makeText(getApplicationContext(),userLocation.toString(),Toast.LENGTH_LONG).show();
-                sendReport();
+                if(checkIfLocationEnabled()) {
+                    userLocation = location;
+                    Toast.makeText(getApplicationContext(), userLocation.toString(), Toast.LENGTH_LONG).show();
+                    sendReport();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Enable locations to submit report",Toast.LENGTH_LONG).show();
+                    reportSubmitLoading.dismiss();
+                    Intent intent= new Intent(getApplicationContext(),Initial_page.class);
+                    startActivity(intent);
+                }
             }
         });
+
+         */
 
         mImagesPath = new ArrayList<>();
         mImages = new ArrayList<>();
@@ -410,6 +442,49 @@ public class ImageUploadPage extends AppCompatActivity {
 
                                  }
                 );
+    }
+
+    public boolean checkIfLocationEnabled(){
+        //Toast.makeText(getApplicationContext(),"enterd",Toast.LENGTH_LONG).show();
+        LocationManager lm = (LocationManager)getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        }
+        catch(Exception ex) {
+            Toast.makeText(getApplicationContext(),"An exception occured while checking GPS Location ",Toast.LENGTH_SHORT);
+        }
+
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        }
+        catch(Exception ex) {
+            Toast.makeText(getApplicationContext(),"An exception occured while checking Network Location ",Toast.LENGTH_SHORT);
+        }
+
+        Toast.makeText(getApplicationContext(),gps_enabled+" and "+network_enabled,Toast.LENGTH_LONG).show();
+        if(!gps_enabled && !network_enabled) {
+            //Toast.makeText(getApplicationContext(),"Enable your location",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        /*
+        else if(!gps_enabled && network_enabled) {
+            Toast.makeText(getApplicationContext(),"Network is enabled",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(gps_enabled && !network_enabled) {
+            Toast.makeText(getApplicationContext(),"Gps is enabled",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+         */
+        else{
+            //Toast.makeText(getApplicationContext(),"Location is enabled",Toast.LENGTH_SHORT).show();
+            return true;
+
+        }
     }
 
 
