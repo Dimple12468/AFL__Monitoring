@@ -74,10 +74,6 @@ public class Initial_page extends AppCompatActivity {
             }
         });
 
-//        if(!getPermission()) {
-//            finish();
-//
-//        }
         getPermission();
 
 

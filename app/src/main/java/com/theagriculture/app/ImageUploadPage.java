@@ -98,60 +98,33 @@ public class ImageUploadPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.image_upload_page);
 
-        notificationManager = NotificationManagerCompat.from(this);
+//        notificationManager = NotificationManagerCompat.from(this);
         pDialog=new ProgressDialog(this);
 
-        //getUserLocation();myc4
-        //uncommets later
-
-        // Check if any provider (network or gps) is enabled
-       // Toast.makeText(getApplicationContext(),(SmartLocation.with(getApplicationContext()).location().state().isAnyProviderAvailable()),Toast.LENGTH_LONG).show();
-
-
-
-        reportSubmitLoading = new SpotsDialog.Builder().setContext(ImageUploadPage.this).setMessage("Submitting Report")
+        //initial loading dialog
+        reportSubmitLoading = new SpotsDialog.Builder().setContext(ImageUploadPage.this).setMessage("Loading....")
                 .setTheme(R.style.CustomDialog)
                 .setCancelable(false)
                 .build();
-        ///reportSubmitLoading.show();
+
         if(checkIfLocationEnabled()){
             SmartLocation.with(getApplicationContext()).location().oneFix().start(new OnLocationUpdatedListener() {
                 @Override
                 public void onLocationUpdated(Location location) {
                         userLocation = location;
-                        Toast.makeText(getApplicationContext(), userLocation.toString(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(), userLocation.toString(), Toast.LENGTH_LONG).show();
                         sendReport();
                     }
                 });
         }
         else{
-            Toast.makeText(getApplicationContext(),"Your locations are disabled.Please enable it to send report",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"Your location is disabled.Please enable it to send report",Toast.LENGTH_LONG).show();
             finish();
         }
 
-        /*
-        SmartLocation.with(getApplicationContext()).location().oneFix().start(new OnLocationUpdatedListener() {
-            @Override
-            public void onLocationUpdated(Location location) {
-                if(checkIfLocationEnabled()) {
-                    userLocation = location;
-                    Toast.makeText(getApplicationContext(), userLocation.toString(), Toast.LENGTH_LONG).show();
-                    sendReport();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"Enable locations to submit report",Toast.LENGTH_LONG).show();
-                    reportSubmitLoading.dismiss();
-                    Intent intent= new Intent(getApplicationContext(),Initial_page.class);
-                    startActivity(intent);
-                }
-            }
-        });
-
-         */
 
         mImagesPath = new ArrayList<>();
         mImages = new ArrayList<>();
-
 
         submitImages = findViewById(R.id.submit_report);
         opencamera = findViewById(R.id.camera);
@@ -164,7 +137,7 @@ public class ImageUploadPage extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"You have not uploaded any images",Toast.LENGTH_LONG).show();
                 else
                     uploadingPhotos();
-                showProgress("Uploading media ...");
+                showProgress("Uploading media...");
             }
         });
 
@@ -306,20 +279,20 @@ public class ImageUploadPage extends AppCompatActivity {
 
 
         } catch (JSONException e) {
-            Toast.makeText(getApplicationContext(), "An exception occured", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "An exception occurred", Toast.LENGTH_LONG).show();
             reportSubmitLoading.dismiss();
             Log.d("catch", "submitReport: " + e);
         }
-        Toast.makeText(getApplicationContext(),"posting values "+postParams.toString(),Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(),"posting values "+postParams.toString(),Toast.LENGTH_LONG).show();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(reportSubmitUrl, postParams,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            Toast.makeText(getApplicationContext(),"response is "+response.toString(),Toast.LENGTH_LONG).show();
+//                            Toast.makeText(getApplicationContext(),"response is "+response.toString(),Toast.LENGTH_LONG).show();
                             JSONObject singleObject = new JSONObject(String.valueOf(response));
                             reportId = singleObject.getString("NormalUserReport_id");
-                            Toast.makeText(getApplicationContext(),"report id is "+reportId,Toast.LENGTH_LONG).show();
+//                            Toast.makeText(getApplicationContext(),"report id is "+reportId,Toast.LENGTH_LONG).show();
                             Log.d("response", "onResponse: " + singleObject);
                             reportSubmitLoading.dismiss();
                         } catch (JSONException e) {
@@ -397,7 +370,7 @@ public class ImageUploadPage extends AppCompatActivity {
         {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
             {
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
@@ -423,10 +396,19 @@ public class ImageUploadPage extends AppCompatActivity {
         }
     }
 
-    public void updateProgress(long val, String title){
+
+    public void updateProgress(int val, String title/*, String msg*/){
         pDialog.setTitle(title);
 //        pDialog.setMessage(msg);
-//        pDialog.setProgress(val);
+        pDialog.setProgress(val);
+        afterUploading();
+    }
+
+    public void afterUploading(){
+//        pDialog.dismiss();
+        Toast.makeText(this, "Images Uploaded successfully.", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this,Initial_page.class);
+        startActivity(i);
     }
 
 /*    private void uploadPhotos()
@@ -448,15 +430,7 @@ public class ImageUploadPage extends AppCompatActivity {
 
 
     public void uploadingPhotos(){
-        // Toast.makeText(getApplicationContext(),"Eneterd uploading photos function",Toast.LENGTH_LONG).show();
-//        reportSubmitLoading = new SpotsDialog.Builder().setContext(getApplicationContext()).setMessage("Uploading Images")
-//                .setTheme(R.style.CustomDialog)
-//                .setCancelable(false)
-//                .build();
-//        reportSubmitLoading.show();
-
         AndroidNetworking.upload(imageUploadUrl)
-                //.addHeaders("Authorization", "Token " + token)//not needed as jatin has removed the authorisation
                 .addMultipartParameter("NormalUserReport",reportId)
                 .addMultipartFile("image", mImages.get(PhotosUploadedCount))
                 .setTag("Upload Images")
@@ -468,7 +442,7 @@ public class ImageUploadPage extends AppCompatActivity {
                         if (bytesUploaded == totalBytes) {
                         PhotosUploadedCount++;
                         long totalpercent = (bytesUploaded /totalBytes)*100;
-                        updateProgress(totalpercent,"Uploading file ");
+                            updateProgress((int) totalpercent,"Uploading images... "/*+PhotosUploadedCount,""*/);
                         }
                         // Toast.makeText(getApplicationContext(),"uploading image "+PhotosUploadedCount+"bytesUploaded are "+String.valueOf(bytesUploaded)+"total bytes are "+String.valueOf(totalBytes),Toast.LENGTH_LONG).show();
                     }
@@ -478,7 +452,7 @@ public class ImageUploadPage extends AppCompatActivity {
                                      public void onResponse(JSONObject response) {
                                          Log.d("upload", "onResponse: " + response);
                                          PhotosUploadedCount++;
-                                         Toast.makeText(getApplicationContext(),"response is "+response.toString(),Toast.LENGTH_LONG).show();
+//                                         Toast.makeText(getApplicationContext(),"response is "+response.toString(),Toast.LENGTH_LONG).show();
                                          if(PhotosUploadedCount==mImages.size()) {
                                              reportSubmitLoading.dismiss();
                                              //submit_btn.setText("Submitted");
@@ -506,14 +480,14 @@ public class ImageUploadPage extends AppCompatActivity {
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
         }
         catch(Exception ex) {
-            Toast.makeText(getApplicationContext(),"An exception occured while checking GPS Location ",Toast.LENGTH_SHORT);
+            Toast.makeText(getApplicationContext(),"An exception occurred while checking GPS Location ",Toast.LENGTH_SHORT);
         }
 
         try {
             network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         }
         catch(Exception ex) {
-            Toast.makeText(getApplicationContext(),"An exception occured while checking Network Location ",Toast.LENGTH_SHORT);
+            Toast.makeText(getApplicationContext(),"An exception occurred while checking Network Location ",Toast.LENGTH_SHORT);
         }
 
         Toast.makeText(getApplicationContext(),gps_enabled+" and "+network_enabled,Toast.LENGTH_LONG).show();
