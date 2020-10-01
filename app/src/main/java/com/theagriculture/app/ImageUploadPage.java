@@ -98,7 +98,7 @@ public class ImageUploadPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.image_upload_page);
 
-//        notificationManager = NotificationManagerCompat.from(this);
+        notificationManager = NotificationManagerCompat.from(this);
         pDialog=new ProgressDialog(this);
 
         //initial loading dialog
@@ -226,6 +226,7 @@ public class ImageUploadPage extends AppCompatActivity {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         imageFilePath = image.getAbsolutePath();
+        Log.d("image file name", imageFileName + "");
         return image;
     }
 
@@ -401,7 +402,7 @@ public class ImageUploadPage extends AppCompatActivity {
         pDialog.setTitle(title);
 //        pDialog.setMessage(msg);
         pDialog.setProgress(val);
-        afterUploading();
+//        afterUploading();
     }
 
     public void afterUploading(){
@@ -414,6 +415,7 @@ public class ImageUploadPage extends AppCompatActivity {
 /*    private void uploadPhotos()
     {
         final int progressMax = mImages.size() - photosUploadedCount;
+        Log.d("Dimple max: ",progressMax + "");
         notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.ic_upload)
                 .setContentTitle("Uploading Photos")
@@ -430,44 +432,47 @@ public class ImageUploadPage extends AppCompatActivity {
 
 
     public void uploadingPhotos(){
-        AndroidNetworking.upload(imageUploadUrl)
-                .addMultipartParameter("NormalUserReport",reportId)
-                .addMultipartFile("image", mImages.get(PhotosUploadedCount))
-                .setTag("Upload Images")
-                .setPriority(Priority.HIGH)
-                .build()
-                .setUploadProgressListener(new UploadProgressListener() {
-                    @Override
-                    public void onProgress(long bytesUploaded, long totalBytes) {
-                        if (bytesUploaded == totalBytes) {
-                        PhotosUploadedCount++;
-                        long totalpercent = (bytesUploaded /totalBytes)*100;
-                            updateProgress((int) totalpercent,"Uploading images... "/*+PhotosUploadedCount,""*/);
+        for(int i=0;i<mImages.size();i++) {
+            AndroidNetworking.upload(imageUploadUrl)
+                    .addMultipartParameter("NormalUserReport", reportId)
+                    .addMultipartFile("image", mImages.get(i))
+                    .setTag("Upload Images")
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .setUploadProgressListener(new UploadProgressListener() {
+                        @Override
+                        public void onProgress(long bytesUploaded, long totalBytes) {
+                            if (bytesUploaded == totalBytes) {
+                                PhotosUploadedCount++;
+                                long totalpercent = (bytesUploaded / totalBytes) * 100;
+                                updateProgress((int) totalpercent,"Uploading Image... "/*+ photosUploadedCount,""*/);
+                            }
+                            // Toast.makeText(getApplicationContext(),"uploading image "+PhotosUploadedCount+"bytesUploaded are "+String.valueOf(bytesUploaded)+"total bytes are "+String.valueOf(totalBytes),Toast.LENGTH_LONG).show();
                         }
-                        // Toast.makeText(getApplicationContext(),"uploading image "+PhotosUploadedCount+"bytesUploaded are "+String.valueOf(bytesUploaded)+"total bytes are "+String.valueOf(totalBytes),Toast.LENGTH_LONG).show();
-                    }
-                })
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                                     @Override
-                                     public void onResponse(JSONObject response) {
-                                         Log.d("upload", "onResponse: " + response);
-                                         PhotosUploadedCount++;
+                    })
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                                         @Override
+                                         public void onResponse(JSONObject response) {
+                                             Log.d("upload here", "onResponse: " + response);
+                                             Log.d("Location ID", "onResponse ID: " + reportId);
+                                             PhotosUploadedCount++;
 //                                         Toast.makeText(getApplicationContext(),"response is "+response.toString(),Toast.LENGTH_LONG).show();
-                                         if(PhotosUploadedCount==mImages.size()) {
-                                             reportSubmitLoading.dismiss();
-                                             //submit_btn.setText("Submitted");
+                                             if (PhotosUploadedCount == mImages.size()) {
+                                                 reportSubmitLoading.dismiss();
+                                                 //submit_btn.setText("Submitted");
+                                             }
                                          }
-                                     }
 
-                                     @Override
-                                     public void onError(ANError anError) {
-                                         Log.d("upload", "onError: " + anError.getErrorBody());
-                                         Toast.makeText(getApplicationContext(), "Photos Upload failed, please try again ", Toast.LENGTH_SHORT).show();
-                                         reportSubmitLoading.dismiss();
-                                     }
+                                         @Override
+                                         public void onError(ANError anError) {
+                                             Log.d("upload", "onError: " + anError.getErrorBody());
+                                             Toast.makeText(getApplicationContext(), "Photos Upload failed, please try again ", Toast.LENGTH_SHORT).show();
+                                             reportSubmitLoading.dismiss();
+                                         }
 
-                                 }
-                );
+                                     }
+                    );
+        }
     }
 
     public boolean checkIfLocationEnabled(){
