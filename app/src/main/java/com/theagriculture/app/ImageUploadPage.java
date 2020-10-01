@@ -3,6 +3,7 @@ package com.theagriculture.app;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -19,6 +20,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,6 +60,7 @@ import dmax.dialog.SpotsDialog;
 import id.zelory.compressor.Compressor;
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
+import static com.theagriculture.app.AppNotificationChannels.CHANNEL_1_ID;
 
 public class ImageUploadPage extends AppCompatActivity {
     Location userLocation;
@@ -78,6 +82,11 @@ public class ImageUploadPage extends AppCompatActivity {
     private ArrayList<File> mImages;
     private String imageFilePath;
     private ArrayList<String> mImagesPath;
+    private int photosUploadedCount = 0;
+    private NotificationCompat.Builder notificationBuilder;
+    private NotificationManagerCompat notificationManager;
+    private int limitPhotos = 100;
+    private ProgressDialog pDialog;
 
     String reportId;
     int PhotosUploadedCount =0;
@@ -88,6 +97,10 @@ public class ImageUploadPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.image_upload_page);
+
+        notificationManager = NotificationManagerCompat.from(this);
+        pDialog=new ProgressDialog(this);
+
         //getUserLocation();myc4
         //uncommets later
 
@@ -148,9 +161,10 @@ public class ImageUploadPage extends AppCompatActivity {
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(),"Synjnd",Toast.LENGTH_LONG).show();
                 if(number_of_images==0)
-                    Toast.makeText(getApplicationContext(),"You have not uloaded any images",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"You have not uploaded any images",Toast.LENGTH_LONG).show();
                 else
                     uploadingPhotos();
+                showProgress("Uploading media ...");
             }
         });
 
@@ -158,7 +172,7 @@ public class ImageUploadPage extends AppCompatActivity {
         opencamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(number_of_images<4) {
+//                if(number_of_images<limitPhotos) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                             requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
@@ -201,11 +215,11 @@ public class ImageUploadPage extends AppCompatActivity {
                             startActivityForResult(pictureIntent, IMAGE_CAPTURE_RC);
                         }
                     }
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Max Photos Reached..", Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(getApplicationContext(), "Max Photos Reached...images are " + mImagesPath, Toast.LENGTH_SHORT).show();
-                }
+//                }
+//                else {
+//                    Toast.makeText(getApplicationContext(), "Max Photos Reached..", Toast.LENGTH_SHORT).show();
+//                    //Toast.makeText(getApplicationContext(), "Max Photos Reached...images are " + mImagesPath, Toast.LENGTH_SHORT).show();
+//                }
 
             }
         });
@@ -239,7 +253,6 @@ public class ImageUploadPage extends AppCompatActivity {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         imageFilePath = image.getAbsolutePath();
-        number_of_images++;
         return image;
     }
 
@@ -251,6 +264,9 @@ public class ImageUploadPage extends AppCompatActivity {
                 File file = new File(imageFilePath);
                 try {
                     mImagesPath.add(imageFilePath);
+                    if (mImages.size()==1)
+                        submitImages.setBackgroundColor(getResources().getColor(R.color.btn_color));
+                    number_of_images++;
                     File compressedFile = new Compressor(getApplicationContext()).compressToFile(file);
                     mImages.add(compressedFile);
                     adapter.notifyDataSetChanged();
@@ -392,8 +408,42 @@ public class ImageUploadPage extends AppCompatActivity {
         }
     }
 
+    public void showProgress(String str){
+        try{
+            pDialog.setCancelable(false);
+            pDialog.setTitle("Please wait");
+            pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            pDialog.setMax(100); // Progress Dialog Max Value
+            pDialog.setMessage(str);
+            if (pDialog.isShowing())
+                pDialog.dismiss();
+            pDialog.show();
+        }catch (Exception e){
 
+        }
+    }
 
+    public void updateProgress(long val, String title){
+        pDialog.setTitle(title);
+//        pDialog.setMessage(msg);
+//        pDialog.setProgress(val);
+    }
+
+/*    private void uploadPhotos()
+    {
+        final int progressMax = mImages.size() - photosUploadedCount;
+        notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.ic_upload)
+                .setContentTitle("Uploading Photos")
+                .setContentText("0/" + progressMax)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setOngoing(true)
+                .setOnlyAlertOnce(true)
+                .setProgress((int) mImages.get(photosUploadedCount).length(), 0, false);
+        notificationManager.notify(1, notificationBuilder.build());
+        uploadingPhotos();
+
+    }*/
 
 
 
@@ -415,9 +465,11 @@ public class ImageUploadPage extends AppCompatActivity {
                 .setUploadProgressListener(new UploadProgressListener() {
                     @Override
                     public void onProgress(long bytesUploaded, long totalBytes) {
-                        //if (bytesUploaded == totalBytes) {
-                        //PhotosUploadedCount++;
-                        //}
+                        if (bytesUploaded == totalBytes) {
+                        PhotosUploadedCount++;
+                        long totalpercent = (bytesUploaded /totalBytes)*100;
+                        updateProgress(totalpercent,"Uploading file ");
+                        }
                         // Toast.makeText(getApplicationContext(),"uploading image "+PhotosUploadedCount+"bytesUploaded are "+String.valueOf(bytesUploaded)+"total bytes are "+String.valueOf(totalBytes),Toast.LENGTH_LONG).show();
                     }
                 })
