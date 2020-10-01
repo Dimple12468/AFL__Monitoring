@@ -95,7 +95,7 @@ public class ImageUploadPage extends AppCompatActivity {
                 .build();
         reportSubmitLoading.show();
 
-        SmartLocation.with(getApplicationContext()).location().start(new OnLocationUpdatedListener() {
+        SmartLocation.with(getApplicationContext()).location().oneFix().start(new OnLocationUpdatedListener() {
             @Override
             public void onLocationUpdated(Location location) {
                 userLocation = location;
