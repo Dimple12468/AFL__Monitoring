@@ -86,8 +86,8 @@ public class ImageUploadPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.image_upload_page);
-        getUserLocation();
-        /*uncommets later
+        //getUserLocation();myc4
+        //uncommets later
 
         reportSubmitLoading = new SpotsDialog.Builder().setContext(ImageUploadPage.this).setMessage("Submitting Report")
                 .setTheme(R.style.CustomDialog)
@@ -103,8 +103,6 @@ public class ImageUploadPage extends AppCompatActivity {
                 sendReport();
             }
         });
-
-         */
 
         mImagesPath = new ArrayList<>();
         mImages = new ArrayList<>();
@@ -185,11 +183,12 @@ public class ImageUploadPage extends AppCompatActivity {
         adapter = new ReportImageRecyAdapter(this, mImagesPath);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(adapter);
-        sendReport();
+        //sendReport();//myc3
 
 
     }
 
+    /*myc2
     public void getUserLocation(){
         SmartLocation.with(getApplicationContext()).location().start(new OnLocationUpdatedListener() {
             @Override
@@ -198,6 +197,8 @@ public class ImageUploadPage extends AppCompatActivity {
             }
         });
     }
+
+     */
 
     private File createImageFile() throws IOException {
 
@@ -236,19 +237,22 @@ public class ImageUploadPage extends AppCompatActivity {
 
 
         // Toast.makeText(getApplicationContext(), "Entered reprt function", Toast.LENGTH_LONG).show();
+        /*myc1
         reportSubmitLoading = new SpotsDialog.Builder().setContext(ImageUploadPage.this).setMessage("Submitting Report")
                 .setTheme(R.style.CustomDialog)
                 .setCancelable(false)
                 .build();
         reportSubmitLoading.show();
+
+         */
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         JSONObject postParams = new JSONObject();
         try {
-            postParams.put("longitude", "76.8498");
-            postParams.put("latitude", "28.2314");
-//            postParams.put("longitude", String.valueOf(userLocation.getLongitude()));
-//            postParams.put("latitude", String.valueOf(userLocation.getLatitude()));
+            //postParams.put("longitude", "76.8498");
+            //postParams.put("latitude", "28.2314");
+            postParams.put("longitude", String.valueOf(userLocation.getLongitude()));
+            postParams.put("latitude", String.valueOf(userLocation.getLatitude()));
             postParams.put("name", "Nmae");
             postParams.put("phone_number", "Phonenumber");
 
