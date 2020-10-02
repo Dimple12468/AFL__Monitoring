@@ -484,13 +484,13 @@ public class ImageUploadPage extends AppCompatActivity {
                 public void onResponse(JSONObject response) {
                     Log.d("upload here", "onResponse: " + response);
                     Log.d("Location ID", "onResponse ID: " + reportId);
-                    Log.d("reponse check","uploaded " + i );
+                    Log.d("reponse check","uploaded " + photosUploadedCount );
                     photosUploadedCount++;
                     if (photosUploadedCount == mImages.size() ) {
                         afterUploading();
                     }
                     else {
-                        updateProgress("Uploading " + i + "....");
+                        updateProgress("Uploading " + photosUploadedCount + "....");
                         uploadingPhotos();
                     }
                 }
