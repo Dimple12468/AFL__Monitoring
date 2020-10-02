@@ -39,6 +39,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.ANRequest;
+import com.androidnetworking.common.ANResponse;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
@@ -82,7 +84,7 @@ public class ImageUploadPage extends AppCompatActivity {
     private ArrayList<File> mImages;
     private String imageFilePath;
     private ArrayList<String> mImagesPath;
-    private int photosUploadedCount = 0;
+    private int photosUploadedCount = 1;
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManagerCompat notificationManager;
     private int limitPhotos = 100;
@@ -91,7 +93,7 @@ public class ImageUploadPage extends AppCompatActivity {
     String reportId;
     int PhotosUploadedCount =0;
     String imageUploadUrl = "https://api.aflmonitoring.com/api/report-user/images/";
-
+    int i =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -398,10 +400,10 @@ public class ImageUploadPage extends AppCompatActivity {
     }
 
 
-    public void updateProgress(int val, String title/*, String msg*/){
+    public void updateProgress( String title/*, String msg*/){
         pDialog.setTitle(title);
 //        pDialog.setMessage(msg);
-        pDialog.setProgress(val);
+//        pDialog.setProgress(val);
 //        afterUploading();
     }
 
@@ -431,49 +433,90 @@ public class ImageUploadPage extends AppCompatActivity {
 
 
 
+//    public void uploadingPhotos(){
+////        for(int i=0;i<mImages.size();i++) {
+//            AndroidNetworking.upload(imageUploadUrl)
+//                    .addMultipartParameter("NormalUserReport", reportId)
+//                    .addMultipartFile("image", mImages.get(photosUploadedCount))
+//                    .setTag("Upload Images")
+//                    .setPriority(Priority.HIGH)
+//                    .build()
+//
+//                    .getAsJSONObject(new JSONObjectRequestListener() {
+//                                         @Override
+//                                         public void onResponse(JSONObject response) {
+//                                             Log.d("upload here", "onResponse: " + response);
+//                                             Log.d("Location ID", "onResponse ID: " + reportId);
+//                                             PhotosUploadedCount++;
+////                                         Toast.makeText(getApplicationContext(),"response is "+response.toString(),Toast.LENGTH_LONG).show();
+//                                             if (PhotosUploadedCount == mImages.size() - 1) {
+//                                                 reportSubmitLoading.dismiss();
+//                                                 //submit_btn.setText("Submitted");
+//                                             }
+//                                             else {
+//                                                 uploadingPhotos();
+//                                             }
+//                                         }
+//
+//                                         @Override
+//                                         public void onError(ANError anError) {
+//                                             Log.d("upload", "onError: " + anError.getErrorBody());
+//                                             Toast.makeText(getApplicationContext(), "Photos Upload failed, please try again ", Toast.LENGTH_SHORT).show();
+//                                             reportSubmitLoading.dismiss();
+//                                         }
+//
+//                                     }
+//                    );
+////        }
+//    }
+
     public void uploadingPhotos(){
-        for(int i=0;i<mImages.size();i++) {
-            AndroidNetworking.upload(imageUploadUrl)
+//        for(i=0;i<mImages.size();i++) {
+            ANRequest request = AndroidNetworking.upload(imageUploadUrl)
                     .addMultipartParameter("NormalUserReport", reportId)
-                    .addMultipartFile("image", mImages.get(i))
+                    .addMultipartFile("image", mImages.get(photosUploadedCount))
                     .setTag("Upload Images")
                     .setPriority(Priority.HIGH)
-                    .build()
-                    .setUploadProgressListener(new UploadProgressListener() {
-                        @Override
-                        public void onProgress(long bytesUploaded, long totalBytes) {
-                            if (bytesUploaded == totalBytes) {
-                                PhotosUploadedCount++;
-                                long totalpercent = (bytesUploaded / totalBytes) * 100;
-                                updateProgress((int) totalpercent,"Uploading Image... "/*+ photosUploadedCount,""*/);
-                            }
-                            // Toast.makeText(getApplicationContext(),"uploading image "+PhotosUploadedCount+"bytesUploaded are "+String.valueOf(bytesUploaded)+"total bytes are "+String.valueOf(totalBytes),Toast.LENGTH_LONG).show();
-                        }
-                    })
-                    .getAsJSONObject(new JSONObjectRequestListener() {
-                                         @Override
-                                         public void onResponse(JSONObject response) {
-                                             Log.d("upload here", "onResponse: " + response);
-                                             Log.d("Location ID", "onResponse ID: " + reportId);
-                                             PhotosUploadedCount++;
-//                                         Toast.makeText(getApplicationContext(),"response is "+response.toString(),Toast.LENGTH_LONG).show();
-                                             if (PhotosUploadedCount == mImages.size()) {
-                                                 reportSubmitLoading.dismiss();
-                                                 //submit_btn.setText("Submitted");
-                                             }
-                                         }
+                    .build();
 
-                                         @Override
-                                         public void onError(ANError anError) {
-                                             Log.d("upload", "onError: " + anError.getErrorBody());
-                                             Toast.makeText(getApplicationContext(), "Photos Upload failed, please try again ", Toast.LENGTH_SHORT).show();
-                                             reportSubmitLoading.dismiss();
-                                         }
+            request.getAsJSONObject(new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.d("upload here", "onResponse: " + response);
+                    Log.d("Location ID", "onResponse ID: " + reportId);
+                    Log.d("reponse check","uploaded " + i );
+                    photosUploadedCount++;
+                    if (photosUploadedCount == mImages.size() ) {
+                        afterUploading();
+                    }
+                    else {
+                        updateProgress("Uploading " + i + "....");
+                        uploadingPhotos();
+                    }
+                }
 
-                                     }
-                    );
+                @Override
+                public void onError(ANError anError) {
+                    Log.d("upload", "onError: " + anError.getErrorBody());
+                    Toast.makeText(getApplicationContext(), "Photos Upload failed, please try again ", Toast.LENGTH_SHORT).show();
+                    reportSubmitLoading.dismiss();
+                }
+
+            });
+
+            Log.d("Loop Track", "Uploading " );
+
+
+
         }
-    }
+
+
+
+//    }
+
+
+
+
 
     public boolean checkIfLocationEnabled(){
         //Toast.makeText(getApplicationContext(),"enterd",Toast.LENGTH_LONG).show();
