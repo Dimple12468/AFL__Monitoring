@@ -84,7 +84,7 @@ public class ImageUploadPage extends AppCompatActivity {
     private ArrayList<File> mImages;
     private String imageFilePath;
     private ArrayList<String> mImagesPath;
-    private int photosUploadedCount = 1;
+    private int photosUploadedCount = 0;
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManagerCompat notificationManager;
     private int limitPhotos = 100;
@@ -93,7 +93,7 @@ public class ImageUploadPage extends AppCompatActivity {
     String reportId;
     int PhotosUploadedCount =0;
     String imageUploadUrl = "https://api.aflmonitoring.com/api/report-user/images/";
-    int i =0;
+    int i =1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,11 +103,14 @@ public class ImageUploadPage extends AppCompatActivity {
         notificationManager = NotificationManagerCompat.from(this);
         pDialog=new ProgressDialog(this);
 
+
+        showProgress("Loading");
+
         //initial loading dialog
-        reportSubmitLoading = new SpotsDialog.Builder().setContext(ImageUploadPage.this).setMessage("Loading....")
-                .setTheme(R.style.CustomDialog)
-                .setCancelable(false)
-                .build();
+//        reportSubmitLoading = new SpotsDialog.Builder().setContext(ImageUploadPage.this).setMessage("Loading....")
+//                .setTheme(R.style.CustomDialog)
+//                .setCancelable(false)
+//                .build();
 
         if(checkIfLocationEnabled()){
             SmartLocation.with(getApplicationContext()).location().oneFix().start(new OnLocationUpdatedListener() {
@@ -139,7 +142,7 @@ public class ImageUploadPage extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"You have not uploaded any images",Toast.LENGTH_LONG).show();
                 else
                     uploadingPhotos();
-                showProgress("Uploading media...");
+                showProgress("Uploading Image 1");
             }
         });
 
@@ -269,6 +272,8 @@ public class ImageUploadPage extends AppCompatActivity {
         reportSubmitLoading.show();
 
          */
+
+
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         JSONObject postParams = new JSONObject();
@@ -297,7 +302,7 @@ public class ImageUploadPage extends AppCompatActivity {
                             reportId = singleObject.getString("NormalUserReport_id");
 //                            Toast.makeText(getApplicationContext(),"report id is "+reportId,Toast.LENGTH_LONG).show();
                             Log.d("response", "onResponse: " + singleObject);
-                            reportSubmitLoading.dismiss();
+                            pDialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
                             reportSubmitLoading.dismiss();
@@ -507,14 +512,15 @@ public class ImageUploadPage extends AppCompatActivity {
                 @Override
                 public void onResponse(JSONObject response) {
                     Log.d("upload here", "onResponse: " + response);
-                    Log.d("Location ID", "onResponse ID: " + reportId);
+                    Log.d("Location ID", "onResponse ID: " + mImages.size());
                     Log.d("response check","uploaded " + photosUploadedCount );
                     photosUploadedCount++;
-                    if (photosUploadedCount == mImages.size() ) {
+                    i++;
+                    if (photosUploadedCount == mImages.size()) {
                         afterUploading();
                     }
                     else {
-                        updateProgress("Uploading Image " + photosUploadedCount);
+                        updateProgress("Uploading Image " + (i));
                         uploadingPhotos();
                     }
                 }
