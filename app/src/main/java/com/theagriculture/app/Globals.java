@@ -13,6 +13,8 @@ public class Globals {
     public static String url_Bulk_Admin = serverURL + "api/upload/mail/";
 
     public static String pendingDatewiseList = serverURL + "api/locations/pending";
+    public static String ongoingDatewiseList = serverURL + "api/locations/ongoing";
+    public static String completedDatewiseList = serverURL + "api/locations/completed";
 
     public static String pendingList = serverURL + "api/locationsDatewise/pending";
     public static String smsPending = serverURL + "api/trigger/sms/pending";

@@ -73,7 +73,7 @@ public class completed_fragment extends Fragment {
 
     private LinearLayoutManager layoutManager;
     //private String completedUrl = "http://18.224.202.135/api/locations/completed";
-    private String completedUrl = Globals.completedList;                //"http://18.224.202.135/api/locationsDatewise/completed";
+    private String completedUrl = Globals.completedDatewiseList;                //"http://18.224.202.135/api/locationsDatewise/completed";
     private String nextUrl = "null";
     private ProgressBar progressBar;
     private boolean isNextBusy;
@@ -138,21 +138,7 @@ public class completed_fragment extends Fragment {
                 getFragmentManager().beginTransaction().detach(completed_fragment.this).attach(completed_fragment.this).commit();
             }
         });
-        /*
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
-        recyclerView.addItemDecoration(divider);
-        mDdaNames = new ArrayList<>();
-        mAdoNames = new ArrayList<>();
-        mAddresses = new ArrayList<>();
-        mIds = new ArrayList<>();
-        mdate = new ArrayList<>();
-        //adapter = new AdminLocationAdapter(getActivity(), mDdaNames, mAdoNames, mAddresses, true, mIds,mdate);
-        adapter = new PendingAdapter(getActivity(), mDdaNames, mAdoNames, mAddresses, true, mIds,mdate);
-        recyclerView.setAdapter(adapter);
 
-         */
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
@@ -161,6 +147,7 @@ public class completed_fragment extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         token = prefs.getString("key", "");
 //        getData();
+        getCompletedData();
         recyclerViewAdater = new SectionAdapter(getActivity(),sections);
         recyclerView.setAdapter(recyclerViewAdater);
 
@@ -183,6 +170,11 @@ public class completed_fragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public void getCompletedData(){
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+
     }
 
     private void getData() {
@@ -640,7 +632,7 @@ public class completed_fragment extends Fragment {
         Log.d(TAG,"onStart: ");
 //        spinner = view.findViewById(R.id.ddo_progressbar);
 //        spinner.setVisibility(View.VISIBLE);
-        getData();
+//        getData();
     }
 
     @Override

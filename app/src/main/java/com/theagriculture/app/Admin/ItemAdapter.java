@@ -206,19 +206,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> /*
                 mcontext.startActivity(intent);
 //                ((Activity)mcontext).finish();
 
-//                Bundle bundle = new Bundle();
-//                bundle.putString("id", mIds.get(position));
-//                bundle.putString("ado_name", mtextview1.get(position));
-//                bundle.putString("dda_name", mtextview2.get(position));
-//                bundle.putString("address_big", mtextview3.get(position));
-//                bundle.putString("ado_pk", mpkado.get(position));
-//                bundle.putString("dda_pk", mpkdda.get(position));
-//                bundle.putBoolean("isPending",true);
-//                bundle.putBoolean("isOngoing", false);
-//                PendingDetailsFragment abc = new PendingDetailsFragment();
-//                abc.setArguments(bundle);
-//                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-//                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, abc).addToBackStack(null).commit();
             }
             if(isOngoing) {
                 Intent intent = new Intent(mcontext,pending_details.class);
@@ -232,21 +219,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> /*
                 intent.putExtra("isOngoing", true);
                 mcontext.startActivity(intent);
 
-//              Bundle bundle = new Bundle();
-//                bundle.putString("id", mIds.get(position));
-//                bundle.putString("ado_name", mtextview1.get(position));
-//                bundle.putString("dda_name", mtextview2.get(position));
-//                bundle.putString("address_big", mtextview3.get(position));
-//                bundle.putString("ado_pk", mpkado.get(position));
-//                bundle.putString("dda_pk", mpkdda.get(position));
-//                bundle.putBoolean("isPending",true);
-//                bundle.putBoolean("isOngoing", false);
-//                PendingDetailsFragment abc = new PendingDetailsFragment();
-//                abc.setArguments(bundle);
-//                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-//
-//                activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, abc,"a").addToBackStack("a").commit();
-                //activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).commit();
             }
             if(isComplete) {
                 Intent intent = new Intent(mcontext,complete_details.class);
