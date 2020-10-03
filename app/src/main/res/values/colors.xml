@@ -25,7 +25,7 @@
     <color name="recycler_color">#F9F9F9</color>
     <color name="btn_before_text">#73DC5C58</color>
     <color name="btn_submit">#DC5C58</color>
-    <color name="btn_color">#E03B3B</color>
+    <color name="theme_color">#E03B3B</color>
 
 
 </resources>

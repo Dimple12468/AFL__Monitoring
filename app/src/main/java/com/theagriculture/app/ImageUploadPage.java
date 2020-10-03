@@ -240,9 +240,9 @@ public class ImageUploadPage extends AppCompatActivity {
                 File file = new File(imageFilePath);
                 try {
                     mImagesPath.add(imageFilePath);
-                    if (mImages.size()==1)
-                        submitImages.setBackgroundColor(getResources().getColor(R.color.btn_color));
                     number_of_images++;
+                    if (number_of_images==1)
+                        submitImages.setBackgroundColor(getResources().getColor(R.color.theme_color));
                     File compressedFile = new Compressor(getApplicationContext()).compressToFile(file);
                     mImages.add(compressedFile);
                     adapter.notifyDataSetChanged();
@@ -364,7 +364,7 @@ public class ImageUploadPage extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
 
-    //caamera
+    //camera
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
@@ -385,7 +385,13 @@ public class ImageUploadPage extends AppCompatActivity {
     }
 
     public void showProgress(String str){
-        try{
+        pDialog = new ProgressDialog(ImageUploadPage.this,R.style.AlertDialog);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pDialog.setMessage(str);
+        pDialog.show();
+
+
+       /* try{
             pDialog.setCancelable(false);
             pDialog.setTitle("Please wait");
             pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -395,20 +401,38 @@ public class ImageUploadPage extends AppCompatActivity {
                 pDialog.dismiss();
             pDialog.show();
         }catch (Exception e){
-
+            Toast.makeText(this, "There is some error...Try again.", Toast.LENGTH_SHORT).show();
         }
+        final int max = 100;
+        Thread thread = new Thread()
+        {
+            public void run(){
+                int progress = 0;
+                while(progress<max){
+                    try {
+                        sleep(200);
+                        progress = progress + 1;
+                        pDialog.setProgress(progress);
+                    } catch (InterruptedException e) {
+                        Toast.makeText(ImageUploadPage.this, "Error in uploading images.Please check again.", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        thread.start();*/
     }
 
 
     public void updateProgress( String title/*, String msg*/){
-        pDialog.setTitle(title);
+        pDialog.setMessage(title);
 //        pDialog.setMessage(msg);
 //        pDialog.setProgress(val);
 //        afterUploading();
     }
 
     public void afterUploading(){
-//        pDialog.dismiss();
+        pDialog.dismiss();
         Toast.makeText(this, "Images Uploaded successfully.", Toast.LENGTH_SHORT).show();
         Intent i = new Intent(this,Initial_page.class);
         startActivity(i);
@@ -484,13 +508,13 @@ public class ImageUploadPage extends AppCompatActivity {
                 public void onResponse(JSONObject response) {
                     Log.d("upload here", "onResponse: " + response);
                     Log.d("Location ID", "onResponse ID: " + reportId);
-                    Log.d("reponse check","uploaded " + photosUploadedCount );
+                    Log.d("response check","uploaded " + photosUploadedCount );
                     photosUploadedCount++;
                     if (photosUploadedCount == mImages.size() ) {
                         afterUploading();
                     }
                     else {
-                        updateProgress("Uploading " + photosUploadedCount + "....");
+                        updateProgress("Uploading Image " + photosUploadedCount);
                         uploadingPhotos();
                     }
                 }
@@ -538,7 +562,7 @@ public class ImageUploadPage extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"An exception occurred while checking Network Location ",Toast.LENGTH_SHORT);
         }
 
-        Toast.makeText(getApplicationContext(),gps_enabled+" and "+network_enabled,Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(),gps_enabled+" and "+network_enabled,Toast.LENGTH_LONG).show();
         if(!gps_enabled && !network_enabled) {
             //Toast.makeText(getApplicationContext(),"Enable your location",Toast.LENGTH_SHORT).show();
             return false;
