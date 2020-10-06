@@ -83,6 +83,8 @@ public class AdoDdoPending extends Fragment {
     boolean isVisible=false;
     boolean doubleBackToExitPressedOnce = false;
     String mUrl;
+    ArrayList<String> auth_ado , auth_ddo, d_id ;
+
     public AdoDdoPending() {
         // Required empty public constructor
     }
@@ -115,11 +117,15 @@ public class AdoDdoPending extends Fragment {
 
         locationNames = new ArrayList<>();
         locationAddresses = new ArrayList<>();
+        auth_ado = new ArrayList<>();
+        auth_ddo = new ArrayList<>();
+        d_id = new ArrayList<>();
+
         mAdoNames = new ArrayList<>();
         if (isDdo)
-            adapter = new AdoDdoListAdapter(getActivity(), locationNames, locationAddresses, mAdoNames, true);
+            adapter = new AdoDdoListAdapter(getActivity(), locationNames, locationAddresses, mAdoNames, true, auth_ado, auth_ddo, d_id, true,false,false);
         else
-            adapter = new AdoDdoListAdapter(getActivity(), locationNames, locationAddresses, mAdoNames, false);
+            adapter = new AdoDdoListAdapter(getActivity(), locationNames, locationAddresses, mAdoNames, false, auth_ado, auth_ddo, d_id, true,false,false);
         recyclerView.setAdapter(adapter);
         DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(divider);
@@ -131,15 +137,15 @@ public class AdoDdoPending extends Fragment {
             role = "dda";
             String mUrlAssigned = Globals.admin + role + "/" + mDdoId + "/assigned";            //"http://18.224.202.135/api/admin/" + role + "/" + mDdoId + "/assigned";
             mUrlUnAssigned = Globals.admin + role + "/" + mDdoId + "/unassigned" ;              //"http://18.224.202.135/api/admin/" + role + "/" + mDdoId + "/unassigned";
-            Log.d("url", "onCreateView: pending" + mUrlAssigned);
-            Log.d("url", "onCreateView: pending" + mUrlUnAssigned);
+            Log.d("url", "onCreateView: pending " + mUrlAssigned);
+            Log.d("url", "onCreateView: pending " + mUrlUnAssigned);
 
             getData(mUrlAssigned);
 
         } else {
             role = "ado";
             String mUrlPending = Globals.admin + role + "/" + mDdoId + "/pending";              //"http://18.224.202.135/api/admin/" + role + "/" + mDdoId + "/pending";
-            Log.d("url", "onCreateView: pending" + mUrlPending);
+            Log.d("url", "onCreateView: pending " + mUrlPending);
             getData(mUrlPending); //just passed true and Set it accordingly in the function called
 
         }
@@ -164,7 +170,7 @@ public class AdoDdoPending extends Fragment {
                                     nextPendingUrl = nextUrl;
                             JSONArray resultsArray = rootObject.getJSONArray("results");
                             Log.d(TAG, "onResponse: "+resultsArray.length());
-                            if (!isDdo && resultsArray.length() == 0) {
+                            if (/*!isDdo && */resultsArray.length() == 0) {
                                 adapter.notifyDataSetChanged();
                                 Log.d(TAG, "onResponse: see here.... " + view);
                                 nothing_toshow_fragment no_data = new nothing_toshow_fragment();
@@ -175,6 +181,9 @@ public class AdoDdoPending extends Fragment {
                             for (int i = 0; i < resultsArray.length(); i++)
                             {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
+                                String did = singleObject.getString("id");
+                                d_id.add(did);
+                                String a_ado, a_ddo;
                                 if (isDdo) {
                                     try {
                                         JSONObject adoObject = singleObject.getJSONObject("ado");
@@ -185,6 +194,27 @@ public class AdoDdoPending extends Fragment {
                                         mAdoNames.add("Not Assigned");
                                     }
                                 }
+
+                                try {
+                                    JSONObject adoobj = singleObject.getJSONObject("ado");
+                                    JSONObject authado = adoobj.getJSONObject("user");
+                                    a_ado = authado.getString("id");
+                                    auth_ado.add(a_ado);
+                                } catch (JSONException e) {
+                                    a_ado = "null";
+                                    auth_ado.add(a_ado);
+                                }
+                                try {
+                                    JSONObject ddaobj = singleObject.getJSONObject("dda");
+                                    JSONObject authddo = ddaobj.getJSONObject("user");
+                                    a_ddo = authddo.getString("id");
+                                    auth_ddo.add(a_ddo);
+                                } catch (JSONException e) {
+                                    a_ddo = "null";
+                                    auth_ddo.add(a_ddo);
+                                }
+
+
                                 String locName = singleObject.getString("village_name");
                                 String locAdd = singleObject.getString("block") +
                                         ", " + singleObject.getString("district");
@@ -332,8 +362,12 @@ public class AdoDdoPending extends Fragment {
                             }
                             Log.d(TAG, "onResponse: "+resultsArray.length());
 
-                            for (int i = 0; i < resultsArray.length(); i++) {
+                            for (int i = 0; i < resultsArray.length(); i++)
+                            {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
+                                String did = singleObject.getString("id");
+                                d_id.add(did);
+                                String a_ado, a_ddo;
                                 if (isDdo) {
                                     try {
                                         JSONObject adoObject = singleObject.getJSONObject("ado");
@@ -344,6 +378,26 @@ public class AdoDdoPending extends Fragment {
                                         mAdoNames.add("Not Assigned");
                                     }
                                 }
+
+                                try {
+                                    JSONObject adoobj = singleObject.getJSONObject("ado");
+                                    JSONObject authado = adoobj.getJSONObject("user");
+                                    a_ado = authado.getString("id");
+                                    auth_ado.add(a_ado);
+                                } catch (JSONException e) {
+                                    a_ado = "null";
+                                    auth_ado.add(a_ado);
+                                }
+                                try {
+                                    JSONObject ddaobj = singleObject.getJSONObject("dda");
+                                    JSONObject authddo = ddaobj.getJSONObject("user");
+                                    a_ddo = authddo.getString("id");
+                                    auth_ddo.add(a_ddo);
+                                } catch (JSONException e) {
+                                    a_ddo = "null";
+                                    auth_ddo.add(a_ddo);
+                                }
+
                                 String locName = singleObject.getString("village_name");
                                 String locAdd = singleObject.getString("block") +
                                         ", " + singleObject.getString("district");
@@ -486,6 +540,9 @@ public class AdoDdoPending extends Fragment {
                                     nextPendingUrl = nextUrl;
                                 for (int i = 0; i < resultsArray.length(); i++) {
                                     JSONObject singleObject = resultsArray.getJSONObject(i);
+                                    String did = singleObject.getString("id");
+                                    d_id.add(did);
+                                    String a_ado, a_ddo;
                                     if (isDdo) {
                                         try {
                                             JSONObject adoObject = singleObject.getJSONObject("ado");
@@ -495,6 +552,24 @@ public class AdoDdoPending extends Fragment {
                                         } catch (JSONException e) {
                                             mAdoNames.add("Not Assigned");
                                         }
+                                    }
+                                    try {
+                                        JSONObject adoobj = singleObject.getJSONObject("ado");
+                                        JSONObject authado = adoobj.getJSONObject("user");
+                                        a_ado = authado.getString("id");
+                                        auth_ado.add(a_ado);
+                                    } catch (JSONException e) {
+                                        a_ado = "null";
+                                        auth_ado.add(a_ado);
+                                    }
+                                    try {
+                                        JSONObject ddaobj = singleObject.getJSONObject("dda");
+                                        JSONObject authddo = ddaobj.getJSONObject("user");
+                                        a_ddo = authddo.getString("id");
+                                        auth_ddo.add(a_ddo);
+                                    } catch (JSONException e) {
+                                        a_ddo = "null";
+                                        auth_ddo.add(a_ddo);
                                     }
                                     String locName = singleObject.getString("village_name");
                                     String locAdd = singleObject.getString("block") +

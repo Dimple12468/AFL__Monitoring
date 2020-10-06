@@ -218,9 +218,10 @@ public class pending_details extends AppCompatActivity {
                         public void onResponse(JSONObject response) {
                             try {
                                 JSONObject rootObject = new JSONObject(String.valueOf(response));
-                                name = rootObject.getString("name");
-                                number = rootObject.getString("number");
-                                email = rootObject.getString("email");
+                                JSONObject userobect = rootObject.getJSONObject("user");
+                                name = userobect.getString("name");
+                                number = userobect.getString("phone_number");
+                                email = userobect.getString("email");
 
                                 if (!name.isEmpty())
                                     aname.setText(name);
@@ -358,9 +359,10 @@ public class pending_details extends AppCompatActivity {
                         public void onResponse(JSONObject response) {
                             try {
                                 JSONObject rootObject = new JSONObject(String.valueOf(response));
-                                name = rootObject.getString("name");
-                                number = rootObject.getString("number");
-                                email = rootObject.getString("email");
+                                JSONObject userobect = rootObject.getJSONObject("user");
+                                name = userobect.getString("name");
+                                number = userobect.getString("phone_number");
+                                email = userobect.getString("email");
                                 if (!name.isEmpty())
                                     bname.setText(name);
                                 else
@@ -375,7 +377,7 @@ public class pending_details extends AppCompatActivity {
                                     bemail.setText("NONE");
 
                             } catch (JSONException e) {
-                                Toast.makeText(pending_details.this, "an exception occured", Toast.LENGTH_LONG).show();
+                                Toast.makeText(pending_details.this, "an exception occurred", Toast.LENGTH_LONG).show();
                                 e.printStackTrace();
                                 Log.d(TAG, "onResponse: JSON EXCEPTION: getDetails " + e);
                             }

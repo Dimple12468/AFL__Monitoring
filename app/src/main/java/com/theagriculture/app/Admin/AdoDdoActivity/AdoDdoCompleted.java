@@ -139,10 +139,10 @@ public class AdoDdoCompleted extends Fragment {
         mIds = new ArrayList<>();
         if (isDdo)
             adapter = new AdoDdoListAdapter(getActivity(), locationNames, locationAddresses, mAdoNames, mIds,
-                    true, 3);
+                    true, 3,false,false,true);
         else
             adapter = new AdoDdoListAdapter(getActivity(), locationNames, locationAddresses, mAdoNames, mIds,
-                    false, 3);
+                    false, 3,false,false,true);
         recyclerView.setAdapter(adapter);
         //if(isVisible)
            // getData(mUrl);
