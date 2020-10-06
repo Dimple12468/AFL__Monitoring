@@ -9,10 +9,12 @@ import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,6 +42,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
+
+import static android.os.Trace.isEnabled;
 
 public class adounderddointent extends AppCompatActivity {
 
@@ -80,6 +84,31 @@ public class adounderddointent extends AppCompatActivity {
         suggestedVillageNames = new ArrayList<>();
         suggestedVillageIds = new ArrayList<>();
 
+
+
+        /*
+        Toolbar toolbar = findViewById(R.id.app__bar_ado_list);
+//        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getApplicationContext();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+         */
+
+
+        TextView title_top = findViewById(R.id.app_name);
+        title_top.setText("List of Villages");
+        /*
+        if (getApplicationContext().isEnabled()){
+            title_top.setText("List of villages");
+        }else {
+            title_top.setText("AFL Monitoring");
+        }
+
+         */
+
+
+
         //////get id left
         Intent intent = getIntent();
         String districtId = intent.getStringExtra("districtId");
@@ -99,9 +128,10 @@ public class adounderddointent extends AppCompatActivity {
 
             }
         });
-        mUrl = Globals.villageNameFragment + "2/";
+        //mUrl = Globals.villageNameFragment + "2/";
 
-        //mUrl = Globals.villageNameFragment + districtid + "/";
+        mUrl = Globals.villageNameFragment + districtId + "/";
+        Log.d("murl",mUrl);
 
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         token = preferences.getString("key", "");
