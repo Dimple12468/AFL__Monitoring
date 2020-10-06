@@ -45,6 +45,9 @@ public class Globals {
     public static String ddaCompleted = serverURL + "api/locations/dda/completed";
     public static String assignADO = serverURL + "api/ado/";
 
+    public static String villageNameFragment = serverURL + "api/villages-list/district/";
+    public static String sendSelectedId = serverURL + "api/user/";
+
 
 
 }

@@ -114,6 +114,11 @@ public class adounderddoadapter extends RecyclerView.Adapter<adounderddoadapter.
         @Override
         public void onClick(View v) {
             //Toast.makeText(context,"You clicked",Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(context,adounderddointent.class);
+            intent.putExtra("districtId", mDistrictId);
+            intent.putExtra("adoId", mAdoIds.get(this.getAdapterPosition()));
+            intent.putExtra("currentVillages", villagesMap.get(this.getAdapterPosition()));
+            context.startActivity(intent);
 
             /*
             Intent intent = new Intent(context, villagenameActivity.class);
@@ -125,6 +130,7 @@ public class adounderddoadapter extends RecyclerView.Adapter<adounderddoadapter.
             context.startActivity(intent);
 
              */
+            /*
             Bundle bundle = new Bundle();
             bundle.putString("districtId", mDistrictId);
             bundle.putString("adoId", mAdoIds.get(this.getAdapterPosition()));
@@ -134,6 +140,8 @@ public class adounderddoadapter extends RecyclerView.Adapter<adounderddoadapter.
             abc.setArguments(bundle);
             AppCompatActivity activity = (AppCompatActivity) v.getContext();
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_dda,abc).addToBackStack(null).commit();
+
+             */
 
 
 

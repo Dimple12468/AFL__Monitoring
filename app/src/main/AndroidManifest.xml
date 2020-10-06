@@ -53,6 +53,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
+            android:name=".Dda.adounderddointent"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".ImageUploadPage"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>

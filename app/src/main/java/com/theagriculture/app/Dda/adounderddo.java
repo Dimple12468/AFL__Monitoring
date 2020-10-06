@@ -50,7 +50,9 @@ public class adounderddo extends Fragment {
     RecyclerView recyclerView;
     ArrayList<String> ado_names;
     private ArrayList<String> adoIds;
-    private String urlget = Globals.assignADO;                        //"http://api.aflmonitoring.com/api/ado/";
+    private String urlget = Globals.assignADO;
+    //private String urlold =
+    //"http://api.aflmonitoring.com/api/ado/";
     private String nextUrl;
     private adounderddoadapter adapter;
     private final String TAG ="adouderddo";
@@ -186,13 +188,13 @@ public class adounderddo extends Fragment {
                     JSONObject jsonObject = new JSONObject(String.valueOf(response));
                     nextUrl = jsonObject.getString("next");
                     JSONArray resultsArray = jsonObject.getJSONArray("results");
-
+                    //Toast.makeText(getActivity(),resultsArray.length(),Toast.LENGTH_LONG).show();
+                    Log.d("last tab",resultsArray.toString());
                     for (int i = 0; i < resultsArray.length(); i++)
                     {
                         JSONObject c = resultsArray.getJSONObject(i);
                         JSONObject userobj = c.getJSONObject("user");
                         ado_names.add(userobj.getString("name"));
-//                        JSONObject authObject = c.getJSONObject("auth_user");
                         String adoId = userobj.getString("id");
                         adoIds.add(adoId);
                         JSONArray villageArray = c.getJSONArray("village_ado");
@@ -212,10 +214,13 @@ public class adounderddo extends Fragment {
                         }
 
                         villagesMap.add(villageIds);
+                        //my comment
+
                         if (i == 0)
                         {
                             JSONObject ddaObject = c.getJSONObject("dda");
-                            JSONObject districtObject = ddaObject.getJSONObject("district");
+                            //JSONObject districtObject = ddaObject.getJSONObject("district");
+                            JSONObject districtObject =c.getJSONObject("district");
                             String districtId = districtObject.getString("id");
                             adapter.sendDistrictId(districtId);
                             Log.d(TAG, "onResponse: DISTRICT ID " + districtId);
