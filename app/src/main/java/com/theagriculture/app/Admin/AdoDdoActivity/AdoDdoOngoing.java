@@ -211,9 +211,9 @@ public class AdoDdoOngoing extends Fragment {
                                     a_ddo = "null";
                                     auth_ddo.add(a_ddo);
                                 }
-                                String locName = singleObject.getString("village_name");
-                                String locAdd = singleObject.getString("block") +
-                                        ", " + singleObject.getString("district");
+                                String locName = singleObject.getString("village_name") + " ," + singleObject.getString("block");
+                                String locAdd = //singleObject.getString("block") + ", " +
+                                        singleObject.getString("district") + " ," + singleObject.getString("state");
                                 locationNames.add(locName);
                                 locationAddresses.add(locAdd);
                             }
