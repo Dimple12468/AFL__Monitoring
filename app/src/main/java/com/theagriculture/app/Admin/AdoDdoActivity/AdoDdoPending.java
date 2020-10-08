@@ -215,9 +215,12 @@ public class AdoDdoPending extends Fragment {
                                 }
 
 
-                                String locName = singleObject.getString("village_name");
-                                String locAdd = singleObject.getString("block") +
-                                        ", " + singleObject.getString("district");
+//                                String locName = singleObject.getString("village_name");
+//                                String locAdd = singleObject.getString("block") +
+//                                        ", " + singleObject.getString("district");
+                                String locName = singleObject.getString("village_name") + ", " + singleObject.getString("block");
+                                String locAdd = //singleObject.getString("block") + ", " +
+                                        singleObject.getString("district") + ", " + singleObject.getString("state");
                                 locationNames.add(locName);
                                 locationAddresses.add(locAdd);
                             }
@@ -398,9 +401,12 @@ public class AdoDdoPending extends Fragment {
                                     auth_ddo.add(a_ddo);
                                 }
 
-                                String locName = singleObject.getString("village_name");
-                                String locAdd = singleObject.getString("block") +
-                                        ", " + singleObject.getString("district");
+//                                String locName = singleObject.getString("village_name");
+//                                String locAdd = singleObject.getString("block") +
+//                                        ", " + singleObject.getString("district");
+                                String locName = singleObject.getString("village_name") + ", " + singleObject.getString("block");
+                                String locAdd = //singleObject.getString("block") + ", " +
+                                        singleObject.getString("district") + ", " + singleObject.getString("state");
                                 locationNames.add(locName);
                                 locationAddresses.add(locAdd);
                             }
@@ -571,9 +577,12 @@ public class AdoDdoPending extends Fragment {
                                         a_ddo = "null";
                                         auth_ddo.add(a_ddo);
                                     }
-                                    String locName = singleObject.getString("village_name");
-                                    String locAdd = singleObject.getString("block") +
-                                            ", " + singleObject.getString("state");
+//                                    String locName = singleObject.getString("village_name");
+//                                    String locAdd = singleObject.getString("block") +
+//                                            ", " + singleObject.getString("state");
+                                    String locName = singleObject.getString("village_name") + ", "  + singleObject.getString("block");
+                                    String locAdd = //singleObject.getString("block") + ", " +
+                                            singleObject.getString("district") + ", " + singleObject.getString("state");
                                     locationNames.add(locName);
                                     locationAddresses.add(locAdd);
                                 }

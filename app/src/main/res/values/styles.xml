@@ -9,8 +9,7 @@
         <item name="colorAccent">@color/white</item>
     </style>
 
-    <style name="AppTheme.NoActionBar" >
-        <!--parent="Theme.MaterialComponents.Light.NoActionBar.Bridge" -->
+    <style name="AppTheme.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge" >
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowTranslucentStatus">true</item>
@@ -99,9 +98,31 @@
     <style name="calendar_theme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <!--Theme.MaterialComponents.Light.NoActionBar
         ThemeOverlay.MaterialComponents.MaterialCalendar-->
+        <!-- Header Layout -->
+        <item name="materialCalendarHeaderLayout">@style/customHeaderLayout</item>
+        <!-- Header title -->
+        <item name="materialCalendarHeaderTitle">@style/customHeaderTitle</item>
+        <!-- Header selection title -->
+        <item name="materialCalendarHeaderSelection">@style/CustomHeaderSelection</item>
         <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
         <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen</item>
         <item name="materialCalendarTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar</item>
+    </style>
+
+    <style name="customHeaderLayout" parent="@style/Widget.MaterialComponents.MaterialCalendar.HeaderLayout">
+        <item name="android:background">@color/theme_color</item>
+    </style>
+
+    <style name="customHeaderTitle" parent="@style/Widget.MaterialComponents.MaterialCalendar.HeaderTitle">
+        <item name="android:textAppearance">@style/customTextAppearance</item>
+    </style>
+
+    <style name="customTextAppearance" parent="@style/TextAppearance.MaterialComponents.Overline">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="CustomHeaderSelection" parent="Widget.MaterialComponents.MaterialCalendar.HeaderSelection">
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="MaterialCalendarTheme_RangeFill" parent="Theme.MaterialComponents.Light.NoActionBar">

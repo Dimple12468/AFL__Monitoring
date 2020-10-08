@@ -137,7 +137,7 @@ public class AdoDdoOngoing extends Fragment {
         auth_ado = new ArrayList<>();
         auth_ddo = new ArrayList<>();
         d_id = new ArrayList<>();
-        adapter = new AdoDdoListAdapter(getActivity(), locationNames, locationAddresses, mAdoNames, mIds, true, 2,false,true,false);
+        adapter = new AdoDdoListAdapter(getActivity(), locationNames, locationAddresses, mAdoNames, mIds, auth_ado, auth_ddo, true, 2,false,true,false);
         recyclerView.setAdapter(adapter);
         //getData(mUrl);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -211,9 +211,9 @@ public class AdoDdoOngoing extends Fragment {
                                     a_ddo = "null";
                                     auth_ddo.add(a_ddo);
                                 }
-                                String locName = singleObject.getString("village_name") + " ," + singleObject.getString("block");
+                                String locName = singleObject.getString("village_name") + ", " + singleObject.getString("block");
                                 String locAdd = //singleObject.getString("block") + ", " +
-                                        singleObject.getString("district") + " ," + singleObject.getString("state");
+                                        singleObject.getString("district") + ", " + singleObject.getString("state");
                                 locationNames.add(locName);
                                 locationAddresses.add(locAdd);
                             }
@@ -373,9 +373,13 @@ public class AdoDdoOngoing extends Fragment {
                                         a_ddo = "null";
                                         auth_ddo.add(a_ddo);
                                     }
-                                    String locName = singleObject.getString("village_name");
-                                    String locAdd = singleObject.getString("block") +
-                                            ", " + singleObject.getString("district");
+                                    String locName = singleObject.getString("village_name") + ", " + singleObject.getString("block");
+                                    String locAdd = //singleObject.getString("block") + ", " +
+                                            singleObject.getString("district") + ", " + singleObject.getString("state");
+
+//                                    String locName = singleObject.getString("village_name");
+//                                    String locAdd = singleObject.getString("block") +
+//                                            ", " + singleObject.getString("district");
                                     locationNames.add(locName);
                                     locationAddresses.add(locAdd);
                                     adapter.notifyDataSetChanged();

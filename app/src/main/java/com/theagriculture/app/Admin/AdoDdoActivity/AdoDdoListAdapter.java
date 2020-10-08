@@ -84,7 +84,7 @@ public class AdoDdoListAdapter extends RecyclerView.Adapter<AdoDdoListAdapter.Ad
         this.mid = mid;
     }
 
-    public AdoDdoListAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2, ArrayList<String> mAdoName, ArrayList<String> mIds, boolean isDDo, int isDdoTabNo, boolean isPending, boolean isOngoing, boolean isCompleted) {
+    public AdoDdoListAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2, ArrayList<String> mAdoName, ArrayList<String> mIds,  ArrayList<String> auth_ado,  ArrayList<String> auth_ddo, boolean isDDo, int isDdoTabNo, boolean isPending, boolean isOngoing, boolean isCompleted) {
         this.mtextview1 = mtextview1;
         this.mtextview2 = mtextview2;
         this.mAdoName = mAdoName;
@@ -96,6 +96,8 @@ public class AdoDdoListAdapter extends RecyclerView.Adapter<AdoDdoListAdapter.Ad
         this.isPending = isPending;
         this.isOngoing = isOngoing;
         this.isCompleted = isCompleted;
+        this.mpkado = auth_ado;
+        this.mpkdda = auth_ddo;
     }
 
     /*public AdoDdoListAdapter(FragmentActivity activity, nothing_toshow_fragment no_data) {
@@ -103,10 +105,10 @@ public class AdoDdoListAdapter extends RecyclerView.Adapter<AdoDdoListAdapter.Ad
         change_fragemnt(no_data);
     }*/
 
-    private void change_fragemnt(nothing_toshow_fragment no_data) {
+/*    private void change_fragemnt(nothing_toshow_fragment no_data) {
         AppCompatActivity activity = (AppCompatActivity) no_data.getContext();
         activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, no_data).addToBackStack(null).commit();
-    }
+    }*/
 
     @NonNull
     @Override
@@ -271,7 +273,7 @@ public class AdoDdoListAdapter extends RecyclerView.Adapter<AdoDdoListAdapter.Ad
 
 
             //FOR ADMIN -> DDA -> ONGOING AND COMPLETED
-            if (isDDo) {
+/*            if (isDDo) {
                 switch (isDdoTabNo) {
                     case 1:
                         break;
@@ -286,7 +288,7 @@ public class AdoDdoListAdapter extends RecyclerView.Adapter<AdoDdoListAdapter.Ad
                         activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,abc).addToBackStack(null).commit();
                         break;
                 }
-            }
+            }*/
             //FOR ADMIN -> ADO -> COMPLETED
             /*if (!isDDo && isDdoTabNo == 3) {
                 Bundle bundle = new Bundle();
@@ -298,7 +300,7 @@ public class AdoDdoListAdapter extends RecyclerView.Adapter<AdoDdoListAdapter.Ad
                 activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc).addToBackStack(null).commit();
             }*/
             //FOR ADO -> COMPLETED
-            if (isAdoComplete) {
+           /* if (isAdoComplete) {
                 Bundle bundle = new Bundle();
                 bundle.putString("id", idList.get(this.getAdapterPosition()));
                 bundle.putString("review_address_top",mtextview1.get(this.getAdapterPosition())+", "+mtextview2.get(this.getAdapterPosition()));
@@ -306,7 +308,7 @@ public class AdoDdoListAdapter extends RecyclerView.Adapter<AdoDdoListAdapter.Ad
                 abc.setArguments(bundle);
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 activity.getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,abc).addToBackStack(null).commit();
-            }
+            }*/
 
 
         }
