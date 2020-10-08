@@ -38,6 +38,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.theagriculture.app.Admin.ongoingDetailsFragment;
+import com.theagriculture.app.Admin.ongoing_details;
+import com.theagriculture.app.Admin.pending_details;
 import com.theagriculture.app.R;
 
 import java.io.IOException;
@@ -111,38 +113,41 @@ public class ItemAdapter_ado extends RecyclerView.Adapter<ItemAdapter_ado.ViewHo
         @Override
         public void onClick(View v) {
             if (isPending) {
-                if(!checkIfLocationEnabled()){
-                    Toast.makeText(context, "Please enable location", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    final int position = this.getAdapterPosition();
-                    Location incidentLocation = new Location(" ");
-                    incidentLocation.setLatitude(Double.parseDouble(dlatitude.get(position)));
-                    incidentLocation.setLongitude(Double.parseDouble(dlongitude.get(position)));
-                    final boolean inCircle = checkRange(incidentLocation);
-                    final BottomSheetDialog mBottomDialogNotificationAction = new BottomSheetDialog(context);
-                    View sheetView = ((FragmentActivity) context).getLayoutInflater().inflate(R.layout.pending_options_ado, null);
-                    mBottomDialogNotificationAction.setContentView(sheetView);
-                    //mBottomDialogNotificationAction.setCancelable(false);
-                    mBottomDialogNotificationAction.show();
+                //if(!checkIfLocationEnabled()){
+                // Toast.makeText(context, "Please enable location", Toast.LENGTH_SHORT).show();
+                // }
+                //else{
+                Location test = ado_pending_fragment.userLocation;
+                Log.d("test",test.toString());
+                final int position = this.getAdapterPosition();
+                Location incidentLocation = new Location(" ");
+                incidentLocation.setLatitude(Double.parseDouble(dlatitude.get(position)));
+                incidentLocation.setLongitude(Double.parseDouble(dlongitude.get(position)));
+                final boolean inCircle = checkRange(test,incidentLocation);
+                Log.d("test", String.valueOf(inCircle));
+                final BottomSheetDialog mBottomDialogNotificationAction = new BottomSheetDialog(context);
+                View sheetView = ((FragmentActivity) context).getLayoutInflater().inflate(R.layout.pending_options_ado, null);
+                mBottomDialogNotificationAction.setContentView(sheetView);
+                //mBottomDialogNotificationAction.setCancelable(false);
+                mBottomDialogNotificationAction.show();
 
-                    // Remove default white color background
-                    FrameLayout bottomSheet = (FrameLayout) mBottomDialogNotificationAction.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                    bottomSheet.setBackground(null);
+                // Remove default white color background
+                FrameLayout bottomSheet = (FrameLayout) mBottomDialogNotificationAction.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+                bottomSheet.setBackground(null);
 
-                    LinearLayout for_check = (LinearLayout) sheetView.findViewById(R.id.for_check);
-                    LinearLayout for_navigation = (LinearLayout) sheetView.findViewById(R.id.for_navigation);
-                    LinearLayout for_cancel = (LinearLayout) sheetView.findViewById(R.id.for_cancel_ado);
-                    TextView check_in = sheetView.findViewById(R.id.check);
-                    if(inCircle)
-                        check_in.setTextColor(Color.rgb(0,200,0));
+                LinearLayout for_check = (LinearLayout) sheetView.findViewById(R.id.for_check);
+                LinearLayout for_navigation = (LinearLayout) sheetView.findViewById(R.id.for_navigation);
+                LinearLayout for_cancel = (LinearLayout) sheetView.findViewById(R.id.for_cancel_ado);
+                TextView check_in = sheetView.findViewById(R.id.check);
+                if(inCircle)
+                    check_in.setTextColor(Color.rgb(0,200,0));
 
-                    for_check.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mBottomDialogNotificationAction.dismiss();
-                            Toast.makeText(context,"in circle is "+inCircle,Toast.LENGTH_SHORT).show();
-                            //Toast.makeText(context,get().toString(),Toast.LENGTH_SHORT).show();
+                for_check.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mBottomDialogNotificationAction.dismiss();
+                        Toast.makeText(context,"in circle is "+inCircle,Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context,get().toString(),Toast.LENGTH_SHORT).show();
 
 
 
@@ -171,27 +176,27 @@ public class ItemAdapter_ado extends RecyclerView.Adapter<ItemAdapter_ado.ViewHo
                           */
 
 
-                        }
-                    });
+                    }
+                });
 
-                    for_navigation.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //Toast.makeText(mcontext,"clicked navigation with "+ longitude.get(position)+" and "+latitude.get(position),Toast.LENGTH_LONG).show();
-                            //Snackbar.make(mView,"email here",Snackbar.LENGTH_LONG).show();
-                            onClickNavigation(dlatitude.get(position).toString(), dlongitude.get(position).toString());
-                        }
-                    });
-                    NotificationManagerCompat manager = NotificationManagerCompat.from(context);
+                for_navigation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Toast.makeText(mcontext,"clicked navigation with "+ longitude.get(position)+" and "+latitude.get(position),Toast.LENGTH_LONG).show();
+                        //Snackbar.make(mView,"email here",Snackbar.LENGTH_LONG).show();
+                        onClickNavigation(dlatitude.get(position).toString(), dlongitude.get(position).toString());
+                    }
+                });
+                NotificationManagerCompat manager = NotificationManagerCompat.from(context);
 
-                    for_cancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //Snackbar.make(mView,"Cancel here",Snackbar.LENGTH_LONG).show();
-                            mBottomDialogNotificationAction.dismiss();
-                        }
-                    });
-                }
+                for_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Snackbar.make(mView,"Cancel here",Snackbar.LENGTH_LONG).show();
+                        mBottomDialogNotificationAction.dismiss();
+                    }
+                });
+                // }
 
             }
 
@@ -200,6 +205,7 @@ public class ItemAdapter_ado extends RecyclerView.Adapter<ItemAdapter_ado.ViewHo
                 Bundle bundle = new Bundle();
                 bundle.putString("id", did.get(position));
                 bundle.putString("review_address_top", dlocation_name.get(position) + ", " + dlocation_address.get(position));
+                /*
                 bundle.putBoolean("isDdo", true);
                 bundle.putBoolean("isAdmin", false);
                 bundle.putBoolean("isComplete", true);
@@ -208,6 +214,13 @@ public class ItemAdapter_ado extends RecyclerView.Adapter<ItemAdapter_ado.ViewHo
                 abc.setArguments(bundle);
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_ado, abc).addToBackStack(null).commit();
+
+                 */
+                Intent intent = new Intent(context,ado_complete_details.class);
+                intent.putExtra("id", did.get(position));
+                intent.putExtra("review_address_top",dlocation_name.get(position) + ", " + dlocation_address.get(position));
+                context.startActivity(intent);
+
             }
         }
     }
@@ -272,13 +285,13 @@ public class ItemAdapter_ado extends RecyclerView.Adapter<ItemAdapter_ado.ViewHo
 
     }
 
-    public boolean checkRange(Location center){
-        Location test = get();
+    public boolean checkRange(Location test,Location center){
+        //Location test = get();
         float distanceInMeters = center.distanceTo(test);
+        Log.d("test", String.valueOf(distanceInMeters));
         // Toast.makeText(context,"radius is  "+String.valueOf(distanceInMeters),Toast.LENGTH_SHORT).show();
+        //boolean isWithin10km = distanceInMeters < 4168661;
         boolean isWithin10km = distanceInMeters < 20000;
-        // boolean isWithin10km = true;
-        //Toast.makeText(context,"is within in checkRange is "+isWithin10km,Toast.LENGTH_SHORT).show();
         return isWithin10km;
     }
 }

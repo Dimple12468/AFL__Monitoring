@@ -3,6 +3,8 @@ package com.theagriculture.app.Ado;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -58,10 +60,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.nlopez.smartlocation.OnLocationUpdatedListener;
+import io.nlopez.smartlocation.SmartLocation;
+
 import static com.android.volley.VolleyLog.TAG;
 
 public class ado_pending_fragment extends Fragment {
 
+    public static Location userLocation;
     private ArrayList<String> mtextview1;
     private ArrayList<String> mtextview2;
     private RecyclerView recyclerView;
@@ -84,9 +90,13 @@ public class ado_pending_fragment extends Fragment {
     MenuItem searchItem;
     MenuItem searchItem_filter;
 
+    //public Location userLocation;
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_top_bar,menu);
+
+
 
         searchItem = menu.findItem(R.id.search_in_title);
         searchItem_filter = menu.findItem(R.id.filter);
@@ -153,6 +163,14 @@ public class ado_pending_fragment extends Fragment {
         latitude = new ArrayList<>();
         idList = new ArrayList<>();
         isRefresh = false;
+
+        if(!checkIfLocationEnabled()) {
+            Toast.makeText(getActivity(), "You need to enable locations to further use the app", Toast.LENGTH_LONG).show();
+            getActivity().finish();
+        }
+        else
+            getUserLocation();
+
 
 
         Toolbar toolbar = view.findViewById(R.id.app__bar_ado_pending);
@@ -493,6 +511,47 @@ public class ado_pending_fragment extends Fragment {
 
         // ///////
 
+    }
+
+    public void getUserLocation(){
+        SmartLocation.with(getActivity()).location().start(new OnLocationUpdatedListener() {
+            @Override
+            public void onLocationUpdated(Location location) {
+                userLocation = location;
+            }
+        });
+    }
+
+    public boolean checkIfLocationEnabled(){
+        //Toast.makeText(getApplicationContext(),"enterd",Toast.LENGTH_LONG).show();
+        LocationManager lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        }
+        catch(Exception ex) {
+            Toast.makeText(getActivity(),"An exception occurred while checking GPS Location ",Toast.LENGTH_SHORT);
+        }
+
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        }
+        catch(Exception ex) {
+            Toast.makeText(getActivity(),"An exception occurred while checking Network Location ",Toast.LENGTH_SHORT);
+        }
+
+//        Toast.makeText(getApplicationContext(),gps_enabled+" and "+network_enabled,Toast.LENGTH_LONG).show();
+        if(!gps_enabled && !network_enabled) {
+            //Toast.makeText(getApplicationContext(),"Enable your location",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else{
+            //Toast.makeText(getApplicationContext(),"Location is enabled",Toast.LENGTH_SHORT).show();
+            return true;
+
+        }
     }
 
     //Not working
