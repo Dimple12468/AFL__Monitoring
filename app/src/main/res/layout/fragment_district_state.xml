@@ -38,7 +38,7 @@
         app:layout_constraintTop_toTopOf="@id/lineChart" />
 <!--            android:indeterminateDrawable="@drawable/progress"-->
     <!--binds date button and spinner-->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,12 +65,12 @@
             android:paddingRight="5dp"
             android:elevation="0dp"/>
 
-        <!--binds spinner and dropdown icon-->
+        <!--binds spinner and dropdown icon.....android:layout_alignParentEnd="true"-->
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="34dp"
             android:background="@drawable/districtbg"
-            android:layout_alignParentEnd="true"
+            android:layout_marginStart="22dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="2dp"
             android:layout_marginEnd="20dp">
@@ -98,7 +98,7 @@
             app:layout_constraintTop_toBottomOf="@id/guideline10"-->
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <!--horizontally binds the (headings)textviews
             district,pending,completed,ongoing-->
