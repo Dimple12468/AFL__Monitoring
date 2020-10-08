@@ -1,10 +1,13 @@
 package com.theagriculture.app.Ado;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -52,6 +55,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
@@ -60,6 +64,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.theagriculture.app.Dda.DdaselectAdo;
 import com.theagriculture.app.Globals;
+import com.theagriculture.app.ImageUploadPage;
+import com.theagriculture.app.Initial_page;
 import com.theagriculture.app.R;
 
 import org.json.JSONArray;
@@ -78,6 +84,8 @@ import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
 import id.zelory.compressor.Compressor;
+import io.nlopez.smartlocation.OnLocationUpdatedListener;
+import io.nlopez.smartlocation.SmartLocation;
 
 import static android.app.Activity.RESULT_OK;
 import static com.theagriculture.app.AppNotificationChannels.CHANNEL_1_ID;
@@ -87,10 +95,10 @@ import static io.fabric.sdk.android.Fabric.TAG;
  * A simple {@link Fragment} subclass.
  */
 public class PendingReport extends Fragment {
-    TextView textDummyHintUsername, textDummyHintFather, textDummyHintCode, textDummyHintName;
+    TextView textDummyHintUsername, textDummyHintFather, textDummyHintCode, textDummyHintName,textDummyHintRemarks,textDummyHintIncidentReason;
     EditText editUsername, editFather, editCode, editName, editRemarks, editIncidentReason;
-    View view1, view2, view3a, view3b;
-    TextInputLayout ti1, ti2, ti3a, ti3b;
+    View view1, view2, view3a, view3b,view4,view5;
+    TextInputLayout ti1, ti2, ti3a, ti3b,ti4,ti5;
     Spinner district_spinner, fireStatus_spinner, landUse_spinner;
     ConstraintLayout reportPage,imagesPage;
 
@@ -110,6 +118,9 @@ public class PendingReport extends Fragment {
     //String reportSubmitUrl = "http://api.theagriculture.tk/api/report-ado/add/";
     AlertDialog reportSubmitLoading;
 
+    int photosUploadedCount = 0;
+    int i=1;
+
     String reportId;//id required to send images
 
     //for photos
@@ -124,9 +135,12 @@ public class PendingReport extends Fragment {
     public ReportImageRecyAdapter adapter;
     private ArrayList<String> mImagesPath;
     int PhotosUploadedCount = 0;
+    Location userLocation;
 
     //for photo
     FloatingActionButton openGallery;
+
+    private ProgressDialog pDialog;
     /*
 
     boolean isFirstPic = true;
@@ -153,6 +167,23 @@ public class PendingReport extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_pending_report, container, false);
 
+        Bundle bundle = this.getArguments();
+        id = bundle.get("id").toString();
+        lat = bundle.get("lat").toString();
+        lon = bundle.get("long").toString();
+        Toast.makeText(getActivity(),lat+" and "+lon,Toast.LENGTH_LONG).show();
+
+
+        if(checkIfLocationEnabled())
+            getUserLocation();
+        else{
+            Toast.makeText(getActivity(),"Your location is disabled.Please enable it to open report",Toast.LENGTH_LONG).show();
+            getActivity().finish();
+        }
+
+
+
+
         Toolbar toolbar = view.findViewById(R.id.app__bar_report);
 //        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
@@ -168,11 +199,6 @@ public class PendingReport extends Fragment {
         // final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         // actionBar.setDisplayHomeAsUpEnabled(true);
 
-        Bundle bundle = this.getArguments();
-        id = bundle.get("id").toString();
-        lat = bundle.get("lat").toString();
-        lon = bundle.get("long").toString();
-        //Toast.makeText(getActivity(),lat+" and "+lon,Toast.LENGTH_LONG).show();
 
         reportPage = view.findViewById(R.id.report_page);
         imagesPage = view.findViewById(R.id.images_page);
@@ -201,8 +227,73 @@ public class PendingReport extends Fragment {
         fireStatus_spinner = view.findViewById(R.id.spinner1);
         landUse_spinner = view.findViewById(R.id.spinner2);
 
-        editRemarks = view.findViewById(R.id.edit_remarks);
-        editIncidentReason = view.findViewById(R.id.edit_reason);
+        //editRemarks = view.findViewById(R.id.edit_remarks);
+        //editIncidentReason = view.findViewById(R.id.edit_reason);
+        ///////
+
+        textDummyHintRemarks = (TextView) view.findViewById(R.id.text_dummy_hint_remarks);
+        editRemarks = (EditText) view.findViewById(R.id.edit_remarks);
+        ti4 = (TextInputLayout) view.findViewById(R.id.ti4);
+        view4 = view.findViewById(R.id.view4);
+
+        textDummyHintIncidentReason = (TextView) view.findViewById(R.id.text_dummy_hint_reason);
+        editIncidentReason = (EditText) view.findViewById(R.id.edit_reason);
+        ti5= (TextInputLayout) view.findViewById(R.id.ti5);
+        view5 = view.findViewById(R.id.view5);
+
+
+
+
+        editRemarks.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Show white background behind floating label
+                            textDummyHintRemarks.setVisibility(View.VISIBLE);
+                        }
+                    }, 100);
+                    view4.setBackgroundResource(R.drawable.blackbg);
+                } else {
+                    // Required to show/hide white background behind floating label during focus change
+                    if (editRemarks.getText().length() > 0)
+                        textDummyHintRemarks.setVisibility(View.VISIBLE);
+                    else
+                        textDummyHintRemarks.setVisibility(View.INVISIBLE);
+                    view4.setBackgroundResource(R.drawable.rectanglebg);
+                }
+            }
+        });
+
+        // Incident reason
+        editIncidentReason.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if (hasFocus) {
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            // Show white background behind floating label
+                            textDummyHintIncidentReason.setVisibility(View.VISIBLE);
+                        }
+                    }, 100);
+                    view5.setBackgroundResource(R.drawable.blackbg);
+                } else {
+                    // Required to show/hide white background behind floating label during focus change
+                    if (editIncidentReason.getText().length() > 0)
+                        textDummyHintIncidentReason.setVisibility(View.VISIBLE);
+                    else
+                        textDummyHintIncidentReason.setVisibility(View.INVISIBLE);
+                    view5.setBackgroundResource(R.drawable.rectanglebg);
+                }
+            }
+        });
+
+        ////
 
         openGallery = view.findViewById(R.id.camera);
         openGallery.setOnClickListener(new View.OnClickListener() {
@@ -282,6 +373,8 @@ public class PendingReport extends Fragment {
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
         token = preferences.getString("key", "");
         //Toast.makeText(getActivity(),"token is "+token,Toast.LENGTH_LONG).show();
+
+        Log.d("token",token);
 
 
         // Username
@@ -580,6 +673,8 @@ public class PendingReport extends Fragment {
 
                         else if(mImagesPath.size()==0)
                             Toast.makeText(getActivity(),"Atleast upload one image",Toast.LENGTH_LONG).show();
+                        else if(!checkRange())
+                               Toast.makeText(getActivity(),"Navigate to location to submit form",Toast.LENGTH_LONG).show();
                         else
                             submitReport();
                     }
@@ -628,8 +723,8 @@ public class PendingReport extends Fragment {
             postParams.put("father_name", sFatherName);
             postParams.put("longitude", lon);
             postParams.put("latitude", lat);
-            postParams.put("report_longitude", "13");//need to be changed to current location
-            postParams.put("report_latitude", "13");
+            postParams.put("report_longitude", userLocation.getLongitude());//need to be changed to current location
+            postParams.put("report_latitude", userLocation.getLatitude());
             postParams.put("kila_num", "31");
             postParams.put("murrabba_num", "31");
             postParams.put("incident_reason", sIncidentReason);
@@ -644,6 +739,7 @@ public class PendingReport extends Fragment {
             postParams.put("village", null);//village pk has to be passed
             postParams.put("location", Integer.parseInt(id));
             //Toast.makeText(getActivity(), postParams.toString(), Toast.LENGTH_LONG).show();
+            Log.d("response","sending "+postParams.toString());
 
         } catch (JSONException e) {
             Toast.makeText(getActivity(), "An exception occured while doing post parameters", Toast.LENGTH_LONG).show();
@@ -660,8 +756,14 @@ public class PendingReport extends Fragment {
                         try {
                             singleObject = new JSONObject(String.valueOf(response));
                             Toast.makeText(getActivity(),singleObject.toString(),Toast.LENGTH_LONG).show();
+                            Log.d("response",response.toString());
                             reportId = singleObject.getString("id");
                             Toast.makeText(getActivity(),"Report id is "+reportId,Toast.LENGTH_LONG).show();
+                            reportSubmitLoading.dismiss();
+                            ///
+                            pDialog=new ProgressDialog(getActivity());
+                            showProgress("Uploading Images");
+                            ///
                             uploadingPhotos();
                         } catch (JSONException e) {
                             Toast.makeText(getActivity(),"An exception occured while sending report "+e.getMessage(),Toast.LENGTH_LONG).show();
@@ -743,6 +845,27 @@ public class PendingReport extends Fragment {
         return alert;
     }
 
+    //////for image upload progress bar
+    public void showProgress(String str) {
+        pDialog = new ProgressDialog(getActivity(), R.style.AlertDialog);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pDialog.setMessage(str);
+        pDialog.show();
+    }
+
+    public void updateProgress( String title/*, String msg*/){
+        pDialog.setMessage(title);
+    }
+
+    public void afterUploading(){
+        pDialog.dismiss();
+        Toast.makeText(getActivity(), "Images Uploaded successfully.", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(getActivity(), AdoActivity.class);
+        startActivity(i);
+    }
+
+    ///
+
     private void openCameraIntent() {
         Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (pictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -797,6 +920,73 @@ public class PendingReport extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    public void uploadingPhotos(){
+        Log.d("uploading","enterd with url "+ imageUploadUrl);
+
+//        for(i=0;i<mImages.size();i++) {
+        ANRequest request = AndroidNetworking.upload(imageUploadUrl)
+                .addHeaders("Authorization", "Token " + token)
+                .addMultipartParameter("report",reportId)
+                //.addMultipartParameter("NormalUserReport", reportId)
+                .addMultipartFile("image", mImages.get(photosUploadedCount))
+                .setTag("Upload Images")
+                .setPriority(Priority.HIGH)
+                .build();
+
+        request.getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("uploading","response is "+response.toString());
+                photosUploadedCount++;
+                i++;
+                if (photosUploadedCount == mImages.size()) {
+                    afterUploading();
+                    //Toast.makeText(getActivity(),"Images Uploaded",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    updateProgress("Uploading Image " + (i));
+                    //Toast.makeText(getActivity(),"Uploading image "+ String.valueOf(i),Toast.LENGTH_LONG).show();
+                    uploadingPhotos();
+                }
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                Log.d("uploading","error message is "+anError.getMessage() + " error details are "+anError.getErrorDetail()+" error message is "+anError.getErrorBody());
+                Toast.makeText(getActivity(), "Photos Upload failed, please try again ", Toast.LENGTH_SHORT).show();
+                reportSubmitLoading.dismiss();
+            }
+
+        });
+
+        Log.d("Loop Track", "Uploading " );
+
+    }
+
+    public void getUserLocation(){
+        SmartLocation.with(getActivity()).location().start(new OnLocationUpdatedListener() {
+            @Override
+            public void onLocationUpdated(Location location) {
+                userLocation = location;
+            }
+        });
+    }
+
+    public boolean checkRange(){
+        //Location test = userLocation;
+        Location center = new Location(" ");
+        center.setLatitude(Double.valueOf(lat));
+        center.setLongitude(Double.valueOf(lon));
+        float distanceInMeters = center.distanceTo(userLocation);
+        Toast.makeText(getActivity(),String.valueOf(distanceInMeters),Toast.LENGTH_LONG).show();
+        boolean isWithin20km = distanceInMeters < 20000;
+        Toast.makeText(getActivity(),"is within in checkRange is "+isWithin20km,Toast.LENGTH_SHORT).show();
+        return isWithin20km;
+    }
+
+
+    /*
+
 
 
     public void uploadingPhotos(){
@@ -839,6 +1029,41 @@ public class PendingReport extends Fragment {
                                  }
                 );
     }
+
+     */
+
+    public boolean checkIfLocationEnabled(){
+        //Toast.makeText(getApplicationContext(),"enterd",Toast.LENGTH_LONG).show();
+        LocationManager lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        }
+        catch(Exception ex) {
+            Toast.makeText(getActivity(),"An exception occurred while checking GPS Location ",Toast.LENGTH_SHORT);
+        }
+
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        }
+        catch(Exception ex) {
+            Toast.makeText(getActivity(),"An exception occurred while checking Network Location ",Toast.LENGTH_SHORT);
+        }
+
+//        Toast.makeText(getApplicationContext(),gps_enabled+" and "+network_enabled,Toast.LENGTH_LONG).show();
+        if(!gps_enabled && !network_enabled) {
+            //Toast.makeText(getApplicationContext(),"Enable your location",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else{
+            //Toast.makeText(getApplicationContext(),"Location is enabled",Toast.LENGTH_SHORT).show();
+            return true;
+
+        }
+    }
+
 }
 
 

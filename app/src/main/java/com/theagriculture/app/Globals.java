@@ -36,7 +36,7 @@ public class Globals {
     public static String adoPending = serverURL + "api/locations/ado/pending";
     public static String adoCompleted = serverURL + "api/locations/ado/completed";
     public static String adoPendingReport = serverURL + "api/report-ado/add/";
-    public static String adoPendingReportImageUpload = serverURL + "/api/upload/images/";
+    public static String adoPendingReportImageUpload = serverURL + "api/upload/images/";
 
     //DDA user
     public static String assignedLocationsDDA = serverURL + "api/locations/dda/assigned";

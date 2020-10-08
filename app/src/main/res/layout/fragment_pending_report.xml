@@ -96,6 +96,7 @@
                             android:id="@+id/edit_username"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:theme="@style/MyEditTextTheme"
                             android:backgroundTint="@android:color/transparent"
                             android:inputType="text|textCapWords"
                             android:maxLines="1" />
@@ -146,6 +147,7 @@
                             android:id="@+id/edit_fathername"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:theme="@style/MyEditTextTheme"
                             android:backgroundTint="@android:color/transparent"
                             android:inputType="text|textCapWords"
                             android:maxLines="1" />
@@ -202,6 +204,7 @@
                                 android:id="@+id/edit_code"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:theme="@style/MyEditTextTheme"
                                 android:backgroundTint="@android:color/transparent"
                                 android:inputType="text|textCapWords"
                                 android:maxLines="1" />
@@ -251,6 +254,7 @@
                                 android:id="@+id/edit_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:theme="@style/MyEditTextTheme"
                                 android:backgroundTint="@android:color/transparent"
                                 android:inputType="text|textCapWords"
                                 android:maxLines="1" />
@@ -391,7 +395,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="6dp"
-                        android:layout_marginTop="-30dp"
+
                         android:layout_marginRight="16dp"
                         android:hint="Remarks"
                         android:textColorHint="#707070"
@@ -400,13 +404,14 @@
                         <EditText
                             android:id="@+id/edit_remarks"
                             android:layout_width="match_parent"
+                            android:theme="@style/MyEditTextTheme"
                             android:layout_height="100dp"
                             android:backgroundTint="@android:color/transparent"
                             android:inputType="text|textMultiLine"
                             android:maxLines="3" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!--TextView
+                    <!--TextView...........-android:layout_marginTop="-30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#707070"
@@ -449,7 +454,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="6dp"
-                        android:layout_marginTop="-30dp"
+
                         android:layout_marginRight="16dp"
                         android:hint="Incident Reason"
                         android:textColorHint="#707070"
@@ -459,6 +464,7 @@
                             android:id="@+id/edit_reason"
                             android:layout_width="match_parent"
                             android:layout_height="100dp"
+                            android:theme="@style/MyEditTextTheme"
                             android:backgroundTint="@android:color/transparent"
                             android:inputType="text|textMultiLine"
                             android:maxLines="3" />

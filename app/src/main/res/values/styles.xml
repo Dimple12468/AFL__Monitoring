@@ -123,4 +123,10 @@
         <!--item name="hintTextAppearance">@style/HintText</item-->
         <item name="android:paddingBottom">8dp</item>
     </style>
+
+    <style name="MyEditTextTheme">
+        <item name="colorControlNormal">#FFFFFF</item>
+        <item name="colorControlActivated">#FFFFFF</item>
+        <item name="colorControlHighlight">#FFFFFF</item>
+    </style>
 </resources>
