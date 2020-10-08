@@ -56,6 +56,7 @@ import com.theagriculture.app.Admin.AdminActivity;
 import com.theagriculture.app.Ado.AdoActivity;
 import com.theagriculture.app.Dda.DdaActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -276,12 +277,46 @@ public class login_activity extends AppCompatActivity {
                             Log.d(TAG, "onResponse: user:" + a);
                             typeOfUser = a.getString("role");
                             Name = a.getString("name");
+                            //from here
+                            String number="Not Available",email="Not Available",address="Not Available",image=null;
+                            try{
+                                number = a.getString("phone_number");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            try{
+                                email = a.getString("email");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            try{
+                                image = a.getString("image");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            try{/*
+                                JSONArray village = c.getJSONArray("village_ado");
+                                JSONObject villageDetails = village.getJSONObject(0);//check as empty
+                                String villageName = villageDetails.getString("village");//check as empty
+                                */
+                                JSONObject state= a.getJSONObject("state");
+                                address = state.getString("state");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            ////till here
                             pk = a.getString("id");
                             Log.d(TAG, "onResponse: valuepk"+pk);
                             SharedPreferences.Editor editor = getSharedPreferences("tokenFile", Context.MODE_PRIVATE).edit();
                             editor.putString("role", typeOfUser);
                             editor.putString("Name", Name);
                             editor.putString("id", pk);
+                            //from here
+                            editor.putString("PhoneNumber",number);
+                            editor.putString("Email",email);
+                            editor.putString("Address",address);
+                            editor.putString("Image",image);
+                            ///to here
                             editor.apply();
 
                             Intent intent = null;
