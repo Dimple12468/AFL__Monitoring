@@ -276,6 +276,7 @@ public class login_activity extends AppCompatActivity {
                             JSONObject a = c.getJSONObject("user");
                             Log.d(TAG, "onResponse: user:" + a);
                             typeOfUser = a.getString("role");
+                           // typeOfUser = String.valueOf(a.get("role"));
                             Name = a.getString("name");
                             //from here
                             String number="Not Available",email="Not Available",address="Not Available",image=null;
