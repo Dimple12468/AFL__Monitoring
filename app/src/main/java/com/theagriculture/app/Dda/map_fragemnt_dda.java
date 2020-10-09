@@ -51,6 +51,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.maps.android.clustering.ClusterManager;
 import com.theagriculture.app.Admin.MyItem;
 import com.theagriculture.app.Globals;
+import com.theagriculture.app.Initial_page;
 import com.theagriculture.app.ProfilePage;
 import com.theagriculture.app.R;
 import com.theagriculture.app.login_activity;
@@ -189,10 +190,10 @@ public class map_fragemnt_dda extends Fragment {
                         SharedPreferences.Editor editor = getActivity().getSharedPreferences("tokenFile", MODE_PRIVATE).edit();
                         editor.clear();
                         editor.commit();
-                        Toast.makeText(getActivity(), "privacy clicked", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "privacy clicked", Toast.LENGTH_SHORT).show();
                         mDrawer.closeDrawers();
 
-                        Intent intent = new Intent(getActivity(), login_activity.class);
+                        Intent intent = new Intent(getActivity(), Initial_page.class);
                         //Intent intent = new Intent(getApplicationContext(), login_activity.class);
                         startActivity(intent);
                         getActivity().finish();

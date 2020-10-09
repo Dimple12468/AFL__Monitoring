@@ -35,7 +35,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
-import com.squareup.picasso.Picasso;
+//import com.squareup.picasso.Picasso;
 import com.theagriculture.app.Admin.Section;
 import com.theagriculture.app.Admin.SectionAdapter;
 import com.theagriculture.app.Ado.Section_ado;

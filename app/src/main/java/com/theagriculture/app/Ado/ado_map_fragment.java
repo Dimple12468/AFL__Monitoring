@@ -34,6 +34,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.theagriculture.app.Initial_page;
 import com.theagriculture.app.ProfilePage;
 import com.theagriculture.app.R;
 import com.theagriculture.app.login_activity;
@@ -148,7 +149,7 @@ public class ado_map_fragment extends Fragment implements OnMapReadyCallback {//
 
         //get user name and type from shared prefernces file
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", MODE_PRIVATE);
-        String typeofuser = preferences.getString("typeOfUser","");
+        String typeofuser = preferences.getString("role","");
         String username = preferences.getString("Name","");
 
 
@@ -181,10 +182,10 @@ public class ado_map_fragment extends Fragment implements OnMapReadyCallback {//
                         SharedPreferences.Editor editor = getActivity().getSharedPreferences("tokenFile", MODE_PRIVATE).edit();
                         editor.clear();
                         editor.commit();
-                        Toast.makeText(getActivity(), "privacy clicked", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "privacy clicked", Toast.LENGTH_SHORT).show();
                         mDrawer.closeDrawers();
 
-                        Intent intent = new Intent(getActivity(), login_activity.class);
+                        Intent intent = new Intent(getActivity(), Initial_page.class);
                         //Intent intent = new Intent(getApplicationContext(), login_activity.class);
                         startActivity(intent);
                         getActivity().finish();

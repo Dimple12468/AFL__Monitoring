@@ -235,6 +235,18 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
         String username = prefs.getString("Name","");
         textUsername.setText(username);
         textUser.setText(typeofuser);
+        //
+        ImageView userImage = header.findViewById(R.id.imageView);//for image click to profile
+        userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawer_map.closeDrawers();
+                //Toast.makeText(getActivity(),"Synjnd",Toast.LENGTH_LONG).show();
+                Intent intent= new Intent(getActivity(), ProfilePage.class);
+                startActivity(intent);
+            }
+        });
+        //
 
         nvDrawer_map.setBackgroundColor(getResources().getColor(R.color.white));
         nvDrawer_map.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
