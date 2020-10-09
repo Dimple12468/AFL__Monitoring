@@ -51,6 +51,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.androidnetworking.utils.Utils;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.JsonObject;
 import com.theagriculture.app.Admin.AdminActivity;
 import com.theagriculture.app.Ado.AdoActivity;
@@ -77,6 +78,8 @@ public class login_activity extends AppCompatActivity {
     private String typeOfUser;
     private String Name;
     private static final String TAG = "login_activity";
+//    private EditText editEmail, editPassword;
+    private TextInputLayout _editEmail, _editPassword;
     private EditText editEmail, editPassword;
     private TextView signUpAdo, signUpDda,tvForgot;
 //    private TextView tvReg;
@@ -87,8 +90,14 @@ public class login_activity extends AppCompatActivity {
     private AlertDialog dialog;
     private CheckBox checkBox;
     private Button btnLogin;
-    private ImageButton imageButton;
+//    private ImageButton imageButton;
     public boolean hide = false;
+
+//    @Override
+//    public void onBackPressed() {
+//        this.finish();
+//        super.onBackPressed();
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +121,6 @@ public class login_activity extends AppCompatActivity {
         }
         init();
 /*
-
        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
            Window w = getWindow();
            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -142,8 +150,13 @@ public class login_activity extends AppCompatActivity {
 
         }
 
-        editEmail = findViewById(R.id.editText);
-        editPassword = findViewById(R.id.editText3);
+//        editEmail = findViewById(R.id.editText);
+//        editPassword = findViewById(R.id.editText3);
+        _editEmail = findViewById(R.id.editText);
+        _editPassword = findViewById(R.id.editText3);
+
+        editEmail = _editEmail.getEditText();
+        editPassword = _editPassword.getEditText();
         btnLogin = findViewById(R.id.button);
         tvForgot = findViewById(R.id.tvForgot);
 //        tvReg = findViewById(R.id.tvReg);
@@ -207,7 +220,7 @@ public class login_activity extends AppCompatActivity {
             }
         });
         //function to view password
-        imageButton = findViewById(R.id.imageButton);
+/*        imageButton = findViewById(R.id.imageButton);
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,7 +243,7 @@ public class login_activity extends AppCompatActivity {
                 }
 
             }
-        });
+        });*/
 
         //function to change colour of login button when text is entered
         editEmail.addTextChangedListener(loginTextWatcher);//loginTextWatcher function is defined at last
@@ -500,4 +513,3 @@ public class login_activity extends AppCompatActivity {
 
 
 }
-

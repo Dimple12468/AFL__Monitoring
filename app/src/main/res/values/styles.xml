@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
-        <!--Theme.AppCompat.Light-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!--Theme.MaterialComponents.Light.NoActionBar-->
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -150,4 +150,8 @@
         <item name="colorControlActivated">#FFFFFF</item>
         <item name="colorControlHighlight">#FFFFFF</item>
     </style>
+
+<!--    <style name="login_button">-->
+<!--        <item name="colorOnBackground">@drawable/buttons_before_text</item>-->
+<!--    </style>-->
 </resources>

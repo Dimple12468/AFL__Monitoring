@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:context=".login_activity">
+    tools:context=".login_activity"
+    android:focusableInTouchMode="true">
 
 
     <!--ImageView
@@ -41,23 +42,28 @@
         android:layout_marginStart="10dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline7"-->
 
-    <!--com.google.android.material.textfield.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:textColorHint="@color/black"
+        app:hintTextColor="@color/black"
+        app:boxStrokeColor="@color/opaque_color"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:layout_constraintTop_toTopOf="@+id/guideline7">
+<!--        android:focusableInTouchMode="true"
+        android:focusable="false"-->
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/app_name"
-            android:hint="Email"/>
+            android:layout_height="wrap_content"/>
+<!--        android:hint="Email"
+            app:layout_constraintTop_toBottomOf="@id/app_name"-->
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,22 +71,28 @@
         android:id="@+id/editText3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="Password"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="7dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:textColorHint="@color/black"
+        app:hintTextColor="@color/black"
+        app:boxStrokeColor="@color/opaque_color"
+        app:endIconTint="@color/black"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:layout_constraintTop_toBottomOf="@+id/editText">
+        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/app_name"
-            android:hint="Password"/>
+            android:inputType="textPassword"/>
+<!--            android:hint="Password"
+            app:layout_constraintTop_toBottomOf="@id/app_name"-->
 
-    </com.google.android.material.textfield.TextInputLayout-->
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/log_in_"
@@ -100,63 +112,63 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1" />
+        app:layout_constraintVertical_bias="0.95" />
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/rectanglebg"
-        android:ems="10"
-        android:paddingLeft="8dp"
-        android:hint="Email"
-        android:inputType="textPersonName"
-        android:textColor="#000000"
-        android:textColorHint="#706868"
-        android:fontFamily="@font/arial"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline7" />
+<!--    <EditText-->
+<!--        android:id="@+id/editText"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="35dp"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        android:background="@drawable/rectanglebg"-->
+<!--        android:ems="10"-->
+<!--        android:paddingLeft="8dp"-->
+<!--        android:hint="Email"-->
+<!--        android:inputType="textPersonName"-->
+<!--        android:textColor="#000000"-->
+<!--        android:textColorHint="#706868"-->
+<!--        android:fontFamily="@font/arial"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/guideline7" />-->
 
-    <EditText
-        android:id="@+id/editText3"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="10dp"
-        android:fontFamily="@font/arial"
-        android:background="@drawable/rectanglebg"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:paddingLeft="8dp"
-        android:textColor="#000000"
-        android:textColorHighlight="#FFFFFF"
-        android:textColorHint="#706868"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+<!--    <EditText-->
+<!--        android:id="@+id/editText3"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="35dp"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        android:fontFamily="@font/arial"-->
+<!--        android:background="@drawable/rectanglebg"-->
+<!--        android:ems="10"-->
+<!--        android:hint="Password"-->
+<!--        android:inputType="textPassword"-->
+<!--        android:paddingLeft="8dp"-->
+<!--        android:textColor="#000000"-->
+<!--        android:textColorHighlight="#FFFFFF"-->
+<!--        android:textColorHint="#706868"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/editText" />-->
 
     <!--app:layout_constraintStart_toEndOf="@+id/imageView2"-->
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:background="#FFFFFF"
-        android:contentDescription="@string/eye_image"
-        app:layout_constraintBottom_toBottomOf="@+id/editText3"
-        app:layout_constraintEnd_toEndOf="@+id/editText3"
-        app:layout_constraintHorizontal_bias="0.98"
-        app:layout_constraintStart_toStartOf="@+id/editText3"
-        app:layout_constraintTop_toTopOf="@+id/editText3"
-        app:layout_constraintVertical_bias="0.5"
-        app:srcCompat="@drawable/show_password" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/imageButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:background="#FFFFFF"-->
+<!--        android:contentDescription="@string/eye_image"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/editText3"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/editText3"-->
+<!--        app:layout_constraintHorizontal_bias="0.98"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/editText3"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/editText3"-->
+<!--        app:layout_constraintVertical_bias="0.5"-->
+<!--        app:srcCompat="@drawable/show_password" />-->
 
     <Button
         android:id="@+id/button"
@@ -199,10 +211,11 @@
         android:focusable="true"
         android:gravity="center_horizontal"
         android:text="Forgot Password?"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@color/theme_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view" />
+<!--            android:textColor="@android:color/holo_red_dark"-->
 
     <!--View
         android:id="@+id/viewlong"

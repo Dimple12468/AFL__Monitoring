@@ -25,6 +25,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import static io.fabric.sdk.android.services.concurrency.AsyncTask.init;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -32,9 +34,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
     TextView tvName;
 //    TextView tvEnd;
+    TextInputLayout _etEmail,_etType,_etConfirm;
     EditText etEmail,etType,etConfirm;
     Button btnRegister;
-    ImageButton typeButton, confirmButton;
+//    ImageButton typeButton, confirmButton;
     public boolean typeHide = false, confirmHide = false;
 
 
@@ -53,9 +56,12 @@ public class RegistrationActivity extends AppCompatActivity {
         init();
 
         tvName = findViewById(R.id.tvName);
-        etEmail = findViewById(R.id.etEmail);
-        etConfirm = findViewById(R.id.etConfirm);
-        etType = findViewById(R.id.etType);
+        _etEmail = findViewById(R.id.etEmail);
+        _etConfirm = findViewById(R.id.etConfirm);
+        _etType = findViewById(R.id.etType);
+        etEmail = _etEmail.getEditText();
+        etConfirm = _etConfirm.getEditText();
+        etType = _etType.getEditText();
         btnRegister = findViewById(R.id.btnRegister);
 //        tvEnd = findViewById(R.id.textView5);
 
@@ -109,7 +115,7 @@ public class RegistrationActivity extends AppCompatActivity {
         etConfirm.addTextChangedListener(registerTextWatcher);
 
         //to view data in type password field
-        typeButton = findViewById(R.id.imageView3);
+/*        typeButton = findViewById(R.id.imageView3);
         typeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,7 +160,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     etConfirm.setSelection(start,end);
                 }
             }
-        });
+        });*/
         //end of onCreate fuction
     }
 
