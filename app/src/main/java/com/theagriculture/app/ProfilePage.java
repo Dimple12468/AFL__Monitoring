@@ -2,11 +2,14 @@ package com.theagriculture.app;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,8 +30,12 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 import com.theagriculture.app.Admin.Section;
 import com.theagriculture.app.Admin.SectionAdapter;
 import com.theagriculture.app.Ado.Section_ado;
@@ -45,10 +52,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.android.volley.VolleyLog.TAG;
+import static com.google.android.gms.auth.api.signin.internal.Storage.getInstance;
 
 public class ProfilePage extends AppCompatActivity {
     String userId,completedCount,pendingCount;
     TextView userName,pCount,cCount,position,userAddress,userNumber,userMail;
+
+    ImageView image;
+    private ImageLoader imageLoader;
+
     RecyclerView recyclerView;
     ProfilePageAdapter adapter;
     ArrayList<String> location, district;
@@ -77,6 +89,8 @@ public class ProfilePage extends AppCompatActivity {
         userMail = findViewById(R.id.user_email);
         recyclerView = findViewById(R.id.status_recycler);
         spin = findViewById(R.id.set_status);
+        image = (ImageView) findViewById(R.id.imageView8);
+
 
         location = new ArrayList<>();
         district = new ArrayList<>();
@@ -100,13 +114,98 @@ public class ProfilePage extends AppCompatActivity {
         //for text from shared prefernces file
         SharedPreferences preferences = getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
 
-        typeOfUser = preferences.getString("typeOfUser","");
+        typeOfUser = preferences.getString("role","");
 
         userName.setText(preferences.getString("Name",""));
-        position.setText(preferences.getString("typeOfUser","").toUpperCase());
+        position.setText(preferences.getString("role","").toUpperCase());
         userNumber.setText(preferences.getString("PhoneNumber",""));
         userAddress.setText(preferences.getString("Address",""));
         userMail.setText(preferences.getString("Email",""));
+
+        ///
+        String imagelink=preferences.getString("Image","");
+        
+        Log.d("imagelink1",imagelink);
+        String newImageLink = " ";
+
+        char anc = imagelink.charAt(4);
+        int comp = Character.compare(anc, 's');
+        if(comp!=0){
+             newImageLink = imagelink;
+            newImageLink =  newImageLink.substring(4);
+            newImageLink = "https" + newImageLink;
+        }
+
+        Log.d("imagelink2",newImageLink);
+
+        /*WORKS FINE
+
+        final ProgressBar progressBar= findViewById(R.id.load_image);
+        progressBar.setVisibility(View.VISIBLE);
+
+        Picasso.get().load(newImageLink).error(R.drawable.user_image).into(image,new com.squareup.picasso.Callback() {
+            @Override
+            public void onSuccess() {
+                    progressBar.setVisibility(View.GONE);
+                }
+            @Override
+            public void onError(Exception e) {
+                Toast.makeText(getApplicationContext(),"Exception occured "+e.getMessage(),Toast.LENGTH_LONG).show();
+                Log.d("imagelink3",e.getMessage());
+            }
+        });
+
+         */
+
+
+        //Loading Image from URL
+        /*
+        Picasso.with(this)
+                .load("https://www.simplifiedcoding.net/wp-content/uploads/2015/10/advertise.png")
+                .placeholder(R.drawable.placeholder)   // optional
+                .error(R.drawable.error)      // optional
+                .resize(400,400)                        // optional
+                .into(imageView);
+
+        Picasso.with(this)
+                .load("YOUR IMAGE URL HERE")
+                .into(image);
+
+         */
+
+        /*
+        //image.setImageResource(Integer.parseInt(imagelink));
+        // Retrieves an image specified by the URL, displays it in the UI.
+        ImageRequest request = new ImageRequest(imagelink,
+                new Response.Listener<Bitmap>() {
+                    @Override
+                    public void onResponse(Bitmap bitmap) {
+                        image.setImageBitmap(bitmap);
+                    }
+                }, 0, 0, null,
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        image.setImageResource(R.drawable.user_image);
+                    }
+                });
+
+        getInstance(getApplicationContext())
+
+        getInstance(this).addToRequestQueue(request);
+
+         {
+            imageLoader = CustomVolleyRequest.getInstance(this.getApplicationContext())
+                    .getImageLoader();
+        }
+        imageLoader.get(newImageLink, ImageLoader.getImageListener(image,
+                R.drawable.user_image, android.R.drawable
+                        .ic_dialog_alert));
+        image.setImageUrl(newImageLink, imageLoader);
+
+         */
+
+
+        ///
 
         String[] adminSpinner={"Pending","Ongoing","Completed"};
         String[] adoSpinner={"Pending","Completed"};
@@ -114,19 +213,19 @@ public class ProfilePage extends AppCompatActivity {
         //Creating the ArrayAdapter instance having the list
 
         ArrayAdapter aa;
-        if(typeOfUser.equals("admin")) {
+        if(typeOfUser.equals("5")) {//admin
             aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, adminSpinner);
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             //Setting the ArrayAdapter data on the Spinner
             spin.setAdapter(aa);
         }
-        else if(typeOfUser.equals("ado")) {
+        else if(typeOfUser.equals("2")) {//ado
             aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, adoSpinner);
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             //Setting the ArrayAdapter data on the Spinner
             spin.setAdapter(aa);
         }
-        else if(typeOfUser.equals("dda"))  {
+        else if(typeOfUser.equals("4"))  {//dda
             aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, ddaSpinner);
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             //Setting the ArrayAdapter data on the Spinner
@@ -138,7 +237,7 @@ public class ProfilePage extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selected_status=   spin.getItemAtPosition(spin.getSelectedItemPosition()).toString();
                 Toast.makeText(getApplicationContext(),selected_status + "has been selected" ,Toast.LENGTH_LONG).show();
-                if(typeOfUser.equals("admin")){
+                if(typeOfUser.equals("5")){
                     if(spin.getSelectedItemPosition()==0)
                         getData(adminPendingUrl);
                     if(spin.getSelectedItemPosition()==1)
@@ -146,13 +245,14 @@ public class ProfilePage extends AppCompatActivity {
                     if(spin.getSelectedItemPosition()==2)
                         getData(adminCompletedUrl);
                 }
-                else if(typeOfUser.equals("ado")){
+                if(typeOfUser.equals("2")){
+                    Toast.makeText(getApplicationContext(),"ado entry with "+ spin.getSelectedItemPosition(),Toast.LENGTH_LONG).show();
                     if(spin.getSelectedItemPosition()==0)
                         getData(adoPendingUrl);
                     if(spin.getSelectedItemPosition()==1)
                         getData(adoCompletedUrl);
                 }
-                if(typeOfUser.equals("dda")){
+                if(typeOfUser.equals("4")){
                     if(spin.getSelectedItemPosition()==0)
                         getData(ddaAssignedUrl);
                     if(spin.getSelectedItemPosition()==1)
@@ -192,6 +292,7 @@ public class ProfilePage extends AppCompatActivity {
 
     }
     private void getData(String url) {
+        Log.d("get","enterd function");
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         isNextBusy = true;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null,
@@ -204,18 +305,20 @@ public class ProfilePage extends AppCompatActivity {
                             JSONObject rootObject = new JSONObject(String.valueOf(response));
                             JSONArray resultsArray = rootObject.getJSONArray("results");
                             //Toast.makeText(getActivity(),rootObject.toString(),Toast.LENGTH_LONG).show();
-                            location.add("wee");
-                            location.add("wee");
-                            location.add("wee");
-                            location.add("wee");
-                            location.add("wee");
-                            location.add("wee");
-                            district.add("abc");
-                            district.add("abc");
-                            district.add("abc");
-                            district.add("abc");
-                            district.add("abc");
                             /*
+                            location.add("wee");
+                            location.add("wee");
+                            location.add("wee");
+                            location.add("wee");
+                            location.add("wee");
+                            location.add("wee");
+                            district.add("abc");
+                            district.add("abc");
+                            district.add("abc");
+                            district.add("abc");
+                            district.add("abc");
+
+                             */
                             nextUrl = rootObject.getString("next");
 
                             if(resultsArray.length()== 0){
@@ -225,19 +328,14 @@ public class ProfilePage extends AppCompatActivity {
                             }
                             for (int i = 0; i < resultsArray.length(); i++) {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
-                                //String id = singleObject.getString("id");
-                                //idList.add(id);
-                                String location_name1 = singleObject.getString("village_name");
-                                String location_name2 = singleObject.getString("block_name");
-                                String district_name = singleObject.getString("district");
+                                String location_name = singleObject.getString("village_name")+", "+singleObject.getString("block");
+                                String district_name = singleObject.getString("district")+", "+singleObject.getString("state") ;
 
-                                Toast.makeText(getApplicationContext(),location_name1+location_name2+district_name,Toast.LENGTH_LONG).show();
-                                location.add(location_name1 + " " + location_name2);
+                                //Toast.makeText(getApplicationContext(),location_name1+location_name2+district_name,Toast.LENGTH_LONG).show();
+                                location.add(location_name);
                                 district.add(district_name);
 
                             }
-
-                             */
 
                             isNextBusy = false;
                             adapter.notifyDataSetChanged();
@@ -279,7 +377,7 @@ public class ProfilePage extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
                 SharedPreferences prefs = getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-                String token = prefs.getString("token", "");
+                String token = prefs.getString("key", "");
                 map.put("Authorization", "Token " + token);
                 return map;
             }
