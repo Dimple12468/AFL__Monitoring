@@ -149,7 +149,15 @@ public class ado_map_fragment extends Fragment implements OnMapReadyCallback {//
 
         //get user name and type from shared prefernces file
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", MODE_PRIVATE);
-        String typeofuser = preferences.getString("role","");
+        //String typeofuser = preferences.getString("role","");
+        String position = "-";
+        String typeOfUser = preferences.getString("role","");
+        if(typeOfUser.equals("5"))
+            position="Admin";
+        if(typeOfUser.equals("2"))
+            position="ADO";
+        if(typeOfUser.equals("4"))
+            position="DDA";
         String username = preferences.getString("Name","");
 
 
@@ -168,7 +176,7 @@ public class ado_map_fragment extends Fragment implements OnMapReadyCallback {//
             }
         });
         textUsername.setText(username);
-        textUser.setText(typeofuser);
+        textUser.setText(position);
         //set the navigation options in drawer layout
         nvDrawer.setBackgroundColor(getResources().getColor(R.color.white));
 

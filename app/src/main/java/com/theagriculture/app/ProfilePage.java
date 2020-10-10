@@ -1,6 +1,7 @@
 package com.theagriculture.app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,7 +37,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
-//import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Picasso;
 import com.theagriculture.app.Admin.Section;
 import com.theagriculture.app.Admin.SectionAdapter;
 import com.theagriculture.app.Ado.Section_ado;
@@ -68,10 +70,12 @@ public class ProfilePage extends AppCompatActivity {
     Spinner spin;
     private String nextUrl;
     private boolean isNextBusy = false;
+    ProgressBar loading;
 
     String typeOfUser;
 
-    String adminPendingUrl = Globals.pendingList,adminOngoingUrl = Globals.ongoingList,adminCompletedUrl = Globals.completedList;
+    //String adminPendingUrl = Globals.pendingList,adminOngoingUrl = Globals.ongoingList,adminCompletedUrl = Globals.completedList;
+    String adminPendingUrl = Globals.pendingDatewiseList,adminOngoingUrl = Globals.ongoingDatewiseList,adminCompletedUrl = Globals.completedDatewiseList;
     String adoPendingUrl = Globals.adoPending,adoCompletedUrl = Globals.adoCompleted;
     String ddaAssignedUrl = Globals.assignedLocationsDDA, ddaUnassignedUrl = Globals.unassignedLocationsDDA,
             ddaOngoingUrl = Globals.ddaOngoing,ddaCompletedUrl = Globals.ddaCompleted;
@@ -90,6 +94,29 @@ public class ProfilePage extends AppCompatActivity {
         recyclerView = findViewById(R.id.status_recycler);
         spin = findViewById(R.id.set_status);
         image = (ImageView) findViewById(R.id.imageView8);
+        loading = findViewById(R.id.loading);
+
+        //////
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app__bar_profile);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        //
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_back_24);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //////
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getApplicationContext(),"you clicked",Toast.LENGTH_LONG).show();
+                ProfilePage.super.onBackPressed();
+                //startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                //finish();
+            }
+        });
 
 
         location = new ArrayList<>();
@@ -117,36 +144,45 @@ public class ProfilePage extends AppCompatActivity {
         typeOfUser = preferences.getString("role","");
 
         userName.setText(preferences.getString("Name",""));
-        position.setText(preferences.getString("role","").toUpperCase());
+        //position.setText(preferences.getString("role","").toUpperCase());
         userNumber.setText(preferences.getString("PhoneNumber",""));
         userAddress.setText(preferences.getString("Address",""));
         userMail.setText(preferences.getString("Email",""));
 
+        if(typeOfUser.equals("5"))
+            position.setText("Admin");
+        if(typeOfUser.equals("2"))
+            position.setText("ADO");
+        if(typeOfUser.equals("4"))
+            position.setText("DDA");
+
         ///
         String imagelink=preferences.getString("Image","");
-        
+
         Log.d("imagelink1",imagelink);
         String newImageLink = " ";
 
         char anc = imagelink.charAt(4);
         int comp = Character.compare(anc, 's');
         if(comp!=0){
-             newImageLink = imagelink;
+            newImageLink = imagelink;
             newImageLink =  newImageLink.substring(4);
             newImageLink = "https" + newImageLink;
         }
 
         Log.d("imagelink2",newImageLink);
 
-        /*WORKS FINE
+        //WORKS FINE
+        /*
 
-        final ProgressBar progressBar= findViewById(R.id.load_image);
-        progressBar.setVisibility(View.VISIBLE);
+        //final ProgressBar progressBar= findViewById(R.id.load_image);
+        //progressBar.setVisibility(View.VISIBLE);
 
         Picasso.get().load(newImageLink).error(R.drawable.user_image).into(image,new com.squareup.picasso.Callback() {
             @Override
             public void onSuccess() {
-                    progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+                    //progressBar.setVisibility(View.GONE);
                 }
             @Override
             public void onError(Exception e) {
@@ -156,6 +192,8 @@ public class ProfilePage extends AppCompatActivity {
         });
 
          */
+
+
 
 
         //Loading Image from URL
@@ -236,7 +274,7 @@ public class ProfilePage extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selected_status=   spin.getItemAtPosition(spin.getSelectedItemPosition()).toString();
-                Toast.makeText(getApplicationContext(),selected_status + "has been selected" ,Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),selected_status + "has been selected" ,Toast.LENGTH_LONG).show();
                 if(typeOfUser.equals("5")){
                     if(spin.getSelectedItemPosition()==0)
                         getData(adminPendingUrl);
@@ -246,7 +284,7 @@ public class ProfilePage extends AppCompatActivity {
                         getData(adminCompletedUrl);
                 }
                 if(typeOfUser.equals("2")){
-                    Toast.makeText(getApplicationContext(),"ado entry with "+ spin.getSelectedItemPosition(),Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"ado entry with "+ spin.getSelectedItemPosition(),Toast.LENGTH_LONG).show();
                     if(spin.getSelectedItemPosition()==0)
                         getData(adoPendingUrl);
                     if(spin.getSelectedItemPosition()==1)
@@ -292,6 +330,7 @@ public class ProfilePage extends AppCompatActivity {
 
     }
     private void getData(String url) {
+        loading.setVisibility(View.VISIBLE);
         Log.d("get","enterd function");
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         isNextBusy = true;
@@ -299,7 +338,8 @@ public class ProfilePage extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(getApplicationContext(),response.toString(),Toast.LENGTH_LONG).show();
+                        Log.d("response",response.toString());
+                        //Toast.makeText(getApplicationContext(),"response is "+response.toString(),Toast.LENGTH_LONG).show();
 
                         try {
                             JSONObject rootObject = new JSONObject(String.valueOf(response));
@@ -339,9 +379,11 @@ public class ProfilePage extends AppCompatActivity {
 
                             isNextBusy = false;
                             adapter.notifyDataSetChanged();
+                            loading.setVisibility(View.GONE);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            loading.setVisibility(View.GONE);
                             Toast.makeText(getApplicationContext(),"An exception occurred",Toast.LENGTH_LONG).show();
                         }
                     }
@@ -349,6 +391,7 @@ public class ProfilePage extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        loading.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(),error.getMessage(),Toast.LENGTH_LONG).show();
                         if (error instanceof NoConnectionError || error instanceof TimeoutError)
                             Toast.makeText(getApplicationContext(), "Please Check your internet connection", Toast.LENGTH_LONG).show();

@@ -231,10 +231,17 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
         TextView textUsername = header.findViewById(R.id.name);
         TextView textUser = header.findViewById(R.id.type_of_user);
 
-        String typeofuser = prefs.getString("role","");
+        String position = "-";
+        String typeOfUser = prefs.getString("role","");
+        if(typeOfUser.equals("5"))
+            position="Admin";
+        if(typeOfUser.equals("2"))
+            position="ADO";
+        if(typeOfUser.equals("4"))
+            position="DDA";
         String username = prefs.getString("Name","");
         textUsername.setText(username);
-        textUser.setText(typeofuser);
+        textUser.setText(position);
         //
         ImageView userImage = header.findViewById(R.id.imageView);//for image click to profile
         userImage.setOnClickListener(new View.OnClickListener() {
