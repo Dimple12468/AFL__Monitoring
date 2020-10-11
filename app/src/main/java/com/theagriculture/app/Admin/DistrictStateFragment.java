@@ -86,6 +86,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import ru.slybeaver.slycalendarview.SlyCalendarDialog;
+
 import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
 
 /**
@@ -282,7 +284,8 @@ public class DistrictStateFragment extends Fragment {
         btndate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dateResolver();
+                //dateResolver();
+                slyCalendardateResolver();
             }
         });
 
@@ -317,6 +320,99 @@ public class DistrictStateFragment extends Fragment {
                 //getData(URL,start_date_set,end_date_set);
             }
         });
+
+    }
+
+    public void slyCalendardateResolver(){
+
+        //callback for calendardialog
+        final SlyCalendarDialog.Callback callback = new SlyCalendarDialog.Callback() {
+            @Override
+            public void onCancelled() {
+
+            }
+
+            @Override
+            public void onDataSelected(Calendar firstDate, Calendar secondDate, int hours, int minutes) {
+                //btndate.setText();
+                //getGraph(spin_url,state);
+                // Toast.makeText(getActivity(),"start date is "+firstDate+" second date is "+secondDate,Toast.LENGTH_LONG).show();
+                String month1 = " ",date1 = " ";
+                int datea = firstDate.get(Calendar.DATE);
+                if(datea%10==datea)//to convert 9 to 09
+                    date1="0"+datea;
+                else
+                    date1= String.valueOf(datea);
+                int montha = firstDate.get(Calendar.MONTH) +1;//for one month next
+                if(montha%10==montha)
+                    month1 = "0"+montha;
+                else
+                    month1= String.valueOf(montha);
+                int year1 = firstDate.get(Calendar.YEAR);
+
+                String month2 = " ",date2 = " ";
+                int dateb = secondDate.get(Calendar.DATE);
+                if(dateb%10==dateb)//to convert 9 to 09
+                    date2="0"+dateb;
+                else
+                    date2= String.valueOf(dateb);
+                int monthb = secondDate.get(Calendar.MONTH) +1;
+                if(monthb%10==monthb)
+                    month2 = "0"+monthb;
+                else
+                    month2= String.valueOf(monthb);
+                int year2 = secondDate.get(Calendar.YEAR);
+
+                start_date_set= year1+"-"+month1+"-"+date1;
+                end_date_set = year2+"-"+month2+"-"+date2;
+
+                /////
+                //set button getText
+                String currDateFormat = "yyyy-MM-dd";
+                String currdatestart = start_date_set;
+                String currdateend = end_date_set;
+                String Format = "MMM dd";
+                DateFormat FromDF = new SimpleDateFormat(currDateFormat);
+                FromDF.setLenient(false);  // this is important!
+                Date FromDate = null;
+                Date ToDate = null;
+                try {
+                    FromDate = FromDF.parse(currdatestart);
+                    ToDate = FromDF.parse(currdateend);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                String dateStringresultstart = new SimpleDateFormat(Format).format(FromDate);
+                String dateStringresultend = new SimpleDateFormat(Format).format(ToDate);
+                btndate.setText(dateStringresultstart+" - "+dateStringresultend);
+                ///
+                Log.d("slycalendar","start is "+start_date_set+" end date is "+end_date_set);
+                String btn_url = Globals.districtStat + "?start_date=" + start_date_set + "&end_date=" + end_date_set + "&points=8";
+                Log.d("slycalendar","btn_url" + btn_url);
+                String state = String.valueOf(spin.getSelectedItem());
+                getGraph(btn_url,state);
+
+                //Toast.makeText(getActivity(),"start date is "+year1+"-"+month1+"-"+date1+" and second date is "+year2+"-"+month2+"-"+date2,Toast.LENGTH_LONG).show();
+            }
+        };
+        new SlyCalendarDialog()
+                .setSingle(false)
+                .setHeaderColor(Color.parseColor("#DC5C58"))
+                .setBackgroundColor(Color.parseColor("#FFFFFF"))
+                .setSelectedTextColor(Color.parseColor("#DC5C58"))
+                .setSelectedColor(Color.parseColor("#73DC5C58"))
+                .setCallback(callback).show(getActivity().getSupportFragmentManager(),"CALENDAR");
+
+        /* new SlyCalendarDialog()
+                .setSingle(false)
+                .setHeaderColor(Color.parseColor("#DC5C58"))
+                .setBackgroundColor(Color.parseColor("#FFFFFF"))
+                .setSelectedTextColor(Color.parseColor("#DC5C58"))
+                .setSelectedColor(Color.parseColor("#73DC5C58"))
+                .setCallback(callback).show(getActivity().getSupportFragmentManager(),"CALENDAR");
+
+         */
+
 
     }
 
