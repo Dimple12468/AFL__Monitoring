@@ -76,6 +76,7 @@ dependencies {
     implementation 'io.nlopez.smartlocation:library:3.3.3'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.github.psinetron:slycalendarview:0.0.7'
+    implementation 'com.mikhaellopez:circularimageview:4.2.0'
 
 
 }

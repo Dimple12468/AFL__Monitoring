@@ -37,6 +37,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 import com.theagriculture.app.Admin.Section;
 import com.theagriculture.app.Admin.SectionAdapter;
@@ -60,7 +61,8 @@ public class ProfilePage extends AppCompatActivity {
     String userId,completedCount,pendingCount;
     TextView userName,pCount,cCount,position,userAddress,userNumber,userMail;
 
-    ImageView image;
+    ////ImageView image;
+    CircularImageView image;
     private ImageLoader imageLoader;
 
     RecyclerView recyclerView;
@@ -93,7 +95,8 @@ public class ProfilePage extends AppCompatActivity {
         userMail = findViewById(R.id.user_email);
         recyclerView = findViewById(R.id.status_recycler);
         spin = findViewById(R.id.set_status);
-        image = (ImageView) findViewById(R.id.imageView8);
+        ///// image = (ImageView) findViewById(R.id.imageView8);
+        image = (CircularImageView) findViewById(R.id.imageView8);
         loading = findViewById(R.id.loading);
 
         //////
@@ -118,9 +121,9 @@ public class ProfilePage extends AppCompatActivity {
             }
         });
 
-
         location = new ArrayList<>();
         district = new ArrayList<>();
+
 
 
         /*
@@ -173,25 +176,25 @@ public class ProfilePage extends AppCompatActivity {
         Log.d("imagelink2",newImageLink);
 
         //WORKS FINE
-        /*
 
-        //final ProgressBar progressBar= findViewById(R.id.load_image);
-        //progressBar.setVisibility(View.VISIBLE);
+
+        final ProgressBar progressBar= findViewById(R.id.load_image);
+        progressBar.setVisibility(View.VISIBLE);
 
         Picasso.get().load(newImageLink).error(R.drawable.user_image).into(image,new com.squareup.picasso.Callback() {
             @Override
             public void onSuccess() {
-                Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
-                    //progressBar.setVisibility(View.GONE);
-                }
+                progressBar.setVisibility(View.GONE);
+                //Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+                //progressBar.setVisibility(View.GONE);
+            }
             @Override
             public void onError(Exception e) {
-                Toast.makeText(getApplicationContext(),"Exception occured "+e.getMessage(),Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
+                //Toast.makeText(getApplicationContext(),"Exception occured "+e.getMessage(),Toast.LENGTH_LONG).show();
                 Log.d("imagelink3",e.getMessage());
             }
         });
-
-         */
 
 
 
@@ -274,6 +277,8 @@ public class ProfilePage extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selected_status=   spin.getItemAtPosition(spin.getSelectedItemPosition()).toString();
+                location.clear();
+                district.clear();
                 //Toast.makeText(getApplicationContext(),selected_status + "has been selected" ,Toast.LENGTH_LONG).show();
                 if(typeOfUser.equals("5")){
                     if(spin.getSelectedItemPosition()==0)
@@ -330,6 +335,8 @@ public class ProfilePage extends AppCompatActivity {
 
     }
     private void getData(String url) {
+        //location = new ArrayList<>();
+        //district = new ArrayList<>();
         loading.setVisibility(View.VISIBLE);
         Log.d("get","enterd function");
         RequestQueue requestQueue = Volley.newRequestQueue(this);

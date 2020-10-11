@@ -67,6 +67,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.maps.android.clustering.ClusterManager;
 import com.obsez.android.lib.filechooser.ChooserDialog;
+import com.squareup.picasso.Picasso;
 import com.theagriculture.app.Globals;
 import com.theagriculture.app.Initial_page;
 import com.theagriculture.app.PrivacyPolicy;
@@ -251,6 +252,33 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
                 //Toast.makeText(getActivity(),"Synjnd",Toast.LENGTH_LONG).show();
                 Intent intent= new Intent(getActivity(), ProfilePage.class);
                 startActivity(intent);
+            }
+        });
+        //set image
+        String imagelink=prefs.getString("Image","");
+
+        Log.d("imagelink1",imagelink);
+        String newImageLink = " ";
+
+        char anc = imagelink.charAt(4);
+        int comp = Character.compare(anc, 's');
+        if(comp!=0){
+            newImageLink = imagelink;
+            newImageLink =  newImageLink.substring(4);
+            newImageLink = "https" + newImageLink;
+        }
+        Picasso.get().load(newImageLink).error(R.drawable.user_image).into(userImage,new com.squareup.picasso.Callback() {
+            @Override
+            public void onSuccess() {
+                //progressBar.setVisibility(View.GONE);
+                //Toast.makeText(getActivity(),"Success",Toast.LENGTH_LONG).show();
+                //progressBar.setVisibility(View.GONE);
+            }
+            @Override
+            public void onError(Exception e) {
+                //progressBar.setVisibility(View.GONE);
+                //Toast.makeText(getActivity(),"Exception occured "+e.getMessage(),Toast.LENGTH_LONG).show();
+                Log.d("imagelink3",e.getMessage());
             }
         });
         //

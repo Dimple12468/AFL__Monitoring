@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.squareup.picasso.Picasso;
 import com.theagriculture.app.Initial_page;
 import com.theagriculture.app.ProfilePage;
 import com.theagriculture.app.R;
@@ -177,6 +179,35 @@ public class ado_map_fragment extends Fragment implements OnMapReadyCallback {//
         });
         textUsername.setText(username);
         textUser.setText(position);
+
+        //set image
+        String imagelink=preferences.getString("Image","");
+
+        Log.d("imagelink1",imagelink);
+        String newImageLink = " ";
+
+        char anc = imagelink.charAt(4);
+        int comp = Character.compare(anc, 's');
+        if(comp!=0){
+            newImageLink = imagelink;
+            newImageLink =  newImageLink.substring(4);
+            newImageLink = "https" + newImageLink;
+        }
+        Picasso.get().load(newImageLink).error(R.drawable.user_image).into(userImage,new com.squareup.picasso.Callback() {
+            @Override
+            public void onSuccess() {
+                //progressBar.setVisibility(View.GONE);
+                //Toast.makeText(getActivity(),"Success",Toast.LENGTH_LONG).show();
+                //progressBar.setVisibility(View.GONE);
+            }
+            @Override
+            public void onError(Exception e) {
+                //progressBar.setVisibility(View.GONE);
+               // Toast.makeText(getActivity(),"Exception occured "+e.getMessage(),Toast.LENGTH_LONG).show();
+                Log.d("imagelink3",e.getMessage());
+            }
+        });
+
         //set the navigation options in drawer layout
         nvDrawer.setBackgroundColor(getResources().getColor(R.color.white));
 
