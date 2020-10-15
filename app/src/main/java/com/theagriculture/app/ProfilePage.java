@@ -99,6 +99,9 @@ public class ProfilePage extends AppCompatActivity {
         image = (CircularImageView) findViewById(R.id.imageView8);
         loading = findViewById(R.id.loading);
 
+        pCount = findViewById(R.id.pending_count);
+        cCount = findViewById(R.id.completed_count);
+
         //////
         Toolbar toolbar = (Toolbar) findViewById(R.id.app__bar_profile);
         setSupportActionBar(toolbar);
@@ -152,12 +155,22 @@ public class ProfilePage extends AppCompatActivity {
         userAddress.setText(preferences.getString("Address",""));
         userMail.setText(preferences.getString("Email",""));
 
-        if(typeOfUser.equals("5"))
+        if(typeOfUser.equals("5")) {
             position.setText("Admin");
-        if(typeOfUser.equals("2"))
+            getCount(adminPendingUrl,false);
+            getCount(adminCompletedUrl,true);
+
+        }
+        if(typeOfUser.equals("2")) {
             position.setText("ADO");
-        if(typeOfUser.equals("4"))
+            getCount(adoPendingUrl,false);
+            getCount(adoCompletedUrl,true);
+        }
+        if(typeOfUser.equals("4")) {
             position.setText("DDA");
+            getCount(ddaAssignedUrl,false);
+            getCount(ddaCompletedUrl,true);
+        }
 
         ///
         String imagelink=preferences.getString("Image","");
@@ -467,5 +480,80 @@ public class ProfilePage extends AppCompatActivity {
             }
         });
 
+    }
+
+    public  void getCount(String url, final boolean flag){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        isNextBusy = true;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("response",response.toString());
+                        try {
+                            JSONObject rootObject = new JSONObject(String.valueOf(response));
+                            String acount = rootObject.getString("count");
+                            if(flag == false)
+                                pCount.setText(acount);
+                            if(flag == true)
+                                cCount.setText(acount);
+
+                            }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(),"An exception occurred",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(),error.getMessage(),Toast.LENGTH_LONG).show();
+                        if (error instanceof NoConnectionError || error instanceof TimeoutError)
+                            Toast.makeText(getApplicationContext(), "Please Check your internet connection", Toast.LENGTH_LONG).show();
+                        else if (error instanceof AuthFailureError) {
+                            // Error indicating that there was an Authentication Failure while performing the request
+                            Toast.makeText(getApplicationContext(), "This error is case2", Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ServerError) {
+                            //Indicates that the server responded with a error response
+                            Toast.makeText(getApplicationContext(), "This error is server error", Toast.LENGTH_LONG).show();
+                        } else if (error instanceof NetworkError) {
+                            //Indicates that there was network error while performing the request
+                            Toast.makeText(getApplicationContext(), "This error is case4", Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ParseError) {
+                            // Indicates that the server response could not be parsed
+                            Toast.makeText(getApplicationContext(), "This error is case5", Toast.LENGTH_LONG).show();
+                        }
+                        else
+                            Toast.makeText(getApplicationContext(), "Something went wrong, please try again", Toast.LENGTH_LONG).show();
+
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+                SharedPreferences prefs = getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
+                String token = prefs.getString("key", "");
+                map.put("Authorization", "Token " + token);
+                return map;
+            }
+        };
+        jsonObjectRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
     }
 }
