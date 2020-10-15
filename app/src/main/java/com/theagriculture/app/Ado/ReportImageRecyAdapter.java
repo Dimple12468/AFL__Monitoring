@@ -5,7 +5,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,12 +52,27 @@ public class ReportImageRecyAdapter extends RecyclerView.Adapter<ReportImageRecy
         return mImages.size();
     }
 
-    public class CustomViewHolder extends RecyclerView.ViewHolder {
+    public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imageView;
+        ImageButton cross;
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.ado_report_image);
+            cross = itemView.findViewById(R.id.cross);
+            cross.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = this.getAdapterPosition();
+            //Toast.makeText(mContext,"clickdc "+position,Toast.LENGTH_LONG).show();
+            mImages.remove(position);
+            notifyItemRemoved(getAdapterPosition());
+            notifyItemRangeChanged(getAdapterPosition(),mImages.size());
+            Toast.makeText(mContext,"clickdc "+mImages,Toast.LENGTH_LONG).show();
+            Log.d("array","array is "+mImages.toString()+" position is "+getAdapterPosition());
+
         }
     }
 }
