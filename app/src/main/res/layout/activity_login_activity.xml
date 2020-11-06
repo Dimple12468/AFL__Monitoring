@@ -42,7 +42,129 @@
         android:layout_marginStart="10dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline7"-->
 
-    <com.google.android.material.textfield.TextInputLayout
+    <!--abhi-->
+    <RelativeLayout
+        android:id="@+id/relemail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:paddingTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline7">
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rectanglebg" />
+
+        <TextView
+            android:id="@+id/text_dummy_hint_name"
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/white"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text="Email"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:visibility="invisible" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="16dp"
+            android:hint="Email"
+            android:textColorHint="#707070"
+            app:hintTextAppearance="@style/HintTextStyle">
+
+            <EditText
+                android:id="@+id/edit_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:inputType="text|textCapWords"
+                android:maxLines="1"
+                android:theme="@style/MyEditTextTheme"/>
+        </com.google.android.material.textfield.TextInputLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relpass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:paddingTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/relemail">
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rectanglebg" />
+
+        <TextView
+            android:id="@+id/text_dummy_hint_pass"
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/white"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text="Password"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:visibility="invisible" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="16dp"
+            android:hint="Password"
+            android:textColorHint="#707070"
+            app:hintTextAppearance="@style/HintTextStyle">
+
+            <EditText
+                android:id="@+id/edit_pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:maxLines="1"
+                android:inputType="textPassword"
+                android:theme="@style/MyEditTextTheme"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="5dp"
+            android:background="#FFFFFF"
+            android:contentDescription="@string/eye_image"
+            app:srcCompat="@drawable/show_password" />
+    </RelativeLayout>
+
+
+
+    <!--tak-->
+
+    <!--com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,18 +178,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:layout_constraintTop_toTopOf="@+id/guideline7">
-<!--        android:focusableInTouchMode="true"
-        android:focusable="false"-->
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-<!--        android:hint="Email"
-            app:layout_constraintTop_toBottomOf="@id/app_name"-->
+    </com.google.android.material.textfield.TextInputLayout-->
 
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
+    <!--password  com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editText3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -89,10 +206,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"/>
-<!--            android:hint="Password"
-            app:layout_constraintTop_toBottomOf="@id/app_name"-->
-
-    </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout-->
 
     <TextView
         android:id="@+id/log_in_"
@@ -174,9 +288,9 @@
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/buttons_before_text"
         android:text="Log In"
         android:fontFamily="@font/arial"
@@ -185,7 +299,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.462"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintTop_toBottomOf="@+id/relpass" />
 
 
     <View

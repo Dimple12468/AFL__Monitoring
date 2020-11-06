@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.SpannableString;
@@ -79,9 +80,18 @@ public class login_activity extends AppCompatActivity {
     private String Name;
     private static final String TAG = "login_activity";
 //    private EditText editEmail, editPassword;
+    /*
     private TextInputLayout _editEmail, _editPassword;
     private EditText editEmail, editPassword;
+
+     */
+
     private TextView signUpAdo, signUpDda,tvForgot;
+
+    TextView textDummyHintName,textDummyHintPass;
+    EditText editName,editEmail,editPass;
+    View view1,view2;
+    TextInputLayout ti1,ti2;
 //    private TextView tvReg;
 
     private String urlget;          // = "http://api.theagriculture.tk/api/get-user/";
@@ -90,7 +100,7 @@ public class login_activity extends AppCompatActivity {
     private AlertDialog dialog;
     private CheckBox checkBox;
     private Button btnLogin;
-//    private ImageButton imageButton;
+    private ImageButton imageButton;
     public boolean hide = false;
 
 //    @Override
@@ -152,14 +162,94 @@ public class login_activity extends AppCompatActivity {
 
 //        editEmail = findViewById(R.id.editText);
 //        editPassword = findViewById(R.id.editText3);
+        /*new comment
         _editEmail = findViewById(R.id.editText);
-        _editPassword = findViewById(R.id.editText3);
+
 
         editEmail = _editEmail.getEditText();
+
+
+
+        _editPassword = findViewById(R.id.editText3);
         editPassword = _editPassword.getEditText();
+
+         */
+
+
         btnLogin = findViewById(R.id.button);
         tvForgot = findViewById(R.id.tvForgot);
 //        tvReg = findViewById(R.id.tvReg);
+
+
+        ////////abhi
+
+        textDummyHintName = findViewById(R.id.text_dummy_hint_name);
+        editEmail = (EditText) findViewById(R.id.edit_name);
+        ti1 = (TextInputLayout) findViewById(R.id.ti1);
+        view1 = findViewById(R.id.view1);
+
+        editEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if (hasFocus) {
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            // Show white background behind floating label
+                            textDummyHintName.setVisibility(View.VISIBLE);
+                        }
+                    }, 100);
+                    view1.setBackgroundResource(R.drawable.blackbg);
+                } else {
+                    // Required to show/hide white background behind floating label during focus change
+                    if (editEmail.getText().length() > 0)
+                        textDummyHintName.setVisibility(View.VISIBLE);
+                    else
+                        textDummyHintName.setVisibility(View.INVISIBLE);
+                    view1.setBackgroundResource(R.drawable.rectanglebg);
+                }
+
+                //ti1.setError("You need to enter a name");
+            }
+        });
+
+        textDummyHintPass = findViewById(R.id.text_dummy_hint_pass);
+        editPass = (EditText) findViewById(R.id.edit_pass);
+        ti2 = (TextInputLayout) findViewById(R.id.ti2);
+        view2 = findViewById(R.id.view2);
+
+        editPass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if (hasFocus) {
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            // Show white background behind floating label
+                            textDummyHintPass.setVisibility(View.VISIBLE);
+                        }
+                    }, 100);
+                    view2.setBackgroundResource(R.drawable.blackbg);
+                } else {
+                    // Required to show/hide white background behind floating label during focus change
+                    if (editPass.getText().length() > 0)
+                        textDummyHintPass.setVisibility(View.VISIBLE);
+                    else
+                        textDummyHintPass.setVisibility(View.INVISIBLE);
+                    view2.setBackgroundResource(R.drawable.rectanglebg);
+                }
+
+                //ti1.setError("You need to enter a name");
+            }
+        });
+
+
+
+        //////tak
 
         //function to go to register page
 /*        String text = "Don't have an account Register";
@@ -205,8 +295,10 @@ public class login_activity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mEmail = editEmail.getText().toString().trim();
-                String mPass = editPassword.getText().toString().trim();
+                //////String mEmail = editEmail.getText().toString().trim();
+                String mEmail=editEmail.getText().toString().trim();
+                String mPass = editPass.getText().toString().trim();
+                //String mPass = editPassword.getText().toString().trim();
 
                 if (!mEmail.isEmpty() && !mPass.isEmpty()) {
                     Login(mEmail, mPass);
@@ -220,34 +312,34 @@ public class login_activity extends AppCompatActivity {
             }
         });
         //function to view password
-/*        imageButton = findViewById(R.id.imageButton);
+       imageButton = findViewById(R.id.imageButton);
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(hide==true){
-                    int start= editPassword.getSelectionStart();
-                    int end= editPassword.getSelectionEnd();
-                    editPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    int start= editPass.getSelectionStart();
+                    int end= editPass.getSelectionEnd();
+                    editPass.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     hide=false;
                     imageButton.setImageResource(R.drawable.show_password);
-                    editPassword.setSelection(start,end);
+                    editPass.setSelection(start,end);
                 }
                 else{
-                    int start= editPassword.getSelectionStart();
-                    int end= editPassword.getSelectionEnd();
-                    editPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    int start= editPass.getSelectionStart();
+                    int end= editPass.getSelectionEnd();
+                    editPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     hide=true;
                     imageButton.setImageResource(R.drawable.hide_password);
-                    editPassword.setSelection(start,end);
+                    editPass.setSelection(start,end);
                 }
 
             }
-        });*/
+        });
 
         //function to change colour of login button when text is entered
         editEmail.addTextChangedListener(loginTextWatcher);//loginTextWatcher function is defined at last
-        editPassword.addTextChangedListener(loginTextWatcher);
+        editPass.addTextChangedListener(loginTextWatcher);
 
         //end of onCreate function
     }
@@ -496,7 +588,7 @@ public class login_activity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             String username = editEmail.getText().toString().trim();
-            String password = editPassword.getText().toString().trim();
+            String password = editPass.getText().toString().trim();
             if(!username.isEmpty() && !password.isEmpty())
             {
                 btnLogin.setBackgroundResource(R.drawable.buttons);
