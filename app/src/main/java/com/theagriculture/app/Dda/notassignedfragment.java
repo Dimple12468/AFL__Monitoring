@@ -157,7 +157,7 @@ public class notassignedfragment extends Fragment {
         review.addItemDecoration(divider);
 
         SharedPreferences preferences = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-        token = preferences.getString("token","");
+        token = preferences.getString("key","");
         Log.d(TAG, "onCreateView: "+token);
 
         Log.d(TAG, "onCreateView: inflated fragment_ongoing");
@@ -330,6 +330,7 @@ public class notassignedfragment extends Fragment {
                                 nothing_toshow_fragment no_data = new nothing_toshow_fragment();
                                 AppCompatActivity activity = (AppCompatActivity)getActivity();
                                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.assigned_dda, no_data).commit();
+                                spinner.setVisibility(View.GONE);
                                 // Toast.makeText(getActivity(),"replaced fragment",Toast.LENGTH_LONG).show();
                                 return;
 //                                view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
@@ -539,7 +540,7 @@ public class notassignedfragment extends Fragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
                 SharedPreferences prefs = getActivity().getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
-                String token = prefs.getString("token", "");
+                String token = prefs.getString("key", "");
                 map.put("Authorization", "Token " + token);
                 return map;
             }
