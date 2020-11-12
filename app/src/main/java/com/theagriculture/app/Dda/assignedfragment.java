@@ -314,18 +314,22 @@ public class assignedfragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Log.d("assigned",response.toString());
                         try {
                             JSONObject rootObject = new JSONObject(String.valueOf(response));
                             JSONArray resultsArray = rootObject.getJSONArray("results");
                             //Toast.makeText(getActivity(),rootObject.toString(),Toast.LENGTH_LONG).show();
                             nextUrl = rootObject.getString("next");
                             if(resultsArray.length()== 0){
+                                Log.d("assigned1","enterd");
                                 //adoListAdapter.mshowshimmer = false;
                                 String[][] arr = new String[0][0];
                                 recyclerViewAdater.notifyDataSetChanged();
                                 nothing_toshow_fragment no_data = new nothing_toshow_fragment();
-                                AppCompatActivity activity = (AppCompatActivity)getActivity();
-                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.assigned_dda, no_data).commit();
+                                AppCompatActivity activity = (AppCompatActivity)getContext();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.recyclerViewongoing, no_data).commit();
+                                spinner.setVisibility(View.GONE);
+                                //Log.d("assigned1",response.toString());
                                 return;
 //                                view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
                             }
