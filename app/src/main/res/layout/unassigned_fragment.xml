@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/refreshpull_dda"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/norel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <!--include
+            android:id="@+id/ongoing_dda_toolbar"
+            layout="@layout/app_bar_admin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" /-->
+
+        <FrameLayout
+            android:id="@+id/assigned_dda_bcad"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ongoing_dda_toolbar">
+
+            <RelativeLayout
+                android:id="@+id/relno"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <!--                                android:background="@color/white"-->
+
+                <ProgressBar
+                    android:id="@+id/progressbar_dda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:indeterminateTint="@color/app_color"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewongoing"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <!--                android:layout_below="@id/ongoing_dda_toolbar"-->
+
+                <ProgressBar
+                    android:id="@+id/locations_loading_dda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="2dp"
+                    android:indeterminateTint="@color/app_color"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/recyclerViewpending"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+                <!--            app:layout_constraintTop_toTopOf="@+id/guideline8" -->
+
+            </RelativeLayout>
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

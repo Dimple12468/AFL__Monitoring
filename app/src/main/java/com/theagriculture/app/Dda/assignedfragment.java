@@ -71,7 +71,7 @@ public class assignedfragment extends Fragment {
     private ArrayList<String> mDate;
     private DdapendingassignedAdapter ddaassignedAdapter;
     ArrayList<Section_DDA> sections = new ArrayList<>();
-//    ArrayList<Section_DDA> sections_adoid = new ArrayList<>();
+    //    ArrayList<Section_DDA> sections_adoid = new ArrayList<>();
     private SectionAdapter_DDA recyclerViewAdater;
     private String urlget = Globals.assignedLocationsDDA;                           //"http://18.224.202.135/api/locations/dda/assigned";
     private String token;
@@ -98,7 +98,7 @@ public class assignedfragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG,"onCreateView: ");
-        view = inflater.inflate(R.layout.fragment_ongoing,container,false);
+        view = inflater.inflate(R.layout.assigned_fragment,container,false);
         Id = new ArrayList<String>();
         Name = new ArrayList<String>();
         Address = new ArrayList<String>();
@@ -110,8 +110,11 @@ public class assignedfragment extends Fragment {
         spinner = view.findViewById(R.id.progressbar_dda);
         progressBar = view.findViewById(R.id.locations_loading_dda);
 
+        /*abhi
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.ongoing_dda_toolbar);
         toolbar.setVisibility(View.GONE);
+
+         */
 
         review.addOnScrollListener(new RecyclerView.OnScrollListener(){
             @Override
@@ -304,7 +307,7 @@ public class assignedfragment extends Fragment {
             Log.d(TAG, "onResume: REFRESH");
             isReferesh = false;
         }
-}
+    }
 
     private void getData(final String url) {
 //        sections=new ArrayList<>();
@@ -327,7 +330,7 @@ public class assignedfragment extends Fragment {
                                 recyclerViewAdater.notifyDataSetChanged();
                                 nothing_toshow_fragment no_data = new nothing_toshow_fragment();
                                 AppCompatActivity activity = (AppCompatActivity)getContext();
-                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.recyclerViewongoing, no_data).commit();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.assigned_dda_bca, no_data).commit();
                                 spinner.setVisibility(View.GONE);
                                 //Log.d("assigned1",response.toString());
                                 return;

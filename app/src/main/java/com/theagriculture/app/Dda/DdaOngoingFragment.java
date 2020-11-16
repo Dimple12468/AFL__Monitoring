@@ -80,7 +80,7 @@ public class DdaOngoingFragment extends Fragment {
     private RecyclerView review;
     private View view;
     private boolean isRefresh;
-//    private Toolbar toolbar;
+    //    private Toolbar toolbar;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     ArrayList<Section_DDA> sections = new ArrayList<>();
@@ -106,7 +106,7 @@ public class DdaOngoingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG,"onCreateView: ");
 
-        view = inflater.inflate(R.layout.fragment_ongoing,container,false);
+        view = inflater.inflate(R.layout.ongoing_dda_fragment,container,false);
         swipeRefreshLayout = view.findViewById(R.id.refreshpull_dda);
         review = view.findViewById(R.id.recyclerViewongoing);
         spinner = view.findViewById(R.id.progressbar_dda);
@@ -201,122 +201,123 @@ public class DdaOngoingFragment extends Fragment {
         final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         isNextBusy = true;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONObject rootObject = new JSONObject(String.valueOf(response));
-                            JSONArray resultsArray = rootObject.getJSONArray("results");
-                            Log.d(TAG,"see response: "+ resultsArray);
-                            nextUrl = rootObject.getString("next");
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject rootObject = new JSONObject(String.valueOf(response));
+                    JSONArray resultsArray = rootObject.getJSONArray("results");
+                    Log.d(TAG,"see response: "+ resultsArray);
+                    nextUrl = rootObject.getString("next");
 //                            int count = rootObject.getInt("count");
-                            if(resultsArray.length() == 0 /* count == 0*/){
-                                //adoListAdapter.mshowshimmer = false;
-                                String[][] arr = new String[0][0];
-                                spinner.setVisibility(View.GONE);
-                                recyclerViewAdater.notifyDataSetChanged();
-                                nothing_toshow_fragment no_data = new nothing_toshow_fragment();
-                                AppCompatActivity activity = (AppCompatActivity)getActivity();
-                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.assigned_dda, no_data).commit();
+
+                    if(resultsArray.length()== 0){
+                        Log.d(TAG,"i will show length 0");
+                        //adoListAdapter.mshowshimmer = false;
+                        String[][] arr = new String[0][0];
+                        recyclerViewAdater.notifyDataSetChanged();
+                        nothing_toshow_fragment no_data = new nothing_toshow_fragment();
+                        AppCompatActivity activity = (AppCompatActivity)getActivity();
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.assigned_dda_abc, no_data).commit();
+                        return;
 //                                view.setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
-                                return;
-                            }
-
-                            String[][] arr = new String[6][resultsArray.length()];
-                            for (int i = 0; i < resultsArray.length(); i++) {
-                                JSONObject singleObject = resultsArray.getJSONObject(i);
-                                String did = singleObject.getString("id");
-                                String dlocation_name = singleObject.getString("village_name");
-                                String dlocation_address = singleObject.getString("block") + ", " +
-                                        singleObject.getString("district");
-                                String dlongitude = singleObject.getString("longitude");
-                                String dlatitude = singleObject.getString("latitude");
-                                String ddate = singleObject.getString("acq_date");
-                                arr[0][i]=ddate;
-                                arr[1][i]=did;
-                                arr[2][i]=dlocation_name;
-                                arr[3][i]=dlocation_address;
-                                arr[4][i]=dlatitude;
-                                arr[5][i]=dlongitude;
-                            }
-                            String inter;
-                            for(int i=0;i<resultsArray.length()-1;i++){
-                                for(int j=0;j<resultsArray.length()-i-1;j++){
-                                    String idate = arr[0][j];
-                                    String ndate = arr[0][j+1];
-                                    SimpleDateFormat sdfo = new SimpleDateFormat("yyyy-MM-dd");
-                                    // Get the two dates to be compared
-                                    Date d1 = null;
-                                    try {
-                                        d1 = sdfo.parse(idate);
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                    Date d2 = null;
-                                    try {
-                                        d2 = sdfo.parse(ndate);
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                    if (d1.compareTo(d2) < 0) {
-                                        for(int k=0;k<6;k++) {
-                                            inter = arr[k][j];
-                                            arr[k][j] = arr[k][j + 1];
-                                            arr[k][j + 1] = inter;
-                                        }
-                                    }
-                                }
-                            }
-                            ArrayList<String> mDid = new ArrayList<>();
-                            ArrayList<String> mDlocation_name = new ArrayList<>();
-                            ArrayList<String> mDlocation_address = new ArrayList<>();
-                            ArrayList<String> mlatitude= new ArrayList<>();
-                            ArrayList<String> mlongitude= new ArrayList<>();
-                            String predate=arr[0][0];
-                            //String predate = null;
-                            for(int i=0;i<resultsArray.length();i++){
-                                String idate = arr[0][i];
-                                if(predate.equals(idate)){
-                                    mDid.add(arr[1][i]);
-                                    mDlocation_name.add(arr[2][i]);
-                                    mDlocation_address.add(arr[3][i]);
-                                    mlatitude.add(arr[4][i]);
-                                    mlongitude.add(arr[5][i]);
-
-                                    //predate=idate;
-                                }
-                                else{
-                                    sections.add(new Section_DDA(predate,mDid, mDlocation_name, mDlocation_address,mlatitude,mlongitude,false,false,true));
-                                    mDid = new ArrayList<>();
-                                    mDlocation_name = new ArrayList<>();
-                                    mDlocation_address = new ArrayList<>();
-                                    mlatitude = new ArrayList<>();
-                                    mlongitude = new ArrayList<>();
-                                    mDid.add(arr[1][i]);
-                                    mDlocation_name.add(arr[2][i]);
-                                    mDlocation_address.add(arr[3][i]);
-                                    mlatitude.add(arr[4][i]);
-                                    mlongitude.add(arr[5][i]);
-                                    //date.equals(idate);
-                                }
-                                //predate.equals(idate);
-                                predate=idate;
-                            }
-                            sections.add(new Section_DDA(predate,mDid, mDlocation_name, mDlocation_address,mlatitude,mlongitude,false,false,true));
-                            //adoListAdapter.mshowshimmer = false;
-                            recyclerViewAdater.notifyDataSetChanged();
-                            isNextBusy = false;
-                            spinner.setVisibility(View.GONE);
-                        } catch (JSONException e) {
-                            spinner.setVisibility(View.GONE);
-                            e.printStackTrace();
-                            Toast.makeText(getActivity(),"An exception occurred",Toast.LENGTH_LONG).show();
-//                            spinner.setVisibility(View.GONE);
-                            //Fragment fragment = getFragmentManager().findFragmentById(R.id.rootView);
-                            //fragment.getView().setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
-                        }
-
                     }
-                },
+
+                    String[][] arr = new String[6][resultsArray.length()];
+                    for (int i = 0; i < resultsArray.length(); i++) {
+                        JSONObject singleObject = resultsArray.getJSONObject(i);
+                        String did = singleObject.getString("id");
+                        String dlocation_name = singleObject.getString("village_name");
+                        String dlocation_address = singleObject.getString("block") + ", " +
+                                singleObject.getString("district");
+                        String dlongitude = singleObject.getString("longitude");
+                        String dlatitude = singleObject.getString("latitude");
+                        String ddate = singleObject.getString("acq_date");
+                        arr[0][i]=ddate;
+                        arr[1][i]=did;
+                        arr[2][i]=dlocation_name;
+                        arr[3][i]=dlocation_address;
+                        arr[4][i]=dlatitude;
+                        arr[5][i]=dlongitude;
+                    }
+                    String inter;
+                    for(int i=0;i<resultsArray.length()-1;i++){
+                        for(int j=0;j<resultsArray.length()-i-1;j++){
+                            String idate = arr[0][j];
+                            String ndate = arr[0][j+1];
+                            SimpleDateFormat sdfo = new SimpleDateFormat("yyyy-MM-dd");
+                            // Get the two dates to be compared
+                            Date d1 = null;
+                            try {
+                                d1 = sdfo.parse(idate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            Date d2 = null;
+                            try {
+                                d2 = sdfo.parse(ndate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            if (d1.compareTo(d2) < 0) {
+                                for(int k=0;k<6;k++) {
+                                    inter = arr[k][j];
+                                    arr[k][j] = arr[k][j + 1];
+                                    arr[k][j + 1] = inter;
+                                }
+                            }
+                        }
+                    }
+                    ArrayList<String> mDid = new ArrayList<>();
+                    ArrayList<String> mDlocation_name = new ArrayList<>();
+                    ArrayList<String> mDlocation_address = new ArrayList<>();
+                    ArrayList<String> mlatitude= new ArrayList<>();
+                    ArrayList<String> mlongitude= new ArrayList<>();
+                    String predate=arr[0][0];
+                    //String predate = null;
+                    for(int i=0;i<resultsArray.length();i++){
+                        String idate = arr[0][i];
+                        if(predate.equals(idate)){
+                            mDid.add(arr[1][i]);
+                            mDlocation_name.add(arr[2][i]);
+                            mDlocation_address.add(arr[3][i]);
+                            mlatitude.add(arr[4][i]);
+                            mlongitude.add(arr[5][i]);
+
+                            //predate=idate;
+                        }
+                        else{
+                            sections.add(new Section_DDA(predate,mDid, mDlocation_name, mDlocation_address,mlatitude,mlongitude,false,false,true));
+                            mDid = new ArrayList<>();
+                            mDlocation_name = new ArrayList<>();
+                            mDlocation_address = new ArrayList<>();
+                            mlatitude = new ArrayList<>();
+                            mlongitude = new ArrayList<>();
+                            mDid.add(arr[1][i]);
+                            mDlocation_name.add(arr[2][i]);
+                            mDlocation_address.add(arr[3][i]);
+                            mlatitude.add(arr[4][i]);
+                            mlongitude.add(arr[5][i]);
+                            //date.equals(idate);
+                        }
+                        //predate.equals(idate);
+                        predate=idate;
+                    }
+                    sections.add(new Section_DDA(predate,mDid, mDlocation_name, mDlocation_address,mlatitude,mlongitude,false,false,true));
+                    //adoListAdapter.mshowshimmer = false;
+                    recyclerViewAdater.notifyDataSetChanged();
+                    isNextBusy = false;
+                    spinner.setVisibility(View.GONE);
+                } catch (JSONException e) {
+                    spinner.setVisibility(View.GONE);
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(),"An exception occurred",Toast.LENGTH_LONG).show();
+//                            spinner.setVisibility(View.GONE);
+                    //Fragment fragment = getFragmentManager().findFragmentById(R.id.rootView);
+                    //fragment.getView().setBackground(getActivity().getResources().getDrawable(R.mipmap.no_entry_background));
+                }
+
+            }
+        },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {

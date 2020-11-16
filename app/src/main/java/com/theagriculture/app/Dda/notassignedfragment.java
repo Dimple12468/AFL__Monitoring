@@ -98,7 +98,7 @@ public class notassignedfragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG,"onCreateView: ");
-        view = inflater.inflate(R.layout.fragment_ongoing,container,false);
+        view = inflater.inflate(R.layout.unassigned_fragment,container,false);
         Id = new ArrayList<String>();
         Name = new ArrayList<String>();
         Address = new ArrayList<String>();
@@ -110,8 +110,11 @@ public class notassignedfragment extends Fragment {
         spinner = view.findViewById(R.id.progressbar_dda);
         progressBar = view.findViewById(R.id.locations_loading_dda);
 
+        /*
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.ongoing_dda_toolbar);
         toolbar.setVisibility(View.GONE);
+
+         */
 
         review.addOnScrollListener(new RecyclerView.OnScrollListener(){
             @Override
@@ -329,7 +332,7 @@ public class notassignedfragment extends Fragment {
 
                                 nothing_toshow_fragment no_data = new nothing_toshow_fragment();
                                 AppCompatActivity activity = (AppCompatActivity)getActivity();
-                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.assigned_dda, no_data).commit();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.assigned_dda_bcad, no_data).commit();
                                 spinner.setVisibility(View.GONE);
                                 // Toast.makeText(getActivity(),"replaced fragment",Toast.LENGTH_LONG).show();
                                 return;
