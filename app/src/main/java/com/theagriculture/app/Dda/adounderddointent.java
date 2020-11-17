@@ -19,11 +19,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -220,8 +223,21 @@ public class adounderddointent extends AppCompatActivity {
                     visibleCount = layoutManager.getChildCount();
                     if ((pastCount + visibleCount) >= totalCount) {
                         if (!nextUrl.equals("null") && !isNextBusy) {
+                            String imagelink=nextUrl;
+                            Log.d("imagelink1",imagelink);
+                            String newImageLink = " ";
+
+                            char anc = imagelink.charAt(4);
+                            int comp = Character.compare(anc, 's');
+                            if(comp!=0){
+                                newImageLink = imagelink;
+                                newImageLink =  newImageLink.substring(4);
+                                newImageLink = "https" + newImageLink;
+                            }
+                            Log.d("response","new link is "+newImageLink);
                             listNextProgressBar.setVisibility(View.VISIBLE);
-                            loadData(nextUrl);
+                            loadData(newImageLink);
+
                         }
                         Log.d("getdata", "onScrolled:");
                     }
@@ -289,6 +305,19 @@ public class adounderddointent extends AppCompatActivity {
                             ///////reportSubmitLoading.dismiss();
                             if (error instanceof NoConnectionError)
                                 Toast.makeText(getApplicationContext(), "Please check your Internet Connection!", Toast.LENGTH_LONG).show();
+                            else if (error instanceof AuthFailureError) {
+                                // Error indicating that there was an Authentication Failure while performing the request
+                                Toast.makeText(getApplicationContext(), "This error is case2", Toast.LENGTH_LONG).show();
+                            } else if (error instanceof ServerError) {
+                                //Indicates that the server responded with a error response
+                                Toast.makeText(getApplicationContext(), "This error is server error", Toast.LENGTH_LONG).show();
+                            } else if (error instanceof NetworkError) {
+                                //Indicates that there was network error while performing the request
+                                Toast.makeText(getApplicationContext(), "This error is case4", Toast.LENGTH_LONG).show();
+                            } else if (error instanceof ParseError) {
+                                // Indicates that the server response could not be parsed
+                                Toast.makeText(getApplicationContext(), "This error is case5", Toast.LENGTH_LONG).show();
+                            }
                             else
                                 Toast.makeText(getApplicationContext(), "Something went wrong, please try again!", Toast.LENGTH_LONG).show();
                             Log.d("save changes", "onErrorResponse: loadData " + error);
