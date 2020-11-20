@@ -59,7 +59,7 @@ public class AdminActivity extends AppCompatActivity /*implements DrawerLocker*/
     final Fragment adoFragment = new ado_fragment();
     final Fragment ddoFragment = new ddo_fragment();
     final Fragment countFragment = new count_fragment();
-    final Fragment districtAdo = new DistrictAdo();
+//    final Fragment districtAdo = new DistrictAdo();
     final Fragment districtStateFragment= new DistrictStateFragment();
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = mapFragmnt;

@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.theagriculture.app.Admin.AdoDdoActivity.AdoDdoActivity;
 import com.theagriculture.app.Admin.AdoDdoActivity.AdoDdoActivityFragment;
@@ -43,6 +44,7 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
    // View view1;
     ArrayList<String> mtextview1;
     ArrayList<String> mtextview2;
+    ArrayList<String> image_URL;
 
     ArrayList<String> mtextview1_all_ado;
     ArrayList<String> mtextview1_all;
@@ -54,7 +56,7 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
     private ArrayList<String> mDdoNames;
     private ArrayList<String> mDistrictNames;
     private boolean isBusy = false;
-    private String TAG = "RecyclerViewAdapter";
+    private String TAG = "DistrictAdoAdapter";
     private TextView tv3;
     private boolean is_settings_clicked = false;
 
@@ -68,7 +70,7 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
 
 
     public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2,
-                              ArrayList<String> mUserId, boolean isDdoFragment, ArrayList<String> mPkList, ArrayList<String> mDdoNames, ArrayList<String> mDistrictNames){// boolean is_settings_clicked) {
+                              ArrayList<String> mUserId, boolean isDdoFragment, ArrayList<String> mPkList, ArrayList<String> mDdoNames, ArrayList<String> mDistrictNames,ArrayList<String > image_url){// boolean is_settings_clicked) {
         this.mtextview1 = mtextview1;
         this.mtextview2 = mtextview2;
         this.mcontext = mcontext;
@@ -77,6 +79,9 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
         this.mPkList = mPkList;
         this.mDdoNames = mDdoNames;
         this.mDistrictNames = mDistrictNames;
+        this.image_URL = image_url;
+
+        Log.d("Image URL " + TAG , "in constructor constructor: "+ image_url);
 
         //this.mtextview1_all_ado = new ArrayList<>(mtextview1);
     }
@@ -160,8 +165,10 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
         holder.tv2.setBackground(null);
         holder.tv1.setText(mtextview1.get(position));
         holder.tv2.setText(mtextview2.get(position));
+//        holder.imageView.setImageResource(Integer.parseInt(image.get(position)));
 
         holder.tv2.setVisibility(View.GONE);
+
 
         if (!isDdoFragment) {
             holder.districtTextview.setText("DDA : " + mDdoNames.get(position).toUpperCase());/* + " (" + mDistrictNames.get(position) + ")");*/
@@ -251,6 +258,7 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
     //end of search suggestions filter
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        ImageView imageView;
         TextView tv1;
         TextView tv2;
         RelativeLayout relativeLayout;
@@ -260,6 +268,7 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
+            imageView = itemView.findViewById(R.id.imageuser);
             tv1= itemView.findViewById(R.id.tvuser);
             tv2= itemView.findViewById(R.id.tvinfo);
             relativeLayout = itemView.findViewById(R.id.relativeLayout2);
@@ -269,7 +278,11 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
             if (is_settings_clicked){
                 radioButton.setVisibility(View.VISIBLE);
             }
+//            new DownloadImage(imageView,image);
+            Log.d("Image URL in " + TAG, "image url is:" + image_URL);
+            new DownloadImage(imageView,image_URL).execute();
 
+//            Glide.with(mcontext).load(image_URL).into(imageView);
         }
         @Override
         public void onClick(View v) {

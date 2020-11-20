@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Section {
+    private ArrayList<String> Date,adoName,ddaName;
     public String sectionTitle;
 
     //public List<String> allItemsInSection;
@@ -33,7 +34,6 @@ public class Section {
 
     //Constructor for DDA User
     public Section(String sectionTitle, ArrayList<String> id, String villagename, String blockname, String district, String state, ArrayList<String> address, ArrayList<String> name, ArrayList<String> mAdoIds,boolean is_DDA_user) {
-        System.out.println("dimple in dda constructor of section");
         this.sectionTitle_DDA=sectionTitle;
 //        this.sectionTitle=sectionTitle;
         this.Id_DDA=id;
@@ -49,7 +49,6 @@ public class Section {
     }
 
     public Section(String sectionTitle, ArrayList<String> mDid, ArrayList<String> mDlocation_name, ArrayList<String> mDlocation_address, ArrayList<String> mAdaName, ArrayList<String> mDdaName, ArrayList<String> Adapk,ArrayList<String> Ddapk, boolean isPending, boolean isCompleted, boolean isOngoing) {
-        System.out.println("Dimple new constructor ko call kiya \n");
         this.sectionTitle=sectionTitle;
         this.Ada=mAdaName;
         this.Dda=mDdaName;
@@ -62,8 +61,41 @@ public class Section {
         this.Id=mDid;
     }
 
+    //Admin---Pending
+    public Section(ArrayList<String> allDates, ArrayList<String> addressList, ArrayList<String> adoNameList, ArrayList<String> ddaNameList, boolean isPending, boolean isOngoing, boolean isCompleted) {
+        this.Date=allDates;
+        this.adoName=adoNameList;
+        this.ddaName=ddaNameList;
+        this.Address=addressList;
+        this.isPending=isPending;
+        this.isComplete= isCompleted;
+        this.isOngoing=isOngoing;
+    }
 
 
+    public ArrayList<String> getDate() {
+        return Date;
+    }
+
+    public void setDate(ArrayList<String> date) {
+        Date = date;
+    }
+
+    public ArrayList<String> getAdoName() {
+        return adoName;
+    }
+
+    public void setAdoName(ArrayList<String> adoName) {
+        this.adoName = adoName;
+    }
+
+    public ArrayList<String> getDdaName() {
+        return ddaName;
+    }
+
+    public void setDdaName(ArrayList<String> ddaName) {
+        this.ddaName = ddaName;
+    }
     /*
     public Section(String sectionTitle, List<String> allItemsInSection) {
         this.sectionTitle = sectionTitle;
