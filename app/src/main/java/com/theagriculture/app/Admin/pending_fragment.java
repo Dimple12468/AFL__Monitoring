@@ -137,7 +137,7 @@ public class pending_fragment extends Fragment {
 //        spinner.setVisibility(View.VISIBLE);
         Log.d(TAG,"URL: " + pendingUrl);
 
-        new statusDetailsTab().passComponents(recyclerView,spinner);
+        new statusDetailsTab().passComponentsId(R.id.recyclerViewpending,R.id.pending_progress,R.id.locations_loading);
         new statusDetailsTab().getData(pendingUrl,getContext());
 
         //for complete scroll for recycler view (from bottom to up(top))
@@ -179,7 +179,7 @@ public class pending_fragment extends Fragment {
 
         // spinner.setVisibility(View.VISIBLE);
 
-        new statusDetailsTab().getAdapter(getContext(),R.id.recyclerViewpending);
+        new statusDetailsTab().getAdapter(getContext());
 
 //        recyclerViewAdater = new SectionAdapter(getActivity(), sections);
 //        recyclerView.setAdapter(recyclerViewAdater);

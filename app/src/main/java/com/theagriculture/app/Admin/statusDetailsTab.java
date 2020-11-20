@@ -2,11 +2,16 @@ package com.theagriculture.app.Admin;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -18,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.theagriculture.app.Globals;
+import com.theagriculture.app.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class statusDetailsTab {
+public class statusDetailsTab extends AppCompatActivity {
 
     private String pendingUrl = Globals.pendingDatewiseList;
     private String nextUrl = "null";
@@ -45,6 +51,30 @@ public class statusDetailsTab {
     private SectionAdapter recyclerViewAdater;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private int recyclerViewId,progressBarId;
+
+    public void passComponentsId(int rV_id, int sp_id, int bt_id) {
+        recyclerViewId = rV_id;
+        progressBarId = sp_id;
+//        this.recyclerView = recyclerView;
+//        this.progressBar = spinner;
+//        this.recyclerView =
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        recyclerView = findViewById(recyclerViewId);
+        progressBar = findViewById(progressBarId);
+
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(Context);
+        recyclerView.setLayoutManager(layoutManager);
+        DividerItemDecoration divider = new DividerItemDecoration(Context, layoutManager.getOrientation());
+        recyclerView.addItemDecoration(divider);
+
+
+    }
 
 
     public void getData(String url, final Context context) {
@@ -272,15 +302,11 @@ public class statusDetailsTab {
         }
     }
 
-    public void getAdapter(Context context, int recyclerViewpending) {
+    public void getAdapter(Context context) {
         recyclerViewAdater = new SectionAdapter(context, sections);
-        recyclerView.setAdapter(recyclerViewAdater);
+        this.recyclerView.setAdapter(recyclerViewAdater);
         recyclerViewAdater.notifyDataSetChanged();
     }
 
-    public void passComponents(RecyclerView recyclerView, ProgressBar spinner) {
-//        this.recyclerView = recyclerView;
-//        this.progressBar = spinner;
-        this.recyclerView =
-    }
+
 }
