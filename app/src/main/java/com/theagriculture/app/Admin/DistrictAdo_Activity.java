@@ -282,30 +282,6 @@ public class DistrictAdo_Activity extends AppCompatActivity {
                         }
                         Log.d("Image URL ", "image url is:" + image);
 
-                        /*String newImageLink = " ";
-
-                        char anc = image_url.charAt(4);
-                        int comp = Character.compare(anc, 's');
-                        if(comp!=0){
-                            newImageLink = image_url;
-                            newImageLink =  newImageLink.substring(4);
-                            newImageLink = "https" + newImageLink;
-                        }
-                        ImageView imageView = findViewById(R.id.imageuser);
-                        Picasso.get().load(newImageLink).error(R.drawable.user_image).into(imageView,new com.squareup.picasso.Callback() {
-                            @Override
-                            public void onSuccess() {
-                                //progressBar.setVisibility(View.GONE);
-                                //Toast.makeText(getActivity(),"Success",Toast.LENGTH_LONG).show();
-                                //progressBar.setVisibility(View.GONE);
-                            }
-                            @Override
-                            public void onError(Exception e) {
-                                //progressBar.setVisibility(View.GONE);
-                                //Toast.makeText(getActivity(),"Exception occured "+e.getMessage(),Toast.LENGTH_LONG).show();
-                                Log.d("imagelink3",e.getMessage());
-                            }
-                        });*/
                         try {
                             JSONObject ddaObject = singleObject.getJSONObject("dda");
                             String ddaName = ddaObject.getString("name");

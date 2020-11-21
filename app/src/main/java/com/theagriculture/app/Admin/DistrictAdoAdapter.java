@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.squareup.picasso.Picasso;
 import com.theagriculture.app.Admin.AdoDdoActivity.AdoDdoActivity;
 import com.theagriculture.app.Admin.AdoDdoActivity.AdoDdoActivityFragment;
 import com.theagriculture.app.Admin.AdoDdoActivity.AdoDdo_Activity;
@@ -70,7 +71,7 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
 
 
     public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2,
-                              ArrayList<String> mUserId, boolean isDdoFragment, ArrayList<String> mPkList, ArrayList<String> mDdoNames, ArrayList<String> mDistrictNames,ArrayList<String > image_url){// boolean is_settings_clicked) {
+                              ArrayList<String> mUserId, boolean isDdoFragment, ArrayList<String> mPkList, ArrayList<String> mDdoNames, ArrayList<String> mDistrictNames,ArrayList<String> image_url){// boolean is_settings_clicked) {
         this.mtextview1 = mtextview1;
         this.mtextview2 = mtextview2;
         this.mcontext = mcontext;
@@ -87,14 +88,14 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
     }
 
     public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2,
-                              ArrayList<String> mUserId, boolean isDdoFragment, ArrayList<String> pkList) {
+                              ArrayList<String> mUserId, boolean isDdoFragment, ArrayList<String> pkList, ArrayList<String> image_URL) {
         this.mtextview1 = mtextview1;
         this.mtextview2 = mtextview2;
         this.mUserId = mUserId;
         this.mcontext = mcontext;
         this.isDdoFragment = isDdoFragment;
         mPkList = pkList;
-
+        this.image_URL = image_URL;
     }
 
     public DistrictAdoAdapter(Context mcontext, ArrayList<String> mtextview1, ArrayList<String> mtextview2,
@@ -268,7 +269,7 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            imageView = itemView.findViewById(R.id.imageuser);
+            imageView = itemView.findViewById(R.id.imageUser_);
             tv1= itemView.findViewById(R.id.tvuser);
             tv2= itemView.findViewById(R.id.tvinfo);
             relativeLayout = itemView.findViewById(R.id.relativeLayout2);
@@ -278,9 +279,32 @@ DistrictAdoAdapter extends RecyclerView.Adapter<DistrictAdoAdapter.ViewHolder> i
             if (is_settings_clicked){
                 radioButton.setVisibility(View.VISIBLE);
             }
+
+            String newImageLink = "null";
+            String toString = image_URL.get(0);
+            Log.d(TAG,"toString " + toString);
+            Log.d(TAG,"image URL in: " + image_URL);
+
+            char anc = toString.charAt(4);
+            Log.d(TAG,"image URL with anc: " + anc);
+            int comp = Character.compare(anc, 's');
+            if(comp!=0){
+                 newImageLink = "https" + toString.substring(4);
+                 Log.d(TAG,"image URL with s: " + newImageLink);
+            }
+            Picasso.get().load(newImageLink).error(R.drawable.user_image).into(imageView,new com.squareup.picasso.Callback() {
+                @Override
+                public void onSuccess() {
+                }
+                @Override
+                public void onError(Exception e) {
+                    Log.d("error with image link: ",e.getMessage());
+                }
+            });
+
 //            new DownloadImage(imageView,image);
-            Log.d("Image URL in " + TAG, "image url is:" + image_URL);
-            new DownloadImage(imageView,image_URL).execute();
+//            Log.d("Image URL in " + TAG, "image url is:" + image_URL);
+//            new DownloadImage(imageView,image_URL).execute();
 
 //            Glide.with(mcontext).load(image_URL).into(imageView);
         }
