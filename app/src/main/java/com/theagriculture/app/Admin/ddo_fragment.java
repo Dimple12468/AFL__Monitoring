@@ -79,6 +79,7 @@ public class ddo_fragment extends Fragment {
     private ArrayList<String> userinfo;
     private ArrayList<String> mUserId;
     private ArrayList<String> mPkList;
+    private ArrayList<String> image;
 
     private String token;
     private String nextUrl;
@@ -133,6 +134,7 @@ public class ddo_fragment extends Fragment {
         userinfo = new ArrayList<>();
         mUserId = new ArrayList<>();
         mPkList = new ArrayList<>();
+        image = new ArrayList<>();
         //for toolbar
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.app__bar_ddo);
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
@@ -209,7 +211,7 @@ public class ddo_fragment extends Fragment {
         });
 
 
-        recyclerViewAdater = new DistrictAdoAdapter(getActivity(), username, userinfo, mUserId, true, mPkList);
+        recyclerViewAdater = new DistrictAdoAdapter(getActivity(), username, userinfo, mUserId, true, mPkList,image);
         Rview.setAdapter(recyclerViewAdater);
         layoutManager = new LinearLayoutManager(getActivity());
         Rview.setLayoutManager(layoutManager);
@@ -260,7 +262,18 @@ public class ddo_fragment extends Fragment {
                         mPkList.add(pk);
                         String id = singleObject.getString("id");
                         mUserId.add(id);
+
+                        String image_url ;
+                        try {
+                            image_url = userobj.getString("image");
+                            image.add(image_url);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("Image URL " + TAG, "image url is:" + image);
+
                     }
+
                     Log.d(TAG, "onResponse: " + username);
                     //recyclerViewAdater.mShowShimmer = false;
                     recyclerViewAdater.notifyDataSetChanged();

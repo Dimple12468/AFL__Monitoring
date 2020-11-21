@@ -137,8 +137,8 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             itemRecyclerView.setLayoutManager(linearLayoutManager);
-            itemAdapter = new ItemAdapter(context, section.getDda(), section.getAda(), section.getAddress(), section.getId(), section.getAdapk(), section.getDdapk(), section.getPendingstatus(), section.getOngoingstatus(), section.getCompletedstatus());
-            itemRecyclerView.setAdapter(itemAdapter);
+//            itemAdapter = new ItemAdapter(context, section.getDda(), section.getAda(), section.getAddress(), section.getId(), section.getAdapk(), section.getDdapk(), section.getPendingstatus(), section.getOngoingstatus(), section.getCompletedstatus());
+//            itemRecyclerView.setAdapter(itemAdapter);
 
             //sectionName.setText(section.getSectionTitle());
             //Toast.makeText(context, "Section name set", Toast.LENGTH_LONG).show();

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -43,6 +44,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.squareup.picasso.Picasso;
 import com.theagriculture.app.Admin.AdoDdoActivity.nothing_toshow_fragment;
 import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
@@ -63,6 +65,7 @@ public class DistrictAdo_Activity extends AppCompatActivity {
     private ArrayList<String> mPkList;
     private ArrayList<String> mDdoNames;
     private ArrayList<String> mDistrictNames;
+    private ArrayList<String> image;
     private String ado_list;
     private String curr_dist;
     private String district_list_url;
@@ -92,7 +95,7 @@ public class DistrictAdo_Activity extends AppCompatActivity {
     //TextView title_top;
     String text;
     AdminActivity a;
-    DistrictAdo d;
+//    DistrictAdo d;
 
     //for back button on action bar
     @Override
@@ -122,6 +125,7 @@ public class DistrictAdo_Activity extends AppCompatActivity {
 
         ll = findViewById(R.id.for_edit_ado);
         ado_list="";
+//        image="";
         district_list_url = Globals.districtUrl;                                        //"http://18.224.202.135/api/district/";
         username = new ArrayList<>();
         userinfo = new ArrayList<>();
@@ -129,8 +133,9 @@ public class DistrictAdo_Activity extends AppCompatActivity {
         mPkList = new ArrayList<>();
         mDdoNames = new ArrayList<>();
         mDistrictNames = new ArrayList<>();
+        image = new ArrayList<>();
         a = new AdminActivity();
-        d = new DistrictAdo();
+//        d = new DistrictAdo();
 
         tv_edit = findViewById(R.id.tv_edit);
         Ib = findViewById(R.id.ib_edit);
@@ -209,7 +214,7 @@ public class DistrictAdo_Activity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.ado_list_progressbar1);
         relativeLayout = findViewById(R.id.relativeLayout1);
-        recyclerViewAdater = new DistrictAdoAdapter(DistrictAdo_Activity.this, username, userinfo, mUserId, false, mPkList, mDdoNames, mDistrictNames);//is_settings_clicked);
+        recyclerViewAdater = new DistrictAdoAdapter(DistrictAdo_Activity.this, username, userinfo, mUserId, false, mPkList, mDdoNames, mDistrictNames,image);//is_settings_clicked);
         Rview = findViewById(R.id.recyclerViewado1);
         Rview.setAdapter(recyclerViewAdater);
         SharedPreferences preferences = DistrictAdo_Activity.this.getSharedPreferences("tokenFile", Context.MODE_PRIVATE);
@@ -262,12 +267,20 @@ public class DistrictAdo_Activity extends AppCompatActivity {
                                 userinfo.add("NOT ASSIGNED");
                             }
                         }
-                        Log.d(TAG,"Dimple userinfo" + userinfo);
 //                        JSONObject authObject = singleObject.getJSONObject("auth_user");
                         String pk = userobj.getString("id");
                         mPkList.add(pk);
                         String id = singleObject.getString("id");
                         mUserId.add(id);
+
+                        String image_url ;                      //= " ";
+                        try {
+                            image_url = userobj.getString("image");
+                            image.add(image_url);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("Image URL ", "image url is:" + image);
 
                         try {
                             JSONObject ddaObject = singleObject.getJSONObject("dda");
