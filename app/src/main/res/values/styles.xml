@@ -9,7 +9,8 @@
         <item name="colorAccent">@color/white</item>
     </style>
 
-    <style name="AppTheme.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge" >
+    <style name="AppTheme.NoActionBar" >
+<!--        parent="Theme.MaterialComponents.Light.NoActionBar.Bridge" >-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowTranslucentStatus">true</item>
