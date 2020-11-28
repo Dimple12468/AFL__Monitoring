@@ -1,6 +1,8 @@
 package com.theagriculture.app.Ado;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,9 +15,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,8 +50,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.theagriculture.app.Admin.AdoDdoActivity.nothing_toshow_fragment;
+import com.theagriculture.app.Admin.CustomDialog;
+import com.theagriculture.app.Admin.RecyclerViewAdapter_district;
 import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
+import com.theagriculture.app.ShowFilterDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -138,7 +146,9 @@ public class ado_complete_fragment extends Fragment {
         searchItem_filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                // alert_filter_dialog();
+                 //alert_filter_dialog();works on uncommentig inder
+                new ShowFilterDialog().alert_filter_dialog(getContext());
+
                 return true;
             }
 
@@ -162,6 +172,142 @@ public class ado_complete_fragment extends Fragment {
 
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+    ////abhi code for lert dialog
+    /*
+    //function for alert dialog of filter search
+    private void alert_filter_dialog() {
+        LayoutInflater li = LayoutInflater.from(getActivity());
+        final View promptsView = li.inflate(R.layout.filter_dialog, null);
+
+        //Create views for spinners here
+        Spinner sp1 = promptsView.findViewById(R.id.status_filter_spinner);
+        Spinner sp2 = promptsView.findViewById(R.id.date_filter_spinner);
+        Button sp3 = promptsView.findViewById(R.id.state_filter_button);
+        Button sp4 = promptsView.findViewById(R.id.district_filter_button);
+        Button sp5 = promptsView.findViewById(R.id.village_filter_button);
+
+        String[] status = getResources().getStringArray(R.array.status);
+        String[] date = getResources().getStringArray(R.array.date);
+        String[] district = {"Any","Multiple"};
+        String[] village =  {"Any"} ;
+
+        ArrayAdapter<String> status_adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,status);
+        status_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp1.setAdapter(status_adapter);
+        sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ArrayAdapter<String> date_adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,date);
+        date_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp2.setAdapter(date_adapter);
+        sp2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        sp3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSelectionDialog();
+                //Toast.makeText(getActivity(),"You clicked button",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        sp4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSelectionDialog();
+                //Toast.makeText(getActivity(),"You clicked button",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        sp5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSelectionDialog();
+                //Toast.makeText(getActivity(),"You clicked button",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setTitle("Filter Search");
+        alertDialogBuilder.setPositiveButton("Apply",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,
+                                int which) {
+                Toast.makeText(getActivity(), "Apply is clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Toast.makeText(getActivity(),"cancel is clicked",Toast.LENGTH_LONG).show();
+                alertDialogBuilder.setCancelable(true);
+            }
+        });
+        alertDialogBuilder.setView(promptsView);
+        alertDialogBuilder.setCancelable(true);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.black));
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.black));
+//        alertDialog.setCanceledOnTouchOutside(false);
+    }
+
+    public void showSelectionDialog(){
+        CustomDialog customDialog;
+
+        ArrayList<String> items = new ArrayList<>();
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+        items.add("Apple Apple Apple ");
+
+        RecyclerViewAdapter_district dataAdapter = new RecyclerViewAdapter_district(getActivity(),items);
+        customDialog = new CustomDialog(getActivity(), dataAdapter);
+
+        customDialog.show();
+        customDialog.setCanceledOnTouchOutside(false);
+
+    }
+    */
+        ///////yaha tak /////////
 
 
     @Nullable

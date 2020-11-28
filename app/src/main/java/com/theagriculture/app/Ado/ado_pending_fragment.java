@@ -47,6 +47,7 @@ import com.theagriculture.app.Admin.AdoDdoActivity.nothing_toshow_fragment;
 import com.theagriculture.app.Admin.SectionAdapter;
 import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
+import com.theagriculture.app.ShowFilterDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -143,7 +144,7 @@ public class ado_pending_fragment extends Fragment {
         searchItem_filter.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                // alert_filter_dialog();
+                 new ShowFilterDialog().alert_filter_dialog(getContext());
                 return true;
             }
 
