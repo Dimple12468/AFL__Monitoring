@@ -16,6 +16,8 @@ public class Globals {
     public static String ongoingDatewiseList = serverURL + "api/locations/ongoing";
     public static String completedDatewiseList = serverURL + "api/locations/completed";
 
+    public static String url_Radius = serverURL + "api/Radius/";
+
     public static String pendingList = serverURL + "api/locationsDatewise/pending";
     public static String smsPending = serverURL + "api/trigger/sms/pending";
     public static String ongoingList = serverURL + "api/locationsDatewise/ongoing";

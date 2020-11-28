@@ -54,6 +54,11 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
+            android:name=".Admin.SetRadius"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".Ado.ado_complete_details"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">

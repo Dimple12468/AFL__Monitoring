@@ -319,7 +319,9 @@ public class map_fragemnt extends Fragment /*implements OnMapReadyCallback*/ {//
 
                     case R.id.advance_settings:
                         item.setChecked(true);
-                        Toast.makeText(getActivity(), "settings clicked", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "settings clicked", Toast.LENGTH_SHORT).show();
+                        Intent intent1= new Intent(getActivity(),SetRadius.class);
+                        startActivity(intent1);
                         mDrawer_map.closeDrawers();
                         return true;
 
