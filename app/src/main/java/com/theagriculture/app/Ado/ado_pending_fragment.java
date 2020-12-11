@@ -284,10 +284,28 @@ public class ado_pending_fragment extends Fragment {
                             String[][] arr = new String[6][resultsArray.length()];
                             for (int i = 0; i < resultsArray.length(); i++) {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
+
+                                String districtname=" ";
+                                try {
+                                    JSONObject jdistrict = singleObject.getJSONObject("district");
+                                    districtname= jdistrict.getString("district");
+                                }
+                                catch(JSONException e) {
+
+                                }
+                                String villagename=" ";
+                                try {
+                                    JSONObject jdistrict = singleObject.getJSONObject("village_name");
+                                    villagename= jdistrict.getString("village");
+                                }
+                                catch(JSONException e) {
+
+                                }
+
                                 String did = singleObject.getString("id");
                                 //,(comma) is necessary for empty string out of range exception
-                                String dlocation_name = singleObject.getString("village_name") + ", "+singleObject.getString("block");
-                                String dlocation_address = singleObject.getString("district") + ", " + singleObject.getString("state") ;
+                                String dlocation_name = villagename + ", "+singleObject.getString("block");
+                                String dlocation_address = districtname + ", " + singleObject.getString("state") ;
                                 String dlongitude = singleObject.getString("longitude");
                                 String dlatitude = singleObject.getString("latitude");
                                 String ddate = singleObject.getString("acq_date");
