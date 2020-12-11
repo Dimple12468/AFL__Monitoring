@@ -49,8 +49,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.JsonObject;
 import com.theagriculture.app.Admin.AdoDdoActivity.nothing_toshow_fragment;
-import com.theagriculture.app.Admin.CustomDialog;
+import com.theagriculture.app.CustomDialog;
 import com.theagriculture.app.Admin.RecyclerViewAdapter_district;
 import com.theagriculture.app.Globals;
 import com.theagriculture.app.R;
@@ -647,8 +648,30 @@ public class ado_complete_fragment extends Fragment {
                             for (int i = 0; i < resultsArray.length(); i++) {
                                 JSONObject singleObject = resultsArray.getJSONObject(i);
                                 String did = singleObject.getString("id");
-                                String dlocation_name = singleObject.getString("village_name") + ", "+singleObject.getString("block");
-                                String dlocation_address = singleObject.getString("district") + ", " + singleObject.getString("state") ;
+                                ///
+                                String districtname=" ";
+                                try {
+                                    JSONObject jdistrict = singleObject.getJSONObject("district");
+                                    districtname= jdistrict.getString("district");
+                                }
+                                catch(JSONException e) {
+
+                                }
+                                String villagename=" ";
+                                try {
+                                    JSONObject jdistrict = singleObject.getJSONObject("village_name");
+                                    villagename= jdistrict.getString("village");
+                                }
+                                catch(JSONException e) {
+
+                                }
+
+
+
+                                ///
+                                String dlocation_name = villagename + ", "+singleObject.getString("block");
+                                //String dlocation_address = singleObject.getString("district") + ", " + singleObject.getString("state") ;
+                               String dlocation_address = districtname + ", " + singleObject.getString("state") ;
                                 String dlongitude = singleObject.getString("longitude");
                                 String dlatitude = singleObject.getString("latitude");
                                 String ddate = singleObject.getString("acq_date");
